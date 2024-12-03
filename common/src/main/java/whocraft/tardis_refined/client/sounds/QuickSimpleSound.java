@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import whocraft.tardis_refined.registry.TRSoundRegistry;
 
 public class QuickSimpleSound extends AbstractTickableSoundInstance {
 
@@ -20,22 +19,22 @@ public class QuickSimpleSound extends AbstractTickableSoundInstance {
         volume = 0.5f;
     }
 
-    public void setVolume(float volume) {
-        this.volume = volume;
-    }
-
     @Override
     public float getVolume() {
         return volume;
     }
 
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
+    public void setVolume(float volume) {
+        this.volume = volume;
     }
 
     @Override
     public float getPitch() {
         return pitch;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
     }
 
     public void setLocation(Vec3 location) {

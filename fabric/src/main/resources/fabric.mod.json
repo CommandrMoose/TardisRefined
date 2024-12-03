@@ -23,7 +23,8 @@
       "whocraft.tardis_refined.fabric.TardisRefinedFabric"
     ],
     "cardinal-components": [
-      "whocraft.tardis_refined.common.capability.fabric.TRComponents"
+      "whocraft.tardis_refined.common.capability.fabric.TRComponents",
+      "whocraft.tardis_refined.common.capability.player.fabric.TardisPlayerComponents"
     ],
     "client": [
       "whocraft.tardis_refined.fabric.TardisRefinedFabricClient"
@@ -43,7 +44,8 @@
   },
   "custom": {
     "cardinal-components": [
-      "${mod_id}:tardis_data"
+      "${mod_id}:tardis_data",
+      "${mod_id}:tardis_player_info"
     ]
   }
 }

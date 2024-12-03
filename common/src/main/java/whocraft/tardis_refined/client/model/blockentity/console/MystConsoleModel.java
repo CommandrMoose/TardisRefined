@@ -2,6 +2,7 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
@@ -51,7 +52,7 @@ public class MystConsoleModel extends HierarchicalModel implements ConsoleUnit {
         this.controls = root.getChild("controls");
         this.rotor = root.getChild("rotor");
         this.throttle_control = controls.getChild("south").getChild("bone120").getChild("throttle_control");
-        this.handbrake = findPart(this, "door_control");
+        this.handbrake = JsonToAnimationDefinition.findPart(this, "door_control");
     }
 
     public static LayerDefinition createBodyLayer() {

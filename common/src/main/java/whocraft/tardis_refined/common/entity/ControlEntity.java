@@ -18,61 +18,66 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
-import whocraft.tardis_refined.common.capability.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.control.ship.MonitorControl;
 import whocraft.tardis_refined.common.tardis.manager.FlightDanceManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
-import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.common.util.ClientHelper;
 import whocraft.tardis_refined.common.util.LevelHelper;
 import whocraft.tardis_refined.common.util.MiscHelper;
+import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.constants.NbtConstants;
-import whocraft.tardis_refined.registry.TRControlRegistry;
-import whocraft.tardis_refined.registry.TRDimensionTypes;
-import whocraft.tardis_refined.registry.TREntityRegistry;
+import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
+import whocraft.tardis_refined.registry.*;
 
 public class ControlEntity extends Entity {
 
-    /** The total amount of control alignment health points before a control will start causing the Tardis to crash.
-     * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used. */
-    private int totalControlHealth = 10;
-
-    private ControlSpecification controlSpecification;
-    private ConsoleTheme consoleTheme;
-    private BlockPos consoleBlockPos;
-    private FlightDanceManager flightDanceManager;
-
-    public ControlEntity(EntityType<?> entityTypeIn, Level level) {
-        super(entityTypeIn, level);
-    }
-
-    /** Flag to determine if this Control can continue to become more mis-aligned and thus lose "health".
+    /**
+     * Flag to determine if this Control can continue to become more mis-aligned and thus lose "health".
      * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
-     * <br> True - if able to keep being mis-aligned, False if cannot be further mis-aligned*/
+     * <br> True - if able to keep being mis-aligned, False if cannot be further mis-aligned
+     */
     private static final EntityDataAccessor<Boolean> TICKING_DOWN = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.BOOLEAN);
-    /** Flag to determine if this Control is far too mis-aligned and is considered "dead".
-     * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used. */
+    /**
+     * Flag to determine if this Control is far too mis-aligned and is considered "dead".
+     * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
+     */
     private static final EntityDataAccessor<Boolean> IS_DEAD = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.BOOLEAN);
-    /** Attribute to determine how far this Control is mis-aligned.
-     * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used. */
+    /**
+     * Attribute to determine how far this Control is mis-aligned.
+     * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
+     */
     private static final EntityDataAccessor<Integer> CONTROL_HEALTH = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SHOW_PARTICLE = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> SIZE_WIDTH = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> SIZE_HEIGHT = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.FLOAT);
+    /**
+     * The total amount of control alignment health points before a control will start causing the Tardis to crash.
+     * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
+     */
+    private int totalControlHealth = 10;
+    private ControlSpecification controlSpecification;
+    private ConsoleTheme consoleTheme;
+    private BlockPos consoleBlockPos;
+    private FlightDanceManager flightDanceManager;
+    private Vector3f offset;
+    public ControlEntity(EntityType<?> entityTypeIn, Level level) {
+        super(entityTypeIn, level);
+    }
 
     public ControlEntity(Level level) {
         super(TREntityRegistry.CONTROL_ENTITY.get(), level);
@@ -140,6 +145,16 @@ public class ControlEntity extends Entity {
 
     @Override
     public Component getName() {
+
+
+        TardisClientData tardisClientData = TardisClientData.getInstance(level().dimension());
+        if (tardisClientData.isInRecovery()) {
+            int cooldownTicks = tardisClientData.getRecoveryTicks();
+            int maxCooldownTicks = 12000; // 10 minutes in ticks
+            int percentage = (int) ((cooldownTicks / (float) maxCooldownTicks) * 100);
+            return Component.translatable(ModMessages.RECOVERY_PROGRESS, percentage + "%");
+        }
+
         if (this.controlSpecification == null) {
             return super.getName();
         }
@@ -147,7 +162,10 @@ public class ControlEntity extends Entity {
         return Component.translatable(this.controlSpecification.control().getTranslationKey());
     }
 
-    /** Tell the Tardis that the control is currently continuing to be misaligned
+
+    /**
+     * Tell the Tardis that the control is currently continuing to be misaligned
+     *
      * @param manager
      * @return true if can continue to become more misaligned, false if already too misaligned.
      */
@@ -233,12 +251,29 @@ public class ControlEntity extends Entity {
     public boolean hurt(DamageSource damageSource, float f) {
         if (damageSource.getDirectEntity() instanceof Player player) { //Using getDirectEntity can allow for players to indirectly interact with controls, such as through primed TNT
             if (this.level() instanceof ServerLevel serverLevel) {
-                if(!player.level().isClientSide()) {
+                if (!player.level().isClientSide()) {
                     if (entityData.get(IS_DEAD)) {
                         return false;
                     }
                     if (this.entityData.get(TICKING_DOWN)) {
-                        this.realignControl();
+
+                        ItemStack itemStack = player.getMainHandItem();
+
+                        if (itemStack.is(TRItemRegistry.MALLET.get()) && !player.getCooldowns().isOnCooldown(TRItemRegistry.MALLET.get())) {
+                            player.getCooldowns().addCooldown(TRItemRegistry.MALLET.get(), 600);
+                            playSound(TRSoundRegistry.MALLET.get());
+                            itemStack.hurtAndBreak(15, player, (livingEntityx) -> {
+                                livingEntityx.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+                            });
+
+                            getConsoleBlockEntity().getControlEntityList().forEach(controlEntity -> {
+                                controlEntity.realignControl();
+                                BlockPos blockPos = controlEntity.blockPosition();
+                                serverLevel.sendParticles(ParticleTypes.ENCHANT, blockPos.getX(), blockPos.getY() + 1.0, blockPos.getZ(), 120, 2.0, 1.0, 2.0, 0.005);
+                            });
+                        } else {
+                            this.realignControl();
+                        }
                         //Return early here because we want the player to re-align the control, but not actually activate the control's original function.
                         //e.g. If Randomiser control is re-aligned we shouldn't actually tell the Tardis to randomise its coordinates.
                         return true;
@@ -286,8 +321,11 @@ public class ControlEntity extends Entity {
     public boolean isTickingDown() {
         return getEntityData().get(TICKING_DOWN);
     }
-    /** Restores the control alignment points to a higher value so that it won't cause the Tardis to crash*/
-    private void realignControl() {
+
+    /**
+     * Restores the control alignment points to a higher value so that it won't cause the Tardis to crash
+     */
+    public void realignControl() {
         int currentHealth = this.entityData.get(CONTROL_HEALTH);
         int nextHealth = currentHealth + 2;
 
@@ -439,17 +477,16 @@ public class ControlEntity extends Entity {
     }
 
     private boolean handleLeftClick(Player player, ServerLevel serverLevel) {
-        if (!TardisLevelOperator.get(serverLevel).isPresent()){
+        if (!TardisLevelOperator.get(serverLevel).isPresent()) {
             return false;
-        }
-        else {
+        } else {
             TardisLevelOperator cap = TardisLevelOperator.get(serverLevel).get();
 
             if (cap.getPilotingManager().getCurrentConsole() == null || cap.getPilotingManager().getCurrentConsole() != getConsoleBlockEntity()) {
                 cap.getPilotingManager().setCurrentConsole(this.getConsoleBlockEntity());
             }
 
-            if (!controlSpecification.control().canUseControl(cap, controlSpecification.control(), this)){
+            if (!controlSpecification.control().canUseControl(cap, controlSpecification.control(), this)) {
                 return false;
             }
 
@@ -463,10 +500,9 @@ public class ControlEntity extends Entity {
     }
 
     private boolean handleRightClick(Player player, ServerLevel serverLevel, InteractionHand interactionHand) {
-        if (!TardisLevelOperator.get(serverLevel).isPresent()){
+        if (!TardisLevelOperator.get(serverLevel).isPresent()) {
             return false;
-        }
-        else {
+        } else {
             TardisLevelOperator cap = TardisLevelOperator.get(serverLevel).get();
 
             if (cap.getPilotingManager().getCurrentConsole() == null || cap.getPilotingManager().getCurrentConsole() != getConsoleBlockEntity()) {
@@ -532,12 +568,18 @@ public class ControlEntity extends Entity {
         return false;
     }
 
-    /** Gets the total amount of control alignment health points before a control will start causing the Tardis to crash*/
+    /**
+     * Gets the total amount of control alignment health points before a control will start causing the Tardis to crash
+     */
     public int getTotalControlHealth() {
         return this.totalControlHealth;
     }
 
     public void setTotalControlHealth(int totalControlHealth) {
         this.totalControlHealth = totalControlHealth;
+    }
+
+    public void setPosForDebug(Vector3f vector3f) {
+        this.offset = vector3f;
     }
 }

@@ -57,6 +57,11 @@ public class TardisRefined {
         ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.registerToModBus();
         TRControlRegistry.CONTROL_DEFERRED_REGISTRY.registerToModBus();
         TRArgumentTypeRegistry.COMMAND_ARGUMENT_TYPES.registerToModBus();
+
+        TRPointOfInterestTypes.POIS.registerToModBus();
+        TRVillagerProfession.PROFESSIONS.registerToModBus();
+        //     TRPointOfInterestTypes.registerBlockStates();
+
         TRTagKeys.init();
         TardisNetwork.init();
         TardisDesktops.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, SyncDesktopsMessage::new);

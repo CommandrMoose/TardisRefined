@@ -19,7 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.manager.AestheticHandler;
 
 public class GlobalDoorBlock extends InternalDoorBlock {
@@ -71,7 +71,7 @@ public class GlobalDoorBlock extends InternalDoorBlock {
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (interactionHand == InteractionHand.MAIN_HAND) {
             if (!player.level().isClientSide()) {
-                if (level instanceof  ServerLevel serverLevel) {
+                if (level instanceof ServerLevel serverLevel) {
                     if (TardisLevelOperator.get(serverLevel).isPresent()) {
                         if (serverLevel.getBlockEntity(blockPos) instanceof GlobalDoorBlockEntity entity) {
                             entity.onRightClick(blockState, entity, player);

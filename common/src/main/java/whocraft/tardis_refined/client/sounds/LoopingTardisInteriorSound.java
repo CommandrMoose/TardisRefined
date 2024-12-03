@@ -7,8 +7,10 @@ import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
-/** Generic implementation of LoopingSound that only occurs in a Tardis dimension type*/
-public abstract class LoopingTardisInteriorSound extends LoopingDimensionTypeSpecificSound{
+/**
+ * Generic implementation of LoopingSound that only occurs in a Tardis dimension type
+ */
+public abstract class LoopingTardisInteriorSound extends LoopingDimensionTypeSpecificSound {
 
     protected final boolean requiresClientData;
     private TardisClientData tardisClientData;
@@ -26,22 +28,24 @@ public abstract class LoopingTardisInteriorSound extends LoopingDimensionTypeSpe
         return this.tardisClientData;
     }
 
+    public LoopingTardisInteriorSound setTardisClientData(Level level) {
+        if (level != null) {
+            this.tardisClientData = TardisClientData.getInstance(level.dimension());
+        }
+        return this;
+    }
+
     @Override
     public LoopingSound setLevel(Level targetLevel) {
         this.level = targetLevel;
         return this.setTardisClientData(targetLevel);
     }
 
-    /** Flag to determine if we need to consider there is a valid TardisClientData instance before playing the sound*/
+    /**
+     * Flag to determine if we need to consider there is a valid TardisClientData instance before playing the sound
+     */
     public boolean requiresClientData() {
         return this.requiresClientData;
-    }
-
-    public LoopingTardisInteriorSound setTardisClientData(Level level) {
-        if(level != null){
-            this.tardisClientData = TardisClientData.getInstance(level.dimension());
-        }
-        return this;
     }
 
     @Override

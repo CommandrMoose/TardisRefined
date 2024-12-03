@@ -8,7 +8,6 @@ import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.model.blockentity.console.*;
 import whocraft.tardis_refined.client.model.blockentity.device.ArtronPillarBlockModel;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.*;
-import whocraft.tardis_refined.client.model.blockentity.life.ArsEggModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.internal.door.RootShellDoorModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.rootplant.*;
 import whocraft.tardis_refined.client.model.blockentity.shell.shells.*;
@@ -25,11 +24,12 @@ public class ModelRegistry {
     public static ModelLayerLocation ROOT_PLANT_STATE_FOUR;
     public static ModelLayerLocation ROOT_PLANT_STATE_FIVE;
 
-    public static ModelLayerLocation FACTORY_CONSOLE;
+    public static ModelLayerLocation FACTORY_CONSOLE = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "factory"), "console");
     public static ModelLayerLocation NUKA_CONSOLE;
-    public static ModelLayerLocation COPPER_CONSOLE;
-    public static ModelLayerLocation CORAL_CONSOLE;
-    public static ModelLayerLocation TOYOTA_CONSOLE;
+    public static ModelLayerLocation CORAL_CONSOLE = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "coral"), "console");
+    public static ModelLayerLocation COPPER_CONSOLE = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "copper"), "console");
+
+    public static ModelLayerLocation TOYOTA_CONSOLE = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "toyota"), "console");
     public static ModelLayerLocation CRYSTAL_CONSOLE;
     public static ModelLayerLocation VICTORIAN_CONSOLE;
     public static ModelLayerLocation MYST_CONSOLE;
@@ -80,7 +80,7 @@ public class ModelRegistry {
     public static ModelLayerLocation HALF_BAKED_DOOR;
 
 
-    public static ModelLayerLocation ARS_EGG;
+    public static ModelLayerLocation ARS_EGG = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "ars_egg"), "living");
     public static ModelLayerLocation BULK_HEAD_DOOR;
     public static ModelLayerLocation ARTRON_PILLAR;
 
@@ -92,11 +92,7 @@ public class ModelRegistry {
         ROOT_PLANT_STATE_FOUR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "root_plant_four"), "root_plant_four"), RootPlantStateFourModel::createBodyLayer);
         ROOT_PLANT_STATE_FIVE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "root_plant_five"), "root_plant_five"), RootPlantStateFiveModel::createBodyLayer);
 
-        FACTORY_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "factory_console"), "factory_console"), FactoryConsoleModel::createBodyLayer);
         NUKA_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "nuka_console"), "nuka_console"), NukaConsoleModel::createBodyLayer);
-        COPPER_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "copper_console"), "copper_console"), CopperConsoleModel::createBodyLayer);
-        CORAL_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "coral_console"), "coral_console"), CoralConsoleModel::createBodyLayer);
-        TOYOTA_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "toyota_console"), "toyota_console"), ToyotaConsoleModel::createBodyLayer);
         CRYSTAL_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "crystal_console"), "crystal_console"), CrystalConsoleModel::createBodyLayer);
         VICTORIAN_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "victorian_console"), "victorian_console"), VictorianConsoleModel::createBodyLayer);
         MYST_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "myst_console"), "myst_console"), MystConsoleModel::createBodyLayer);
@@ -146,7 +142,6 @@ public class ModelRegistry {
         PATHFINDER_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "pathfinder_door"), "pathfinder_door"), PathfinderShellModel::createBodyLayer);
         HALF_BAKED_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "half_baked_door"), "half_baked_door"), HalfBakedDoorModel::createBodyLayer);
 
-        ARS_EGG = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "ars_egg"), "ars_egg"), ArsEggModel::createBodyLayer);
         BULK_HEAD_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "bulk_head_door"), "bulk_head_door"), BulkHeadDoorModel::createBodyLayer);
         ARTRON_PILLAR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "artron_pillar"), "artron_pillar"), ArtronPillarBlockModel::createBodyLayer);
 

@@ -7,6 +7,7 @@ import dev.onyxstudios.cca.api.v3.world.WorldComponentInitializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.common.capability.tardis.fabric.TardisLevelOperatorImpl;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
 public class TRComponents implements WorldComponentInitializer {

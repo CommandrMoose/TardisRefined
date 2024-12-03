@@ -9,17 +9,24 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityEvent;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.ControlGroupCheckers;
-import whocraft.tardis_refined.client.GravityOverlay;
 import whocraft.tardis_refined.client.TRItemColouring;
 import whocraft.tardis_refined.client.TardisClientLogic;
+import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
+import whocraft.tardis_refined.client.overlays.GravityOverlay;
+import whocraft.tardis_refined.client.overlays.VortexOverlay;
 import whocraft.tardis_refined.command.TardisRefinedCommand;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.dimension.TardisTeleportData;
 import whocraft.tardis_refined.common.dimension.fabric.DimensionHandlerImpl;
@@ -30,6 +37,9 @@ import whocraft.tardis_refined.compat.create.CreateIntergrations;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 import whocraft.tardis_refined.registry.TRItemRegistry;
+import whocraft.tardis_refined.registry.TRPointOfInterestTypes;
+
+import java.util.function.Supplier;
 
 import static net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.START_WORLD_TICK;
 
@@ -53,6 +63,17 @@ public class ModEvents {
             if (ModCompatChecker.create()) {
                 CreateIntergrations.init();
             }
+            // We call this here to make sure blocks are registered
+            TRPointOfInterestTypes.registerBlockStates();
+
+        });
+
+        // Force End a Vortex Session
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            ServerPlayer player = handler.getPlayer();
+            TardisPlayerInfo.get(player).ifPresent(tardisPlayerInfo -> {
+                tardisPlayerInfo.endPlayerForInspection(player);
+            });
         });
 
         ServerTickEvents.START_SERVER_TICK.register(ControlGroupCheckers::tickServer);
@@ -62,7 +83,7 @@ public class ModEvents {
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             DimensionHandlerImpl.clear();
 
-            if(ModCompatChecker.immersivePortals()){
+            if (ModCompatChecker.immersivePortals()) {
                 ImmersivePortals.onServerStopping(server);
             }
         });
@@ -76,13 +97,13 @@ public class ModEvents {
         });
 
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
-            if (newPlayer != null){
+            if (newPlayer != null) {
                 TardisHelper.handlePlayerJoinWorldEvents(newPlayer);
             }
         });
 
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
-            if (player != null){
+            if (player != null) {
                 TardisHelper.handlePlayerJoinWorldEvents(player);
             }
         });
@@ -91,7 +112,11 @@ public class ModEvents {
     public static void addClientEvents() {
         ClientTickEvents.START_CLIENT_TICK.register(TardisClientLogic::tickClientData);
         ColorProviderRegistry.ITEM.register(TRItemColouring.SCREWDRIVER_COLORS, TRItemRegistry.SCREWDRIVER.get());
-        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> GravityOverlay.renderOverlay(matrixStack.pose()));
+
+        Supplier<GuiGraphics> guiGraphics = () -> new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
+        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> VortexOverlay.renderOverlay(guiGraphics.get()));
+        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> ExteriorViewOverlay.renderOverlay(guiGraphics.get()));
+        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> GravityOverlay.renderOverlay(guiGraphics.get()));
     }
 
 

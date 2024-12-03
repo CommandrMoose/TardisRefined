@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.items.KeyItem;
 import whocraft.tardis_refined.common.network.messages.screens.OpenMonitorMessage;
@@ -22,13 +22,14 @@ public class MonitorControl extends Control {
     public MonitorControl(ResourceLocation id) {
         super(id, true);
     }
-    public MonitorControl(ResourceLocation id, String langId){
+
+    public MonitorControl(ResourceLocation id, String langId) {
         super(id, langId, true);
     }
 
     @Override
     public boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player) {
-        if (!player.level().isClientSide()){
+        if (!player.level().isClientSide()) {
 
             if (operator.getTardisState() != TardisLevelOperator.STATE_EYE_OF_HARMONY || operator.getPilotingManager().isOutOfFuel()) {
                 PlayerUtil.sendMessage(player, ModMessages.HARDWARE_OFFLINE, true);
@@ -38,8 +39,8 @@ public class MonitorControl extends Control {
             ItemStack hand = player.getMainHandItem();
 
             boolean isSyncingKey = false;
-            if (hand.getItem() instanceof KeyItem key){
-                if (key.interactMonitor(hand,player, controlEntity, player.getUsedItemHand()))
+            if (hand.getItem() instanceof KeyItem key) {
+                if (key.interactMonitor(hand, player, controlEntity, player.getUsedItemHand()))
                     isSyncingKey = true;
             }
             if (!isSyncingKey) {

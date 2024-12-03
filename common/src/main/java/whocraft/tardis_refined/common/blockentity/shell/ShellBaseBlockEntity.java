@@ -23,10 +23,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.block.door.InternalDoorBlock;
 import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
-import whocraft.tardis_refined.common.capability.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
@@ -130,12 +129,13 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
                 TardisRefined.LOGGER.error("Error in onAttemptEnter: null Tardis ID (Invalid block or not terraformed yet?) [" + externalShellPos.toShortString() + "]");
                 return;
             }
+
             ServerLevel interior = DimensionHandler.getOrCreateInterior(serverLevel, this.TARDIS_ID.location());
             TardisLevelOperator.get(interior).ifPresent(cap -> {
 
                 UpgradeHandler upgradeHandler = cap.getUpgradeHandler();
 
-                if (cap.isTardisReady() && (blockState.getValue(ShellBaseBlock.OPEN) || (cap.getPilotingManager().endFlight(false) && TRUpgrades.MATERIALIZE_AROUND.get().isUnlocked(upgradeHandler)))) {
+                if (cap.isTardisReady() && (blockState.getValue(ShellBaseBlock.OPEN) || (cap.getPilotingManager().isLanding() && TRUpgrades.MATERIALIZE_AROUND.get().isUnlocked(upgradeHandler)))) {
                     if (cap.getAestheticHandler().getShellTheme() != null) {
                         ResourceLocation theme = cap.getAestheticHandler().getShellTheme();
 
@@ -202,7 +202,7 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
     public void setClosed(boolean closeDoor) {
         BlockPos blockPos = this.getBlockPos();
         BlockState blockState = this.getLevel().getBlockState(blockPos);
-        if (blockState.getBlock() instanceof ShellBaseBlock shellBaseBlock){
+        if (blockState.getBlock() instanceof ShellBaseBlock shellBaseBlock) {
             this.getLevel().setBlock(blockPos, blockState.setValue(ShellBaseBlock.OPEN, !closeDoor), Block.UPDATE_ALL);
             this.playDoorCloseSound(closeDoor);
             this.setChanged();
@@ -217,7 +217,7 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
     @Override
     public void setLocked(boolean locked) {
         BlockState blockState = this.getLevel().getBlockState(this.getBlockPos());
-        if (blockState.getBlock() instanceof ShellBaseBlock shellBaseBlock){
+        if (blockState.getBlock() instanceof ShellBaseBlock shellBaseBlock) {
             this.getLevel().setBlock(this.getBlockPos(), blockState.setValue(ShellBaseBlock.LOCKED, locked), Block.UPDATE_ALL);
             this.playDoorLockedSound(locked);
             this.setChanged();
@@ -250,13 +250,13 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
         return this.getBlockPos();
     }
 
-    public void playDoorCloseSound(boolean closeDoor){
+    public void playDoorCloseSound(boolean closeDoor) {
         Level currentLevel = getLevel();
         currentLevel.playSound(null, this.getBlockPos(), closeDoor ? SoundEvents.IRON_DOOR_CLOSE : SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 1, closeDoor ? 1.4F : 1F);
         this.setChanged();
     }
 
-    public void playDoorLockedSound(boolean lockDoor){
+    public void playDoorLockedSound(boolean lockDoor) {
         Level currentLevel = getLevel();
         currentLevel.playSound(null, this.getBlockPos(), lockDoor ? BlockSetType.IRON.doorClose() : BlockSetType.IRON.doorOpen(), SoundSource.BLOCKS, 1, lockDoor ? 1.4F : 1F);
     }

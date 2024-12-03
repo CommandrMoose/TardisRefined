@@ -2,7 +2,9 @@ package whocraft.tardis_refined.api.event;
 
 import net.minecraft.resources.ResourceLocation;
 
-/** Object to identify the source of Shell updates.*/
+/**
+ * Object to identify the source of Shell updates.
+ */
 public class ShellChangeSource {
 
     private ResourceLocation id;

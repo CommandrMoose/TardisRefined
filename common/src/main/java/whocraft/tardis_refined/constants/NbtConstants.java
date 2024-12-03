@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 
 public class NbtConstants {
@@ -89,19 +89,29 @@ public class NbtConstants {
     public static final CharSequence MINECRAFT = "minecraft";
 
     public static TardisNavLocation getTardisNavLocation(CompoundTag tag, String prefix, TardisLevelOperator operator) {
+        // Extract necessary data from the tag
         BlockPos position = NbtUtils.readBlockPos(tag.getCompound(prefix + NbtConstants.LOCATION_POSITION));
         Direction direction = Direction.from2DDataValue(tag.getInt(prefix + NbtConstants.LOCATION_ROTATION));
-        String dimension_modid = tag.getString(prefix + NbtConstants.LOCATION_DIMENSION_MODID);
-        String dimension_path = tag.getString(prefix + NbtConstants.LOCATION_DIMENSION_PATH);
+        String dimensionModId = tag.getString(prefix + NbtConstants.LOCATION_DIMENSION_MODID);
+        String dimensionPath = tag.getString(prefix + NbtConstants.LOCATION_DIMENSION_PATH);
 
-        if (dimension_modid != null && dimension_path != null) {
-            ServerLevel level = operator.getLevel().getServer().getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(dimension_modid, dimension_path)));
+        // Validate the dimension information
+        if (!dimensionModId.isEmpty() && !dimensionPath.isEmpty()) {
+            ResourceKey<Level> dimensionKey = ResourceKey.create(
+                    Registries.DIMENSION,
+                    new ResourceLocation(dimensionModId, dimensionPath)
+            );
+
+            ServerLevel level = operator.getLevel().getServer().getLevel(dimensionKey);
             if (level != null) {
                 return new TardisNavLocation(position, direction, level);
             }
         }
+
+        // Return default location if dimension is invalid or not found
         return TardisNavLocation.ORIGIN;
     }
+
 
     public static void putTardisNavLocation(CompoundTag tag, String prefix, TardisNavLocation location) {
         tag.put(prefix + NbtConstants.LOCATION_POSITION, NbtUtils.writeBlockPos(location.getPosition()));

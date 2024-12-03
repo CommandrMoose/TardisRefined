@@ -43,6 +43,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider {
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get()).pattern("ZZZ").pattern("ZZZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer, new ResourceLocation(TardisRefined.MODID, "zeiton_ingot_from_nugget"));
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TRBlockRegistry.ZEITON_LANTERN.get()).pattern("ZZZ").pattern("ZTZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).define('T', Items.TORCH).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TRItemRegistry.MALLET.get()).pattern("ZZZ").pattern("ZZZ").pattern(" S ").define('Z', Blocks.STONE).define('S', Items.STICK).unlockedBy("has_crafting_table", has(Blocks.STONE)).save(consumer);
 
 
         // Smelting

@@ -27,7 +27,8 @@ public class GravityClient {
                 player.setDeltaMovement(deltaMovement.add(0, easeMovement(), 0));
                 info.cancel();
             } else if (options.keyShift.isDown()) {
-                player.setDeltaMovement(deltaMovement.add(0, -easeMovement(), 0));
+                player.setPose(Pose.STANDING);
+                player.setDeltaMovement(deltaMovement.add(0, -(easeMovement() * 5), 0));
                 info.cancel();
             } else {
                 player.setDeltaMovement(deltaMovement.x, 0, deltaMovement.z);

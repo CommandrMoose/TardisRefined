@@ -9,6 +9,10 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,16 +21,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.block.console.GlobalConsoleBlock;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.manager.TardisInteriorManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.util.LevelHelper;
+import whocraft.tardis_refined.common.util.TardisHelper;
 import whocraft.tardis_refined.constants.NbtConstants;
 import whocraft.tardis_refined.patterns.ConsolePattern;
 import whocraft.tardis_refined.patterns.ConsolePatterns;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
+import whocraft.tardis_refined.registry.TRDamageSources;
+import whocraft.tardis_refined.registry.TRDamageSources;
+import whocraft.tardis_refined.registry.TRDamageSources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +44,8 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
 
     private final List<ControlEntity> controlEntityList = new ArrayList<>();
     public AnimationState liveliness = new AnimationState();
+    public AnimationState powerOff = new AnimationState();
+    public AnimationState powerOn = new AnimationState();
     private boolean shouldSpawnControls = true;
     private ResourceLocation consoleTheme;
 
@@ -133,10 +143,14 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
                 // Spawn a control!
                 ControlEntity controlEntity = new ControlEntity(getLevel());
 
+                controlEntity.setPosForDebug(control.offsetPosition());
+
                 Vec3 location = LevelHelper.centerPos(currentBlockPos, true).add(control.offsetPosition().x(), control.offsetPosition().y(), control.offsetPosition().z());
                 controlEntity.setPos(location.x(), location.y(), location.z());
 
+
                 controlEntity.assignControlData(consoleTheme, control, this.getBlockPos());
+
 
                 serverLevel.addFreshEntity(controlEntity);
                 controlEntityList.add(controlEntity);
@@ -177,9 +191,7 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
 
 
     public void killControls() {
-        controlEntityList.forEach(x -> {
-            x.discard();
-        });
+        controlEntityList.forEach(Entity::discard);
         controlEntityList.clear();
     }
 
@@ -198,7 +210,12 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
         if (level instanceof ServerLevel serverLevel) {
             TardisLevelOperator.get(serverLevel).ifPresent(x -> {
 
-                if (x.getPilotingManager().isOnCooldown() && serverLevel.getGameTime() % 20 == 0) {
+                if (x.getPilotingManager().isInRecovery() && serverLevel.getGameTime() % 20 == 0) {
+
+                    List<Player> nearbyPlayers = TardisHelper.getPlayersInRange(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 3);
+                    nearbyPlayers.forEach(player -> {
+                        player.hurt(TRDamageSources.getSource(serverLevel, TRDamageSources.CHOKE), 0.5F);
+                    });
 
                     serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, blockPos.getX(), blockPos.getY() + 1.0, blockPos.getZ(), 120, 2.0, 1.0, 2.0, 0.005);
                     serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, blockPos.getX(), blockPos.getY() + 1.0, blockPos.getZ(), 120, 2.0, 1.0, 2.0, 0.005);

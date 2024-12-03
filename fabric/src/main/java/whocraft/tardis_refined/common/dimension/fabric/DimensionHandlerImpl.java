@@ -32,7 +32,8 @@ import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
 
-import static whocraft.tardis_refined.common.dimension.DimensionHandler.*;
+import static whocraft.tardis_refined.common.dimension.DimensionHandler.LEVELS;
+import static whocraft.tardis_refined.common.dimension.DimensionHandler.addDimension;
 import static whocraft.tardis_refined.common.util.Platform.getServer;
 
 public class DimensionHandlerImpl {
@@ -62,11 +63,10 @@ public class DimensionHandlerImpl {
         //Actually register our dimension
         Registry<LevelStem> dimensionRegistry = server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
         if (dimensionRegistry instanceof MappedRegistry<LevelStem> writableRegistry) {
-            MappedRegistryAccessor accessor = (MappedRegistryAccessor)writableRegistry;
+            MappedRegistryAccessor accessor = (MappedRegistryAccessor) writableRegistry;
             accessor.setFrozen(false); //Must unfreeze registry to allow our dimension to persist
             writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
-        }
-        else {
+        } else {
             throw new IllegalStateException(String.format("Unable to register dimension %s -- dimension registry not writable", dimensionKey.location()));
         }
 

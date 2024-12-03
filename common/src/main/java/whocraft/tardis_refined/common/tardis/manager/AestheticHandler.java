@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.NbtConstants;
@@ -40,7 +40,7 @@ public class AestheticHandler extends BaseHandler {
     }
 
     public ResourceLocation getShellTheme() {
-        if(shellTheme.getNamespace().contains("minecraft")){
+        if (shellTheme.getNamespace().contains("minecraft")) {
             return ShellTheme.HALF_BAKED.getId();
         }
         return shellTheme;
@@ -50,7 +50,7 @@ public class AestheticHandler extends BaseHandler {
     /**
      * Sets the shell theme ID for the Exterior Shell Block
      *
-     * @param theme - the Shell Theme ID
+     * @param theme        - the Shell Theme ID
      * @param shellPattern - the Shell Theme Pattern
      */
     public boolean setShellTheme(ResourceLocation theme, ResourceLocation shellPattern, TardisNavLocation tardisNavLocation) {

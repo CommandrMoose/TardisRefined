@@ -38,7 +38,9 @@ public class InitiativeConsoleTheme extends ConsoleThemeDetails {
                 new ControlSpecification(TRControlRegistry.GENERIC_NO_SHOW, new Vector3f(0.76f, 0.61f, -0.76f), EntityDimensions.scalable(0.06f, 0.06f)),
                 new ControlSpecification(TRControlRegistry.GENERIC_NO_SHOW, new Vector3f(-1.06f, 0.72f, 0.33f), EntityDimensions.scalable(0.13f, 0.13f)),
                 new ControlSpecification(TRControlRegistry.READOUT, new Vector3f(-0.87f, 0.50f, -0.5f), EntityDimensions.scalable(0.28F, 0.13F)),
-                new ControlSpecification(TRControlRegistry.FUEL, new Vector3f(-0.76f, 0.73f, 0.61f), EntityDimensions.scalable(0.13f, 0.13f))
+                new ControlSpecification(TRControlRegistry.FUEL, new Vector3f(-0.76f, 0.73f, 0.61f), EntityDimensions.scalable(0.13f, 0.13f)),
+                new ControlSpecification(TRControlRegistry.EXTERIOR_DISPLAY, new Vector3f(0.74f, 0.56f, 1.24f), EntityDimensions.scalable(0.21f, 0.21f))
+
         };
     }
 

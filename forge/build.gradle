@@ -5,15 +5,20 @@ plugins {
 architectury {
     platformSetupLoomIde()
     forge();
+
+    neoForge {
+        platformPackage = "forge"
+    }
+
 }
 
-/*def generatedResources = project(":forge").file("src/generated/resources")
+def generatedResources = project(":forge").file("src/generated/resources")
 
 sourceSets {
     main {
         resources.srcDir generatedResources
     }
-}*/
+}
 
 //if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
     unifiedPublishing {
@@ -53,7 +58,9 @@ sourceSets {
 //remapJar {
 //    atAccessWideners.add('tardis_refined.accesswidener')
 //}
-
+remapJar {
+    atAccessWideners.add('tardis_refined.accesswidener')
+}
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
@@ -69,12 +76,6 @@ loom {
             mod "tardis_refined"
         }
 
-    }
-
-    runs {
-        data {
-            programArgs "--existing", project(":common").file("src/main/resources/").absolutePath
-        }
     }
 }
 
@@ -102,7 +103,7 @@ dependencies {
     //   modCompileOnly "curse.maven:jei-238222:${jei_version}"
 
     compileOnly "curse.maven:immersive-portals-355440:${immersive_portals_forge_version}"
-
+    modImplementation("curse.maven:curios-309927:5843594")
     // With ForgeGradle 5, use the runtimeOnly configuration
     //runtimeOnly("me.djtheredstoner:DevAuth-${dev_auth_module_forge}:${dev_auth_forge_version}")
 
@@ -113,6 +114,40 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive false }
 
+}
+
+if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
+    unifiedPublishing {
+        project {
+            displayName = "[Forge] Tardis Refined - $project.version"
+            releaseType = "release"
+            changelog = new File("${rootProject.projectDir}/changelog.md").text
+            gameVersions = ["$rootProject.minecraft_version"]
+            mainPublication tasks.remapJar
+            gameLoaders = ["neoforge"]
+            relations {
+
+            }
+
+            var CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge") ?: ""
+            if (CURSE_API_KEY != "") {
+                curseforge {
+                    token = CURSE_API_KEY
+                    id = "782697"
+                    gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
+                }
+            }
+
+            var MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth") ?: ""
+            if (MODRINTH_TOKEN != "") {
+                modrinth {
+                    token = MODRINTH_TOKEN
+                    id = "nqVt6aES"
+                    version = "neoforge-$project.version"
+                }
+            }
+        }
+    }
 }
 
 def resourceTargets = ["META-INF/mods.toml", "pack.mcmeta"]
@@ -138,6 +173,9 @@ def replaceProperties = [mod_id: mod_id, mod_name: mod_name, mod_version: mod_ve
 processResources {
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
 
     filesMatching(resourceTargets) {
         expand replaceProperties
@@ -169,6 +207,7 @@ remapJar {
 }
 
 sourcesJar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     def commonSources = project(":common").sourcesJar
     dependsOn commonSources
     from commonSources.archiveFile.map { zipTree(it) }

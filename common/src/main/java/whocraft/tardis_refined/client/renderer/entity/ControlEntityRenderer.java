@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -21,7 +20,7 @@ import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TRParticles;
 import whocraft.tardis_refined.common.entity.ControlEntity;
-import whocraft.tardis_refined.common.items.GlassesItem;
+import whocraft.tardis_refined.compat.CuriosTrinketsUtil;
 
 
 public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
@@ -72,7 +71,7 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
         }
 
         Level entityLevel = entity.level();
-        if (Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof GlassesItem) {
+        if (!CuriosTrinketsUtil.getInstance().getFirstFoundGlider(Minecraft.getInstance().player).isEmpty()) {
             if (entity.isTickingDown()) {
                 if (entityLevel.random.nextInt(20) == 0) {
                     entityLevel.addParticle(TRParticles.GALLIFREY.get(), entity.getRandomX(0.1), entity.blockPosition().getY(), entity.getRandomZ(0.1), 0.0, 0.0, 0.0);

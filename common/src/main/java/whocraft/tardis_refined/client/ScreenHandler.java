@@ -14,8 +14,8 @@ import whocraft.tardis_refined.client.screen.upgrades.UpgradesScreen;
 import whocraft.tardis_refined.client.screen.waypoints.CoordInputType;
 import whocraft.tardis_refined.client.screen.waypoints.WaypointListScreen;
 import whocraft.tardis_refined.client.screen.waypoints.WaypointManageScreen;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
-import whocraft.tardis_refined.common.capability.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.TardisWaypoint;
 
@@ -74,6 +74,7 @@ public class ScreenHandler {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static void openShellSelection(ResourceLocation currentShell) {
         Minecraft.getInstance().setScreen(new ShellSelectionScreen(currentShell));
     }

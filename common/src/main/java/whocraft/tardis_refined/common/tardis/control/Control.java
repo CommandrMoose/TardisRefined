@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.api.event.EventResult;
 import whocraft.tardis_refined.api.event.TardisCommonEvents;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
@@ -18,90 +18,98 @@ import whocraft.tardis_refined.patterns.ConsolePatterns;
 public abstract class Control {
     protected final ResourceLocation id;
     protected final String langId;
-    /** Determines if this Control should be used for the FlightDance. This can be expanded to be used for other purposes in the future.*/
+    /**
+     * Determines if this Control should be used for the FlightDance. This can be expanded to be used for other purposes in the future.
+     */
     private boolean isCriticalForTardisOperation = false;
+    private ConfiguredSound successSound = new ConfiguredSound(SoundEvents.ARROW_HIT_PLAYER);
+    private ConfiguredSound failSound = new ConfiguredSound(SoundEvents.ITEM_BREAK);
 
-    protected Control(ResourceLocation id, String langId, boolean isCriticalForTardisOperation){
+    protected Control(ResourceLocation id, String langId, boolean isCriticalForTardisOperation) {
         this.id = id;
         this.langId = langId;
         this.isCriticalForTardisOperation = isCriticalForTardisOperation;
     }
-    protected Control(ResourceLocation id, String langId){
+
+    protected Control(ResourceLocation id, String langId) {
         this(id, langId, false);
     }
 
-    protected Control(ResourceLocation id, boolean isCriticalForTardisOperation){
+    protected Control(ResourceLocation id, boolean isCriticalForTardisOperation) {
         this(id, "control." + id.getNamespace() + "." + id.getPath(), isCriticalForTardisOperation);
     }
-
-    protected Control(ResourceLocation id){
+    protected Control(ResourceLocation id) {
         this(id, false);
     }
-
-    private ConfiguredSound successSound = new ConfiguredSound(SoundEvents.ARROW_HIT_PLAYER);
-    private ConfiguredSound failSound = new ConfiguredSound(SoundEvents.ITEM_BREAK);
 
     public abstract boolean onLeftClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player);
 
     public abstract boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player);
 
-    /** The sound event to be played when the control fails to activate*/
-    public ConfiguredSound getFailSound(TardisLevelOperator operator, ConsoleTheme theme, boolean leftClick){
+    /**
+     * The sound event to be played when the control fails to activate
+     */
+    public ConfiguredSound getFailSound(TardisLevelOperator operator, ConsoleTheme theme, boolean leftClick) {
         return this.failSound;
     }
 
     /**
      * Directly set the fail sound event to be used in special scenarios
+     *
      * @param failSound
      */
-    public void setFailSound(ConfiguredSound failSound){
+    public void setFailSound(ConfiguredSound failSound) {
         this.failSound = failSound;
     }
 
-    public ConfiguredSound getSuccessSound(TardisLevelOperator operator, ConsoleTheme theme, boolean leftClick){
+    public ConfiguredSound getSuccessSound(TardisLevelOperator operator, ConsoleTheme theme, boolean leftClick) {
         ConsolePattern pattern = ConsolePatterns.DEFAULT;
 
         GlobalConsoleBlockEntity consoleBlockEntity = operator.getPilotingManager().getCurrentConsole();
-        if (consoleBlockEntity != null){
+        if (consoleBlockEntity != null) {
             pattern = consoleBlockEntity.pattern();
         }
 
-        var pitchedSound = (leftClick) ? pattern.soundProfile().get().getGeneric().leftClick(): pattern.soundProfile().get().getGeneric().rightClick();
-        if (pitchedSound != null){
+        var pitchedSound = (leftClick) ? pattern.soundProfile().get().getGeneric().leftClick() : pattern.soundProfile().get().getGeneric().rightClick();
+        if (pitchedSound != null) {
             this.successSound = pitchedSound;
         }
         return this.successSound;
     }
 
-    /**Directly set the success sound event to be used in special scenario
+    /**
+     * Directly set the success sound event to be used in special scenario
      *
      * @param successSound
      */
-    public void setSuccessSound(ConfiguredSound successSound){
+    public void setSuccessSound(ConfiguredSound successSound) {
         this.successSound = successSound;
     }
 
-    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound, SoundSource source, float volume, float pitch, boolean ignorePitch){
+    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound, SoundSource source, float volume, float pitch, boolean ignorePitch) {
         controlEntity.level().playSound(null, controlEntity.blockPosition(), pitchedSound.getSoundEvent(), source, volume, ignorePitch ? pitch : pitchedSound.getPitch());
     }
 
-    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound, float pitch){
+    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound, float pitch) {
         this.playControlConfiguredSound(operator, controlEntity, pitchedSound, SoundSource.BLOCKS, pitchedSound.getVolume(), pitch, true);
     }
 
-    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound){
+    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound) {
         this.playControlConfiguredSound(operator, controlEntity, pitchedSound, SoundSource.BLOCKS, 1F, 1F, false);
     }
 
-    public boolean canUseControl(TardisLevelOperator tardisLevelOperator, Control control, ControlEntity controlEntity){
+    public boolean canUseControl(TardisLevelOperator tardisLevelOperator, Control control, ControlEntity controlEntity) {
         boolean isDeskopWaiting = controlEntity.isDesktopWaitingToGenerate(tardisLevelOperator);
         return !isDeskopWaiting && TardisCommonEvents.PLAYER_CONTROL_INTERACT.invoker().canControlBeUsed(tardisLevelOperator, control, controlEntity) == EventResult.pass();
     }
 
-    public ResourceLocation getId(){
+    public ResourceLocation getId() {
         return this.id;
     }
-    public String getTranslationKey() {return this.langId;}
+
+    public String getTranslationKey() {
+        return this.langId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -117,7 +125,10 @@ public abstract class Control {
     public int hashCode() {
         return getId().hashCode();
     }
-    /** Determines if the Control will have a custom name that will display other information. E.g. Monitor control shows flight progress*/
+
+    /**
+     * Determines if the Control will have a custom name that will display other information. E.g. Monitor control shows flight progress
+     */
     public boolean hasCustomName() {
         return false;
     }
@@ -126,8 +137,10 @@ public abstract class Control {
         return Component.translatable(controlSpecification.control().getTranslationKey());
     }
 
-    /** Determines if this Control should be used for the FlightDance.
-     *  <br> This can be expanded to be used for other purposes in the future.
+    /**
+     * Determines if this Control should be used for the FlightDance.
+     * <br> This can be expanded to be used for other purposes in the future.
+     *
      * @return true if shouldn't be included in FlightDance, false if allowed to be included in FlightDance.
      */
     public boolean isCriticalForTardisOperation() {

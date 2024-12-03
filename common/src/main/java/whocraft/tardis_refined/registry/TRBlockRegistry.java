@@ -90,4 +90,6 @@ public class TRBlockRegistry {
         return register(id, blockSupplier, addToTab, true);
     }
 
+    public static final RegistrySupplier<Block> ASTRAL_MAP = register("astral_map", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)), true, true);
+
 }

@@ -10,7 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
@@ -19,13 +19,12 @@ import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 
 import java.util.UUID;
 
-public class RootedShellBlockEntity extends ShellBaseBlockEntity{
+public class RootedShellBlockEntity extends ShellBaseBlockEntity {
+    public static boolean setUpOnNextTick = false; // used in fabric MinecraftServer:getAllLevels mixin
+    private boolean runSetUpOnNextTick = false;
     public RootedShellBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TRBlockEntityRegistry.ROOT_SHELL.get(), blockPos, blockState);
     }
-
-    private boolean runSetUpOnNextTick = false;
-    public static boolean setUpOnNextTick = false; // used in fabric MinecraftServer:getAllLevels mixin
 
     @Override
     public DesktopTheme getAssociatedTheme() {
@@ -55,7 +54,9 @@ public class RootedShellBlockEntity extends ShellBaseBlockEntity{
         setUpOnNextTick = true;
     }
 
-    /** Generate the dimension and open the Root Shell */
+    /**
+     * Generate the dimension and open the Root Shell
+     */
     private void setUpTardis(BlockState blockState, Level level, BlockPos blockPos) {
         if (level instanceof ServerLevel serverLevel) {
             if (this.shouldSetup()) {

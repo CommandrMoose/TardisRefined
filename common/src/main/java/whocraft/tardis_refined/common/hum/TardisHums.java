@@ -16,56 +16,46 @@ import java.util.*;
 public class TardisHums {
 
 
-    private static final CodecJsonReloadListener<HumEntry> RELOAD_LISTENER = createReloadListener();
-
-    private static final Map<ResourceLocation, HumEntry> DEFAULT_HUMS = new HashMap<>();
-
     public static final HumEntry CAVE = new HumEntry("cave", TRSoundRegistry.HUM_CAVE.getId());
     public static final HumEntry TOYOTA = new HumEntry("toyota", TRSoundRegistry.HUM_TOYOTA.getId());
     public static final HumEntry CLASSIC = new HumEntry("classic", TRSoundRegistry.HUM_CLASSIC.getId());
     public static final HumEntry VICTORIAN = new HumEntry("victorian", TRSoundRegistry.HUM_VICTORIAN.getId());
-
     public static final HumEntry BASALT_DELTAS = new HumEntry(
             "basalt_deltas",
             SoundEvents.AMBIENT_BASALT_DELTAS_LOOP.value().getLocation(),
             createSoundList(SoundEvents.AMBIENT_BASALT_DELTAS_ADDITIONS.value(), SoundEvents.AMBIENT_BASALT_DELTAS_MOOD.value())
     );
-
     public static final HumEntry CRIMSON_FOREST = new HumEntry(
             "crimson_forest",
             SoundEvents.AMBIENT_CRIMSON_FOREST_LOOP.value().getLocation(),
             createSoundList(SoundEvents.AMBIENT_CRIMSON_FOREST_ADDITIONS.value(), SoundEvents.AMBIENT_CRIMSON_FOREST_MOOD.value())
     );
-
     public static final HumEntry NETHER_WASTES = new HumEntry(
-           "nether_wastes",
+            "nether_wastes",
             SoundEvents.AMBIENT_NETHER_WASTES_LOOP.value().getLocation(),
             createSoundList(SoundEvents.AMBIENT_NETHER_WASTES_ADDITIONS.value(), SoundEvents.AMBIENT_NETHER_WASTES_MOOD.value())
     );
-
     public static final HumEntry UNDER_WATER = new HumEntry(
             "under_water",
             SoundEvents.AMBIENT_UNDERWATER_LOOP.getLocation(),
             createSoundList(SoundEvents.AMBIENT_UNDERWATER_LOOP_ADDITIONS, SoundEvents.AMBIENT_UNDERWATER_LOOP_ADDITIONS_RARE, SoundEvents.AMBIENT_UNDERWATER_LOOP_ADDITIONS_ULTRA_RARE)
     );
-
-
     public static final HumEntry SOUL_SAND_VALLEY = new HumEntry(
             "soul_sand_valley",
             SoundEvents.AMBIENT_SOUL_SAND_VALLEY_LOOP.value().getLocation(),
             createSoundList(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_ADDITIONS.value(), SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD.value())
     );
-
     public static final HumEntry WARPED_FOREST = new HumEntry(
             "warped_forest",
             SoundEvents.AMBIENT_WARPED_FOREST_LOOP.value().getLocation(),
             createSoundList(SoundEvents.AMBIENT_WARPED_FOREST_ADDITIONS.value(), SoundEvents.AMBIENT_WARPED_FOREST_MOOD.value())
     );
-
     public static final HumEntry AVIATRAX = new HumEntry(
             "aviatrax",
-            TRSoundRegistry.HUM_AVIATRAX.getId(),new ArrayList<>()
+            TRSoundRegistry.HUM_AVIATRAX.getId(), new ArrayList<>()
     );
+    private static final CodecJsonReloadListener<HumEntry> RELOAD_LISTENER = createReloadListener();
+    private static final Map<ResourceLocation, HumEntry> DEFAULT_HUMS = new HashMap<>();
 
     private static List<ResourceLocation> createSoundList(SoundEvent... sounds) {
         ArrayList<ResourceLocation> soundList = new ArrayList<>();

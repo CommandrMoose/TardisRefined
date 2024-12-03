@@ -2,6 +2,7 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
@@ -23,45 +24,11 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    public static final AnimationDefinition MODEL_FLIGHT_LOOP = AnimationDefinition.Builder.withLength(6f).looping()
-            .addAnimation("rotor_zminus3_yplus5_rotateY",
-                    new AnimationChannel(AnimationChannel.Targets.POSITION,
-                            new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.CATMULLROM),
-                            new Keyframe(3f, KeyframeAnimations.posVec(0f, 6.5f, 0f),
-                                    AnimationChannel.Interpolations.CATMULLROM),
-                            new Keyframe(6f, KeyframeAnimations.posVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.CATMULLROM)))
-            .addAnimation("rotor_zminus3_yplus5_rotateY",
-                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(6f, KeyframeAnimations.degreeVec(0f, 360f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR)))
-            .addAnimation("bone67",
-                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(6f, KeyframeAnimations.degreeVec(0f, 360f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR)))
-            .addAnimation("bone61",
-                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(6f, KeyframeAnimations.degreeVec(0f, 360f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR)))
-            .addAnimation("bone43",
-                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(6f, KeyframeAnimations.degreeVec(0f, 360f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR)))
-            .addAnimation("bone37",
-                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(6f, KeyframeAnimations.degreeVec(0f, 360f, 0f),
-                                    AnimationChannel.Interpolations.LINEAR))).build();
+
+
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/nuka/flight.json"));
+
+
     private static final ResourceLocation NUKA_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/nuka/nuka_console.png");
     private final ModelPart rotor_zminus3_yplus5_rotateY;
     private final ModelPart panels;
@@ -502,7 +469,7 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 
         if (globalConsoleBlock != null && globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {
-            this.animate(reactions.ROTOR_ANIMATION, MODEL_FLIGHT_LOOP, Minecraft.getInstance().player.tickCount);
+            this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
         }
 
         float rot = -1f + (2 * ((float) reactions.getThrottleStage() / TardisPilotingManager.MAX_THROTTLE_STAGE));

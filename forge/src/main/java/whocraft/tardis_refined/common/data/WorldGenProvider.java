@@ -24,6 +24,7 @@ public class WorldGenProvider extends DatapackBuiltinEntriesProvider {
             .add(Registries.PLACED_FEATURE, ProviderPlacedFeatures::bootstrap)
             .add(Registries.DAMAGE_TYPE, arg -> {
                 arg.register(TRDamageSources.EYE_OF_HARMONY, new DamageType("eye_of_harmony", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 1));
+                arg.register(TRDamageSources.CHOKE, new DamageType("choke", DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 1));
             })
             .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierProvider::bootstrap);
 

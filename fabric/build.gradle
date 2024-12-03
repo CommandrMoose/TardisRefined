@@ -11,6 +11,7 @@ architectury {
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }
+//
 
 //if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
 
@@ -64,6 +65,11 @@ configurations {
 
 repositories {
 
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
+
     flatDir {
         dirs '../mods'
     }
@@ -81,11 +87,6 @@ repositories {
     maven {
         name = 'Ladysnake Mods'
         url = 'https://maven.ladysnake.org/releases'
-    }
-
-    maven {
-        name = "Fuzs Mod Resources"
-        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
 
     maven { url = "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1" }
@@ -107,6 +108,46 @@ sourceSets {
     }
 }
 
+if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
+    unifiedPublishing {
+        project {
+            displayName = "[Fabric] Tardis Refined - $project.version"
+            releaseType = "release"
+            changelog = new File("${rootProject.projectDir}/changelog.md").text
+            gameVersions = ["$rootProject.minecraft_version"]
+            mainPublication tasks.remapJar
+            gameLoaders = ["fabric"]
+            relations {
+                depends {
+                    curseforge = "fabric-api"
+                    modrinth = "fabric-api"
+                }
+                optional {
+                    curseforge = "immersive-portals-mod"
+                    modrinth = "immersiveportals"
+                }
+            }
+
+            var CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge") ?: ""
+            if (CURSE_API_KEY != "") {
+                curseforge {
+                    token = CURSE_API_KEY
+                    id = "782697"
+                    gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
+                }
+            }
+
+            var MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth") ?: ""
+            if (MODRINTH_TOKEN != "") {
+                modrinth {
+                    token = MODRINTH_TOKEN
+                    id = "nqVt6aES"
+                    version = "fabric-$project.version"
+                }
+            }
+        }
+    }
+}
 
 
 dependencies {
@@ -118,6 +159,7 @@ dependencies {
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_version}"
     // Adds a dependency on a specific module
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${rootProject.cardinal_version}"
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_version}"
 
     // Create - dependencies are added transitively
     modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version_fabric}")
@@ -125,10 +167,16 @@ dependencies {
     // Includes Cardinal Components API as a Jar-in-Jar dependency (optional)
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${rootProject.cardinal_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${rootProject.cardinal_version}"
+    include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_version}"
 
     modCompileOnly "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
     modCompileOnly "curse.maven:jei-238222:${rootProject.jei_fabric_version}"
     modImplementation "curse.maven:huge-structure-blocks-474114:4803539"
+
+    // Trinkets
+    modCompileOnly ("dev.emi:trinkets:${rootProject.trinkets_version}") {
+        exclude(group: "dev.onyxstudios.cardinal-components-api")
+    }
 
     // Forge Config API Port
     modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${rootProject.forge_config_api_port_version}"
@@ -184,6 +232,9 @@ def replaceProperties = [mod_id                                : mod_id, mod_nam
 processResources {
     inputs.properties replaceProperties
     replaceProperties.put 'project', project
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
 
     filesMatching(resourceTargets) {
         expand replaceProperties

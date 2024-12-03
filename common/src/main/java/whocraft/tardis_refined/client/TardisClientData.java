@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import whocraft.tardis_refined.common.hum.HumEntry;
 import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.messages.sync.SyncTardisClientDataMessage;
@@ -17,16 +18,68 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TardisClientData {
+    private static final List<TardisClientData> DATA = new ArrayList<>();
     public static int FOG_TICK_DELTA = 0; // This is for the fading in and out of the fog.
     static int MAX_FOG_TICK_DELTA = 2 * 20; // This is for adjusting how fast the fog will fade in and out.
-
     private final ResourceKey<Level> levelKey;
     public AnimationState ROTOR_ANIMATION = new AnimationState();
+    public AnimationState CRASHING_ANIMATION = new AnimationState();
     public AnimationState LANDING_ANIMATION = new AnimationState();
     public AnimationState TAKEOFF_ANIMATION = new AnimationState();
-
+    public int landingTime = 0, takeOffTime = 0;
+    //Not saved to disk, no real reason to be
+    int nextAmbientNoiseCall = 40;
+    // Independent of the hums logic
+    int nextVoiceAmbientCall = 12000;
+    private boolean flying = false;
+    // Control specifics
+    private int throttleStage = 0;
+    private boolean isLanding = false;
+    private boolean isHandbrakeEngaged = false;
+    private boolean isTakingOff = false;
+    private boolean isInDangerZone = false;
+    private boolean isCrashing = false;
+    private boolean isOnCooldown = false;
+    private float flightShakeScale = 0;
+    private double fuel = 0;
+    private double maximumFuel = 0;
+    private int tardisState = 0;
+    private int recoveryTicks = 0;
+    private float journeyProgress = 0;
+    private ResourceLocation shellTheme = ShellTheme.HALF_BAKED.getId();
+    private ResourceLocation shellPattern = ShellPatterns.DEFAULT.id();
+    private HumEntry humEntry = TardisHums.getDefaultHum();
     public TardisClientData(ResourceKey<Level> resourceKey) {
         this.levelKey = resourceKey;
+    }
+
+    public static void add(TardisClientData tardisClientData) {
+        DATA.add(tardisClientData);
+    }
+
+    /**
+     * Retrieves information about a Tardis instance.
+     *
+     * @param levelResourceKey The resource key of the level the Tardis is in.
+     * @return The TardisIntReactions instance containing information about the Tardis.
+     */
+    public static TardisClientData getInstance(ResourceKey<Level> levelResourceKey) {
+        for (TardisClientData data : DATA) {
+            if (data.getLevelKey().equals(levelResourceKey)) {
+                return data;
+            }
+        }
+        TardisClientData newData = new TardisClientData(levelResourceKey);
+        DATA.add(newData);
+        return newData;
+    }
+
+    public static List<TardisClientData> getAllEntries() {
+        return new ArrayList<>(DATA);
+    }
+
+    public static void clearAll() {
+        DATA.clear();
     }
 
     /**
@@ -36,57 +89,36 @@ public class TardisClientData {
         return levelKey;
     }
 
-    private boolean flying = false;
+    public float getJourneyProgress() {
+        return journeyProgress;
+    }
 
-    // Control specifics
-    private int throttleStage = 0;
-    private boolean isLanding = false;
-    private boolean isHandbrakeEngaged = false;
-
-    private boolean isTakingOff = false;
-    private boolean isInDangerZone = false;
-    private boolean isCrashing = false;
-    private boolean isOnCooldown = false;
-    private float flightShakeScale = 0;
-    private double fuel = 0;
-    private double maximumFuel = 0;
-
-    private int tardisState = 0;
-
-
-    //Not saved to disk, no real reason to be
-    int nextAmbientNoiseCall = 40;
-
-    // Independent of the hums logic
-    int nextVoiceAmbientCall = 12000;
-
-    private ResourceLocation shellTheme = ShellTheme.HALF_BAKED.getId();
-    private ResourceLocation shellPattern = ShellPatterns.DEFAULT.id();
-
-    private HumEntry humEntry = TardisHums.getDefaultHum();
+    public void setJourneyProgress(float journeyProgress) {
+        this.journeyProgress = journeyProgress;
+    }
 
     public ResourceLocation getShellTheme() {
         return shellTheme;
+    }
+
+    public void setShellTheme(ResourceLocation shellTheme) {
+        this.shellTheme = shellTheme;
     }
 
     public HumEntry getHumEntry() {
         return humEntry;
     }
 
-    public void setThrottleStage(int stage) {
-        this.throttleStage = stage;
+    public void setHumEntry(HumEntry humEntry) {
+        this.humEntry = humEntry;
     }
 
     public int getThrottleStage() {
         return this.throttleStage;
     }
 
-    public void setHumEntry(HumEntry humEntry) {
-        this.humEntry = humEntry;
-    }
-
-    public void setShellTheme(ResourceLocation shellTheme) {
-        this.shellTheme = shellTheme;
+    public void setThrottleStage(int stage) {
+        this.throttleStage = stage;
     }
 
     public ResourceLocation getShellPattern() {
@@ -97,14 +129,12 @@ public class TardisClientData {
         this.shellPattern = shellPattern;
     }
 
-    public int landingTime = 0, takeOffTime = 0;
+    public boolean isFlying() {
+        return flying;
+    }
 
     public void setFlying(boolean flying) {
         this.flying = flying;
-    }
-
-    public boolean isFlying() {
-        return flying;
     }
 
     public void setIsLanding(boolean landing) {
@@ -135,23 +165,25 @@ public class TardisClientData {
         this.isOnCooldown = isCooldown;
     }
 
-    public boolean isOnCooldown() {
+    public boolean isInRecovery() {
         return isOnCooldown;
     }
 
     public double getFuel() {
         return fuel;
     }
+
     public void setFuel(double fuel) {
         this.fuel = fuel;
     }
+
     public double getMaximumFuel() {
         return maximumFuel;
     }
+
     public void setMaximumFuel(double fuel) {
         this.maximumFuel = fuel;
     }
-
 
     /**
      * Serializes the Tardis instance to a CompoundTag.
@@ -163,6 +195,8 @@ public class TardisClientData {
 
         compoundTag.putBoolean("flying", flying);
         compoundTag.putInt(NbtConstants.THROTTLE_STAGE, throttleStage);
+        compoundTag.putInt("recoveryTicks", recoveryTicks);
+        compoundTag.putFloat("journeyProgress", journeyProgress);
         compoundTag.putBoolean(NbtConstants.HANDBRAKE_ENGAGED, isHandbrakeEngaged);
         compoundTag.putBoolean("isLanding", isLanding);
         compoundTag.putBoolean("isTakingOff", isTakingOff);
@@ -195,7 +229,8 @@ public class TardisClientData {
         isInDangerZone = compoundTag.getBoolean("isInDangerZone");
         flightShakeScale = compoundTag.getFloat("flightShakeScale");
         isOnCooldown = compoundTag.getBoolean("isOnCooldown");
-
+        recoveryTicks = compoundTag.getInt("recoveryTicks");
+        journeyProgress = compoundTag.getFloat("journeyProgress");
         // Load shellTheme and shellPattern
         shellTheme = new ResourceLocation(compoundTag.getString("shellTheme"));
         shellPattern = new ResourceLocation(compoundTag.getString("shellPattern"));
@@ -212,37 +247,6 @@ public class TardisClientData {
      */
     public void sync() {
         new SyncTardisClientDataMessage(getLevelKey(), serializeNBT()).sendToAll();
-    }
-
-    private static final List<TardisClientData> DATA = new ArrayList<>();
-
-    public static void add(TardisClientData tardisClientData) {
-        DATA.add(tardisClientData);
-    }
-
-    /**
-     * Retrieves information about a Tardis instance.
-     *
-     * @param levelResourceKey The resource key of the level the Tardis is in.
-     * @return The TardisIntReactions instance containing information about the Tardis.
-     */
-    public static TardisClientData getInstance(ResourceKey<Level> levelResourceKey) {
-        for (TardisClientData data : DATA) {
-            if (data.getLevelKey().equals(levelResourceKey)) {
-                return data;
-            }
-        }
-        TardisClientData newData = new TardisClientData(levelResourceKey);
-        DATA.add(newData);
-        return newData;
-    }
-
-    public static List<TardisClientData> getAllEntries() {
-        return new ArrayList<>(DATA);
-    }
-
-    public static void clearAll() {
-        DATA.clear();
     }
 
     public Vec3 fogColor(boolean isCrashing) {
@@ -266,5 +270,13 @@ public class TardisClientData {
 
     public void setTardisState(int tardisState) {
         this.tardisState = tardisState;
+    }
+
+    public void setRecoveryProgress(int crashRecoveryTicks) {
+        this.recoveryTicks = crashRecoveryTicks;
+    }
+
+    public int getRecoveryTicks() {
+        return recoveryTicks;
     }
 }

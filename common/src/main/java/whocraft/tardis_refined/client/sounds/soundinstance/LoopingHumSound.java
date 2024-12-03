@@ -18,7 +18,7 @@ public class LoopingHumSound extends LoopingTardisInteriorSound {
     @Override
     public void playSoundInstance(Player player) {
         setLocation(player.position());
-        if(soundEvent.getLocation().getNamespace().contains(NbtConstants.MINECRAFT)){
+        if (soundEvent.getLocation().getNamespace().contains(NbtConstants.MINECRAFT)) {
             this.volume = 1f;
         } else {
             this.setVolume(0.10F);

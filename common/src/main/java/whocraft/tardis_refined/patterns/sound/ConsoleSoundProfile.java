@@ -8,26 +8,27 @@ import whocraft.tardis_refined.patterns.PatternResourceConstants;
 
 import java.util.HashMap;
 import java.util.Map;
-/** An object that allows for grouping of sounds to play in a specific Tardis interaction event
- * <br> In this case, the controls on the console will look at the console's pattern */
+
+/**
+ * An object that allows for grouping of sounds to play in a specific Tardis interaction event
+ * <br> In this case, the controls on the console will look at the console's pattern
+ */
 public class ConsoleSoundProfile {
 
-    protected Map<ResourceLocation, ConsoleSound> consoleSoundEntries = new HashMap<>();
-
     private static final UnboundedMapCodec<ResourceLocation, ConsoleSound> UNBOUNDED_MAP_CODEC = Codec.unboundedMap(ResourceLocation.CODEC, ConsoleSound.CODEC);
-
     public static final Codec<ConsoleSoundProfile> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 ConsoleSoundProfile.UNBOUNDED_MAP_CODEC.fieldOf("sounds").forGetter(ConsoleSoundProfile::getSoundEntries)
         ).apply(instance, ConsoleSoundProfile::new);
     });
+    protected Map<ResourceLocation, ConsoleSound> consoleSoundEntries = new HashMap<>();
 
 
-    public ConsoleSoundProfile(Map<ResourceLocation, ConsoleSound> consoleSoundEntries){
+    public ConsoleSoundProfile(Map<ResourceLocation, ConsoleSound> consoleSoundEntries) {
         this.consoleSoundEntries = consoleSoundEntries;
     }
 
-    public ConsoleSoundProfile(){
+    public ConsoleSoundProfile() {
         this(new HashMap<>());
     }
 
@@ -79,7 +80,6 @@ public class ConsoleSoundProfile {
         this.consoleSoundEntries.put(PatternResourceConstants.GENERIC_CONSOLE_KEY, generic);
         return this;
     }
-
 
 
 }

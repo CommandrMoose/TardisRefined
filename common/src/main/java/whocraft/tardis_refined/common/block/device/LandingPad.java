@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
-import whocraft.tardis_refined.common.capability.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.items.KeyItem;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
@@ -82,6 +82,7 @@ public class LandingPad extends Block {
                             TardisPilotingManager pilotManager = operator.getPilotingManager();
                             UpgradeHandler upgradeHandler = operator.getUpgradeHandler();
 
+                            if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler) && pilotManager.beginFlight(true, null) && !pilotManager.isInRecovery()) {
                             if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler) && !pilotManager.isOnCooldown()) {
                                 TardisNavLocation oldTarget = pilotManager.getTargetLocation();
                                 pilotManager.setTargetLocation(new TardisNavLocation(blockPos.above(), player.getDirection().getOpposite(), serverLevel));

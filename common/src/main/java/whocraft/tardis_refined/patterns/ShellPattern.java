@@ -44,16 +44,20 @@ public class ShellPattern extends BasePattern {
         this.shellSoundProfile = shellSoundProfile;
     }
 
-    public PatternTexture exteriorDoorTexture(){return this.exteriorDoorTexture;}
+    public PatternTexture exteriorDoorTexture() {
+        return this.exteriorDoorTexture;
+    }
 
-    public PatternTexture interiorDoorTexture(){return this.interiorDoorTexture;}
+    public PatternTexture interiorDoorTexture() {
+        return this.interiorDoorTexture;
+    }
 
     @Override
     public Codec<ShellPattern> getCodec() {
         return CODEC;
     }
 
-    public Optional<ShellSoundProfile> soundProfile(){
+    public Optional<ShellSoundProfile> soundProfile() {
         return this.shellSoundProfile;
     }
 }

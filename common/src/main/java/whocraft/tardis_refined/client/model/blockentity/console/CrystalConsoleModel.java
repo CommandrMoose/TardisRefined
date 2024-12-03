@@ -7,7 +7,9 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,13 +20,16 @@ import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
-import whocraft.tardis_refined.client.model.blockentity.console.animations.CrystalConsoleAnimations;
 import whocraft.tardis_refined.common.block.console.GlobalConsoleBlock;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUnit {
+
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/crystal/idle.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/crystal/flight.json"));
+
 
     private static final ResourceLocation CRYSTAL_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/crystal/crystal_console.png");
     private final ModelPart base_control;
@@ -45,8 +50,8 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
         this.controls = root.getChild("controls");
         this.spinninglight = root.getChild("spinninglight");
         this.bb_main = root.getChild("bb_main");
-        this.throttle = findPart(this, "large_lever_control_throttle");
-        this.handbrake = findPart(this, "large_lever3_control");
+        this.throttle = JsonToAnimationDefinition.findPart(this, "large_lever_control_throttle");
+        this.handbrake = JsonToAnimationDefinition.findPart(this, "large_lever3_control");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -803,10 +808,10 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
 
         if (globalConsoleBlock != null && globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {
             if (reactions.isFlying()) {
-                this.animate(reactions.ROTOR_ANIMATION, CrystalConsoleAnimations.FLIGHT, Minecraft.getInstance().player.tickCount);
+                this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
             } else {
                 if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get() && globalConsoleBlock != null) {
-                    this.animate(globalConsoleBlock.liveliness, CrystalConsoleAnimations.IDLE, Minecraft.getInstance().player.tickCount);
+                    this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
                 }
             }
         }

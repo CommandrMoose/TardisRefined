@@ -12,10 +12,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Math;
 import org.joml.Vector3d;
@@ -25,7 +27,7 @@ import whocraft.tardis_refined.api.event.TardisCommonEvents;
 import whocraft.tardis_refined.common.block.shell.GlobalShellBlock;
 import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.dimension.TardisTeleportData;
 import whocraft.tardis_refined.common.mixin.EndDragonFightAccessor;
@@ -41,6 +43,7 @@ import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -54,6 +57,21 @@ public class TardisHelper {
         for (int i = 0; i < 3; i++) {
             tardisLevelOperator.getLevel().playSound(null, TardisArchitectureHandler.DESKTOP_CENTER_POS, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 1000f, 0.1f);
         }
+    }
+
+    public static List<Player> getPlayersInRange(Level world, double x, double y, double z, double range) {
+        // Create a bounding box around the specified position
+        AABB boundingBox = new AABB(
+                x - range, y - range, z - range,
+                x + range, y + range, z + range
+        );
+
+        // Get all players within the bounding box
+        return world.getEntitiesOfClass(Player.class, boundingBox);
+    }
+
+    public static List<Player> getPlayersInRange(Level world, Player sourcePlayer, double range) {
+        return getPlayersInRange(world, sourcePlayer.getX(), sourcePlayer.getY(), sourcePlayer.getZ(), range);
     }
 
     public static boolean isInArsArea(BlockPos blockPos) {
@@ -163,9 +181,9 @@ public class TardisHelper {
             BlockPos targetTeleportPos = destinationPos;
 
             /**If for some reason we are trying to enter the Tardis, but the destination dimension is not a Tardis dimension type, don't teleport
-            This can occur if the exterior shell we are entering has an invalid {@link whocraft.tardis_refined.common.blockentity.shell.ShellBaseBlockEntity#TARDIS_ID} which will occur for older releases due to a bug that was present until 2.0.2
+             This can occur if the exterior shell we are entering has an invalid {@link whocraft.tardis_refined.common.blockentity.shell.ShellBaseBlockEntity#TARDIS_ID} which will occur for older releases due to a bug that was present until 2.0.2
              */
-            if(enterTardis && destinationLevel.dimensionTypeId() != TRDimensionTypes.TARDIS){
+            if (enterTardis && destinationLevel.dimensionTypeId() != TRDimensionTypes.TARDIS) {
                 return false;
             }
 
@@ -216,17 +234,19 @@ public class TardisHelper {
         return false;
     }
 
-    /** Common logic that we should apply to players if they happen to teleport to, respawn, or login to a Tardis
-     * <br> Ejecting players that happen to login to a Tardis dimension whilst the Tardis is still generating a desktop, we don't want them to suffocate*/
-    public static void handlePlayerJoinWorldEvents(ServerPlayer serverPlayer){
-        if (serverPlayer != null){
-            if (serverPlayer.serverLevel() != null){
+    /**
+     * Common logic that we should apply to players if they happen to teleport to, respawn, or login to a Tardis
+     * <br> Ejecting players that happen to login to a Tardis dimension whilst the Tardis is still generating a desktop, we don't want them to suffocate
+     */
+    public static void handlePlayerJoinWorldEvents(ServerPlayer serverPlayer) {
+        if (serverPlayer != null) {
+            if (serverPlayer.serverLevel() != null) {
                 ServerLevel playerLevel = serverPlayer.serverLevel();
-                if(TardisLevelOperator.get(playerLevel).isPresent()){
+                if (TardisLevelOperator.get(playerLevel).isPresent()) {
                     TardisLevelOperator cap = TardisLevelOperator.get(playerLevel).get();
 
                     //Handle ejecting players if they login to a Tardis dimension where the Tardis is in progress of generating a desktop
-                    if (cap.getInteriorManager().isGeneratingDesktop()){
+                    if (cap.getInteriorManager().isGeneratingDesktop()) {
                         //Delay the force ejecting to account for the chunk not being fully loaded, which can happen in the player change dimension event.
                         playerLevel.getServer().tell(new TickTask(10, () ->
                                 cap.forceEjectPlayer(serverPlayer)

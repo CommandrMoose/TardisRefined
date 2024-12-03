@@ -114,6 +114,7 @@ public class TRBlockModelProvider extends BlockStateProvider {
         customLocation(TRBlockRegistry.AIR_LOCK_GENERATION_BLOCK.get());
         customLocation(TRBlockRegistry.FOOLS_STONE.get());
         simpleBlock(TRBlockRegistry.ARTRON_PILLAR_PORT.get());
+        simpleBlock(TRBlockRegistry.ASTRAL_MAP.get());
 
         customLocation(TRBlockRegistry.ASTRAL_MANIPULATOR_BLOCK.get(), new ResourceLocation(TardisRefined.MODID, "block/astral_manipulator"));
         customLocation(TRBlockRegistry.CORRIDOR_TELEPORTER.get(), new ResourceLocation(TardisRefined.MODID, "block/corridor_teleporter"));

@@ -37,7 +37,13 @@ public class Platform {
     }
 
     @ExpectPlatform
+    public static boolean isForge() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
     public static MinecraftServer getServer() {
         throw new AssertionError();
     }
+
 }

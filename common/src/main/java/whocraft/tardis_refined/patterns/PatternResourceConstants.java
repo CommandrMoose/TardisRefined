@@ -11,7 +11,6 @@ public class PatternResourceConstants {
     public static ResourceLocation DOOR_UNLOCK_KEY = RegistryHelper.makeKey("door_unlock");
 
 
-
     public static ResourceLocation GENERIC_CONSOLE_KEY = RegistryHelper.makeKey("generic_console");
 
     public static ResourceLocation THROTTLE_ENABLE_KEY = RegistryHelper.makeKey("throttle_enable");

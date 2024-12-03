@@ -14,6 +14,4 @@ public interface ExteriorShell extends TardisDoorProperties {
     void setTardisId(ResourceKey<Level> levelKey);
 
 
-
-
 }

@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -41,6 +42,11 @@ public class RegistryHelper {
     public static TagKey<Block> makeBlockTag(String modid, String name) {
         return TagKey.create(Registries.BLOCK, new ResourceLocation(modid, name));
     }
+
+    public static TagKey<Item> makeItemTag(String modid, String name) {
+        return TagKey.create(Registries.ITEM, new ResourceLocation(modid, name));
+    }
+
 
     public static ResourceLocation getKey(ConsoleTheme theme) {
         return ConsoleTheme.CONSOLE_THEME_DEFERRED_REGISTRY.getKey(theme);

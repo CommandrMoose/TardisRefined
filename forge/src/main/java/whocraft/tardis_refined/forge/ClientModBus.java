@@ -1,23 +1,21 @@
 package whocraft.tardis_refined.forge;
 
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.*;
+import whocraft.tardis_refined.client.model.pallidium.ModelLayerManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.client.ModelRegistry;
-import whocraft.tardis_refined.client.ParticleGallifrey;
-import whocraft.tardis_refined.client.TRItemColouring;
-import whocraft.tardis_refined.client.TRParticles;
+import whocraft.tardis_refined.client.*;
 import whocraft.tardis_refined.client.forge.ModelRegistryImpl;
 import whocraft.tardis_refined.client.renderer.blockentity.RootPlantRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.console.GlobalConsoleRenderer;
@@ -32,10 +30,13 @@ import whocraft.tardis_refined.client.renderer.blockentity.life.EyeRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.shell.GlobalShellRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.shell.RootShellRenderer;
 import whocraft.tardis_refined.client.renderer.entity.ControlEntityRenderer;
+import whocraft.tardis_refined.mixin.forge.ReloadableResourceManagerMixin;
 import whocraft.tardis_refined.registry.RegistrySupplier;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 import whocraft.tardis_refined.registry.TREntityRegistry;
 import whocraft.tardis_refined.registry.TRItemRegistry;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TardisRefined.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModBus {
@@ -45,6 +46,19 @@ public class ClientModBus {
         item.register(TRItemColouring.SCREWDRIVER_COLORS, TRItemRegistry.SCREWDRIVER.get());
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        List<PreparableReloadListener> listeners = ((ReloadableResourceManagerMixin) mc.getResourceManager()).getListeners();
+        int idx = listeners.indexOf(mc.getEntityModels());
+        listeners.add(idx + 1, new ModelLayerManager());
+    }
+
+    @SubscribeEvent
+    public static void keyMapping(RegisterKeyMappingsEvent event) {
+        event.register(TRKeybinds.EXIT_EXTERIOR_VIEW);
+    }
 
     @SubscribeEvent
     public static void onBuildTabsContent(BuildCreativeModeTabContentsEvent event) {

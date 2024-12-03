@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import whocraft.tardis_refined.client.screen.components.BackgroundlessButton;
-import whocraft.tardis_refined.common.capability.upgrades.Upgrade;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.network.messages.upgrades.UnlockUpgradeMessage;
 import whocraft.tardis_refined.constants.ModMessages;
 

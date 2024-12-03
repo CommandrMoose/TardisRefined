@@ -49,6 +49,14 @@ public class SoundProvider extends SoundDefinitionsProvider {
         add(TRSoundRegistry.ARTRON_PILLAR_ACTIVE.get(), basicSound("artron_pillar", new ResourceLocation(TardisRefined.MODID, "blocks/artron_pillar_active")));
         add(TRSoundRegistry.CORRIDOR_TELEPORTER.get(), basicSound("corridor_teleporter", new ResourceLocation(TardisRefined.MODID, "blocks/corridor_teleporter")));
         add(TRSoundRegistry.CORRIDOR_TELEPORTER_SUCCESS.get(), basicSound("corridor_teleporter_success", new ResourceLocation(TardisRefined.MODID, "blocks/corridor_teleporter_success")));
+        add(TRSoundRegistry.VORTEX.get(), basicSound("vortex", new ResourceLocation(TardisRefined.MODID, "tardis/vortex")));
+        add(TRSoundRegistry.MALLET.get(), basicSound("mallet", new ResourceLocation(TardisRefined.MODID, "tools/mallet")));
+
+
+        add(TRSoundRegistry.CLOISTER_BELL.get(),
+                basicSound("cloister_bell", SoundDefinition.Sound.sound(new ResourceLocation("block/bell/resonate"), SoundDefinition.SoundType.SOUND).pitch(0.85),
+                        SoundDefinition.Sound.sound(new ResourceLocation("block/bell/resonate"), SoundDefinition.SoundType.SOUND).pitch(0.9)
+                ));
     }
 
 
@@ -56,10 +64,20 @@ public class SoundProvider extends SoundDefinitionsProvider {
         return SoundDefinition.definition().with(SoundDefinition.Sound.sound(resourceLocation, SoundDefinition.SoundType.SOUND)).subtitle(createSubtitle(langKey));
     }
 
+
     public SoundDefinition basicSound(String langKey, ResourceLocation... resourceLocation) {
         SoundDefinition soundDefinition = SoundDefinition.definition();
         for (ResourceLocation location : resourceLocation) {
             soundDefinition.with(SoundDefinition.Sound.sound(location, SoundDefinition.SoundType.SOUND));
+        }
+
+        return soundDefinition.subtitle(createSubtitle(langKey));
+    }
+
+    public SoundDefinition basicSound(String langKey, final SoundDefinition.Sound... resourceLocation) {
+        SoundDefinition soundDefinition = SoundDefinition.definition();
+        for (SoundDefinition.Sound sound : resourceLocation) {
+            soundDefinition.with(sound);
         }
 
         return soundDefinition.subtitle(createSubtitle(langKey));

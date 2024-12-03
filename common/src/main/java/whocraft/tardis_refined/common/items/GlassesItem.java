@@ -29,6 +29,7 @@ public class GlassesItem extends Item implements Equipable {
         return Equipable.super.getEquipSound();
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         return this.swapWithEquipmentSlot(this, level, player, interactionHand);
     }

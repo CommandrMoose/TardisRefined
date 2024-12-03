@@ -70,6 +70,7 @@ public abstract class ShellModel extends HierarchicalModel {
                             new Keyframe(9.5F, KeyframeAnimations.posVec(0f, 10f, 0f),
                                     AnimationChannel.Interpolations.LINEAR))).build();
     private float currentAlpha = 0;
+    private boolean ignoreAnimationAlpha = false;
 
     public ShellModel(ModelPart root) {
         this.fade_value = root.getChild("fade_value");
@@ -126,7 +127,7 @@ public abstract class ShellModel extends HierarchicalModel {
             this.animate(reactions.ROTOR_ANIMATION, MODEL_TAKEOFF, reactions.takeOffTime * ANIMATION_SPEED);
         }
 
-        currentAlpha = (reactions.isFlying()) ? (this.initAlpha() - this.fadeValue().y) * 0.1f : baseAlpha;
+        currentAlpha = (reactions.isFlying() && !ignoreAnimationAlpha) ? (this.initAlpha() - this.fadeValue().y) * 0.1f : baseAlpha;
 
         handleSpecialAnimation(entity, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, baseAlpha);
         this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, reactions.isFlying() ? this.getCurrentAlpha() : baseAlpha);
@@ -134,5 +135,9 @@ public abstract class ShellModel extends HierarchicalModel {
 
     public void handleSpecialAnimation(GlobalShellBlockEntity entity, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float baseAlpha) {
 
+    }
+
+    public void setIgnoreAnmationAlpha(boolean ignoreAnmationAlpha) {
+        this.ignoreAnimationAlpha = ignoreAnmationAlpha;
     }
 }

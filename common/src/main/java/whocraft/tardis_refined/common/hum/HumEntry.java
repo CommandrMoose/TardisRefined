@@ -28,9 +28,10 @@ public class HumEntry {
     private String nameComponent;
 
     /**
-     *  Generic constructor
-     * @param identifier - Enter the registry name.
-     * @param soundEventId - the underlying SoundEvent id
+     * Generic constructor
+     *
+     * @param identifier    - Enter the registry name.
+     * @param soundEventId  - the underlying SoundEvent id
      * @param ambientSounds - List of ambient sounds that can play in addition to the Hum sound event
      * @param nameComponent - the string that will be displayed. Can be either a language file translation key or a component
      */
@@ -43,6 +44,7 @@ public class HumEntry {
 
     /**
      * Convenience constructor that creates a default value for the nameComponent parameter by creating a gold coloured text component
+     *
      * @param identifier
      * @param soundEventId
      * @param ambientSounds
@@ -52,9 +54,10 @@ public class HumEntry {
     }
 
     /**
-     *  Tardis Refined specific constructor
-     * @param identifier - Enter the registry name. No need to add namespace because the TardisRefined namespace is already added
-     * @param soundEventId - the underlying SoundEvent id
+     * Tardis Refined specific constructor
+     *
+     * @param identifier    - Enter the registry name. No need to add namespace because the TardisRefined namespace is already added
+     * @param soundEventId  - the underlying SoundEvent id
      * @param ambientSounds - List of ambient sounds that can play in addition to the Hum sound event
      */
     public HumEntry(String identifier, ResourceLocation soundEventId, List<ResourceLocation> ambientSounds) {
@@ -62,8 +65,9 @@ public class HumEntry {
     }
 
     /**
-     *  Tardis Refined specific constructor with an empty list of ambient sounds
-     * @param identifier - Enter the registry name. No need to add namespace because the TardisRefined namespace is already added
+     * Tardis Refined specific constructor with an empty list of ambient sounds
+     *
+     * @param identifier   - Enter the registry name. No need to add namespace because the TardisRefined namespace is already added
      * @param soundEventId - the underlying SoundEvent id
      */
     public HumEntry(String identifier, ResourceLocation soundEventId) {
@@ -71,12 +75,13 @@ public class HumEntry {
     }
 
 
-
     public static Codec<HumEntry> codec() {
         return CODEC;
     }
 
-    /** Gets the underlying SoundEvent's ID*/
+    /**
+     * Gets the underlying SoundEvent's ID
+     */
     public ResourceLocation getSoundEventId() {
         return soundEventId;
     }

@@ -8,26 +8,27 @@ import whocraft.tardis_refined.patterns.PatternResourceConstants;
 
 import java.util.HashMap;
 import java.util.Map;
-/** An object that allows for grouping of sounds to play in a specific Tardis interaction event
- * <br> In this case, the Exterior Shell and Internal Door will play a sound based on the pattern*/
+
+/**
+ * An object that allows for grouping of sounds to play in a specific Tardis interaction event
+ * <br> In this case, the Exterior Shell and Internal Door will play a sound based on the pattern
+ */
 public class ShellSoundProfile {
 
-    protected Map<ResourceLocation, ConfiguredSound> shellSoundEntries = new HashMap<>();
-
     private static final UnboundedMapCodec<ResourceLocation, ConfiguredSound> UNBOUNDED_MAP_CODEC = Codec.unboundedMap(ResourceLocation.CODEC, ConfiguredSound.CODEC);
-
     public static final Codec<ShellSoundProfile> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 ShellSoundProfile.UNBOUNDED_MAP_CODEC.fieldOf("sounds").forGetter(ShellSoundProfile::getSoundEntries)
         ).apply(instance, ShellSoundProfile::new);
     });
+    protected Map<ResourceLocation, ConfiguredSound> shellSoundEntries = new HashMap<>();
 
 
-    public ShellSoundProfile(Map<ResourceLocation, ConfiguredSound> shellSoundEntries){
+    public ShellSoundProfile(Map<ResourceLocation, ConfiguredSound> shellSoundEntries) {
         this.shellSoundEntries = shellSoundEntries;
     }
 
-    public ShellSoundProfile(){
+    public ShellSoundProfile() {
         this(new HashMap<>());
     }
 

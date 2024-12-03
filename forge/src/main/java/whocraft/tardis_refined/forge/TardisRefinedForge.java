@@ -12,6 +12,8 @@ import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRecipes;
 import whocraft.tardis_refined.common.data.*;
+import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.compat.trinkets.CuriosUtil;
 
 @Mod(TardisRefined.MODID)
 public class TardisRefinedForge {
@@ -24,6 +26,9 @@ public class TardisRefinedForge {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, TRConfig.CLIENT_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, TRConfig.SERVER_SPEC);
 
+        if (Platform.isModLoaded("curios")) {
+            CuriosUtil.init();
+        }
 
         //TODO IP compat for forge?
    /*     if (ModCompatChecker.immersivePortals()) {
@@ -49,8 +54,10 @@ public class TardisRefinedForge {
         generator.addProvider(e.includeClient(), new ParticleProvider(generator));
 
         /*Data Pack*/
-        generator.addProvider(e.includeServer(), new ProviderBlockTags(generator.getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
+        ProviderBlockTags blocks = generator.addProvider(e.includeServer(), new ProviderBlockTags(generator.getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
+        generator.addProvider(e.includeServer(), new ItemTagProvider(generator.getPackOutput(), e.getLookupProvider(), blocks.contentsGetter(), existingFileHelper));
         generator.addProvider(e.includeServer(), new WorldGenProvider(generator.getPackOutput(), e.getLookupProvider()));
+
         generator.addProvider(e.includeServer(), new ProviderLootTable(generator.getPackOutput()));
         generator.addProvider(e.includeServer(), new RecipeProvider(generator.getPackOutput()));
         generator.addProvider(e.includeServer(), new ConsolePatternProvider(generator));
@@ -64,6 +71,7 @@ public class TardisRefinedForge {
         generator.addProvider(e.includeServer(), new TRBiomeTagsProvider(generator.getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
 
         generator.addProvider(e.includeServer(), new ProviderEntityTags(generator.getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
+        generator.addProvider(e.includeServer(), new TRPoiTypeTagsProvider(generator.getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
 
     }
 }

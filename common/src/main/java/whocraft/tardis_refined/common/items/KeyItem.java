@@ -15,15 +15,20 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.client.TardisClientData;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
+import whocraft.tardis_refined.common.tardis.TardisNavLocation;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.constants.NbtConstants;
@@ -60,6 +65,26 @@ public class KeyItem extends Item {
 
         itemStack.setTag(itemtag);
         return itemStack;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+
+        // Whistle Easter Egg: https://youtu.be/IqQsL79UpMs?t=526
+        if(player.getOffhandItem().is(Items.GOAT_HORN) && !level.isClientSide){
+            ArrayList<ResourceKey<Level>> keychain = KeyItem.getKeychain(player.getMainHandItem());
+            if(!keychain.isEmpty()) {
+                var tardisLevel = Platform.getServer().getLevel(keychain.get(0));
+                var operatorOptional = TardisLevelOperator.get(tardisLevel);
+                var pilotManager = operatorOptional.get().getPilotingManager();
+                if(!operatorOptional.get().getPilotingManager().isInRecovery()) {
+                    pilotManager.setTargetLocation(new TardisNavLocation(player.blockPosition(), player.getDirection().getOpposite(), (ServerLevel) player.level()));
+                    pilotManager.beginFlight(true, null);
+                }
+            }
+        }
+
+        return super.use(level, player, interactionHand);
     }
 
     public static void setKeychain(ItemStack itemStack, ArrayList<ResourceKey<Level>> levels) {
@@ -189,6 +214,14 @@ public class KeyItem extends Item {
                 list.add(hyphen.append(Component.literal(keychain.get(i).location().getPath().substring(0, 5))));
             }
 
+
+            TardisClientData tardisClientData = TardisClientData.getInstance(mainTardisLevel);
+            if (tardisClientData.isInRecovery()) {
+                int cooldownTicks = tardisClientData.getRecoveryTicks();
+                int maxCooldownTicks = 12000; // 10 minutes in ticks
+                int percentage = (int) ((cooldownTicks / (float) maxCooldownTicks) * 100);
+                list.add(Component.translatable(ModMessages.RECOVERY_PROGRESS, percentage + "%"));
+            }
 
         }
     }

@@ -20,9 +20,7 @@ public interface ConsoleUnit {
         return getTexture(entity, false);
     }
 
-    default ModelPart findPart(HierarchicalModel hierarchicalModel, String string) {
-        return hierarchicalModel.root().getAllParts().filter((modelPart) -> modelPart.hasChild(string)).findFirst().map((modelPart) -> modelPart.getChild(string)).get();
-    }
+
 
     ResourceLocation getDefaultTexture();
 

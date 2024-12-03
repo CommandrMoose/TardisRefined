@@ -15,8 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.capability.upgrades.Upgrade;
-import whocraft.tardis_refined.common.capability.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 
 import java.util.Collection;
 import java.util.LinkedList;

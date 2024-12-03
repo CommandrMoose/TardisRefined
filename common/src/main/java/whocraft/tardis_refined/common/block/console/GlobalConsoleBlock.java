@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -23,13 +24,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.util.ClientHelper;
 import whocraft.tardis_refined.common.util.PlayerUtil;
@@ -41,6 +43,7 @@ import whocraft.tardis_refined.registry.TRDimensionTypes;
 public class GlobalConsoleBlock extends BaseEntityBlock {
 
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
+
 
     public GlobalConsoleBlock(Properties properties) {
 
@@ -144,7 +147,7 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
                 ClientHelper.playParticle((ClientLevel) level, ParticleTypes.CLOUD, new Vec3(xCord, yCord, zCord), 0.0D, 0.05D, 0.0D);
             }
 
-            if (clientData.isOnCooldown() || clientData.isCrashing()) {
+            if (clientData.isInRecovery() || clientData.isCrashing()) {
 
                 ClientHelper.playParticle((ClientLevel) level, ParticleTypes.CAMPFIRE_COSY_SMOKE, new Vec3(xCord, yCord, zCord), 0.0D, 0.1D, 0.0D);
 
@@ -194,8 +197,8 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
                         var operator = operatorOptional.get();
                         TardisPilotingManager pilotManager = operator.getPilotingManager();
 
-                        if (pilotManager.isOnCooldown()) {
-                            pilotManager.endCoolDown();
+                        if (pilotManager.isInRecovery()) {
+                            pilotManager.endRecovery();
                             return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
                         }
                     }
@@ -204,6 +207,21 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
             }
         }
 
+        if (level.isClientSide) {
+            if (level.getBlockEntity(blockPos) instanceof GlobalConsoleBlockEntity consoleBlockEntity) {
+                if(!blockState.getValue(POWERED)){
+                    consoleBlockEntity.powerOff.stop();
+                    consoleBlockEntity.powerOn.start(player.tickCount);
+                }
+            }
+        }
+
+
         return InteractionResult.sidedSuccess(true); //Use InteractionResult.sidedSuccess(true) for client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
+        return false;
     }
 }

@@ -22,6 +22,8 @@ import whocraft.tardis_refined.constants.ModMessages;
 import java.awt.*;
 import java.util.List;
 
+import static whocraft.tardis_refined.client.screen.selections.SelectionScreen.BUTTON_LOCATION;
+
 public class WaypointManageScreen extends Screen {
 
     public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor.png");

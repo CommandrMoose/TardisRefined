@@ -36,15 +36,15 @@ import java.util.Map;
 import static whocraft.tardis_refined.common.util.Platform.getServer;
 
 /*
-* Majority of this code is sourced from Commoble's Hyberbox with permission.
-* You can view their project here: https://github.com/Commoble/hyperbox
-* */
+ * Majority of this code is sourced from Commoble's Hyberbox with permission.
+ * You can view their project here: https://github.com/Commoble/hyperbox
+ * */
 
 public class DimensionHandler {
 
     public static ArrayList<ResourceKey<Level>> LEVELS = new ArrayList<>();
 
-    public static void addDimension(ResourceKey<Level> resourceKey){
+    public static void addDimension(ResourceKey<Level> resourceKey) {
         LEVELS.add(resourceKey);
         writeLevels();
     }
@@ -53,9 +53,10 @@ public class DimensionHandler {
         return getStorage().getDimensionPath(Level.OVERWORLD);
     }
 
-    public static LevelStorageSource.LevelStorageAccess getStorage(){
+    public static LevelStorageSource.LevelStorageAccess getStorage() {
         return ((MinecraftServerStorageAccessor) getServer()).getStorageSource();
     }
+
     private static void writeLevels() {
         File file = new File(getWorldSavingDirectory().toFile(), TardisRefined.MODID + "_tardis_info.json");
         JsonObject jsonObject = new JsonObject();
@@ -87,11 +88,11 @@ public class DimensionHandler {
         }
 
         if (interactionLevel instanceof ServerLevel serverLevel) {
-           ServerLevel existingLevel = getExistingLevel(serverLevel, levelResourceKey);
+            ServerLevel existingLevel = getExistingLevel(serverLevel, levelResourceKey);
 
-           if (existingLevel != null) {
-               return existingLevel;
-           }
+            if (existingLevel != null) {
+                return existingLevel;
+            }
 
             return createDimension(interactionLevel, levelResourceKey);
         }
@@ -115,10 +116,9 @@ public class DimensionHandler {
                 ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, id);
                 if (getExistingLevel(serverLevel, levelKey) == null) {
                     TardisRefined.LOGGER.warn("Level {} not found! Creating new level instance", dimension.getAsString());
-                    if(DimensionHandler.getOrCreateInterior(serverLevel, id) != null)
+                    if (DimensionHandler.getOrCreateInterior(serverLevel, id) != null)
                         TardisRefined.LOGGER.warn("Successfully created and loaded new level {}", dimension.getAsString());
-                }
-                else{
+                } else {
                     TardisRefined.LOGGER.info("Successfully loaded existing level {}", dimension.getAsString());
                 }
             }

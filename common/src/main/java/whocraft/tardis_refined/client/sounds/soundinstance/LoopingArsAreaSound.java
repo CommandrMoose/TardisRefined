@@ -4,9 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.sounds.LoopingTardisInteriorSound;
 import whocraft.tardis_refined.common.util.TardisHelper;
 
@@ -30,7 +28,7 @@ public class LoopingArsAreaSound extends LoopingTardisInteriorSound {
 
     @Override
     public boolean canPlaySound() {
-        if (this.player != null){
+        if (this.player != null) {
             return super.canPlaySound() && TardisHelper.isInArsArea(player.blockPosition());
         }
         return false;

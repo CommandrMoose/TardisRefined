@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.capability.upgrades.IncrementUpgrade;
-import whocraft.tardis_refined.common.capability.upgrades.SpeedUpgrade;
-import whocraft.tardis_refined.common.capability.upgrades.Upgrade;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.IncrementUpgrade;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.SpeedUpgrade;
+import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.util.RegistryHelper;
 
 public class TRUpgrades {

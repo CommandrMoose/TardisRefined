@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
-import whocraft.tardis_refined.common.capability.TardisLevelOperator;
+import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.NbtConstants;
 import whocraft.tardis_refined.patterns.ShellPattern;
@@ -47,14 +47,14 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
         setChanged();
     }
 
-    public ResourceLocation theme(){
-        if (this.shellTheme == null){
+    public ResourceLocation theme() {
+        if (this.shellTheme == null) {
             this.shellTheme = ShellTheme.HALF_BAKED.getId();
         }
         return this.shellTheme;
     }
 
-    public void setShellTheme(ResourceLocation shellTheme){
+    public void setShellTheme(ResourceLocation shellTheme) {
         this.shellTheme = shellTheme;
         this.setChanged();
     }
@@ -83,12 +83,12 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
 
         if (pTag.contains(NbtConstants.PATTERN)) {
             ResourceLocation currentPattern = new ResourceLocation(pTag.getString(NbtConstants.PATTERN));
-            if (ShellPatterns.doesPatternExist( this.shellTheme, currentPattern)) {
+            if (ShellPatterns.doesPatternExist(this.shellTheme, currentPattern)) {
                 this.basePattern = ShellPatterns.getPatternOrDefault(this.shellTheme, currentPattern);
             }
         }
 
-        if (this.shellTheme == null){
+        if (this.shellTheme == null) {
             this.shellTheme = this.theme();
         }
 
@@ -96,7 +96,6 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
             this.basePattern = pattern();
         }
     }
-
 
 
     @Override
@@ -119,7 +118,7 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
                 if (cap.getInternalDoor() != door) {
                     cap.setInternalDoor(door); //Set the main door and also tell this door block that it is the main door.
                 }
-                if(player.isShiftKeyDown() && !cap.getPilotingManager().isInFlight()) {
+                if (player.isShiftKeyDown() && !cap.getPilotingManager().isInFlight()) {
                     /*When multiple internal doors are in a Tardis, and the player is locking a different door, use the door block's data to update the Tardis' data */
                     cap.setDoorLocked(!door.locked()); //Tell the Tardis that the door is locked
                     if (door.locked())
@@ -136,7 +135,7 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
     @Override
     public void playDoorCloseSound(boolean closeDoor) {
         ShellPattern pattern = this.pattern();
-        if (pattern != null){
+        if (pattern != null) {
             Level currentLevel = this.getLevel();
 
             pattern.soundProfile().ifPresent(shellSoundProfile -> {
@@ -151,7 +150,7 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
     @Override
     public void playDoorLockedSound(boolean lockDoor) {
         ShellPattern pattern = this.pattern();
-        if (pattern != null){
+        if (pattern != null) {
             Level currentLevel = this.getLevel();
             pattern.soundProfile().ifPresent(shellSoundProfile -> {
                 ConfiguredSound configuredSound = shellSoundProfile.getDoorClose();

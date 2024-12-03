@@ -80,6 +80,7 @@ public class TardisDesktops {
         addDefaultDesktop(new DesktopTheme("violet_eye", "desktop/violet_eye"));
         addDefaultDesktop(new DesktopTheme("watchface", "desktop/watchface"));
         addDefaultDesktop(new DesktopTheme("classic", "desktop/classic"));
+        addDefaultDesktop(new DesktopTheme("aquarius", "desktop/aquarius"));
 
         return DEFAULT_DESKTOPS;
     }

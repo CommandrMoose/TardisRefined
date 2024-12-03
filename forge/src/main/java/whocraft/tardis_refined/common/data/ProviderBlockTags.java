@@ -34,19 +34,21 @@ public class ProviderBlockTags extends BlockTagsProvider {
         for (Map.Entry<ResourceKey<Block>, Block> blocksEntry : TRBlockRegistry.BLOCKS.entrySet()) {
             Block block = blocksEntry.getValue();
 
-            /*Fences*/
-            if (block instanceof FenceBlock fenceBlock) {
-                tag(BlockTags.FENCES).add(fenceBlock);
-            }
+            if (TRBlockRegistry.BLOCKS.getKey(block).getNamespace().equals(TardisRefined.MODID)) {
+                /*Fences*/
+                if (block instanceof FenceBlock fenceBlock) {
+                    tag(BlockTags.FENCES).add(fenceBlock);
+                }
 
-            /*Leaves*/
-            if (block instanceof LeavesBlock leavesBlock) {
-                tag(BlockTags.LEAVES).add(leavesBlock);
-            }
+                /*Leaves*/
+                if (block instanceof LeavesBlock leavesBlock) {
+                    tag(BlockTags.LEAVES).add(leavesBlock);
+                }
 
-            /*Slabs*/
-            if (block instanceof SlabBlock slabBlock) {
-                tag(BlockTags.SLABS).add(slabBlock);
+                /*Slabs*/
+                if (block instanceof SlabBlock slabBlock) {
+                    tag(BlockTags.SLABS).add(slabBlock);
+                }
             }
         }
 
@@ -82,14 +84,25 @@ public class ProviderBlockTags extends BlockTagsProvider {
                 .add(TRBlockRegistry.ASTRAL_MANIPULATOR_BLOCK.get());
 
 
+        // ===== DIAGONAL WALLS =====
         // This is cursed, but we gotta do what we gotta do
-        Set<Block> blocks = new HashSet<>();
+
+        // Blocks
+        Set<Block> normalBlocks = new HashSet<>();
         ManipulatorRecipes.MANIPULATOR_CRAFTING_RECIPES.forEach((resourceLocation, manipulatorCraftingRecipe) -> {
             for (ManipulatorCraftingIngredient ingredient : manipulatorCraftingRecipe.ingredients()) {
-                blocks.add(ingredient.inputBlockState().getBlock());
+                normalBlocks.add(ingredient.inputBlockState().getBlock());
             }
         });
-        tag(TRTagKeys.DIAGONAL_COMPAT).add(blocks.toArray(new Block[0]));
+        tag(TRTagKeys.DIAGONAL_COMPAT_WALLS).add(normalBlocks.toArray(new Block[0]));
+
+        Set<Block> glassBlocks = new HashSet<>();
+        ManipulatorRecipes.MANIPULATOR_CRAFTING_RECIPES.forEach((resourceLocation, manipulatorCraftingRecipe) -> {
+            for (ManipulatorCraftingIngredient ingredient : manipulatorCraftingRecipe.ingredients()) {
+                glassBlocks.add(ingredient.inputBlockState().getBlock());
+            }
+        });
+        tag(TRTagKeys.DIAGONAL_COMPAT_GLASS).add(normalBlocks.toArray(new Block[0]));
 
     }
 }

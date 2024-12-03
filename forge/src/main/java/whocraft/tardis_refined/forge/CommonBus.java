@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import whocraft.tardis_refined.ControlGroupCheckers;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.command.TardisRefinedCommand;
+import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.dimension.TardisTeleportData;
 import whocraft.tardis_refined.common.hum.TardisHums;
@@ -29,6 +30,7 @@ import whocraft.tardis_refined.patterns.ShellPatterns;
 
 @Mod.EventBusSubscriber(modid = TardisRefined.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonBus {
+
 
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
@@ -51,6 +53,16 @@ public class CommonBus {
         }
     }
 
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent playerLoggedOutEvent) {
+        // Force End a Vortex Session
+        Player player = playerLoggedOutEvent.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            TardisPlayerInfo.get(player).ifPresent(tardisPlayerInfo -> {
+                tardisPlayerInfo.endPlayerForInspection(serverPlayer);
+            });
+        }
+    }
 
     @SubscribeEvent
     public static void onDatapack(AddReloadListenerEvent addReloadListenerEvent) {

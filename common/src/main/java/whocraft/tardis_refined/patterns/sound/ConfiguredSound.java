@@ -24,18 +24,20 @@ public class ConfiguredSound {
     private final float volume;
 
 
-    /** Constructor for data driven entries*/
+    /**
+     * Constructor for data driven entries
+     */
     public ConfiguredSound(SoundEvent soundEvent, float pitch, float volume) {
         this.soundEvent = soundEvent;
         this.pitch = pitch;
         this.volume = volume;
     }
 
-    public ConfiguredSound(SoundEvent soundEvent, float pitch){
+    public ConfiguredSound(SoundEvent soundEvent, float pitch) {
         this(soundEvent, pitch, 1F);
     }
 
-    public ConfiguredSound(SoundEvent event){
+    public ConfiguredSound(SoundEvent event) {
         this(event, 1F, 1F);
     }
 

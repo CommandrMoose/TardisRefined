@@ -31,6 +31,7 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
         blockItem(TRBlockRegistry.ZEITON_ORE.getId());
         blockItem(TRBlockRegistry.ZEITON_ORE_DEEPSLATE.getId());
         blockItem(TRBlockRegistry.ZEITON_BLOCK.getId());
+        blockItem(TRBlockRegistry.ASTRAL_MAP.getId());
 
         ResourceLocation leavesTexture = new ResourceLocation("tardis_refined:block/ars_leaves");
 
@@ -53,6 +54,8 @@ public class ItemModelProvider extends net.minecraftforge.client.model.generator
         basicItem(TRItemRegistry.ZEITON_INGOT.getId());
         basicItem(TRItemRegistry.RAW_ZEITON.getId());
         basicItem(TRItemRegistry.ZEITON_NUGGET.getId());
+
+        // basicItem(TRItemRegistry.MALLET.getId());
 
         basicItem(TRBlockRegistry.ZEITON_LANTERN.getId());
 

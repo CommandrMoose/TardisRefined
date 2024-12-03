@@ -35,4 +35,8 @@ public class PlatformImpl {
     public static MinecraftServer getServer() {
         return ServerLifecycleHooks.getCurrentServer();
     }
+
+    public static boolean isForge() {
+        return true;
+    }
 }

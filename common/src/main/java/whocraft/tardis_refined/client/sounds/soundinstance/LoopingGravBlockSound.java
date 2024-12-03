@@ -24,7 +24,7 @@ public class LoopingGravBlockSound extends LoopingSoundGeneric {
 
     @Override
     public boolean canPlaySound() {
-        if (this.player != null){
+        if (this.player != null) {
             return GravityUtil.isInGravityShaft(this.player);
         }
         return false;

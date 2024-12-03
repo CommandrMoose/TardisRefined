@@ -55,4 +55,8 @@ public class PlatformImpl {
     private static MinecraftServer getServerFromClient() {
         return Minecraft.getInstance().getSingleplayerServer();
     }
+
+    public static boolean isForge() {
+        return false;
+    }
 }

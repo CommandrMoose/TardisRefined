@@ -64,6 +64,8 @@ public class ShellSelectionScreen extends SelectionScreen {
         globalShellBlockEntity.setLevel(Minecraft.getInstance().level);
         ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TardisRefined.MODID, UUID.randomUUID().toString()));
         globalShellBlockEntity.setTardisId(generatedLevelKey);
+        globalShellBlockEntity.setShellTheme(ShellTheme.POLICE_BOX.getId());
+        globalShellBlockEntity.setPattern(ShellPatterns.DEFAULT);
     }
 
     @Override

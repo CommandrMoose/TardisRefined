@@ -111,6 +111,7 @@ public class DesktopSelectionScreen extends SelectionScreen {
 
     }
 
+
     @Override
     public Component getSelectedDisplayName() {
         return Component.Serializer.fromJson(currentDesktopTheme.getName());
