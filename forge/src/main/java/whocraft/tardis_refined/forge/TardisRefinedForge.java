@@ -13,6 +13,9 @@ import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRecipes;
 import whocraft.tardis_refined.common.data.*;
 import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.compat.ModCompatChecker;
+import whocraft.tardis_refined.compat.portals.ImmersivePortals;
+import whocraft.tardis_refined.compat.portals.neoforge.PortalsCompatForge;
 import whocraft.tardis_refined.compat.trinkets.CuriosUtil;
 
 @Mod(TardisRefined.MODID)
@@ -31,14 +34,14 @@ public class TardisRefinedForge {
         }
 
         //TODO IP compat for forge?
-   /*     if (ModCompatChecker.immersivePortals()) {
+       if (ModCompatChecker.immersivePortals()) {
             if(TRConfig.COMMON.COMPATIBILITY_IP.get()) {
                 ImmersivePortals.init();
                 PortalsCompatForge.init();
             }
         } else {
             TardisRefined.LOGGER.info("ImmersivePortals was not detected.");
-        }*/
+        }
     }
 
     public void onGatherData(GatherDataEvent e) {

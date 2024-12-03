@@ -83,36 +83,38 @@ public class LandingPad extends Block {
                             UpgradeHandler upgradeHandler = operator.getUpgradeHandler();
 
                             if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler) && pilotManager.beginFlight(true, null) && !pilotManager.isInRecovery()) {
-                            if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler) && !pilotManager.isOnCooldown()) {
-                                TardisNavLocation oldTarget = pilotManager.getTargetLocation();
-                                pilotManager.setTargetLocation(new TardisNavLocation(blockPos.above(), player.getDirection().getOpposite(), serverLevel));
-                                if (pilotManager.beginFlight(true, null)) {
-                                    serverLevel.playSound(null, blockPos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1f, 1f);
-                                    PlayerUtil.sendMessage(player, Component.translatable(ModMessages.TARDIS_IS_ON_THE_WAY), true);
-                                    return InteractionResult.PASS;
+                                if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler) && !pilotManager.isInRecovery()) {
+                                    TardisNavLocation oldTarget = pilotManager.getTargetLocation();
+                                    pilotManager.setTargetLocation(new TardisNavLocation(blockPos.above(), player.getDirection().getOpposite(), serverLevel));
+                                    if (pilotManager.beginFlight(true, null)) {
+                                        serverLevel.playSound(null, blockPos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1f, 1f);
+                                        PlayerUtil.sendMessage(player, Component.translatable(ModMessages.TARDIS_IS_ON_THE_WAY), true);
+                                        return InteractionResult.PASS;
+                                    } else {
+                                        pilotManager.setTargetLocation(oldTarget);
+                                    }
                                 } else {
-                                    pilotManager.setTargetLocation(oldTarget);
-                                }
-                            } else {
 
-                                if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler)) {
-                                    PlayerUtil.sendMessage(player, Component.translatable(ModMessages.LANDING_PAD_TRANSIENT), true);
-                                    serverLevel.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 100, (float) (0.1 + (serverLevel.getRandom().nextFloat() * 0.25)));
-                                } else {
-                                    serverLevel.playSound(null, blockPos, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1f, 1f);
-                                    PlayerUtil.sendMessage(player, Component.translatable(ModMessages.LANDING_PAD_NOT_UNLOCKED), true);
-                                }
+                                    if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler)) {
+                                        PlayerUtil.sendMessage(player, Component.translatable(ModMessages.LANDING_PAD_TRANSIENT), true);
+                                        serverLevel.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 100, (float) (0.1 + (serverLevel.getRandom().nextFloat() * 0.25)));
+                                    } else {
+                                        serverLevel.playSound(null, blockPos, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1f, 1f);
+                                        PlayerUtil.sendMessage(player, Component.translatable(ModMessages.LANDING_PAD_NOT_UNLOCKED), true);
+                                    }
 
-                                return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+                                    return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+                                }
                             }
-                        }
 
-                        serverLevel.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 100, (float) (0.1 + (serverLevel.getRandom().nextFloat() * 0.25)));
+                            serverLevel.playSound(null, blockPos, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 100, (float) (0.1 + (serverLevel.getRandom().nextFloat() * 0.25)));
+                        }
                     }
                 }
             }
-        }
 
-        return InteractionResult.PASS;
+            return InteractionResult.PASS;
+        }
+        return InteractionResult.CONSUME;
     }
 }

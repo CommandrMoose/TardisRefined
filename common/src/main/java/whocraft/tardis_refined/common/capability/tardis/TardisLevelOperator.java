@@ -23,18 +23,17 @@ import whocraft.tardis_refined.common.block.shell.GlobalShellBlock;
 import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
 import whocraft.tardis_refined.common.blockentity.door.RootShellDoorBlockEntity;
 import whocraft.tardis_refined.common.blockentity.door.TardisInternalDoor;
+import whocraft.tardis_refined.common.blockentity.shell.ExteriorShell;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.hum.TardisHums;
-import whocraft.tardis_refined.common.blockentity.shell.ExteriorShell;
 import whocraft.tardis_refined.common.network.messages.screens.MonitorPositionDataMessage;
 import whocraft.tardis_refined.common.tardis.TardisArchitectureHandler;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.*;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
-import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.common.util.TardisHelper;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
@@ -70,8 +69,6 @@ public class TardisLevelOperator {
     private final TardisClientData tardisClientData;
     private final UpgradeHandler upgradeHandler;
     private final AestheticHandler aestheticHandler;
-    private boolean hasInitiallyGenerated = false;
-    private TardisInternalDoor internalDoor = null;
     // TARDIS state refers to different stages of TARDIS creation. This allows for different logic to operate in those moments.
     private int tardisState = 0;
 
@@ -218,23 +215,23 @@ public class TardisLevelOperator {
             tardisClientData.setThrottleStage(pilotingManager.getThrottleStage());
             tardisClientData.setHandbrakeEngaged(pilotingManager.isHandbrakeOn());
 
-        CompoundTag oldData = tardisClientData.serializeNBT();
-        tardisClientData.setIsOnCooldown(pilotingManager.isOnCooldown());
-        tardisClientData.setShellTheme(aestheticHandler.getShellTheme());
-        tardisClientData.setShellPattern(aestheticHandler.shellPattern().id());
-        tardisClientData.setHumEntry(interiorManager.getHumEntry());
-        tardisClientData.setFuel(pilotingManager.getFuel());
-        tardisClientData.setMaximumFuel(pilotingManager.getMaximumFuel());
-        tardisClientData.setTardisState(tardisState);
-        tardisClientData.setFlying(pilotingManager.isInFlight());
-        tardisClientData.setIsLanding(exteriorManager.isLanding());
-        tardisClientData.setIsTakingOff(exteriorManager.isTakingOff());
-        tardisClientData.setThrottleStage(pilotingManager.getThrottleStage());
-        tardisClientData.setHandbrakeEngaged(pilotingManager.isHandbrakeOn());
-        CompoundTag newData = tardisClientData.serializeNBT();
-        if (!oldData.equals(newData)) {
-            tardisClientData.sync();
-        }
+            CompoundTag oldData = tardisClientData.serializeNBT();
+            tardisClientData.setIsOnCooldown(pilotingManager.isInRecovery());
+            tardisClientData.setShellTheme(aestheticHandler.getShellTheme());
+            tardisClientData.setShellPattern(aestheticHandler.shellPattern().id());
+            tardisClientData.setHumEntry(interiorManager.getHumEntry());
+            tardisClientData.setFuel(pilotingManager.getFuel());
+            tardisClientData.setMaximumFuel(pilotingManager.getMaximumFuel());
+            tardisClientData.setTardisState(tardisState);
+            tardisClientData.setFlying(pilotingManager.isInFlight());
+            tardisClientData.setIsLanding(exteriorManager.isLanding());
+            tardisClientData.setIsTakingOff(exteriorManager.isTakingOff());
+            tardisClientData.setThrottleStage(pilotingManager.getThrottleStage());
+            tardisClientData.setHandbrakeEngaged(pilotingManager.isHandbrakeOn());
+            CompoundTag newData = tardisClientData.serializeNBT();
+            if (!oldData.equals(newData)) {
+                tardisClientData.sync();
+            }
         }
 
         Iterator<ServerPlayer> updatingMonitorsIterator = updatingMonitors.iterator();
