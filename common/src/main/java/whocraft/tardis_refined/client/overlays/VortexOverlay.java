@@ -16,8 +16,10 @@ import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
+import java.util.Objects;
+
 import static whocraft.tardis_refined.client.renderer.vortex.ShellRenderer.renderShell;
-import static whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen.globalShellBlockEntity;
+import static whocraft.tardis_refined.client.screen.main.MonitorOS.MonitorOSExtension.globalShellBlockEntity;
 
 public class VortexOverlay {
 

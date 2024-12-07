@@ -19,11 +19,11 @@ import org.joml.Matrix4f;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TRParticles;
-import whocraft.tardis_refined.common.entity.Control;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.compat.CuriosTrinketsUtil;
 
 
-public class ControlEntityRenderer extends NoopRenderer<Control> {
+public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
 
     private static ResourceLocation ICON_GOOD = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_good.png");
     private static ResourceLocation ICON_SLIPPING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_slipping.png");
@@ -51,11 +51,11 @@ public class ControlEntityRenderer extends NoopRenderer<Control> {
     }
 
     @Override
-    protected boolean shouldShowName(Control entity) {
+    protected boolean shouldShowName(ControlEntity entity) {
         return (TRConfig.CLIENT.CONTROL_NAMES.get() && Minecraft.renderNames() && isMouseOverEntity(entity));
     }
 
-    private boolean isMouseOverEntity(Control entity) {
+    private boolean isMouseOverEntity(ControlEntity entity) {
         HitResult hitResult = Minecraft.getInstance().hitResult;
         if (hitResult == null) return false;
         if (hitResult instanceof EntityHitResult entityHitResult) {
@@ -65,7 +65,7 @@ public class ControlEntityRenderer extends NoopRenderer<Control> {
     }
 
     @Override
-    public void render(Control entity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
+    public void render(ControlEntity entity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
         if (this.shouldShowName(entity)) {
             this.renderNameTag(entity, entity.getDisplayName(), poseStack, multiBufferSource, i);
         }
@@ -82,7 +82,7 @@ public class ControlEntityRenderer extends NoopRenderer<Control> {
     }
 
     @Override
-    protected void renderNameTag(Control entity, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLightCoords) {
+    protected void renderNameTag(ControlEntity entity, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLightCoords) {
 
         double distanceSquared = this.entityRenderDispatcher.distanceToSqr(entity);
         if (!(distanceSquared > 2050.0)) {
@@ -141,7 +141,7 @@ public class ControlEntityRenderer extends NoopRenderer<Control> {
     }
 
 
-    private void renderControlIcon(Control entity, Component component, ResourceLocation texture, PoseStack matrixStackIn, MultiBufferSource buffer, int light) {
+    private void renderControlIcon(ControlEntity entity, Component component, ResourceLocation texture, PoseStack matrixStackIn, MultiBufferSource buffer, int light) {
 
         float offset = (float) -(Minecraft.getInstance().font.width(component) / 2 + 18);
         VertexConsumer builder = buffer.getBuffer(RenderType.text(texture));

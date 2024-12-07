@@ -133,9 +133,13 @@ public class RenderHelper {
 
 
     public static class DynamicTimeKeep {
-        public double speed;
+        public double speed = 1f;
         private long time = Long.MIN_VALUE;
-        private long last_time;
+        private long last_time = System.currentTimeMillis();
+
+        public DynamicTimeKeep() {
+            this.last_time = System.currentTimeMillis();
+        }
 
         public DynamicTimeKeep(double speed) {
             this.speed = speed;
@@ -143,9 +147,9 @@ public class RenderHelper {
         }
 
         public void update() {
-            double diff = System.currentTimeMillis() - this.last_time;
+            long diff = System.currentTimeMillis() - this.last_time;
             diff *= speed;
-            this.time += (long) diff;
+            this.time += diff;
             this.last_time = System.currentTimeMillis();
         }
 
@@ -158,7 +162,8 @@ public class RenderHelper {
         }
 
         public float getFloat(float offset) {
-            return (float) getDouble(offset);
+            long offsetTime = this.time + (long) (offset * 1000);
+            return (offsetTime % 1000L) / 1000.0f;
         }
 
         public double getDouble(double offset) {

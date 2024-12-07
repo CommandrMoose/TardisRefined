@@ -25,9 +25,7 @@ import java.util.stream.Stream;
 public class DesktopArgumentType implements ArgumentType<ResourceLocation> {
 
     public static final DynamicCommandExceptionType INVALID_DESKTOP_EXCEPTION = new DynamicCommandExceptionType((desktop) -> Component.translatable(ModMessages.CMD_ARG_DESKTOP_INVALID, desktop));
-    private static final Collection<String> EXAMPLES = Stream.of(TardisDesktops.FACTORY_THEME, TardisDesktops.DEFAULT_OVERGROWN_THEME).map((desktop) -> {
-        return desktop != null ? desktop.getIdentifier().toString() : "";
-    }).collect(Collectors.toList());
+    private static final Collection<String> EXAMPLES = Stream.of(TardisDesktops.FACTORY_THEME, TardisDesktops.DEFAULT_OVERGROWN_THEME).map((desktop) -> desktop != null ? desktop.getIdentifier().toString() : "").collect(Collectors.toList());
 
     public static DesktopArgumentType desktopArgumentType() {
         return new DesktopArgumentType();

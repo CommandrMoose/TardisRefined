@@ -2,6 +2,8 @@ package whocraft.tardis_refined.client.renderer.vortex;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
+import com.mojang.blaze3d.platform.GlConst;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -20,7 +22,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.ShellDoorModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
@@ -53,47 +54,58 @@ public class RenderTargetHelper {
 
         VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
 
-        if (true) {
+        if (tardisClientData.isFlying() && isOpen) {
             renderDoorOpen(blockEntity, stack, packedLight, rotation, currentModel, isOpen, tardisClientData);
         } else {
             renderNoVortex(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen);
         }
     }
 
+    public static void copyRenderTarget(RenderTarget src, RenderTarget dest) {
+        GlStateManager._glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, src.frameBufferId);
+        GlStateManager._glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, dest.frameBufferId);
+        GlStateManager._glBlitFrameBuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
+    }
+
     private static void renderDoorOpen(GlobalDoorBlockEntity blockEntity, PoseStack stack, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen, TardisClientData tardisClientData) {
         stack.pushPose();
-        //Fix transform
-        {
-            stack.translate(0.5F, 1.5F, 0.5F);
-            stack.mulPose(Axis.ZP.rotationDegrees(180F));
-            stack.mulPose(Axis.YP.rotationDegrees(rotation));
-            stack.translate(0, 0, -0.01);
-        }
-        //Unbind RenderTarget
+
+        // Fix transform
+        stack.translate(0.5F, 1.5F, 0.5F);
+        stack.mulPose(Axis.ZP.rotationDegrees(180F));
+        stack.mulPose(Axis.YP.rotationDegrees(rotation));
+        stack.translate(0, 0, -0.01);
+
+        // Unbind RenderTarget
         Minecraft.getInstance().getMainRenderTarget().unbindWrite();
         RENDER_TARGET_HELPER.start();
+        copyRenderTarget(Minecraft.getInstance().getMainRenderTarget(), RENDER_TARGET_HELPER.renderTarget);
 
-        //Render Door Frame
+        // Render Door Frame
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
         currentModel.setDoorPosition(isOpen);
         currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityCutout(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         imBuffer.endBatch();
 
+        // Enable and configure stencil buffer
         GL11.glEnable(GL11.GL_STENCIL_TEST);
-        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
+        GL11.glStencilMask(0xFF); // Ensure stencil mask is set before clearing
+        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT); // Clear stencil buffer
         GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 0xFF);
         GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
-        GL11.glStencilMask(0xFF);
 
-        RenderSystem.depthMask(false);
+        // Render portal mask with depth writing enabled
+        RenderSystem.depthMask(true);
         stack.pushPose();
         currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
         imBuffer.endBatch();
         stack.popPose();
-        RenderSystem.depthMask(true);
+        RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering
 
+        // Render vortex based on stencil buffer
         GL11.glStencilMask(0x00);
         GL11.glStencilFunc(GL11.GL_EQUAL, 1, 0xFF);
+        GlStateManager._depthFunc(GL11.GL_ALWAYS); // Ignore depth buffer
 
         GL11.glColorMask(true, true, true, false);
         stack.pushPose();
@@ -101,23 +113,17 @@ public class RenderTargetHelper {
         VORTEX.time.speed = (0.3f + tardisClientData.getThrottleStage() * 0.1f);
         VORTEX.renderVortex(stack, 1, false);
         stack.popPose();
+        GlStateManager._depthFunc(GL11.GL_LEQUAL); // Restore depth function
         GL11.glColorMask(false, false, false, true);
 
-        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
-        //Put rendertarget on screen;
-        {
-            RenderSystem.enableBlend();
-            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            RENDER_TARGET_HELPER.renderTarget.blitToScreen(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight(), false);
-            RENDER_TARGET_HELPER.end();
-            RenderSystem.disableBlend();
-            RenderSystem.defaultBlendFunc();
-        }
-        stack.popPose();
-        GL11.glDisable(GL11.GL_STENCIL_TEST);
-        Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
+        // Copy render target back to main buffer
 
+        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
+        copyRenderTarget(RENDER_TARGET_HELPER.renderTarget, Minecraft.getInstance().getMainRenderTarget());
+        GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test
         GL11.glColorMask(true, true, true, true);
+
+        stack.popPose();
     }
 
     private static void renderNoVortex(GlobalDoorBlockEntity blockEntity, PoseStack stack, MultiBufferSource bufferSource, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen) {

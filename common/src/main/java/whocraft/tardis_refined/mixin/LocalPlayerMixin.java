@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import whocraft.tardis_refined.client.TRKeybinds;
 import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
-import whocraft.tardis_refined.common.network.messages.player.C2SExitTardisView;
 
 @Mixin(LocalPlayer.class)
 public class LocalPlayerMixin {
@@ -25,22 +24,24 @@ public class LocalPlayerMixin {
     @Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getTutorial()Lnet/minecraft/client/tutorial/Tutorial;"))
     private void inputEdit(CallbackInfo ci) {
         LocalPlayer localPlayer = (LocalPlayer) (Object) this;
-        handleInput(localPlayer, input);
+        tardisRefined$handleInput(localPlayer, input);
     }
 
-    private void handleInput(LocalPlayer localPlayer, Input input) {
+    @Unique
+    private void tardisRefined$handleInput(LocalPlayer localPlayer, Input input) {
         TardisPlayerInfo.get(localPlayer).ifPresent(tardisPlayerInfo -> {
             if (tardisPlayerInfo.isViewingTardis()) {
-                blockMovement(input);
+                tardisRefined$blockMovement(input);
             }
         });
     }
 
-    private void blockMovement(Input moveType) {
+    @Unique
+    private void tardisRefined$blockMovement(Input moveType) {
         // Set all movement-related fields to false or 0.0F to block movement
 
         if (TRKeybinds.EXIT_EXTERIOR_VIEW.isDown()) {
-            new C2SExitTardisView().send();
+            TardisPlayerInfo.onExitKeybindPressed();
             return;
         }
 

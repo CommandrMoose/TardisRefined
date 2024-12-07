@@ -23,9 +23,7 @@ import java.util.stream.Stream;
 public class UpgradeArgumentType implements ArgumentType<ResourceLocation> {
 
     public static final DynamicCommandExceptionType INVALID_UPGRADE_EXCEPTION = new DynamicCommandExceptionType((upgrade) -> Component.translatable(ModMessages.CMD_ARG_UPGRADE_INVALID, upgrade));
-    private static final Collection<String> EXAMPLES = Stream.of(TRUpgrades.ARCHITECTURE_SYSTEM).map((upgrade) -> {
-        return upgrade != null ? upgrade.getId().toString() : "";
-    }).collect(Collectors.toList());
+    private static final Collection<String> EXAMPLES = Stream.of(TRUpgrades.ARCHITECTURE_SYSTEM).map((upgrade) -> upgrade != null ? upgrade.getId().toString() : "").collect(Collectors.toList());
 
     public static UpgradeArgumentType upgradeArgumentType() {
         return new UpgradeArgumentType();
@@ -55,7 +53,6 @@ public class UpgradeArgumentType implements ArgumentType<ResourceLocation> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-
         return SharedSuggestionProvider.suggestResource(TRUpgrades.UPGRADE_REGISTRY.keySet(), builder);
     }
 

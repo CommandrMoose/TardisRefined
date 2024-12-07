@@ -25,7 +25,7 @@ public class TardisDesktops {
     public static final DesktopTheme FACTORY_THEME = new DesktopTheme("factory", "desktop/factory");
     public static final DesktopTheme TERRAFORMED = new DesktopTheme("terraformed", "desktop/terraformed");
     private static final CodecJsonReloadListener<DesktopTheme> RELOAD_LISTENER = createReloadListener();
-    private static Map<ResourceLocation, DesktopTheme> DEFAULT_DESKTOPS = new HashMap<>();
+    private static final Map<ResourceLocation, DesktopTheme> DEFAULT_DESKTOPS = new HashMap<>();
 
     /**
      * A factory method to create the instance of our reload listener.
@@ -80,6 +80,7 @@ public class TardisDesktops {
         addDefaultDesktop(new DesktopTheme("violet_eye", "desktop/violet_eye"));
         addDefaultDesktop(new DesktopTheme("watchface", "desktop/watchface"));
         addDefaultDesktop(new DesktopTheme("classic", "desktop/classic"));
+        addDefaultDesktop(new DesktopTheme("terraformed", "desktop/terraformed_useable"));
 
         return DEFAULT_DESKTOPS;
     }

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.TardisTeleportData;
+import whocraft.tardis_refined.common.network.messages.player.C2SExitTardisView;
 import whocraft.tardis_refined.common.network.messages.player.S2CResetPostShellView;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncTardisPlayerView;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
@@ -223,6 +224,10 @@ public class TardisPlayerInfo implements TardisPilot {
         } else {
             message.send(serverPlayerEntity);
         }
+    }
+
+    public static void onExitKeybindPressed(){
+        new C2SExitTardisView().send();
     }
 
     @Override

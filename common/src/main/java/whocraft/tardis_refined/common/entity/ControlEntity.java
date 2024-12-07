@@ -34,6 +34,7 @@ import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.control.ship.MonitorControl;
 import whocraft.tardis_refined.common.tardis.manager.FlightDanceManager;
+import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.util.ClientHelper;
 import whocraft.tardis_refined.common.util.LevelHelper;
@@ -43,27 +44,27 @@ import whocraft.tardis_refined.constants.NbtConstants;
 import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.registry.*;
 
-public class Control extends Entity {
+public class ControlEntity extends Entity {
 
     /**
      * Flag to determine if this Control can continue to become more mis-aligned and thus lose "health".
      * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
      * <br> True - if able to keep being mis-aligned, False if cannot be further mis-aligned
      */
-    private static final EntityDataAccessor<Boolean> TICKING_DOWN = SynchedEntityData.defineId(Control.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TICKING_DOWN = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.BOOLEAN);
     /**
      * Flag to determine if this Control is far too mis-aligned and is considered "dead".
      * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
      */
-    private static final EntityDataAccessor<Boolean> IS_DEAD = SynchedEntityData.defineId(Control.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_DEAD = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.BOOLEAN);
     /**
      * Attribute to determine how far this Control is mis-aligned.
      * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
      */
-    private static final EntityDataAccessor<Integer> CONTROL_HEALTH = SynchedEntityData.defineId(Control.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SHOW_PARTICLE = SynchedEntityData.defineId(Control.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> SIZE_WIDTH = SynchedEntityData.defineId(Control.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> SIZE_HEIGHT = SynchedEntityData.defineId(Control.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> CONTROL_HEALTH = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SHOW_PARTICLE = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> SIZE_WIDTH = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> SIZE_HEIGHT = SynchedEntityData.defineId(ControlEntity.class, EntityDataSerializers.FLOAT);
     /**
      * The total amount of control alignment health points before a control will start causing the Tardis to crash.
      * <br> This name comes from a time when the terminology wasn't finalised, and a more traditional "health" system was being used.
@@ -74,11 +75,11 @@ public class Control extends Entity {
     private BlockPos consoleBlockPos;
     private FlightDanceManager flightDanceManager;
     private Vector3f offset;
-    public Control(EntityType<?> entityTypeIn, Level level) {
+    public ControlEntity(EntityType<?> entityTypeIn, Level level) {
         super(entityTypeIn, level);
     }
 
-    public Control(Level level) {
+    public ControlEntity(Level level) {
         super(TREntityRegistry.CONTROL_ENTITY.get(), level);
     }
 
@@ -136,7 +137,7 @@ public class Control extends Entity {
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        if (this.getEntityData().get(SIZE_WIDTH) != null && this.getEntityData().get(SIZE_HEIGHT) != null) {
+        if (this.getEntityData().hasItem(SIZE_WIDTH) && this.getEntityData().hasItem(SIZE_HEIGHT)) {
             return EntityDimensions.scalable(this.getEntityData().get(SIZE_WIDTH), this.getEntityData().get(SIZE_HEIGHT));
         }
         return super.getDimensions(pose);
@@ -144,7 +145,6 @@ public class Control extends Entity {
 
     @Override
     public Component getName() {
-
 
         TardisClientData tardisClientData = TardisClientData.getInstance(level().dimension());
         if (tardisClientData.isInRecovery()) {
@@ -166,12 +166,11 @@ public class Control extends Entity {
      * Tell the Tardis that the control is currently continuing to be misaligned
      *
      * @param manager
-     * @return true if can continue to become more misaligned, false if already too misaligned.
      */
-    public boolean setTickingDown(FlightDanceManager manager) {
+    public void setTickingDown(FlightDanceManager manager) {
 
         if (this.getEntityData().get(IS_DEAD)) {
-            return false;
+            return;
         }
 
         this.entityData.set(TICKING_DOWN, true);
@@ -179,7 +178,6 @@ public class Control extends Entity {
         this.level().playSound(null, this.blockPosition(), SoundEvents.ARROW_HIT, SoundSource.BLOCKS, 0.5f, 2f);
 
         this.setCustomName(Component.translatable("!"));
-        return true;
     }
 
     @Override
@@ -211,10 +209,8 @@ public class Control extends Entity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
-        var consolePos = (CompoundTag) compound.get(NbtConstants.CONSOLE_POS);
-        if (consolePos != null) {
-            this.consoleBlockPos = NbtUtils.readBlockPos(consolePos);
-        }
+        var consolePos = compound.getCompound(NbtConstants.CONSOLE_POS);
+        this.consoleBlockPos = NbtUtils.readBlockPos(consolePos);
 
         float width = compound.getFloat(NbtConstants.CONTROL_SIZE_WIDTH);
         float height = compound.getFloat(NbtConstants.CONTROL_SIZE_HEIGHT);
@@ -503,13 +499,13 @@ public class Control extends Entity {
             return false;
         } else {
             TardisLevelOperator cap = TardisLevelOperator.get(serverLevel).get();
+            TardisPilotingManager pilotingManager = cap.getPilotingManager();
 
-            if (cap.getPilotingManager().getCurrentConsole() == null || cap.getPilotingManager().getCurrentConsole() != getConsoleBlockEntity()) {
-                cap.getPilotingManager().setCurrentConsole(getConsoleBlockEntity());
+            if (pilotingManager.getCurrentConsole() == null || pilotingManager.getCurrentConsole() != getConsoleBlockEntity()) {
+                pilotingManager.setCurrentConsole(getConsoleBlockEntity());
             }
 
-
-            if (!cap.getPilotingManager().canUseControls() && !(controlSpecification.control().equals(TRControlRegistry.MONITOR.get()))) {
+            if (!cap.getPilotingManager().canUseControls() && !controlSpecification.control().canBeUsedPostCrash()) {
                 if (player.isCreative()) {
                     serverLevel.playSound(null, this.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 100, (float) (0.1 + (serverLevel.getRandom().nextFloat() * 0.5)));
                 } else {

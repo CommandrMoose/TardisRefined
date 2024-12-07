@@ -26,8 +26,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.entity.Control;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
+import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
@@ -145,15 +146,12 @@ public class KeyItem extends Item {
         return super.use(level, player, interactionHand);
     }
 
-    public boolean interactMonitor(ItemStack itemStack, Player player, Control control, InteractionHand interactionHand) {
+    public boolean interactMonitor(ItemStack itemStack, Player player, ControlEntity controlEntity, InteractionHand interactionHand) {
 
-        if (control.level() instanceof ServerLevel serverLevel) {
+        if (controlEntity.level() instanceof ServerLevel serverLevel) {
             ResourceKey<Level> tardis = serverLevel.dimension();
-            if (control.controlSpecification().control() != null) {
-                if (control.controlSpecification().control() == TRControlRegistry.MONITOR.get()) {
-
-                    setKeychain(itemStack, new ArrayList<>(List.of(serverLevel.dimension())));
-
+            if (controlEntity.controlSpecification().control() != null) {
+                if (controlEntity.controlSpecification().control() == TRControlRegistry.MONITOR.get()) {
 
                     if (keychainContains(itemStack, tardis)) {
                         return false;
@@ -182,7 +180,7 @@ public class KeyItem extends Item {
                 if (!keychain.isEmpty()) {
                     Collections.rotate(keychain.subList(0, keychain.size()), -1);
                     setKeychain(context.getItemInHand(), keychain);
-                    context.getPlayer().displayClientMessage(Component.translatable(ModMessages.MSG_KEY_CYCLED, keychain.get(0).location().getPath()), true);
+                    PlayerUtil.sendMessage(context.getPlayer(), Component.translatable(ModMessages.MSG_KEY_CYCLED, keychain.get(0).location().getPath()), true);
                     context.getLevel().playSound(null, context.getPlayer().blockPosition(), SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.BLOCKS, 1, 2);
                 }
             }
@@ -203,14 +201,13 @@ public class KeyItem extends Item {
             ResourceKey<Level> mainTardisLevel = keychain.get(0);
 
             if (TardisClientData.getInstance(mainTardisLevel).isFlying()) {
-                list.add(Component.literal("* ").append(Component.translatable(ModMessages.TOOLTIP_IN_FLIGHT)).append(Component.literal(" *")));
+                list.add(Component.translatable(ModMessages.TOOLTIP_IN_FLIGHT));
             }
-
 
             list.add(Component.translatable(ModMessages.TOOLTIP_TARDIS_LIST_TITLE));
 
             for (int i = 0; i < keychain.size(); i++) {
-                MutableComponent hyphen = Component.literal((i == 0) ? ChatFormatting.YELLOW + "> " : "- ");
+                MutableComponent hyphen = Component.literal((i == 0) ? ChatFormatting.YELLOW + "> " : ChatFormatting.GRAY + "- ");
                 list.add(hyphen.append(Component.literal(keychain.get(i).location().getPath().substring(0, 5))));
             }
 
@@ -218,7 +215,7 @@ public class KeyItem extends Item {
             TardisClientData tardisClientData = TardisClientData.getInstance(mainTardisLevel);
             if (tardisClientData.isInRecovery()) {
                 int cooldownTicks = tardisClientData.getRecoveryTicks();
-                int maxCooldownTicks = 12000; // 10 minutes in ticks
+                int maxCooldownTicks = TardisPilotingManager.TICKS_COOLDOWN_MAX;
                 int percentage = (int) ((cooldownTicks / (float) maxCooldownTicks) * 100);
                 list.add(Component.translatable(ModMessages.RECOVERY_PROGRESS, percentage + "%"));
             }

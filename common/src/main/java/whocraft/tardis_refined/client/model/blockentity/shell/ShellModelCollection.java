@@ -2,7 +2,9 @@ package whocraft.tardis_refined.client.model.blockentity.shell;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.api.event.TardisClientEvents;
 import whocraft.tardis_refined.client.ModelRegistry;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.*;
@@ -67,7 +69,7 @@ public class ShellModelCollection {
         halfBakedShellModel = new HalfBakedShellModel(context.bakeLayer((ModelRegistry.HALF_BAKED_SHELL)));
 
         // Doors
-        factoryDoorModel = new FactoryDoorModel(context.bakeLayer((ModelRegistry.FACTORY_DOOR)));
+        factoryDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.FACTORY_DOOR)), 250f);
         policeBoxDoorModel = new PoliceBoxDoorModel(context.bakeLayer((ModelRegistry.POLICE_BOX_DOOR)));
         phoneBoothDoorModel = new PhoneBoothDoorModel(context.bakeLayer((ModelRegistry.PHONE_BOOTH_DOOR)));
         mysticDoorModel = new MysticDoorModel(context.bakeLayer((ModelRegistry.MYSTIC_DOOR)));
@@ -76,7 +78,7 @@ public class ShellModelCollection {
         vendingDoorModel = new VendingMachineDoorModel(context.bakeLayer((ModelRegistry.VENDING_DOOR)));
         briefcaseDoorModel = new BriefcaseDoorModel(context.bakeLayer((ModelRegistry.BRIEFCASE_DOOR)));
         groeningDoorModel = new GroeningDoorModel(context.bakeLayer((ModelRegistry.GROENING_DOOR)));
-        bigBenDoorModel = new BigBenDoorModel(context.bakeLayer((ModelRegistry.BIG_BEN_DOOR)));
+        bigBenDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.BIG_BEN_DOOR)), 275f);
         nukaDoorModel = new NukaDoorModel(context.bakeLayer((ModelRegistry.NUKA_DOOR)));
         growthDoorModel = new GrowthDoorModel(context.bakeLayer((ModelRegistry.GROWTH_DOOR)));
         portalooDoorModel = new PortalooDoorModel(context.bakeLayer((ModelRegistry.PORTALOO_DOOR)));
@@ -84,7 +86,7 @@ public class ShellModelCollection {
         liftDoorModel = new LiftShellDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
         hieroglyphDoorModel = new HieroglyphShellDoor(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
         castleDoorModel = new CastleShellDoorModel(context.bakeLayer((ModelRegistry.CASTLE_DOOR)));
-        pathfinderDoorModel = new PathfinderDoorModel(context.bakeLayer((ModelRegistry.PATHFINDER_DOOR)));
+        pathfinderDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.PATHFINDER_DOOR)), 275f);
         halfBakedDoorModel = new HalfBakedDoorModel(context.bakeLayer((ModelRegistry.HALF_BAKED_DOOR)));
 
         TardisClientEvents.SHELLENTRY_MODELS_SETUP.invoker().setUpShellAndInteriorModels(context);
@@ -108,6 +110,15 @@ public class ShellModelCollection {
         registerShellEntry(ShellTheme.CASTLE.get(), castleShellModel, castleDoorModel);
         registerShellEntry(ShellTheme.PATHFINDER.get(), pathfinderShellModel, pathfinderDoorModel);
         registerShellEntry(ShellTheme.HALF_BAKED.get(), halfBakedShellModel, halfBakedDoorModel);
+        validateModels();
+    }
+
+    private void validateModels() {
+        for (ResourceLocation resourceLocation : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.keySet()) {
+            if(!SHELL_MODELS.containsKey(resourceLocation)){
+                TardisRefined.LOGGER.info("There was no model setup for shell theme {}", resourceLocation);
+            }
+        }
     }
 
     /**

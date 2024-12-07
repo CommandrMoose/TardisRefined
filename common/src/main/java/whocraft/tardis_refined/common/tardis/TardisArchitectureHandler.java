@@ -27,7 +27,7 @@ public class TardisArchitectureHandler {
     public static String currentArsStage = "one";
 
     public static void generateDesktop(ServerLevel operator, DesktopTheme theme) {
-        TardisRefined.LOGGER.debug(String.format("Attempting to generate desktop theme: %s for TARDIS.", theme.getIdentifier()));
+        TardisRefined.LOGGER.debug("Attempting to generate desktop theme: {} for TARDIS.", theme.getIdentifier());
 
         // Fill the area out.
         BlockPos corner = new BlockPos(TardisDimensionConstants.TARDIS_CENTER_POS.getX() - TardisDimensionConstants.DESKTOP_RADIUS, TardisDimensionConstants.TARDIS_ROOT_GENERATION_MIN_HEIGHT, TardisDimensionConstants.TARDIS_CENTER_POS.getZ() - TardisDimensionConstants.DESKTOP_RADIUS);

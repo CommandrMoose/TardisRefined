@@ -40,12 +40,15 @@ import whocraft.tardis_refined.registry.TRUpgrades;
 
 import java.util.*;
 
+import static whocraft.tardis_refined.constants.NbtConstants.CAN_USE_CONTROLS;
+import static whocraft.tardis_refined.constants.NbtConstants.CURRENT_CONSOLE_POS;
+
 public class TardisPilotingManager extends TickableHandler {
 
     public static final int MAX_THROTTLE_STAGE = 5;
     // CONSTANTS
     private static final int TICKS_LANDING_MAX = 9 * 20;
-    private static final int TICKS_COOLDOWN_MAX = (10 * 60) * 20;
+    public static final int TICKS_COOLDOWN_MAX = (10 * 60) * 20;
     private static final double DEFAULT_MAXIMUM_FUEL = 1000;
     private static final double FLIGHT_COST = 0.5f;
     private final TardisLevelOperator operator;
@@ -99,8 +102,6 @@ public class TardisPilotingManager extends TickableHandler {
         this.canUseControls = true;
         ticksinCrashRecovery = 0;
         this.operator.getLevel().playSound(null, TardisArchitectureHandler.DESKTOP_CENTER_POS, TRSoundRegistry.TARDIS_SINGLE_FLY.get(), SoundSource.AMBIENT, 100f, 0.25f);
-
-
     }
 
     @Override
@@ -113,23 +114,19 @@ public class TardisPilotingManager extends TickableHandler {
 
         this.isPassivelyRefuelling = tag.getBoolean(NbtConstants.IS_PASSIVELY_REFUELING);
 
-        this.currentLocation = NbtConstants.getTardisNavLocation(tag, "current_location", operator);
-        this.targetLocation = NbtConstants.getTardisNavLocation(tag, "ctrl_target", operator);
-        this.fastReturnLocation = NbtConstants.getTardisNavLocation(tag, "ctrl_fr_loc", operator);
+        this.currentLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.CURRENT_LOCATION);
+        this.targetLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.TARGET_LOCATION);
+        this.fastReturnLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.RETURN_LOCATION);
 
-        this.currentConsoleBlockPos = NbtUtils.readBlockPos(tag.getCompound("currentConsoleBlockPos"));
+        this.currentConsoleBlockPos = NbtUtils.readBlockPos(tag.getCompound(CURRENT_CONSOLE_POS));
 
 
-        this.ticksCrashing = tag.getInt("ticksCrashing");
-        this.ticksinCrashRecovery = tag.getInt("ticksinCrashRecovery");
-        this.isInCrashRecovery = tag.getBoolean("isInCrashRecovery");
+        this.ticksCrashing = tag.getInt(NbtConstants.TICKS_CRASHING);
+        this.ticksinCrashRecovery = tag.getInt(NbtConstants.RECOVERY_TICKS);
+        this.isInCrashRecovery = tag.getBoolean(NbtConstants.IS_IN_RECOVERY);
         this.flightDistance = tag.getInt(NbtConstants.FLIGHT_DISTANCE);
         this.distanceCovered = tag.getInt(NbtConstants.DISTANCE_COVERED);
-        this.canUseControls = tag.getBoolean("canUseControls");
-
-        if (this.targetLocation == null) {
-            this.targetLocation = TardisNavLocation.ORIGIN;
-        }
+        this.canUseControls = tag.getBoolean(CAN_USE_CONTROLS);
 
         this.cordIncrementIndex = tag.getInt(NbtConstants.CONTROL_INCREMENT_INDEX);
         this.speedModifier = tag.getInt(NbtConstants.SPEED_MODIFIER);
@@ -150,32 +147,22 @@ public class TardisPilotingManager extends TickableHandler {
         tag.putInt(NbtConstants.THROTTLE_STAGE, this.throttleStage);
         tag.putInt(NbtConstants.SPEED_MODIFIER, this.speedModifier);
 
-        tag.putInt("ticksCrashing", this.ticksCrashing);
-        tag.putInt("ticksinCrashRecovery", this.ticksinCrashRecovery);
-        tag.putBoolean("isInCrashRecovery", this.isInCrashRecovery);
+        tag.putInt(NbtConstants.TICKS_CRASHING, this.ticksCrashing);
+        tag.putInt(NbtConstants.RECOVERY_TICKS, this.ticksinCrashRecovery);
+        tag.putBoolean(NbtConstants.IS_IN_RECOVERY, this.isInCrashRecovery);
         tag.putInt(NbtConstants.FLIGHT_DISTANCE, this.flightDistance);
         tag.putInt(NbtConstants.DISTANCE_COVERED, this.distanceCovered);
-        tag.putBoolean("canUseControls", this.canUseControls);
+        tag.putBoolean(CAN_USE_CONTROLS, this.canUseControls);
         tag.putBoolean(NbtConstants.IS_PASSIVELY_REFUELING, this.isPassivelyRefuelling);
 
-        if (targetLocation != null) {
-            NbtConstants.putTardisNavLocation(tag, "ctrl_target", this.targetLocation);
-        }
-
         if (currentConsoleBlockPos != null) {
-            tag.put("currentConsolePos", NbtUtils.writeBlockPos(this.currentConsoleBlockPos));
+            tag.put(CURRENT_CONSOLE_POS, NbtUtils.writeBlockPos(this.currentConsoleBlockPos));
         }
+        
 
-        if (fastReturnLocation != null) {
-            NbtConstants.putTardisNavLocation(tag, "ctrl_fr_loc", this.fastReturnLocation);
-        }
-
-        if (this.getCurrentLocation() == null) {
-            currentLocation = TardisNavLocation.ORIGIN;
-        }
-
-        NbtConstants.putTardisNavLocation(tag, "current_location", this.getCurrentLocation());
-
+        NbtConstants.writeTardisNavLocation(tag, NbtConstants.TARGET_LOCATION, this.getTargetLocation());
+        NbtConstants.writeTardisNavLocation(tag, NbtConstants.CURRENT_LOCATION, this.getCurrentLocation());
+        NbtConstants.writeTardisNavLocation(tag, NbtConstants.RETURN_LOCATION, this.getFastReturnLocation());
 
         tag.putInt(NbtConstants.CONTROL_INCREMENT_INDEX, this.cordIncrementIndex);
 

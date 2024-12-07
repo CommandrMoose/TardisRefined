@@ -10,20 +10,20 @@ import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 
-public class FactoryDoorModel extends ShellDoorModel {
+public class SingleInteriorDoorModel extends ShellDoorModel {
 
     private final ModelPart root;
-    private final ModelPart leftDoor;
-    private final ModelPart rightDoor;
+    public final ModelPart door;
     private final ModelPart portal;
     private final ModelPart frame;
+    private final float openAmount;
 
-    public FactoryDoorModel(ModelPart root) {
+    public SingleInteriorDoorModel(ModelPart root, float openAmount) {
         this.root = root;
-        this.leftDoor = JsonToAnimationDefinition.findPart(this, "left_door");
         this.frame = JsonToAnimationDefinition.findPart(this, "frame");
-        this.rightDoor = JsonToAnimationDefinition.findPart(this, "right_door");
+        this.door = JsonToAnimationDefinition.findPart(this, "door");
         this.portal = JsonToAnimationDefinition.findPart(this, "portal");
+        this.openAmount = openAmount;
     }
 
 
@@ -74,11 +74,9 @@ public class FactoryDoorModel extends ShellDoorModel {
     @Override
     public void setDoorPosition(boolean open) {
         if (open) {
-            this.leftDoor.yRot = -250f;
-            this.rightDoor.yRot = 250f;
+            this.door.yRot = -openAmount;
         } else {
-            this.leftDoor.yRot = 0;
-            this.rightDoor.yRot = 0;
+            this.door.yRot = 0;
         }
     }
 

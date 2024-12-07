@@ -263,6 +263,14 @@ public class ImmersivePortals {
         if (!Platform.isProduction()) {
             setupPortalsForShellThemes();
         }
+        if(operator.getInternalDoor() == null){
+            return;
+        }
+
+        if(operator.getPilotingManager().isInFlight()){
+            destroyPortals(operator);
+            return;
+        }
 
         destroyPortals(operator);
         UUID dimId = UUID.fromString(operator.getLevel().dimension().location().getPath());

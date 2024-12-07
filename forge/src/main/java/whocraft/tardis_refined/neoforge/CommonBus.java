@@ -13,7 +13,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import whocraft.tardis_refined.ControlGroupCheckers;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.command.TardisRefinedCommand;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
@@ -34,7 +33,6 @@ public class CommonBus {
     public static void onServerTick(TickEvent.ServerTickEvent event) {
 
         if (event.phase == TickEvent.Phase.END) {
-            ControlGroupCheckers.tickServer(event.getServer());
             TardisTeleportData.tick();
         }
 

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.npc.Villager;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.entity.Control;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 
 import java.util.Optional;
@@ -63,13 +63,13 @@ public class FlyTardisAtPOI extends WorkAtPoi {
                     }
                 }*/
 
-                for (Control control : console.getControlEntityList()) {
-                    if (control.isTickingDown()) {
+                for (ControlEntity controlEntity : console.getControlEntityList()) {
+                    if (controlEntity.isTickingDown()) {
                         rotateDirection();
                         // Adjust bounding box check to ensure proximity, but without intersecting
-                        if (control.level().random.nextBoolean()) {
+                        if (controlEntity.level().random.nextBoolean()) {
                             for (int i = 0; i < 5; i++) {
-                                control.realignControl();
+                                controlEntity.realignControl();
                             }
                             villager.setUnhappyCounter(40);
                             return;

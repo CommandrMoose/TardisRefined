@@ -23,7 +23,7 @@ public abstract class MixinMainTarget extends RenderTarget {
     }
 
     @ModifyArgs(method = "allocateDepthAttachment(Lcom/mojang/blaze3d/pipeline/MainTarget$Dimension;)Z", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_texImage2D(IIIIIIIILjava/nio/IntBuffer;)V", remap = false))
-    private void tr$modifyTexImage2D(Args args) {
+    private void tardisRefined$modifyTexImage2D(Args args) {
         boolean isStencilEnabled = ((RenderTargetStencil) this).tr$getisStencilEnabled();
 
         if (isStencilEnabled) {
@@ -34,7 +34,7 @@ public abstract class MixinMainTarget extends RenderTarget {
     }
 
     @ModifyArgs(method = "createFrameBuffer(II)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_glFramebufferTexture2D(IIIII)V", remap = false))
-    private void tr$modifyFrameBufferTexture2d(Args args) {
+    private void tardisRefined$modifyFrameBufferTexture2d(Args args) {
         boolean isStencilEnabled = ((RenderTargetStencil) this).tr$getisStencilEnabled();
 
         if (isStencilEnabled) {

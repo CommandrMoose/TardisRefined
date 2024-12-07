@@ -10,17 +10,13 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
-import whocraft.tardis_refined.ControlGroupCheckers;
 import whocraft.tardis_refined.client.TRItemColouring;
 import whocraft.tardis_refined.client.TardisClientLogic;
 import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
@@ -75,7 +71,6 @@ public class ModEvents {
             });
         });
 
-        ServerTickEvents.START_SERVER_TICK.register(ControlGroupCheckers::tickServer);
 
         ServerTickEvents.END_SERVER_TICK.register(server -> TardisTeleportData.tick());
 

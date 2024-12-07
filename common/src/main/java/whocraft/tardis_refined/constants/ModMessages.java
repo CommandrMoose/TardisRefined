@@ -4,7 +4,6 @@ import whocraft.tardis_refined.TardisRefined;
 
 public class ModMessages {
 
-    /* Related Links*/
 
     /*UI Messages*/
     public static final String UI_DESKTOP_CANCEL_DESKTOP = ui("monitor.cancel_desktop");
@@ -73,9 +72,11 @@ public class ModMessages {
     public static final String KEYBIND_EXIT_VIEW = keybind("exit_exterior_view");
     public static final String KEYBIND_TOGGLE_INFO_EXTERIOR_VIEW = keybind("toggle_info_exterior_view");
     public static String GITHUB_RELEASE_PAGE = "https://github.com/Jeryn99/TardisRefined/releases";
+
     /*Item Special cases*/
     public static String ITEM_KEYCHAIN = "item." + TardisRefined.MODID + ".keychain";
     public static String ITEM_GROUP = "itemGroup." + TardisRefined.MODID;
+
     /*Messages*/
     public static String MSG_EXTERIOR_COOLDOWN = message("exterior_cooldown");
     public static String MSG_KEY_BOUND = message("key_bound");
@@ -111,6 +112,8 @@ public class ModMessages {
     public static String CANNOT_START_NO_FUEL = message("cannot_start_no_fuel");
     public static String CURRENT = message("current");
     public static String DESTINATION = message("destination");
+
+    /*Tool Tips*/
     public static String TOOLTIP_TARDIS_LIST_TITLE = tooltip("tardis_list");
     public static String TOOLTIP_SCREWDRIVER_DESCRIPTION = tooltip("screwdriver_description");
 

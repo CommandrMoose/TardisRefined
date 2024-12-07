@@ -58,11 +58,23 @@ public class TardisNavLocation {
     }
 
     public static TardisNavLocation deserialize(CompoundTag tag) {
-        TardisNavLocation loc = new TardisNavLocation(BlockPos.of(tag.getLong("pos")), Direction.values()[tag.getInt("dir")], ResourceKey.create(Registries.DIMENSION, new ResourceLocation(tag.getString("dim"))));
+        TardisNavLocation loc = new TardisNavLocation(
+                BlockPos.of(tag.getLong("position")),
+                Direction.values()[tag.getInt("direction")],
+                ResourceKey.create(Registries.DIMENSION, new ResourceLocation(tag.getString("dimension"))));
 
         if (tag.contains("name"))
             loc.setName(tag.getString("name"));
         return loc;
+    }
+
+    public CompoundTag serialise() {
+        CompoundTag tag = new CompoundTag();
+        tag.putLong("position", this.position.asLong());
+        tag.putString("dimension", this.dimensionKey.location().toString());
+        tag.putInt("direction", this.direction.ordinal());
+        tag.putString("name", this.name);
+        return tag;
     }
 
     public ServerLevel getLevel() {
@@ -113,14 +125,7 @@ public class TardisNavLocation {
         this.name = name;
     }
 
-    public CompoundTag serialise() {
-        CompoundTag tag = new CompoundTag();
-        tag.putLong("pos", this.position.asLong());
-        tag.putString("dim", this.dimensionKey.location().toString());
-        tag.putInt("dir", this.direction.ordinal());
-        tag.putString("name", this.name);
-        return tag;
-    }
+
 
     public BlockPos setX(int x) {
         BlockPos blockPos = new BlockPos(x, position.getY(), position.getZ());

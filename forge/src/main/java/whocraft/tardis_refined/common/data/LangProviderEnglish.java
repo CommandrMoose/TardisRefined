@@ -45,7 +45,6 @@ public class LangProviderEnglish extends LanguageProvider {
         add(VortexRegistry.VELVET_NIGHT.get().getTranslationKey(), "Velvet Night");
         add(VortexRegistry.CANDY_POP.get().getTranslationKey(), "Candy Pop");
         add(VortexRegistry.EMERALD_FOREST.get().getTranslationKey(), "Emerald Forest");
-        /*Vortex*/
         add(VortexRegistry.LGBT_RAINBOW.get().getTranslationKey(), "LGBT Rainbow");
         add(VortexRegistry.TRANSGENDER_FLAG.get().getTranslationKey(), "Transgender Flag");
         add(VortexRegistry.BISEXUAL_FLAG.get().getTranslationKey(), "Bisexual Flag");
@@ -292,11 +291,15 @@ public class LangProviderEnglish extends LanguageProvider {
         addShell(ShellTheme.HIEROGLYPH.getId(), "Hieroglyph");
         addShell(ShellTheme.CASTLE.getId(), "Castle");
         addShell(ShellTheme.PATHFINDER.getId(), "Pathfinder");
+        addShell(ShellTheme.HALF_BAKED.getId(), "Half Baked");
 
         /*Tool Tips*/
-        add(ModMessages.TOOLTIP_TARDIS_LIST_TITLE, "Key Set:");
+        add(ModMessages.TOOLTIP_TARDIS_LIST_TITLE, ChatFormatting.YELLOW + "< "
+                + ChatFormatting.GOLD + "Key Set:"
+                + ChatFormatting.YELLOW + " >");
+
         add(ModMessages.CONTROL_DIMENSION_SELECTED, "Selected: %s");
-        add(ModMessages.TOOLTIP_IN_FLIGHT, "In flight");
+        add(ModMessages.TOOLTIP_IN_FLIGHT, ChatFormatting.YELLOW + "* " + ChatFormatting.AQUA + "In Flight" + ChatFormatting.YELLOW + " *");
 
         /*Config*/
         add(ModMessages.CONFIG_IP_COMPAT, "Immersive Portals Compatibility?");

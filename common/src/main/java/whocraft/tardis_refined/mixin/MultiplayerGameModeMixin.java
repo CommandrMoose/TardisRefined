@@ -19,7 +19,7 @@ public class MultiplayerGameModeMixin {
     private Minecraft minecraft;
 
     @Inject(method = "destroyBlock", at = @At("HEAD"), cancellable = true)
-    public void tr$destroyBlock(BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
+    public void tardisRefined$destroyBlock(BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
         ClientLevel level = this.minecraft.level;
         if (level == null) return;
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class TardisWaypoint {
 
-    private UUID id;
+    private final UUID id;
     private TardisNavLocation location;
 
     public TardisWaypoint(TardisNavLocation location) {
@@ -22,10 +22,7 @@ public class TardisWaypoint {
     public static TardisWaypoint deserialise(CompoundTag tag) {
         TardisNavLocation loc = TardisNavLocation.deserialize(tag.getCompound("location"));
         UUID id = tag.getUUID("id");
-
-        TardisWaypoint waypoint = new TardisWaypoint(id, loc);
-
-        return waypoint;
+        return new TardisWaypoint(id, loc);
     }
 
     public UUID getId() {

@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.entity.Control;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.util.PlayerUtil;
@@ -19,16 +19,16 @@ public class IncrementControl extends whocraft.tardis_refined.common.tardis.cont
     }
 
     @Override
-    public boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, Control control, Player player) {
-        return this.incrementCoord(operator, theme, control, player, 1);
+    public boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player) {
+        return this.incrementCoord(operator, theme, controlEntity, player, 1);
     }
 
     @Override
-    public boolean onLeftClick(TardisLevelOperator operator, ConsoleTheme theme, Control control, Player player) {
-        return this.incrementCoord(operator, theme, control, player, -1);
+    public boolean onLeftClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player) {
+        return this.incrementCoord(operator, theme, controlEntity, player, -1);
     }
 
-    private boolean incrementCoord(TardisLevelOperator operator, ConsoleTheme theme, Control control, Player player, int incAmount) {
+    private boolean incrementCoord(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player, int incAmount) {
         if (!operator.getLevel().isClientSide()) {
             TardisPilotingManager pilotManager = operator.getPilotingManager();
             pilotManager.cycleCordIncrement(incAmount);

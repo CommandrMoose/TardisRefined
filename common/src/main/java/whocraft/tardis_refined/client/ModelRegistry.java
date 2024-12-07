@@ -68,7 +68,6 @@ public class ModelRegistry {
     public static ModelLayerLocation VENDING_DOOR;
     public static ModelLayerLocation BRIEFCASE_DOOR;
     public static ModelLayerLocation GROENING_DOOR;
-    public static ModelLayerLocation BIG_BEN_DOOR;
     public static ModelLayerLocation NUKA_DOOR;
     public static ModelLayerLocation GROWTH_DOOR;
     public static ModelLayerLocation PORTALOO_DOOR;
@@ -76,7 +75,8 @@ public class ModelRegistry {
     public static ModelLayerLocation LIFT_DOOR;
     public static ModelLayerLocation HIEROGLYPH_DOOR;
     public static ModelLayerLocation CASTLE_DOOR;
-    public static ModelLayerLocation PATHFINDER_DOOR;
+    public static ModelLayerLocation PATHFINDER_DOOR = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "pathfinder_door"), "shell");;
+    public static ModelLayerLocation BIG_BEN_DOOR = new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "big_ben_door"), "shell");;
     public static ModelLayerLocation HALF_BAKED_DOOR;
 
 
@@ -129,7 +129,6 @@ public class ModelRegistry {
         VENDING_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "vending_door"), "vending_door"), VendingMachineDoorModel::createBodyLayer);
         BRIEFCASE_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "briefcase_door"), "briefcase_door"), BriefcaseDoorModel::createBodyLayer);
         GROENING_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "groening_door"), "groening_door"), GroeningDoorModel::createBodyLayer);
-        BIG_BEN_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "big_ben_door"), "big_ben_door"), BigBenDoorModel::createBodyLayer);
         NUKA_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "nuka_door"), "nuka_door"), NukaDoorModel::createBodyLayer);
         GROWTH_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "growth_door"), "growth_door"), GrowthDoorModel::createBodyLayer);
         PORTALOO_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "portaloo_door"), "portaloo_door"), PortalooDoorModel::createBodyLayer);
@@ -137,7 +136,6 @@ public class ModelRegistry {
         LIFT_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "lift_door"), "lift_door"), LiftShellDoorModel::createBodyLayer);
         HIEROGLYPH_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "hieroglyph_door"), "hieroglyph_door"), HieroglyphShellDoor::createBodyLayer);
         CASTLE_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "castle_door"), "castle_door"), CastleShellDoorModel::createBodyLayer);
-        PATHFINDER_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "pathfinder_door"), "pathfinder_door"), PathfinderShellModel::createBodyLayer);
         HALF_BAKED_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "half_baked_door"), "half_baked_door"), HalfBakedDoorModel::createBodyLayer);
 
         BULK_HEAD_DOOR = register(new ModelLayerLocation(new ResourceLocation(TardisRefined.MODID, "bulk_head_door"), "bulk_head_door"), BulkHeadDoorModel::createBodyLayer);

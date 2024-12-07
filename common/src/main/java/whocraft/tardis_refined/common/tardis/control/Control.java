@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.tardis.control;
 
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -9,6 +10,7 @@ import whocraft.tardis_refined.api.event.EventResult;
 import whocraft.tardis_refined.api.event.TardisCommonEvents;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.patterns.ConsolePattern;
@@ -21,6 +23,7 @@ public abstract class Control {
      * Determines if this Control should be used for the FlightDance. This can be expanded to be used for other purposes in the future.
      */
     private boolean isCriticalForTardisOperation = false;
+    private boolean canBeUsedPostCrash = false;
     private ConfiguredSound successSound = new ConfiguredSound(SoundEvents.ARROW_HIT_PLAYER);
     private ConfiguredSound failSound = new ConfiguredSound(SoundEvents.ITEM_BREAK);
 
@@ -35,15 +38,15 @@ public abstract class Control {
     }
 
     protected Control(ResourceLocation id, boolean isCriticalForTardisOperation) {
-        this(id, "control." + id.getNamespace() + "." + id.getPath(), isCriticalForTardisOperation);
+        this(id, Util.makeDescriptionId("control", id), isCriticalForTardisOperation);
     }
     protected Control(ResourceLocation id) {
         this(id, false);
     }
 
-    public abstract boolean onLeftClick(TardisLevelOperator operator, ConsoleTheme theme, whocraft.tardis_refined.common.entity.Control control, Player player);
+    public abstract boolean onLeftClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player);
 
-    public abstract boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, whocraft.tardis_refined.common.entity.Control control, Player player);
+    public abstract boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player);
 
     /**
      * The sound event to be played when the control fails to activate
@@ -85,19 +88,19 @@ public abstract class Control {
         this.successSound = successSound;
     }
 
-    public void playControlConfiguredSound(TardisLevelOperator operator, whocraft.tardis_refined.common.entity.Control control, ConfiguredSound pitchedSound, SoundSource source, float volume, float pitch, boolean ignorePitch) {
-        control.level().playSound(null, control.blockPosition(), pitchedSound.getSoundEvent(), source, volume, ignorePitch ? pitch : pitchedSound.getPitch());
+    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound, SoundSource source, float volume, float pitch, boolean ignorePitch) {
+        controlEntity.level().playSound(null, controlEntity.blockPosition(), pitchedSound.getSoundEvent(), source, volume, ignorePitch ? pitch : pitchedSound.getPitch());
     }
 
-    public void playControlConfiguredSound(TardisLevelOperator operator, whocraft.tardis_refined.common.entity.Control control, ConfiguredSound pitchedSound, float pitch) {
-        this.playControlConfiguredSound(operator, control, pitchedSound, SoundSource.BLOCKS, pitchedSound.getVolume(), pitch, true);
+    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound, float pitch) {
+        this.playControlConfiguredSound(operator, controlEntity, pitchedSound, SoundSource.BLOCKS, pitchedSound.getVolume(), pitch, true);
     }
 
-    public void playControlConfiguredSound(TardisLevelOperator operator, whocraft.tardis_refined.common.entity.Control control, ConfiguredSound pitchedSound) {
-        this.playControlConfiguredSound(operator, control, pitchedSound, SoundSource.BLOCKS, 1F, 1F, false);
+    public void playControlConfiguredSound(TardisLevelOperator operator, ControlEntity controlEntity, ConfiguredSound pitchedSound) {
+        this.playControlConfiguredSound(operator, controlEntity, pitchedSound, SoundSource.BLOCKS, 1F, 1F, false);
     }
 
-    public boolean canUseControl(TardisLevelOperator tardisLevelOperator, Control control, whocraft.tardis_refined.common.entity.Control controlEntity) {
+    public boolean canUseControl(TardisLevelOperator tardisLevelOperator, Control control, ControlEntity controlEntity) {
         boolean isDeskopWaiting = controlEntity.isDesktopWaitingToGenerate(tardisLevelOperator);
         return !isDeskopWaiting && TardisCommonEvents.PLAYER_CONTROL_INTERACT.invoker().canControlBeUsed(tardisLevelOperator, control, controlEntity) == EventResult.pass();
     }
@@ -132,8 +135,17 @@ public abstract class Control {
         return false;
     }
 
-    public Component getCustomControlName(TardisLevelOperator operator, whocraft.tardis_refined.common.entity.Control entity, ControlSpecification controlSpecification) {
+    public Component getCustomControlName(TardisLevelOperator operator, ControlEntity entity, ControlSpecification controlSpecification) {
         return Component.translatable(controlSpecification.control().getTranslationKey());
+    }
+
+    public Control setCanBeUsedPostCrash(boolean canBeUsedPostCrash) {
+        this.canBeUsedPostCrash = canBeUsedPostCrash;
+        return this;
+    }
+
+    public boolean canBeUsedPostCrash() {
+        return canBeUsedPostCrash;
     }
 
     /**

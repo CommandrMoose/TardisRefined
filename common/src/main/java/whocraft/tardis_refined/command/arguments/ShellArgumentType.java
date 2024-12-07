@@ -25,9 +25,7 @@ import java.util.stream.Stream;
 public class ShellArgumentType implements ArgumentType<ResourceLocation> {
 
     public static final DynamicCommandExceptionType INVALID_SHELL_EXCEPTION = new DynamicCommandExceptionType((shell) -> Component.translatable(ModMessages.CMD_ARG_SHELL_INVALID, shell));
-    private static final Collection<String> EXAMPLES = Stream.of(ShellTheme.FACTORY.get(), ShellTheme.POLICE_BOX.get()).map((shell) -> {
-        return shell != null ? ShellTheme.SHELL_THEME_REGISTRY.getKey(shell).toString() : "";
-    }).collect(Collectors.toList());
+    private static final Collection<String> EXAMPLES = Stream.of(ShellTheme.FACTORY.get(), ShellTheme.POLICE_BOX.get()).map((shell) -> shell != null ? ShellTheme.SHELL_THEME_REGISTRY.getKey(shell).toString() : "").collect(Collectors.toList());
 
     public static ShellArgumentType shellArgumentType() {
         return new ShellArgumentType();

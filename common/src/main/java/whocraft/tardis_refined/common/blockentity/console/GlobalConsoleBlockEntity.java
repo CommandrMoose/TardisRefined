@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.block.console.GlobalConsoleBlock;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.entity.Control;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.manager.TardisInteriorManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
@@ -38,7 +38,7 @@ import java.util.List;
 
 public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntityTicker<GlobalConsoleBlockEntity> {
 
-    private final List<Control> controlList = new ArrayList<>();
+    private final List<ControlEntity> controlEntityList = new ArrayList<>();
     public AnimationState liveliness = new AnimationState();
     public AnimationState powerOff = new AnimationState();
     public AnimationState powerOn = new AnimationState();
@@ -70,8 +70,8 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
         return basePattern == null ? ConsolePatterns.DEFAULT : basePattern;
     }
 
-    public List<Control> getControlEntityList() {
-        return this.controlList;
+    public List<ControlEntity> getControlEntityList() {
+        return this.controlEntityList;
     }
 
     public GlobalConsoleBlockEntity setPattern(ConsolePattern basePattern) {
@@ -137,7 +137,7 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
             ControlSpecification[] controls = consoleTheme.getControlSpecificationList();
             for (ControlSpecification control : Arrays.stream(controls).toList()) {
                 // Spawn a control!
-                Control controlEntity = new Control(getLevel());
+                ControlEntity controlEntity = new ControlEntity(getLevel());
 
                 controlEntity.setPosForDebug(control.offsetPosition());
 
@@ -149,7 +149,7 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
 
 
                 serverLevel.addFreshEntity(controlEntity);
-                controlList.add(controlEntity);
+                controlEntityList.add(controlEntity);
             }
 
             this.shouldSpawnControls = false;
@@ -187,8 +187,8 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
 
 
     public void killControls() {
-        controlList.forEach(Entity::discard);
-        controlList.clear();
+        controlEntityList.forEach(Entity::discard);
+        controlEntityList.clear();
     }
 
     @Override
