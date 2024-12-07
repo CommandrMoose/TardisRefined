@@ -45,7 +45,7 @@ public class VortexSelectionScreen extends MonitorOS {
     public void selectVortex(ResourceLocation themeId) {
         assert Minecraft.getInstance().player != null;
         new C2SChangeVortex(Minecraft.getInstance().player.level().dimension(), themeId).send();
-        Minecraft.getInstance().setScreen(null);
+        //Minecraft.getInstance().setScreen(null);
     }
 
     @Override
@@ -78,12 +78,12 @@ public class VortexSelectionScreen extends MonitorOS {
 
         selectionList.setRenderBackground(false);
 
-        for (Holder.Reference<VortexRegistry> shellTheme : VortexRegistry.VORTEX_REGISTRY.holders().toList()) {
-            VortexRegistry theme = shellTheme.value();
-            ResourceLocation shellThemeId = shellTheme.key().location();
+        for (Holder.Reference<VortexRegistry> vort : VortexRegistry.VORTEX_REGISTRY.holders().toList()) {
+            VortexRegistry theme = vort.value();
+            ResourceLocation vortId = vort.key().location();
 
             SelectionListEntry selectionListEntry = new SelectionListEntry(theme.getDisplayName(), (entry) -> {
-                this.currentVortex = shellThemeId;
+                this.currentVortex = vortId;
 
                 for (Object child : selectionList.children()) {
                     if (child instanceof SelectionListEntry current) {
@@ -95,7 +95,7 @@ public class VortexSelectionScreen extends MonitorOS {
                 entry.setChecked(true);
             }, leftPos);
 
-            if (currentVortex.toString().equals(shellThemeId.toString())) {
+            if (currentVortex.toString().equals(vortId.toString())) {
                 selectionListEntry.setChecked(true);
             }
 
