@@ -6,8 +6,10 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.CommonTRWidgets;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
@@ -32,14 +34,14 @@ public class WaypointManageScreen extends MonitorOS {
     private SpriteIconButton onSaveWaypoint;
 
     public WaypointManageScreen(List<ResourceKey<Level>> ignoredWorlds, CoordInputType coordInputType, TardisNavLocation tardisNavLocation) {
-        super(Component.translatable(coordInputType == CoordInputType.WAYPOINT ? ModMessages.UI_MONITOR_UPLOAD_WAYPOINTS : ModMessages.UI_MONITOR_UPLOAD_COORDS), null);
+        super(Component.translatable(coordInputType == CoordInputType.WAYPOINT ? ModMessages.UI_MONITOR_UPLOAD_WAYPOINTS : ModMessages.UI_MONITOR_UPLOAD_COORDS), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
         this.coordInputType = coordInputType;
         this.tardisNavLocation = tardisNavLocation;
         tardisNavLocation.setName("Waypoint");
     }
 
     public WaypointManageScreen(TardisWaypoint waypoint) {
-        super(Component.translatable("Edit waypoint"), null);
+        super(Component.translatable("Edit waypoint"), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
         this.preExistingWaypoint = waypoint;
         this.tardisNavLocation = waypoint.getLocation();
         this.coordInputType = CoordInputType.WAYPOINT;
@@ -50,9 +52,9 @@ public class WaypointManageScreen extends MonitorOS {
         super.init();
 
         int widgetHeight = 20;
-        int waypointNameWidth = this.width / 2 - 70;
+        int waypointNameWidth = monitorWidth / 2;
         int waypointNameHeight = this.height / 2;
-        int yPosition = 30; // Move yPosition to the top of the screen
+        int yPosition = height / 2; // Move yPosition to the top of the screen
         int xPosition = this.width / 2 - (waypointNameWidth / 2);
 
         yPosition += 30;
@@ -71,8 +73,7 @@ public class WaypointManageScreen extends MonitorOS {
 
 
         }, false, BUTTON_LOCATION));
-
-        onSaveWaypoint.setPosition(xPosition, yPosition + 100);
+        onSaveWaypoint.setPosition(xPosition, yPosition);
         addWidget(onSaveWaypoint);
 
         if (coordInputType == CoordInputType.WAYPOINT) {

@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import whocraft.tardis_refined.client.screen.CancelDesktopScreen;
+import whocraft.tardis_refined.client.screen.screens.CancelDesktopScreen;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.client.screen.main.MonitorScreen;
 import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;

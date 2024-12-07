@@ -74,7 +74,7 @@ public class VortexSelectionScreen extends MonitorOS {
     public GenericMonitorSelectionList<SelectionListEntry> createSelectionList() {
         int leftPos = width / 2;
         int topPos = (height - monitorHeight) / 2;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 105, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
 
         selectionList.setRenderBackground(false);
 

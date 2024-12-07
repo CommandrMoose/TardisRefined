@@ -4,6 +4,7 @@ import com.mojang.brigadier.StringReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
@@ -12,6 +13,7 @@ import whocraft.tardis_refined.common.hum.HumEntry;
 import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.messages.hums.C2SChangeHum;
 import whocraft.tardis_refined.common.util.MiscHelper;
+import whocraft.tardis_refined.constants.ModMessages;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -21,7 +23,7 @@ public class HumSelectionScreen extends MonitorOS {
     private HumEntry currentHumEntry;
 
     public HumSelectionScreen() {
-        super(Component.translatable(""), null);
+        super(Component.translatable(ModMessages.UI_MONITOR_SELECT_HUM), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
     }
 
     public static void selectHum(HumEntry theme) {
@@ -38,9 +40,9 @@ public class HumSelectionScreen extends MonitorOS {
                 this.switchScreenToLeft(PREVIOUS);
         });
         this.currentHumEntry = grabHum();
-
-        addSubmitButton(width / 2 + 85, (height) / 2 + 35);
-        addCancelButton(width / 2 - 105, (height) / 2 + 35);
+        int vPos = (height - monitorHeight) / 2;
+        addSubmitButton(width / 2 + 85, height - vPos - 25);
+        addCancelButton(width / 2 - 105, height - vPos - 25);
     }
 
     private HumEntry grabHum() {
@@ -54,7 +56,7 @@ public class HumSelectionScreen extends MonitorOS {
     public ObjectSelectionList<SelectionListEntry> createSelectionList() {
         int vPos = (height - monitorHeight) / 2;
         int leftPos = this.width / 2 - 75;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 150, 80, leftPos, vPos + 30, vPos + monitorHeight - 60, 12);
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 150, 80, leftPos, vPos + 15, vPos + monitorHeight - 30, 12);
         selectionList.setRenderBackground(false);
 
         Collection<HumEntry> knownHums = TardisHums.getRegistry().values();

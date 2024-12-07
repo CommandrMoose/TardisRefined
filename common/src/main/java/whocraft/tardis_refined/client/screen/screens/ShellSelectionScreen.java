@@ -46,8 +46,10 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
             pattern = ShellPatterns.next(this.patternCollection, this.pattern);
             button.setMessage(Component.Serializer.fromJson(new StringReader(this.pattern.name())));
         }).pos(width / 2 + 14, height - vPos - 25).size(70, 20).build());
-
-        patternButton.visible = false; //Hide when initialised. We will only show it when there are more than 1 pattern for a shell (via its {@link PatternCollection} )
+        boolean themeHasPatterns = this.patternCollection.size() > 1;
+        patternButton.visible = themeHasPatterns;
+        if (themeHasPatterns) //Update the button name now that we have confirmed that there is more than one pattern in the shell
+            this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(pattern.name())));
     }
 
     @Override
@@ -81,7 +83,7 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
     public GenericMonitorSelectionList<SelectionListEntry> createSelectionList() {
         int leftPos = width / 2;
         int topPos = (height - monitorHeight) / 2;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 105, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
 
         selectionList.setRenderBackground(false);
 
@@ -129,7 +131,7 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
     public void selectShell(ResourceLocation themeId) {
         assert Minecraft.getInstance().player != null;
         new C2SChangeShell(Minecraft.getInstance().player.level().dimension(), themeId, pattern).send();
-        Minecraft.getInstance().setScreen(null);
+        //Minecraft.getInstance().setScreen(null);
     }
 
 }

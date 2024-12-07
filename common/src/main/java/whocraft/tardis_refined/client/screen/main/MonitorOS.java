@@ -9,6 +9,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -44,7 +45,7 @@ public class MonitorOS extends Screen {
     public static ResourceLocation FRAME = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/frame_brass.png");
     protected static final int frameWidth = 256, frameHeight = 180;
     protected static final int monitorWidth = 230, monitorHeight = 130;
-    private final ResourceLocation backdrop;
+    public final ResourceLocation backdrop;
 
     public static ResourceLocation NOISE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/noise.png");
 
@@ -68,12 +69,11 @@ public class MonitorOS extends Screen {
     protected void init() {
         super.init();
         ObjectSelectionList<SelectionListEntry> list = createSelectionList();
-        this.addRenderableWidget(list);
+        if (list != null) this.addRenderableWidget(list);
     }
 
     @Override
     public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-
     }
 
     public void render2Background(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -121,7 +121,7 @@ public class MonitorOS extends Screen {
         if (backdrop == null) return;
         int hPos = (width - monitorWidth) / 2;
         int vPos = (height - monitorHeight) / 2;
-        guiGraphics.blit(backdrop, hPos, vPos, 0, 0, frameWidth, frameHeight);
+        guiGraphics.blit(backdrop, hPos, vPos, 0, 0, monitorWidth, monitorHeight);
         int b = height - vPos, r = width - hPos;
         guiGraphics.fill(hPos, vPos, r, b, 0x40000000);
     }
@@ -148,11 +148,11 @@ public class MonitorOS extends Screen {
 
             poseStack.translate(monitorWidth * o, 0, 0);
 
-            RenderSystem.setShaderColor(1, 1, 1, 1 - o);
+            RenderSystem.setShaderColor(1, 1, 1, 1 - t);
             RIGHT.renderBackdrop(guiGraphics);
             RIGHT.doRender(guiGraphics, mouseX, mouseY, partialTick);
             poseStack.translate(-monitorWidth, 0, 0);
-            RenderSystem.setShaderColor(1, 1, 1, o);
+            RenderSystem.setShaderColor(1, 1, 1, t);
         }
 
         if (LEFT != null && PREVIOUS != null && LEFT == PREVIOUS && transitionStartTime >= 0) {
@@ -160,14 +160,13 @@ public class MonitorOS extends Screen {
             float o = -0.5f * Mth.cos(Mth.PI * t) + 0.5f;
 
             poseStack.translate(-monitorWidth * o, 0, 0);
-
-            RenderSystem.setShaderColor(1, 1, 1, 1 - o);
+            RenderSystem.setShaderColor(1, 1, 1, 1 - t);
             LEFT.renderBackdrop(guiGraphics);
             LEFT.doRender(guiGraphics, mouseX, mouseY, partialTick);
             poseStack.translate(monitorWidth, 0, 0);
-            RenderSystem.setShaderColor(1, 1, 1, o);
+            RenderSystem.setShaderColor(1, 1, 1, t);
         }
-
+        RenderSystem.enableBlend();
         renderBackdrop(guiGraphics);
         RenderSystem.setShaderColor(1, 1, 1, 1);
         doRender(guiGraphics, mouseX, mouseY, partialTick);
@@ -186,6 +185,7 @@ public class MonitorOS extends Screen {
 
     public void doRender(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         inMonitorRender(guiGraphics, mouseX, mouseY, partialTick);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         ScreenHelper.renderWidthScaledText(title.getString(), guiGraphics, Minecraft.getInstance().font, width / 2f, 5 + (height - monitorHeight) / 2f, Color.LIGHT_GRAY.getRGB(), 300, true);
     }
@@ -196,7 +196,6 @@ public class MonitorOS extends Screen {
     public void renderFrame(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         int hPos = (width - frameWidth) / 2;
         int vPos = -13 + (height - monitorHeight) / 2;
-
 
         guiGraphics.blit(FRAME, hPos + shakeX, vPos + shakeY, 0, 0, frameWidth, frameHeight);
     }

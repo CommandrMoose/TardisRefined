@@ -38,7 +38,7 @@ public class WaypointListScreen extends MonitorOS {
     private TardisWaypoint waypoint = null;
 
     public WaypointListScreen(Collection<TardisWaypoint> waypoints) {
-        super(Component.translatable(ModMessages.UI_MONITOR_MAIN_TITLE), null);
+        super(Component.translatable(ModMessages.UI_MONITOR_MAIN_TITLE), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
         this.WAYPOINTS = waypoints;
     }
 
