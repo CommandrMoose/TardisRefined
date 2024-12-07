@@ -1,7 +1,6 @@
 package whocraft.tardis_refined.client.screen.main;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.brigadier.StringReader;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,9 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
-import whocraft.tardis_refined.client.screen.selections.DesktopSelectionScreen;
-import whocraft.tardis_refined.client.screen.selections.HumSelectionScreen;
-import whocraft.tardis_refined.client.screen.selections.VortexSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.DesktopSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.HumSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.VortexSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.network.messages.C2SEjectPlayer;
@@ -24,7 +23,6 @@ import whocraft.tardis_refined.common.network.messages.waypoints.C2SRequestWaypo
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.constants.ModMessages;
-import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRUpgrades;
 
 import java.awt.*;
@@ -45,27 +43,20 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         this.upgradeHandler = upgradeHandler;
     }
 
-    private Button shellSelectButton;
-    private Button vortxSelectButton;
-    private Button extviewButton;
-
     @Override
     protected void init() {
-        int hPos = (width - monitorWidth) / 2;
-        int vPos = (height - monitorHeight) / 2;
-
-        shellSelectButton = addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_SHELL_SELECTION), button -> {
-            C2SRequestShellSelection p = new C2SRequestShellSelection();
-            p.send();
-        }).pos(hPos, height / 2).size(70, 20).build());
-
         super.init();
+        int hPos = (width - monitorWidth) / 2;
+
+        Button shellSelectButton = addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_SHELL_SELECTION), button -> new C2SRequestShellSelection().send()).pos(hPos + 5, height / 2).size(70, 20).build());
+        shellSelectButton.active = TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler);
+        Button vortxSelectButton = addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_MONITOR_VORTEX), button -> this.switchScreenToLeft(new VortexSelectionScreen(VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.FLOW.get())))).pos(hPos + 5, -20 + height / 2).size(70, 20).build());
+        vortxSelectButton.active = true;
     }
 
     @Override
-    public void doRender(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void inMonitorRender(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         PoseStack poseStack = guiGraphics.pose();
-        int textOffset = height / 2;
         int upgradesLeftPos = width / 2 - 75;
         int hPos = (width - monitorWidth) / 2;
         int vPos = (height - monitorHeight) / 2;
@@ -95,16 +86,16 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
 
     @Override
     public GenericMonitorSelectionList<SelectionListEntry> createSelectionList() {
-        int hPos = width / 2 + 20;
+        int hPos = 20 + width / 2;
         int vPos = 20 + (height - monitorHeight) / 2;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 250, 80, hPos, vPos, height - vPos, 10);
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, hPos, vPos, height - vPos, 10);
         selectionList.setRenderBackground(false);
         //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_EXTERNAL_SHELL), entry -> new C2SRequestShellSelection().send(), hPos, TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler)));
-        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_DESKTOP_CONFIGURATION), entry -> Minecraft.getInstance().setScreen(new DesktopSelectionScreen()), hPos, TRUpgrades.INSIDE_ARCHITECTURE.get().isUnlocked(upgradeHandler)));
+        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_DESKTOP_CONFIGURATION), entry -> switchScreenToRight(new DesktopSelectionScreen()), hPos, TRUpgrades.INSIDE_ARCHITECTURE.get().isUnlocked(upgradeHandler)));
         selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_WAYPOINTS), entry -> new C2SRequestWaypoints().send(), hPos, TRUpgrades.WAYPOINTS.get().isUnlocked(upgradeHandler)));
-        //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW), entry -> new C2SBeginShellView().send(), hPos, TRUpgrades.WAYPOINTS.get().isUnlocked(upgradeHandler)));
+        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW), entry -> new C2SBeginShellView().send(), hPos, TRUpgrades.WAYPOINTS.get().isUnlocked(upgradeHandler)));
         //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_VORTEX), entry -> Minecraft.getInstance().setScreen(new VortexSelectionScreen(VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.FLOW.get()))), hPos));
-        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SELECT_HUM), entry -> Minecraft.getInstance().setScreen(new HumSelectionScreen()), hPos));
+        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SELECT_HUM), entry -> switchScreenToRight(new HumSelectionScreen()), hPos));
         selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_EJECT), entry -> {
             new C2SEjectPlayer().send();
             Minecraft.getInstance().setScreen(null);

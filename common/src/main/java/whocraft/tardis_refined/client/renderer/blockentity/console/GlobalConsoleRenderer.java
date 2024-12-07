@@ -14,7 +14,7 @@ import whocraft.tardis_refined.client.model.blockentity.console.ConsoleModelColl
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleUnit;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
 import whocraft.tardis_refined.client.renderer.RenderHelper;
-import whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;
 import whocraft.tardis_refined.common.block.console.GlobalConsoleBlock;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;

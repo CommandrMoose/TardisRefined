@@ -1,14 +1,9 @@
-package whocraft.tardis_refined.client.screen.selections;
+package whocraft.tardis_refined.client.screen.screens;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.brigadier.StringReader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
@@ -26,35 +21,32 @@ public class HumSelectionScreen extends MonitorOS {
     private HumEntry currentHumEntry;
 
     public HumSelectionScreen() {
-        super(Component.translatable(""));
+        super(Component.translatable(""), null);
     }
 
     public static void selectHum(HumEntry theme) {
         assert Minecraft.getInstance().player != null;
         new C2SChangeHum(Minecraft.getInstance().player.level().dimension(), theme).send();
-        Minecraft.getInstance().setScreen(null);
+        //Minecraft.getInstance().setScreen(null);
     }
 
     @Override
     protected void init() {
-        this.setEvents(() -> {
-            HumSelectionScreen.selectHum(currentHumEntry);
-        }, () -> {
-            Minecraft.getInstance().setScreen(null);
+        super.init();
+        this.setEvents(() -> HumSelectionScreen.selectHum(currentHumEntry), () -> {
+            if (PREVIOUS != null)
+                this.switchScreenToLeft(PREVIOUS);
         });
         this.currentHumEntry = grabHum();
-
-        super.init();
 
         addSubmitButton(width / 2 + 85, (height) / 2 + 35);
         addCancelButton(width / 2 - 105, (height) / 2 + 35);
     }
 
-
     private HumEntry grabHum() {
-        for (HumEntry humEntry : TardisHums.getRegistry().values()) {
+        for (HumEntry humEntry : TardisHums.getRegistry().values())
             return humEntry;
-        }
+
         return null;
     }
 
@@ -73,10 +65,9 @@ public class HumSelectionScreen extends MonitorOS {
 
             // Check for if the tellraw name is incomplete, or fails to pass.
             try {
-                var json = Component.Serializer.fromJson(new StringReader(humEntry.getNameComponent()));
-                name = json;
+                name = Component.Serializer.fromJson(new StringReader(humEntry.getNameComponent()));
             } catch (Exception ex) {
-                TardisRefined.LOGGER.error("Could not process Name for hum " + humEntry.getIdentifier().toString());
+                TardisRefined.LOGGER.error("Could not process Name for hum {}", humEntry.getIdentifier().toString());
             }
 
             selectionList.children().add(new SelectionListEntry(name, (entry) -> {

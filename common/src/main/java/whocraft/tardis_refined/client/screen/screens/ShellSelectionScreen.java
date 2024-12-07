@@ -1,4 +1,4 @@
-package whocraft.tardis_refined.client.screen.selections;
+package whocraft.tardis_refined.client.screen.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
@@ -14,7 +14,6 @@ import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionL
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.common.network.messages.C2SChangeShell;
-import whocraft.tardis_refined.common.network.messages.screens.C2SRequestShellSelection;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPatterns;
@@ -29,12 +28,12 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
 
     @Override
     protected void init() {
+        super.init();
         this.setEvents(
+                () -> selectShell(this.currentShellTheme),
                 () -> {
-                    selectShell(this.currentShellTheme);
-                },
-                () -> {
-                    Minecraft.getInstance().setScreen(PREVIOUS);
+                    if (PREVIOUS != null)
+                        this.switchScreenToRight(PREVIOUS);
                 }
         );
 
@@ -49,8 +48,6 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
         }).pos(width / 2 + 14, height - vPos - 25).size(70, 20).build());
 
         patternButton.visible = false; //Hide when initialised. We will only show it when there are more than 1 pattern for a shell (via its {@link PatternCollection} )
-
-        super.init();
     }
 
     @Override
@@ -76,14 +73,8 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
     }
 
     @Override
-    public void doRender(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void inMonitorRender(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         renderShell(guiGraphics, width / 2 - 70, height / 2 - 5, 25F);
-    }
-
-    @Override
-    public void switchToScreen(MonitorOS previous) {
-        C2SRequestShellSelection p = new C2SRequestShellSelection();
-        p.send();
     }
 
     @Override

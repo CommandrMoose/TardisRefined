@@ -18,7 +18,7 @@ import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 
 import static whocraft.tardis_refined.client.overlays.VortexOverlay.VORTEX;
-import static whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen.globalShellBlockEntity;
+import static whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen.globalShellBlockEntity;
 
 public class ShellRenderer {
 

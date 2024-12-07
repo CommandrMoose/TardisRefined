@@ -10,11 +10,11 @@ import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.client.screen.CancelDesktopScreen;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.client.screen.main.MonitorScreen;
-import whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;
 import whocraft.tardis_refined.client.screen.upgrades.UpgradesScreen;
 import whocraft.tardis_refined.client.screen.waypoints.CoordInputType;
-import whocraft.tardis_refined.client.screen.waypoints.WaypointListScreen;
-import whocraft.tardis_refined.client.screen.waypoints.WaypointManageScreen;
+import whocraft.tardis_refined.client.screen.screens.WaypointListScreen;
+import whocraft.tardis_refined.client.screen.screens.WaypointManageScreen;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
@@ -29,11 +29,21 @@ public class ScreenHandler {
 
     @Environment(EnvType.CLIENT)
     public static void setWaypointScreen(Collection<TardisWaypoint> waypoints) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen instanceof MonitorOS) {
+            ((MonitorOS) mc.screen).switchScreenToRight(new WaypointListScreen(waypoints));
+            return;
+        }
         Minecraft.getInstance().setScreen(new WaypointListScreen(waypoints));
     }
 
     @Environment(EnvType.CLIENT)
     public static void setCoordinatesScreen(List<ResourceKey<Level>> levels, CoordInputType coordInputType, TardisNavLocation tardisNavLocation) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen instanceof MonitorOS) {
+            ((MonitorOS) mc.screen).switchScreenToRight(new WaypointManageScreen(levels, coordInputType, tardisNavLocation));
+            return;
+        }
         Minecraft.getInstance().setScreen(new WaypointManageScreen(levels, coordInputType, tardisNavLocation));
     }
 
@@ -47,6 +57,7 @@ public class ScreenHandler {
         if (desktopGenerating) {
             Minecraft.getInstance().setScreen(new CancelDesktopScreen());
         } else {
+            assert Minecraft.getInstance().level != null;
             UpgradeHandler upgradeHandlerClient = new UpgradeHandler(new TardisLevelOperator(Minecraft.getInstance().level));
             upgradeHandlerClient.loadData(upgradeHandlerNbt);
             Minecraft.getInstance().setScreen(new MonitorScreen(currentLocation, targetLocation, upgradeHandlerClient, currentShellTheme));
@@ -65,6 +76,7 @@ public class ScreenHandler {
 
     @Environment(EnvType.CLIENT)
     public static void displayUpgradesScreen(CompoundTag upgradeTag) {
+        assert Minecraft.getInstance().level != null;
         UpgradeHandler upgradeHandlerClient = new UpgradeHandler(new TardisLevelOperator(Minecraft.getInstance().level));
         upgradeHandlerClient.loadData(upgradeTag);
 

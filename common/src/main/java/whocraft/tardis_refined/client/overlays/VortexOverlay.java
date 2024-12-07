@@ -12,14 +12,12 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
-import whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
-import java.util.Objects;
-
 import static whocraft.tardis_refined.client.renderer.vortex.ShellRenderer.renderShell;
-import static whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen.globalShellBlockEntity;
+import static whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen.globalShellBlockEntity;
 
 public class VortexOverlay {
 
