@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
@@ -43,7 +44,7 @@ public class CancelDesktopScreen extends MonitorOS {
     }
 
     @Override
-    public void inMonitorRender(GuiGraphics guiGraphics, int i, int j, float f) {
+    public void inMonitorRender(@NotNull GuiGraphics guiGraphics, int i, int j, float f) {
         ScreenHelper.renderWidthScaledText(Component.translatable(ModMessages.UI_DESKTOP_CANCEL_TITLE).getString(), guiGraphics, Minecraft.getInstance().font, width / 2f, height / 2f - 30, Color.LIGHT_GRAY.getRGB(), 300, true);
         ScreenHelper.renderWidthScaledText(Component.translatable(ModMessages.UI_DESKTOP_CANCEL_DESCRIPTION).getString(), guiGraphics, Minecraft.getInstance().font, width / 2f, this.height / 2f - 20, Color.WHITE.getRGB(), 210, true);
         ScreenHelper.renderWidthScaledText(Component.translatable(ModMessages.UI_DESKTOP_CANCEL_DESKTOP).getString(), guiGraphics, Minecraft.getInstance().font, width / 2f, this.height / 2f - 10, Color.WHITE.getRGB(), 210, true);

@@ -30,8 +30,9 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
     protected void init() {
         super.init();
         this.setEvents(
-                () -> selectShell(this.currentShellTheme),
+                () -> selectShell(CURRENTSHELLTHEME),
                 () -> {
+                    selectShell(CURRENTSHELLTHEME);
                     if (PREVIOUS != null)
                         this.switchScreenToRight(PREVIOUS);
                 }
@@ -43,13 +44,13 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
         addCancelButton(width / 2 + 90, height - vPos - 25);
 
         patternButton = addRenderableWidget(Button.builder(Component.literal(""), button -> {
-            pattern = ShellPatterns.next(this.patternCollection, this.pattern);
-            button.setMessage(Component.Serializer.fromJson(new StringReader(this.pattern.name())));
+            PATTERN = ShellPatterns.next(PATTERNCOLLECTION, PATTERN);
+            button.setMessage(Component.Serializer.fromJson(new StringReader(PATTERN.name())));
         }).pos(width / 2 + 14, height - vPos - 25).size(70, 20).build());
-        boolean themeHasPatterns = this.patternCollection.size() > 1;
+        boolean themeHasPatterns = PATTERNCOLLECTION.size() > 1;
         patternButton.visible = themeHasPatterns;
         if (themeHasPatterns) //Update the button name now that we have confirmed that there is more than one pattern in the shell
-            this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(pattern.name())));
+            this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(PATTERN.name())));
     }
 
     @Override
@@ -96,29 +97,28 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
             }
 
             SelectionListEntry selectionListEntry = new SelectionListEntry(theme.getDisplayName(), (entry) -> {
-                this.currentShellTheme = shellThemeId;
+                CURRENTSHELLTHEME = shellThemeId;
 
                 for (Object child : selectionList.children()) {
                     if (child instanceof SelectionListEntry current) {
                         current.setChecked(false);
                     }
                 }
-                this.patternCollection = ShellPatterns.getPatternCollectionForTheme(this.currentShellTheme);
-                this.pattern = this.patternCollection.get(0);
+                PATTERNCOLLECTION = ShellPatterns.getPatternCollectionForTheme(CURRENTSHELLTHEME);
+                PATTERN = PATTERNCOLLECTION.get(0);
 
-                boolean themeHasPatterns = this.patternCollection.size() > 1;
+                boolean themeHasPatterns = PATTERNCOLLECTION.size() > 1;
 
                 //Hide the pattern button if there is only one pattern available for the shell, else show it. (i.e. The default)
                 patternButton.visible = themeHasPatterns;
 
                 if (themeHasPatterns) //Update the button name now that we have confirmed that there is more than one pattern in the shell
-                    this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(pattern.name())));
+                    this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(PATTERN.name())));
 
-                age = 0;
                 entry.setChecked(true);
             }, leftPos);
 
-            if (currentShellTheme.toString().equals(shellThemeId.toString())) {
+            if (CURRENTSHELLTHEME.toString().equals(shellThemeId.toString())) {
                 selectionListEntry.setChecked(true);
             }
 
@@ -130,7 +130,7 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
 
     public void selectShell(ResourceLocation themeId) {
         assert Minecraft.getInstance().player != null;
-        new C2SChangeShell(Minecraft.getInstance().player.level().dimension(), themeId, pattern).send();
+        new C2SChangeShell(Minecraft.getInstance().player.level().dimension(), themeId, PATTERN).send();
         //Minecraft.getInstance().setScreen(null);
     }
 

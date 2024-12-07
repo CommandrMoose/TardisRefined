@@ -9,7 +9,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.SpriteIconButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -275,29 +274,29 @@ public class MonitorOS extends Screen {
 
     public static class MonitorOSExtension extends MonitorOS {
 
-        public MonitorOSExtension(Component title, ResourceLocation currentShellTheme) {
+        public MonitorOSExtension(Component title, ResourceLocation currentShellThem) {
             super(title, null);
-            this.currentShellTheme = currentShellTheme;
-            this.patternCollection = ShellPatterns.getPatternCollectionForTheme(this.currentShellTheme);
-            this.themeList = ShellTheme.SHELL_THEME_REGISTRY.keySet().stream().toList();
+            CURRENTSHELLTHEME = currentShellThem;
+            PATTERNCOLLECTION = ShellPatterns.getPatternCollectionForTheme(CURRENTSHELLTHEME);
+            THEMELIST = ShellTheme.SHELL_THEME_REGISTRY.keySet().stream().toList();
             generateDummyGlobalShell();
         }
 
         @Override
         protected void init() {
             super.init();
-            if (currentShellTheme == null) this.currentShellTheme = this.themeList.get(0);
-            this.pattern = this.patternCollection.get(0);
+            if (CURRENTSHELLTHEME == null) CURRENTSHELLTHEME = THEMELIST.get(0);
+            PATTERN = PATTERNCOLLECTION.get(0);
         }
 
-        public static GlobalShellBlockEntity globalShellBlockEntity;
-        public ResourceLocation currentShellTheme;
-        public ShellPattern pattern;
-        public final List<ResourceLocation> themeList;
-        public List<ShellPattern> patternCollection;
+        public static GlobalShellBlockEntity GLOBALSHELL_BLOCKENTITY;
+        public static ResourceLocation CURRENTSHELLTHEME;
+        public static ShellPattern PATTERN;
+        public static List<ResourceLocation> THEMELIST;
+        public static List<ShellPattern> PATTERNCOLLECTION;
 
         public void renderShell(GuiGraphics guiGraphics, int x, int y, float scale) {
-            ShellModel model = ShellModelCollection.getInstance().getShellEntry(this.currentShellTheme).getShellModel(pattern);
+            ShellModel model = ShellModelCollection.getInstance().getShellEntry(CURRENTSHELLTHEME).getShellModel(PATTERN);
             model.setDoorPosition(false);
             Lighting.setupForEntityInInventory();
             PoseStack pose = guiGraphics.pose();
@@ -307,21 +306,21 @@ public class MonitorOS extends Screen {
             pose.mulPose(Axis.XP.rotationDegrees(-15F));
             pose.mulPose(Axis.YP.rotationDegrees((float) (System.currentTimeMillis() % 5400L) / 15L));
 
-            VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(model.renderType(model.getShellTexture(pattern, false)));
-            model.renderShell(globalShellBlockEntity, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(model.renderType(model.getShellTexture(PATTERN, false)));
+            model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             guiGraphics.flush();
             pose.popPose();
             Lighting.setupFor3DItems();
         }
 
         public static void generateDummyGlobalShell() {
-            globalShellBlockEntity = new GlobalShellBlockEntity(BlockPos.ZERO, TRBlockRegistry.GLOBAL_SHELL_BLOCK.get().defaultBlockState());
+            GLOBALSHELL_BLOCKENTITY = new GlobalShellBlockEntity(BlockPos.ZERO, TRBlockRegistry.GLOBAL_SHELL_BLOCK.get().defaultBlockState());
             assert Minecraft.getInstance().level != null;
-            globalShellBlockEntity.setLevel(Minecraft.getInstance().level);
+            GLOBALSHELL_BLOCKENTITY.setLevel(Minecraft.getInstance().level);
             ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TardisRefined.MODID, UUID.randomUUID().toString()));
-            globalShellBlockEntity.setTardisId(generatedLevelKey);
-            globalShellBlockEntity.setShellTheme(ShellTheme.POLICE_BOX.getId());
-            globalShellBlockEntity.setPattern(ShellPatterns.DEFAULT);
+            GLOBALSHELL_BLOCKENTITY.setTardisId(generatedLevelKey);
+            GLOBALSHELL_BLOCKENTITY.setShellTheme(ShellTheme.POLICE_BOX.getId());
+            GLOBALSHELL_BLOCKENTITY.setPattern(ShellPatterns.DEFAULT);
         }
     }
 }

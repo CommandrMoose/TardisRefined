@@ -16,10 +16,8 @@ import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
-import java.util.Objects;
-
 import static whocraft.tardis_refined.client.renderer.vortex.ShellRenderer.renderShell;
-import static whocraft.tardis_refined.client.screen.main.MonitorOS.MonitorOSExtension.globalShellBlockEntity;
+import static whocraft.tardis_refined.client.screen.main.MonitorOS.MonitorOSExtension.GLOBALSHELL_BLOCKENTITY;
 
 public class VortexOverlay {
 
@@ -36,7 +34,7 @@ public class VortexOverlay {
     private static long LAST_TIME = System.currentTimeMillis();
 
     public static void update(GuiGraphics gg) {
-        if (globalShellBlockEntity == null) {
+        if (GLOBALSHELL_BLOCKENTITY == null) {
             ShellSelectionScreen.generateDummyGlobalShell();
             return;
         }

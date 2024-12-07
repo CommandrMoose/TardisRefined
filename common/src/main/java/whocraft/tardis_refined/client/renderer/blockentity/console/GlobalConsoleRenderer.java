@@ -115,11 +115,11 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
                 poseStack.mulPose(Axis.YP.rotationDegrees(rotation % 360));
             }
 
-            if (ShellSelectionScreen.globalShellBlockEntity == null) {
+            if (ShellSelectionScreen.GLOBALSHELL_BLOCKENTITY == null) {
                 ShellSelectionScreen.generateDummyGlobalShell();
             }
 
-            ShellSelectionScreen.globalShellBlockEntity.setTardisId(reactions.getLevelKey());
+            ShellSelectionScreen.GLOBALSHELL_BLOCKENTITY.setTardisId(reactions.getLevelKey());
 
             // Dynamic flickering alpha for a hologram effect
             float flickerAlpha = 0.2f + blockEntity.getLevel().random.nextFloat() * 0.1f;
@@ -133,7 +133,7 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
 
             model.setIgnoreAnmationAlpha(!reactions.isTakingOff() && !reactions.isLanding());
             model.renderShell(
-                    ShellSelectionScreen.globalShellBlockEntity,
+                    ShellSelectionScreen.GLOBALSHELL_BLOCKENTITY,
                     false,
                     true,
                     poseStack,

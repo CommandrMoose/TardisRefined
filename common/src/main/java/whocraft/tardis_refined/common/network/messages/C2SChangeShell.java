@@ -19,6 +19,7 @@ import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class C2SChangeShell extends MessageC2S {
@@ -54,7 +55,7 @@ public class C2SChangeShell extends MessageC2S {
 
     @Override
     public void handle(MessageContext context) {
-        Optional<ServerLevel> level = Optional.ofNullable(context.getPlayer().getServer().levels.get(resourceKey));
+        Optional<ServerLevel> level = Optional.ofNullable(Objects.requireNonNull(context.getPlayer().getServer()).levels.get(resourceKey));
         level.flatMap(TardisLevelOperator::get).ifPresent(y -> {
             if (TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(y.getUpgradeHandler()) && y.getExteriorManager().hasEnoughFuelForShellChange()) {
                 y.setShellTheme(this.shellTheme, pattern.id(), ShellChangeSources.GENERIC_UPDATE);
