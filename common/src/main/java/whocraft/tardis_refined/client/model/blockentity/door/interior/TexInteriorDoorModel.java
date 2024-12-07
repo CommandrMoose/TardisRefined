@@ -10,16 +10,28 @@ import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 
-public class PoliceBoxDoorModel extends ShellDoorModel {
+public class TexInteriorDoorModel extends ShellDoorModel {
 
-    private final ModelPart left_door;
     private final ModelPart root;
+    public final ModelPart door;
     private final ModelPart portal;
+    private final ModelPart frame;
 
-    public PoliceBoxDoorModel(ModelPart root) {
+    private boolean isDoorOpen = false;
+
+    public TexInteriorDoorModel(ModelPart root) {
         this.root = root;
-        this.left_door = JsonToAnimationDefinition.findPart(this, "left_door");
+        this.door = JsonToAnimationDefinition.findPart(this, "door");
+        this.frame = JsonToAnimationDefinition.findPart(this, "frame");
         this.portal = JsonToAnimationDefinition.findPart(this, "portal");
+    }
+
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+        this.portal.visible = false;
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
@@ -30,11 +42,13 @@ public class PoliceBoxDoorModel extends ShellDoorModel {
             modelPart.visible = true;
         });
         this.portal.visible = false;
+        door.visible = true;
         this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
     public void renderPortalMask(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+
         if (ModCompatChecker.immersivePortals()) {
             if (ImmersivePortalsClient.shouldStopRenderingInPortal()) {
                 return;
@@ -50,7 +64,7 @@ public class PoliceBoxDoorModel extends ShellDoorModel {
 
     @Override
     public ModelPart root() {
-        return this.root;
+        return root;
     }
 
     @Override
@@ -60,7 +74,7 @@ public class PoliceBoxDoorModel extends ShellDoorModel {
 
     @Override
     public void setDoorPosition(boolean open) {
-        this.left_door.yRot = (open) ? -300f : 0;
+       this.isDoorOpen = open;
     }
 
 }

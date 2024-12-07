@@ -18,14 +18,21 @@ public class LeftRightInteriorDoorModel extends ShellDoorModel {
     private final ModelPart portal;
     private final ModelPart frame;
     private final float openAmount;
+    private final boolean openLeft, openRight;
 
     public LeftRightInteriorDoorModel(ModelPart root, float openAmount) {
+       this(root, openAmount, true, true);
+    }
+
+    public LeftRightInteriorDoorModel(ModelPart root, float openAmount, boolean openLeft, boolean openRight) {
         this.root = root;
         this.leftDoor = JsonToAnimationDefinition.findPart(this, "left_door");
         this.frame = JsonToAnimationDefinition.findPart(this, "frame");
         this.rightDoor = JsonToAnimationDefinition.findPart(this, "right_door");
         this.portal = JsonToAnimationDefinition.findPart(this, "portal");
         this.openAmount = openAmount;
+        this.openLeft = openLeft;
+        this.openRight = openRight;
     }
 
 
@@ -76,8 +83,8 @@ public class LeftRightInteriorDoorModel extends ShellDoorModel {
     @Override
     public void setDoorPosition(boolean open) {
         if (open) {
-            this.leftDoor.yRot = -openAmount;
-            this.rightDoor.yRot = openAmount;
+            this.leftDoor.yRot = openLeft ? -openAmount : 0;
+            this.rightDoor.yRot = openRight ? openAmount : 0;
         } else {
             this.leftDoor.yRot = 0;
             this.rightDoor.yRot = 0;

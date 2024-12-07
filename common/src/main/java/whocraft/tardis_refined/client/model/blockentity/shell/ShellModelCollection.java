@@ -70,10 +70,10 @@ public class ShellModelCollection {
 
         // Doors
         factoryDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.FACTORY_DOOR)), 250f);
-        policeBoxDoorModel = new PoliceBoxDoorModel(context.bakeLayer((ModelRegistry.POLICE_BOX_DOOR)));
+        policeBoxDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.POLICE_BOX_DOOR)), 300, true, false);
         phoneBoothDoorModel = new PhoneBoothDoorModel(context.bakeLayer((ModelRegistry.PHONE_BOOTH_DOOR)));
         mysticDoorModel = new MysticDoorModel(context.bakeLayer((ModelRegistry.MYSTIC_DOOR)));
-        drifterDoorModel = new DrifterDoorModel(context.bakeLayer((ModelRegistry.DRIFTER_DOOR)));
+        drifterDoorModel = new TexInteriorDoorModel(context.bakeLayer((ModelRegistry.DRIFTER_DOOR)));
         presentDoorModel = new PresentDoorModel(context.bakeLayer((ModelRegistry.PRESENT_DOOR)));
         vendingDoorModel = new VendingMachineDoorModel(context.bakeLayer((ModelRegistry.VENDING_DOOR)));
         briefcaseDoorModel = new BriefcaseDoorModel(context.bakeLayer((ModelRegistry.BRIEFCASE_DOOR)));
@@ -85,7 +85,7 @@ public class ShellModelCollection {
         pagodaDoorModel = new PagodaDoorModel(context.bakeLayer((ModelRegistry.PAGODA_DOOR)));
         liftDoorModel = new LiftShellDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
         hieroglyphDoorModel = new HieroglyphShellDoor(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
-        castleDoorModel = new CastleShellDoorModel(context.bakeLayer((ModelRegistry.CASTLE_DOOR)));
+        castleDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.CASTLE_DOOR)), -90);
         pathfinderDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.PATHFINDER_DOOR)), 275f);
         halfBakedDoorModel = new HalfBakedDoorModel(context.bakeLayer((ModelRegistry.HALF_BAKED_DOOR)));
 
