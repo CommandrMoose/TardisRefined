@@ -8,6 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
@@ -20,23 +21,23 @@ import java.util.List;
 public class VortexSelectionScreen extends MonitorOS {
 
     private final List<ResourceLocation> vortexList;
-    private ResourceLocation currentVortex;
+    public static ResourceLocation currentVortex = VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.CLOUDS.get());
 
     public VortexSelectionScreen(ResourceLocation currentVortex) {
         super(Component.translatable(ModMessages.UI_MONITOR_VORTEX), null);
         this.vortexList = VortexRegistry.VORTEX_REGISTRY.keySet().stream().toList();
-        this.currentVortex = currentVortex;
+        VortexSelectionScreen.currentVortex = currentVortex;
     }
 
     @Override
     protected void init() {
         super.init();
-        this.setEvents(() -> selectVortex(this.currentVortex), () -> {
+        this.setEvents(() -> selectVortex(currentVortex), () -> {
             if (PREVIOUS != null)
                 this.switchScreenToRight(PREVIOUS);
         });
         if (currentVortex == null)
-            this.currentVortex = this.vortexList.get(0);
+            currentVortex = this.vortexList.get(0);
         int vPos = (height - monitorHeight) / 2;
         addSubmitButton(width / 2 - 11, height - vPos - 25);
         addCancelButton(width / 2 + 90, height - vPos - 25);
@@ -83,7 +84,7 @@ public class VortexSelectionScreen extends MonitorOS {
             ResourceLocation vortId = vort.key().location();
 
             SelectionListEntry selectionListEntry = new SelectionListEntry(theme.getDisplayName(), (entry) -> {
-                this.currentVortex = vortId;
+                currentVortex = vortId;
 
                 for (Object child : selectionList.children()) {
                     if (child instanceof SelectionListEntry current) {
@@ -94,6 +95,7 @@ public class VortexSelectionScreen extends MonitorOS {
                 age = 0;
                 entry.setChecked(true);
             }, leftPos);
+
 
             if (currentVortex.toString().equals(vortId.toString())) {
                 selectionListEntry.setChecked(true);

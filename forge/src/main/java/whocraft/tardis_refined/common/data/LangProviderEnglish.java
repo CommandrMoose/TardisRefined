@@ -51,7 +51,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(VortexRegistry.LESBIAN_FLAG.get().getTranslationKey(), "Lesbian Flag");
         add(VortexRegistry.NON_BINARY_FLAG.get().getTranslationKey(), "Non-Binary Flag");
         add(VortexRegistry.AGENDER_FLAG.get().getTranslationKey(), "Agender Flag");
-        add(VortexRegistry.GAY_FLAG.get().getTranslationKey(), "Agender Flag");
+        add(VortexRegistry.GAY_FLAG.get().getTranslationKey(), "Gay Flag");
 
 
         /*Sounds*/

@@ -26,9 +26,12 @@ import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
 import whocraft.tardis_refined.client.overlays.VortexOverlay;
+import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.CommonTRWidgets;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
+import whocraft.tardis_refined.client.screen.screens.VortexSelectionScreen;
+import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.patterns.ShellPattern;
@@ -45,6 +48,7 @@ public class MonitorOS extends Screen {
     protected static final int frameWidth = 256, frameHeight = 180;
     protected static final int monitorWidth = 230, monitorHeight = 130;
     public final ResourceLocation backdrop;
+    public static final VortexRenderer VORTEX = new VortexRenderer(VortexRegistry.CLOUDS.get());
 
     public static ResourceLocation NOISE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/noise.png");
 
@@ -109,8 +113,13 @@ public class MonitorOS extends Screen {
         RenderSystem.setProjectionMatrix(perspective, VertexSorting.DISTANCE_TO_ORIGIN);
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(20));
-        VortexOverlay.VORTEX.time.speed = 0.3;
-        VortexOverlay.VORTEX.renderVortex(guiGraphics, 1, false);
+
+        // Blindly assume that the player is not doing weird stuff to open the menu outside a TARDIS
+        TardisClientData tardisClientData = TardisClientData.getInstance(Minecraft.getInstance().level.dimension());
+        
+        VORTEX.vortexType = VortexRegistry.VORTEX_REGISTRY.get(this instanceof VortexSelectionScreen ? VortexSelectionScreen.currentVortex: tardisClientData.getVortex());
+        VORTEX.time.speed = 0.3;
+        VORTEX.renderVortex(guiGraphics, 1, false);
         RenderSystem.restoreProjectionMatrix();
         poseStack.popPose();
         guiGraphics.disableScissor();
