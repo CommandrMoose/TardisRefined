@@ -225,8 +225,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.UI_EXTERNAL_SHELL, "EXTERNAL SHELL CONFIGURATION");
         add(ModMessages.UI_SHELL_SELECTION, "EXTERNAL SHELL CONFIGURATION");
         add(ModMessages.UI_MONITOR_SHELL_VIEW, "SHELL VIEW");
-        add(ModMessages.UI_DESKTOP_SELECTION, "DESKTOP CONFIGURATION");
-        add(ModMessages.UI_DESKTOP_CONFIGURATION, "DESKTOP CONFIGURATION");
+        add(ModMessages.UI_DESKTOP_CONFIGURATION, "DESKTOP");
         add(ModMessages.UI_DESKTOP_CANCEL_TITLE, "OPERATION IN PROGRESS");
         add(ModMessages.UI_DESKTOP_CANCEL_DESCRIPTION, "Systems disabled as a Desktop reconfiguration has been scheduled.");
         add(ModMessages.UI_DESKTOP_CANCEL_DESKTOP, "Would you like to cancel the upcoming reconfiguration?");

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.api.event.ShellChangeSources;
+import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.network.MessageC2S;
@@ -60,6 +61,10 @@ public class C2SChangeShell extends MessageC2S {
             if (TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(y.getUpgradeHandler()) && y.getExteriorManager().hasEnoughFuelForShellChange()) {
                 y.setShellTheme(this.shellTheme, pattern.id(), ShellChangeSources.GENERIC_UPDATE);
                 y.getPilotingManager().removeFuel(y.getExteriorManager().getFuelForShellChange());
+                TardisClientData clientData = y.tardisClientData();
+                clientData.setShellTheme(this.shellTheme);
+                clientData.setShellPattern(this.pattern.id());
+                clientData.sync();
             } else {
                 PlayerUtil.sendMessage(context.getPlayer(), ModMessages.HARDWARE_OFFLINE, true);
             }

@@ -28,7 +28,7 @@ public class DesktopSelectionScreen extends MonitorOS {
     private DesktopTheme currentDesktopTheme;
 
     public DesktopSelectionScreen() {
-        super(Component.translatable(ModMessages.UI_DESKTOP_SELECTION), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
+        super(Component.translatable(ModMessages.UI_DESKTOP_CONFIGURATION), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
     }
 
     public static void selectDesktop(DesktopTheme theme) {
