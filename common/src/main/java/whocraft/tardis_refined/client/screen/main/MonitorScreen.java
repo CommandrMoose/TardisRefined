@@ -5,10 +5,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
+import whocraft.tardis_refined.client.screen.components.BackgroundlessButton;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.screens.DesktopSelectionScreen;
@@ -43,15 +45,47 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         this.upgradeHandler = upgradeHandler;
     }
 
+    private Button ejectbtn;
+    private int ejectbtntime;
+    private boolean ejectbtnshow;
+
     @Override
     protected void init() {
         super.init();
         int hPos = (width - monitorWidth) / 2;
-
-        Button shellSelectButton = addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_SHELL_SELECTION), button -> new C2SRequestShellSelection().send()).pos(hPos + 5, height / 2).size(70, 20).build());
+        int vPos = (height - monitorHeight) / 2;
+/*
+        Button shellSelectButton = addRenderableWidget(
+                Button.builder(Component.translatable(ModMessages.UI_SHELL_SELECTION),
+                                button -> new C2SRequestShellSelection().send())
+                        .pos(hPos + 5, height / 2)
+                        .size(70, 20).build());
         shellSelectButton.active = TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler);
-        Button vortxSelectButton = addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_MONITOR_VORTEX), button -> this.switchScreenToLeft(new VortexSelectionScreen(VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.FLOW.get())))).pos(hPos + 5, -20 + height / 2).size(70, 20).build());
+
+        Button vortxSelectButton = addRenderableWidget(
+                Button.builder(Component.translatable(ModMessages.UI_MONITOR_VORTEX),
+                                button -> this.switchScreenToLeft(new VortexSelectionScreen(currentVortex)))
+                        .pos(hPos + 5, -20 + height / 2)
+                        .size(70, 20).build());
         vortxSelectButton.active = true;
+*/
+        BackgroundlessButton extView = addRenderableWidget(
+                BackgroundlessButton.backgroundlessBuilder(Component.literal(""),
+                                button -> new C2SBeginShellView().send())
+                        .pos(hPos + 20, -30 + height / 2)
+                        .size(40, 60).build());
+        extView.setTooltip(Tooltip.create(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW)));
+        extView.active = true;
+
+        ejectbtn = addRenderableWidget(
+                Button.builder(Component.translatable(ModMessages.UI_MONITOR_EJECT),
+                                button -> {
+                                    new C2SEjectPlayer().send();
+                                    Minecraft.getInstance().setScreen(null);
+                                })
+                        .pos(-35 + hPos + monitorWidth / 2, vPos + monitorHeight - 20)
+                        .size(70, 20).build());
+
     }
 
     @Override
@@ -61,11 +95,21 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         int hPos = (width - monitorWidth) / 2;
         int vPos = (height - monitorHeight) / 2;
 
+
+        this.ejectbtnshow = (mouseY >= vPos + monitorHeight - 20 && mouseY <= vPos + monitorHeight) && (mouseX >= -35 + hPos + monitorWidth / 2 && mouseX <= 70 - 35 + hPos + monitorWidth / 2);
+
+        ejectbtn.setPosition(-35 + hPos + monitorWidth / 2, vPos + monitorHeight - ejectbtntime);
+        ejectbtn.active = ejectbtntime == 20;
+
+
         if (noUpgrades && ChatFormatting.GOLD.getColor() != null) {
             guiGraphics.drawString(Minecraft.getInstance().font, Component.translatable(ModMessages.UI_NO_INSTALLED_SUBSYSTEMS).getString(), upgradesLeftPos, vPos + 30, ChatFormatting.GOLD.getColor());
         }
 
-        renderShell(guiGraphics, width / 2, height / 2, 15F);
+        poseStack.pushPose();
+        poseStack.translate(0, 0, -1000);
+        renderShell(guiGraphics, hPos + 40, height / 2, 15F);
+        poseStack.popPose();
 
         int textScale = 40;
 
@@ -85,21 +129,33 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+
+        if (ejectbtnshow)
+            ejectbtntime += 5 - ejectbtntime / 4;
+        else ejectbtntime -= 5 - (20 - ejectbtntime) / 4;
+        if (ejectbtntime > 20) ejectbtntime = 20;
+        if (ejectbtntime < 5) ejectbtntime = 5;
+
+    }
+
+    @Override
     public GenericMonitorSelectionList<SelectionListEntry> createSelectionList() {
-        int hPos = 20 + width / 2;
+        int hPos = -20 + width / 2;
         int vPos = 20 + (height - monitorHeight) / 2;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, hPos, vPos, height - vPos, 10);
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 15 + monitorWidth / 2, 80, hPos, vPos, height - vPos, 12);
         selectionList.setRenderBackground(false);
-        //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_EXTERNAL_SHELL), entry -> new C2SRequestShellSelection().send(), hPos, TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler)));
+        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_EXTERNAL_SHELL), entry -> new C2SRequestShellSelection().send(), hPos, TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler)));
         selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_DESKTOP_CONFIGURATION), entry -> switchScreenToRight(new DesktopSelectionScreen()), hPos, TRUpgrades.INSIDE_ARCHITECTURE.get().isUnlocked(upgradeHandler)));
         selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_WAYPOINTS), entry -> new C2SRequestWaypoints().send(), hPos, TRUpgrades.WAYPOINTS.get().isUnlocked(upgradeHandler)));
-        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW), entry -> new C2SBeginShellView().send(), hPos, TRUpgrades.WAYPOINTS.get().isUnlocked(upgradeHandler)));
-        //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_VORTEX), entry -> Minecraft.getInstance().setScreen(new VortexSelectionScreen(VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.FLOW.get()))), hPos));
+        //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW), entry -> new C2SBeginShellView().send(), hPos, TRUpgrades.WAYPOINTS.get().isUnlocked(upgradeHandler)));
+        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_VORTEX), entry -> switchScreenToRight(new VortexSelectionScreen(currentVortex)), hPos));
         selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_SELECT_HUM), entry -> switchScreenToRight(new HumSelectionScreen()), hPos));
-        selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_EJECT), entry -> {
-            new C2SEjectPlayer().send();
-            Minecraft.getInstance().setScreen(null);
-        }, hPos));
+        //selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_MONITOR_EJECT), entry -> {
+        //    new C2SEjectPlayer().send();
+        //    Minecraft.getInstance().setScreen(null);
+        //}, hPos));
 
         if (selectionList.children().isEmpty()) {
             noUpgrades = true;

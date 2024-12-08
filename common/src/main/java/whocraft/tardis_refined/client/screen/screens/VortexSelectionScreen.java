@@ -21,7 +21,6 @@ import java.util.List;
 public class VortexSelectionScreen extends MonitorOS {
 
     private final List<ResourceLocation> vortexList;
-    public static ResourceLocation currentVortex = VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.CLOUDS.get());
 
     public VortexSelectionScreen(ResourceLocation currentVortex) {
         super(Component.translatable(ModMessages.UI_MONITOR_VORTEX), null);
@@ -33,14 +32,15 @@ public class VortexSelectionScreen extends MonitorOS {
     protected void init() {
         super.init();
         this.setEvents(() -> selectVortex(currentVortex), () -> {
+            //selectVortex(currentVortex);
             if (PREVIOUS != null)
-                this.switchScreenToRight(PREVIOUS);
+                this.switchScreenToLeft(PREVIOUS);
         });
         if (currentVortex == null)
             currentVortex = this.vortexList.get(0);
         int vPos = (height - monitorHeight) / 2;
-        addSubmitButton(width / 2 - 11, height - vPos - 25);
-        addCancelButton(width / 2 + 90, height - vPos - 25);
+        addSubmitButton(width / 2 + 90, height - vPos - 25);
+        addCancelButton(width / 2 - 11, height - vPos - 25);
     }
 
     public void selectVortex(ResourceLocation themeId) {
@@ -92,7 +92,6 @@ public class VortexSelectionScreen extends MonitorOS {
                     }
                 }
 
-                age = 0;
                 entry.setChecked(true);
             }, leftPos);
 

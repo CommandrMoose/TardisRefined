@@ -32,16 +32,16 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
         this.setEvents(
                 () -> selectShell(CURRENTSHELLTHEME),
                 () -> {
-                    selectShell(CURRENTSHELLTHEME);
+                    //selectShell(CURRENTSHELLTHEME);
                     if (PREVIOUS != null)
-                        this.switchScreenToRight(PREVIOUS);
+                        this.switchScreenToLeft(PREVIOUS);
                 }
         );
 
         int vPos = (height - monitorHeight) / 2;
 
-        addSubmitButton(width / 2 - 11, height - vPos - 25);
-        addCancelButton(width / 2 + 90, height - vPos - 25);
+        addSubmitButton(width / 2 + 90, height - vPos - 25);
+        addCancelButton(width / 2 - 11, height - vPos - 25);
 
         patternButton = addRenderableWidget(Button.builder(Component.literal(""), button -> {
             PATTERN = ShellPatterns.next(PATTERNCOLLECTION, PATTERN);

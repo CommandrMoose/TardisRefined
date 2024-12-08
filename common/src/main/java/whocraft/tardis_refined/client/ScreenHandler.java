@@ -91,7 +91,7 @@ public class ScreenHandler {
     public static void openShellSelection(ResourceLocation currentShell) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen instanceof MonitorOS) {
-            ((MonitorOS) mc.screen).switchScreenToLeft(new ShellSelectionScreen(currentShell));
+            ((MonitorOS) mc.screen).switchScreenToRight(new ShellSelectionScreen(currentShell));
             return;
         }
         Minecraft.getInstance().setScreen(new ShellSelectionScreen(currentShell));

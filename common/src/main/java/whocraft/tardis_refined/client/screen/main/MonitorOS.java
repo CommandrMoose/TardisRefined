@@ -25,7 +25,6 @@ import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
-import whocraft.tardis_refined.client.overlays.VortexOverlay;
 import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.CommonTRWidgets;
@@ -49,8 +48,9 @@ public class MonitorOS extends Screen {
     protected static final int monitorWidth = 230, monitorHeight = 130;
     public final ResourceLocation backdrop;
     public static final VortexRenderer VORTEX = new VortexRenderer(VortexRegistry.CLOUDS.get());
-
+    public static ResourceLocation currentVortex = VortexRegistry.VORTEX_REGISTRY.getKey(VortexRegistry.CLOUDS.get());
     public static ResourceLocation NOISE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/noise.png");
+    public static ResourceLocation SYMBLS = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/gallifreyan_symbols.png");
 
     public MonitorOS LEFT;
     public MonitorOS RIGHT;
@@ -115,9 +115,10 @@ public class MonitorOS extends Screen {
         poseStack.mulPose(Axis.YP.rotationDegrees(20));
 
         // Blindly assume that the player is not doing weird stuff to open the menu outside a TARDIS
+        assert Minecraft.getInstance().level != null;
         TardisClientData tardisClientData = TardisClientData.getInstance(Minecraft.getInstance().level.dimension());
-        
-        VORTEX.vortexType = VortexRegistry.VORTEX_REGISTRY.get(this instanceof VortexSelectionScreen ? VortexSelectionScreen.currentVortex: tardisClientData.getVortex());
+
+        VORTEX.vortexType = VortexRegistry.VORTEX_REGISTRY.get(this instanceof VortexSelectionScreen ? VortexSelectionScreen.currentVortex : tardisClientData.getVortex());
         VORTEX.time.speed = 0.3;
         VORTEX.renderVortex(guiGraphics, 1, false);
         RenderSystem.restoreProjectionMatrix();
@@ -187,7 +188,7 @@ public class MonitorOS extends Screen {
         guiGraphics.blit(NOISE, hPos + shakeX, vPos + shakeY, (int) (Math.random() * 736), (int) (414 * (System.currentTimeMillis() % 1000) / 1000.0), monitorWidth, monitorHeight);
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        renderFrame(guiGraphics, mouseX, shakeY, partialTick);
+        renderFrame(guiGraphics, mouseX, mouseY, partialTick);
         RenderSystem.disableBlend();
     }
 
@@ -295,7 +296,7 @@ public class MonitorOS extends Screen {
         protected void init() {
             super.init();
             if (CURRENTSHELLTHEME == null) CURRENTSHELLTHEME = THEMELIST.get(0);
-            PATTERN = PATTERNCOLLECTION.get(0);
+            if (PATTERN == null) PATTERN = PATTERNCOLLECTION.get(0);
         }
 
         public static GlobalShellBlockEntity GLOBALSHELL_BLOCKENTITY;
