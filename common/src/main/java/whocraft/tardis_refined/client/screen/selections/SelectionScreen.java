@@ -17,8 +17,8 @@ import java.awt.*;
 
 public class SelectionScreen extends Screen {
 
-    public static final ResourceLocation BUTTON_LOCATION = new ResourceLocation(TardisRefined.MODID, "save");
-    public static final ResourceLocation BCK_LOCATION = new ResourceLocation(TardisRefined.MODID, "back");
+    public static final ResourceLocation BUTTON_LOCATION = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/save.png");
+    public static final ResourceLocation BCK_LOCATION = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/back.png");
     private final Component title;
     public int noiseX, noiseY, age;
     public double noiseAlpha;
