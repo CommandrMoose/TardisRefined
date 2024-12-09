@@ -68,17 +68,15 @@ public class LandingPadBlock extends Block {
                     var keyChain = KeyItem.getKeychain(itemStack);
                     if (!keyChain.isEmpty()) {
                         ResourceKey<Level> dimension = KeyItem.getKeychain(itemStack).get(0);
+                        var tardisLevel = Platform.getServer().getLevel(dimension);
+                        var operatorOptional = TardisLevelOperator.get(tardisLevel);
+                        if (operatorOptional.isEmpty()) {
+                            return InteractionResult.PASS;
+                        }
+                        var operator = operatorOptional.get();
 
-                        if (serverLevel.isEmptyBlock(blockPos.above()) && DimensionUtil.isAllowedDimension(level.dimension())) {
-                            var tardisLevel = Platform.getServer().getLevel(dimension);
+                        if (serverLevel.isEmptyBlock(blockPos.above()) && operator.getProgressionManager().isLevelDiscovered(level.dimension())) {
 
-
-                            var operatorOptional = TardisLevelOperator.get(tardisLevel);
-                            if (operatorOptional.isEmpty()) {
-                                return InteractionResult.PASS;
-                            }
-
-                            var operator = operatorOptional.get();
                             TardisPilotingManager pilotManager = operator.getPilotingManager();
                             UpgradeHandler upgradeHandler = operator.getUpgradeHandler();
 

@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
-import whocraft.tardis_refined.compat.portals.IPStencil;
 import whocraft.tardis_refined.constants.NbtConstants;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
@@ -131,9 +130,9 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
                     cap.setDoorClosed(door.isOpen());//Tell the Tardis that the door should be closed if currently open, and should be open if currently closed.
                     if (player instanceof ServerPlayer serverPlayer) {
                         if (door.isOpen()) {
-                            IPStencil.loadServerChunks(serverPlayer, cap.getPilotingManager().getCurrentLocation());
+                            //  IPStencil.loadServerChunks(serverPlayer, cap.getPilotingManager().getCurrentLocation());
                         } else {
-                            IPStencil.unloadServerChunks(serverPlayer);
+                            //  IPStencil.unloadServerChunks(serverPlayer);
                         }
                     }
                 }

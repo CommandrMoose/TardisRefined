@@ -110,6 +110,7 @@ public class TardisHelper {
                     TardisPilotingManager pilotManager = tardisLevelOperator.getPilotingManager();
                     if (!tardisLevelOperator.hasInitiallyGenerated()) {
                         intManager.generateDesktop(desktopTheme);
+                        tardisLevelOperator.getProgressionManager().addDiscoveredLevel(serverLevel.dimension());
                         Direction direction = targetBlockState.getValue(ShellBaseBlock.FACING).getOpposite();
                         TardisNavLocation navLocation = new TardisNavLocation(blockPos, direction, serverLevel);
                         pilotManager.setCurrentLocation(navLocation);

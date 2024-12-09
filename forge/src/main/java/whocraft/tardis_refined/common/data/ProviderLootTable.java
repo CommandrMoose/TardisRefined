@@ -35,9 +35,6 @@ public class ProviderLootTable extends LootTableProvider {
         @Override
         protected void generate() {
             for (Block block : getKnownBlocks()) {
-                if(block == TRBlockRegistry.ARS_EGG.get()){
-                    continue;
-                }
                 dropSelf(block);
             }
 
