@@ -31,7 +31,6 @@ public class ModMessages {
     public static final String UI_MONITOR_WAYPOINT_LOAD = ui("monitor.waypoints.load");
     public static final String UI_MONITOR_WAYPOINT_EDIT = ui("monitor.waypoints.edit");
     public static final String UI_MONITOR_WAYPOINT_DELETE = ui("monitor.waypoints.delete");
-    public static final String UI_MONITOR_WAYPOINT_SUBMIT = ui("monitor.waypoints.submit");
     public static final String VANILLA_SELECT_WORLD = "selectWorld.search";
     public static final String UI_WAYPOINT_NAME_PLACEHOLDER = "monitor.waypoints.name.placeholder";
     public static final String UI_WAYPOINT_NEW_WAYPOINT = "monitor.waypoints.new_waypoint";
@@ -111,6 +110,7 @@ public class ModMessages {
     public static String CANNOT_START_NO_FUEL = message("cannot_start_no_fuel");
     public static String CURRENT = message("current");
     public static String DESTINATION = message("destination");
+    public static String SUBMIT = message("submit");
 
     /*Tool Tips*/
     public static String TOOLTIP_TARDIS_LIST_TITLE = tooltip("tardis_list");

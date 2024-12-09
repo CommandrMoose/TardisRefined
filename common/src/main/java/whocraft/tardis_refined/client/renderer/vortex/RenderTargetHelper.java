@@ -117,7 +117,7 @@ public class RenderTargetHelper {
         GL11.glColorMask(false, false, false, true);
 
         // Copy render target back to main buffer
-
+        RENDER_TARGET_HELPER.end();
         Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
         copyRenderTarget(RENDER_TARGET_HELPER.renderTarget, Minecraft.getInstance().getMainRenderTarget());
         GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test

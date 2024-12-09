@@ -59,7 +59,7 @@ public class WaypointManageScreen extends MonitorOS {
 
         yPosition += 30;
 
-        onSaveWaypoint = this.addRenderableWidget(CommonTRWidgets.imageButton(waypointNameWidth, Component.translatable(ModMessages.UI_MONITOR_WAYPOINT_SUBMIT), (arg) -> {
+        onSaveWaypoint = this.addRenderableWidget(CommonTRWidgets.imageButton(waypointNameWidth, Component.translatable(ModMessages.SUBMIT), (arg) -> {
 
             if (preExistingWaypoint != null) {
                 tardisNavLocation.setName(this.waypointName.getValue());

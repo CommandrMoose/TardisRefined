@@ -184,6 +184,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.DOOR_LOCKED, "Door locked");
         add(ModMessages.DOOR_UNLOCKED, "Door unlocked");
         add(ModMessages.RECOVERY_PROGRESS, "Recovery Progress: %s");
+        add(ModMessages.SUBMIT, "Submit");
 
 
         /*Command*/
@@ -232,7 +233,6 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.UI_DESKTOP_CANCEL, "Cancel Desktop Reconfiguration");
         add(ModMessages.UI_MONITOR_NO_WAYPOINTS, "No Waypoints Saved!");
         add(ModMessages.UI_MONITOR_WAYPOINT_UPLOAD, "Upload");
-        add(ModMessages.UI_MONITOR_WAYPOINT_SUBMIT, "Submit");
         add(ModMessages.UI_MONITOR_ISSUES, "Issues:");
         add(ModMessages.UI_MONITOR_WAYPOINT_ISSUE_NAME, "Invalid waypoint name");
         add(ModMessages.UI_MONITOR_WAYPOINT_ISSUE_X, "Invalid X value");
