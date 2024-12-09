@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import whocraft.tardis_refined.client.sounds.*;
+import whocraft.tardis_refined.client.sounds.HumSoundManager;
+import whocraft.tardis_refined.client.sounds.QuickSimpleSound;
+import whocraft.tardis_refined.client.sounds.TRSoundInstances;
 import whocraft.tardis_refined.common.GravityUtil;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
@@ -28,9 +29,9 @@ import whocraft.tardis_refined.registry.TRDimensionTypes;
 
 import java.util.List;
 
-import static whocraft.tardis_refined.client.sounds.TRSoundInstances.VORTEX_WINDS;
 import static whocraft.tardis_refined.client.TardisClientData.FOG_TICK_DELTA;
 import static whocraft.tardis_refined.client.TardisClientData.MAX_FOG_TICK_DELTA;
+import static whocraft.tardis_refined.client.sounds.TRSoundInstances.VORTEX_WINDS;
 import static whocraft.tardis_refined.common.util.TardisHelper.isInArsArea;
 
 public class TardisClientLogic {
@@ -262,11 +263,8 @@ public class TardisClientLogic {
         Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
         TardisPlayerInfo.get(Minecraft.getInstance().player).ifPresent(tardisPlayerInfo -> {
             LocalPlayer player = Minecraft.getInstance().player;
-            System.out.println(tardisPlayerInfo.getPlayerPreviousYaw());
-            System.out.println(tardisPlayerInfo.getPlayerPreviousRot());
             player.setXRot(tardisPlayerInfo.getPlayerPreviousYaw());
             player.setYHeadRot(tardisPlayerInfo.getPlayerPreviousRot());
-            player.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(0, 128, 0));
         });
     }
 

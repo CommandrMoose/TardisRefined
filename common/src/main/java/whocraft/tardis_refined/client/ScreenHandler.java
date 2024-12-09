@@ -42,13 +42,13 @@ public class ScreenHandler {
     }
 
     @Environment(EnvType.CLIENT)
-    public static void openMonitorScreen(boolean desktopGenerating, CompoundTag upgradeHandlerNbt, TardisNavLocation currentLocation, TardisNavLocation targetLocation, ResourceKey<Level> tardisId) {
+    public static void openMonitorScreen(boolean desktopGenerating, CompoundTag upgradeHandlerNbt, TardisNavLocation currentLocation, TardisNavLocation targetLocation) {
         if (desktopGenerating) {
             Minecraft.getInstance().setScreen(new CancelDesktopScreen());
         } else {
             UpgradeHandler upgradeHandlerClient = new UpgradeHandler(new TardisLevelOperator(Minecraft.getInstance().level));
             upgradeHandlerClient.loadData(upgradeHandlerNbt);
-            Minecraft.getInstance().setScreen(new MonitorScreen(currentLocation, targetLocation, upgradeHandlerClient, tardisId));
+            Minecraft.getInstance().setScreen(new MonitorScreen(currentLocation, targetLocation, upgradeHandlerClient));
         }
     }
 

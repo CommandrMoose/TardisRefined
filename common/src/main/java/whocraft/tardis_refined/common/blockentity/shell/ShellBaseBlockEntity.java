@@ -26,7 +26,6 @@ import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
-import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
@@ -38,6 +37,7 @@ import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.constants.NbtConstants;
+import whocraft.tardis_refined.registry.TRUpgrades;
 
 import java.util.UUID;
 
@@ -105,6 +105,11 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {
+        if (this.TARDIS_ID == null) {
+            TardisRefined.LOGGER.error("Error in saveAdditional: null Tardis ID (Invalid block or not terraformed yet?) [" + this.getBlockPos().toShortString() + "]");
+            return;
+        }
+
         super.saveAdditional(pTag);
         if (this.TARDIS_ID != null)
             pTag.putString(NbtConstants.TARDIS_ID, TARDIS_ID.location().toString());
@@ -190,7 +195,6 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
 
             });
         }
-        this.doNotRemoveNextTick = false;
     }
 
     @Override

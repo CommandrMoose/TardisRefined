@@ -163,5 +163,4 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
     }
 
 
-
 }

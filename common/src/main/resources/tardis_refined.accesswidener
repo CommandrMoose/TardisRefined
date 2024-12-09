@@ -18,6 +18,7 @@ accessible method net/minecraft/world/entity/ai/behavior/VillagerGoalPackages ge
 accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
 accessible method net/minecraft/client/renderer/LevelRenderer renderEndSky (Lcom/mojang/blaze3d/vertex/PoseStack;)V
 
+accessible class net/minecraft/client/renderer/RenderType$CompositeState
 
 # Needed for Loading Models from JSON, jesus christ
 accessible field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
@@ -38,5 +39,6 @@ accessible field net/minecraft/client/model/geom/builders/CubeDeformation growY 
 accessible field net/minecraft/client/model/geom/builders/CubeDeformation growZ F
 accessible field net/minecraft/client/model/geom/builders/CubeListBuilder cubes Ljava/util/List;
 extendable class net/minecraft/client/model/geom/builders/CubeDefinition
+extendable class com/mojang/blaze3d/pipeline/MainTarget
 accessible field net/minecraft/client/model/geom/ModelPart$Cube polygons [Lnet/minecraft/client/model/geom/ModelPart$Polygon;
 accessible field net/minecraft/client/model/geom/builders/CubeDefinition texScale Lnet/minecraft/client/model/geom/builders/UVPair;

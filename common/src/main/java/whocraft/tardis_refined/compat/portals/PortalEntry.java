@@ -8,9 +8,9 @@ public class PortalEntry {
 
     ShellTheme shellTheme;
     UUID tardisId;
-    private BOTIPortalEntity internalPortal, shellPortal;
+    private BotiPortalEntity internalPortal, shellPortal;
 
-    public PortalEntry(BOTIPortalEntity internalPortal, BOTIPortalEntity shellPortal, ShellTheme shellTheme, UUID tardisId) {
+    public PortalEntry(BotiPortalEntity internalPortal, BotiPortalEntity shellPortal, ShellTheme shellTheme, UUID tardisId) {
         this.internalPortal = internalPortal;
         this.shellPortal = shellPortal;
         this.shellTheme = shellTheme;
@@ -25,15 +25,15 @@ public class PortalEntry {
         return shellTheme;
     }
 
-    public BOTIPortalEntity getShellPortal() {
+    public BotiPortalEntity getShellPortal() {
         return shellPortal;
     }
 
-    public BOTIPortalEntity getInternalPortal() {
+    public BotiPortalEntity getInternalPortal() {
         return internalPortal;
     }
 
-    public boolean isPortalValidForEntry(BOTIPortalEntity portalEntity) {
+    public boolean isPortalValidForEntry(BotiPortalEntity portalEntity) {
         return portalEntity.getUUID() != internalPortal.getUUID() && portalEntity.getUUID() != shellPortal.getUUID();
     }
 

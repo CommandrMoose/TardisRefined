@@ -52,7 +52,7 @@ public class ImmersivePortals {
     private static final Map<UUID, PortalEntry> EXISTING_PORTALS = new HashMap<>();
     // First 4 is exterior, last 4 is door offsets, in order of East, South, West, North
     private static final Map<ResourceLocation, PortalOffets> THEME_OFFSETS = new HashMap<>();
-    public static RegistrySupplier<EntityType<BOTIPortalEntity>> BOTI_PORTAL = null;
+    public static RegistrySupplier<EntityType<BotiPortalEntity>> BOTI_PORTAL = null;
 
     public static void clearPortalCache() {
         EXISTING_PORTALS.clear();
@@ -88,7 +88,7 @@ public class ImmersivePortals {
         TardisRefined.LOGGER.info("Immersive Portals Detected - Setting up Compatibility");
 
         // Register BOTI Portal here, as doing it in main code would make it a hard dependency
-        BOTI_PORTAL = ENTITY_TYPES.register("boti_portal", () -> registerStatic(BOTIPortalEntity::new, MobCategory.MISC, 1, 1, 96, 20, "boti_portal"));
+        BOTI_PORTAL = ENTITY_TYPES.register("boti_portal", () -> registerStatic(BotiPortalEntity::new, MobCategory.MISC, 1, 1, 96, 20, "boti_portal"));
 
         setupEvents();
 
@@ -314,8 +314,8 @@ public class ImmersivePortals {
         DQuaternion extQuat = DQuaternion.rotationByDegrees(new Vec3(0, -1, 0), location.getDirection().toYRot());
         DQuaternion interiorQuat = DQuaternion.rotationByDegrees(new Vec3(0, -1, 0), door.getTeleportRotation().toYRot());
 
-        BOTIPortalEntity exteriorPortal = createPortal(location.getLevel(), exteriorEntryPosition, entryPosition, operatorLevel.dimension(), extQuat);
-        BOTIPortalEntity interiorPortal = createDestPortal(exteriorPortal, entryPosition, ImmersivePortals.BOTI_PORTAL.get(), interiorQuat);
+        BotiPortalEntity exteriorPortal = createPortal(location.getLevel(), exteriorEntryPosition, entryPosition, operatorLevel.dimension(), extQuat);
+        BotiPortalEntity interiorPortal = createDestPortal(exteriorPortal, entryPosition, ImmersivePortals.BOTI_PORTAL.get(), interiorQuat);
 
         exteriorPortal.setShellTheme(ShellTheme.getShellTheme(theme));
         interiorPortal.setShellTheme(ShellTheme.getShellTheme(theme));
@@ -342,7 +342,7 @@ public class ImmersivePortals {
         interiorPortal.reloadPortal();
     }
 
-    private static void updatePortalEntry(TardisLevelOperator operator, UUID dimId, BOTIPortalEntity interiorPortal, BOTIPortalEntity exteriorPortal, ResourceLocation theme) {
+    private static void updatePortalEntry(TardisLevelOperator operator, UUID dimId, BotiPortalEntity interiorPortal, BotiPortalEntity exteriorPortal, ResourceLocation theme) {
         destroyPortals(operator);
         EXISTING_PORTALS.put(dimId, new PortalEntry(interiorPortal, exteriorPortal, ShellTheme.getShellTheme(theme), dimId));
     }
@@ -371,10 +371,10 @@ public class ImmersivePortals {
         EXISTING_PORTALS.remove(tardisID);
     }
 
-    public static BOTIPortalEntity createDestPortal(BOTIPortalEntity portal, Vec3 doorPos, EntityType<BOTIPortalEntity> entityType, DQuaternion quat) {
+    public static BotiPortalEntity createDestPortal(BotiPortalEntity portal, Vec3 doorPos, EntityType<BotiPortalEntity> entityType, DQuaternion quat) {
         Level world = portal.getDestinationWorld();
 
-        BOTIPortalEntity newPortal = entityType.create(world);
+        BotiPortalEntity newPortal = entityType.create(world);
         newPortal.setTardisId(UUID.fromString(world.dimension().location().getPath()));
         newPortal.dimensionTo = portal.level().dimension();
         newPortal.setPos(doorPos);
@@ -393,8 +393,8 @@ public class ImmersivePortals {
         return newPortal;
     }
 
-    public static BOTIPortalEntity createPortal(Level level, Vec3 origin, Vec3 destination, ResourceKey<Level> destinationLvl, DQuaternion quat) {
-        BOTIPortalEntity portal = ImmersivePortals.BOTI_PORTAL.get().create(level);
+    public static BotiPortalEntity createPortal(Level level, Vec3 origin, Vec3 destination, ResourceKey<Level> destinationLvl, DQuaternion quat) {
+        BotiPortalEntity portal = ImmersivePortals.BOTI_PORTAL.get().create(level);
         portal.setTardisId(UUID.fromString(destinationLvl.location().getPath()));
         portal.setOriginPos(origin);
         portal.setDestinationDimension(destinationLvl);

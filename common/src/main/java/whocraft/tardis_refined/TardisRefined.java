@@ -8,13 +8,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.LowerCaseEnumTypeAdapterFactory;
 import org.slf4j.Logger;
 import whocraft.tardis_refined.client.TRParticles;
-import whocraft.tardis_refined.registry.TRUpgrades;
+import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.TardisNetwork;
-import whocraft.tardis_refined.common.network.messages.sync.SyncConsolePatternsMessage;
-import whocraft.tardis_refined.common.network.messages.sync.SyncDesktopsMessage;
-import whocraft.tardis_refined.common.network.messages.sync.SyncHumsMessage;
-import whocraft.tardis_refined.common.network.messages.sync.SyncShellPatternsMessage;
+import whocraft.tardis_refined.common.network.messages.sync.S2CSyncConsolePatterns;
+import whocraft.tardis_refined.common.network.messages.sync.S2CSyncDesktops;
+import whocraft.tardis_refined.common.network.messages.sync.S2CSyncHums;
+import whocraft.tardis_refined.common.network.messages.sync.S2CSyncShellPatterns;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
@@ -38,6 +38,8 @@ public class TardisRefined {
             .registerTypeAdapterFactory(new LowerCaseEnumTypeAdapterFactory()).create();
 
     public static void init() {
+
+        VortexRegistry.VORTEX_DEFERRED_REGISTRY.registerToModBus();
 
         TRItemRegistry.TABS.registerToModBus();
         TRBlockRegistry.BLOCKS.registerToModBus();
@@ -64,10 +66,10 @@ public class TardisRefined {
 
         TRTagKeys.init();
         TardisNetwork.init();
-        TardisDesktops.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, SyncDesktopsMessage::new);
-        ConsolePatterns.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, SyncConsolePatternsMessage::new);
-        ShellPatterns.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, SyncShellPatternsMessage::new);
-        TardisHums.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, SyncHumsMessage::new);
+        TardisDesktops.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncDesktops::new);
+        ConsolePatterns.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncConsolePatterns::new);
+        ShellPatterns.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncShellPatterns::new);
+        TardisHums.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncHums::new);
 
         TRARSStructurePieceRegistry.register();
     }

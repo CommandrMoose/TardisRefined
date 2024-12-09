@@ -56,7 +56,7 @@ public class TRBlockRegistry {
     })), true, true);
     public static final RegistrySupplier<AntiGravityBlock> GRAVITY_WELL = register("gravity_well", () -> new AntiGravityBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
     public static final RegistrySupplier<CorridorTeleporterBlock> CORRIDOR_TELEPORTER = register("corridor_teleporter", () -> new CorridorTeleporterBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
-    public static final RegistrySupplier<LandingPad> LANDING_PAD = register("landing_pad", () -> new LandingPad(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion().lightLevel((x) -> {
+    public static final RegistrySupplier<LandingPadBlock> LANDING_PAD = register("landing_pad", () -> new LandingPadBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion().lightLevel((x) -> {
         return 12;
     })), true, true);
     public static final RegistrySupplier<FlightDetectorBlock> FLIGHT_DETECTOR = register("flight_detector", () -> new FlightDetectorBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
@@ -74,6 +74,7 @@ public class TRBlockRegistry {
     public static final RegistrySupplier<Block> THE_EYE = register("the_eye", () -> new EyeBlock(BlockBehaviour.Properties.copy(Blocks.BEDROCK)), false, false);
     public static final RegistrySupplier<LanternBlock> ZEITON_LANTERN = register("zeiton_lantern", () -> new LanternBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN).requiresCorrectToolForDrops()), true, true);
     public static final RegistrySupplier<Block> ARTRON_PILLAR_PORT = register("artron_pillar_port", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)), false, false);
+    public static final RegistrySupplier<Block> ASTRAL_MAP = register("astral_map", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)), true, true);
 
     private static <T extends Block> RegistrySupplier<T> register(String id, Supplier<T> blockSupplier, boolean addToTab, boolean registerItem) {
         RegistrySupplier<T> registryObject = BLOCKS.register(id, blockSupplier);
@@ -90,6 +91,5 @@ public class TRBlockRegistry {
         return register(id, blockSupplier, addToTab, true);
     }
 
-    public static final RegistrySupplier<Block> ASTRAL_MAP = register("astral_map", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)), true, true);
 
 }

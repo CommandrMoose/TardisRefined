@@ -1,12 +1,9 @@
 package whocraft.tardis_refined.constants;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.damagesource.DamageType;
 import whocraft.tardis_refined.TardisRefined;
 
 public class ModMessages {
 
-    /* Related Links*/
 
     /*UI Messages*/
     public static final String UI_DESKTOP_CANCEL_DESKTOP = ui("monitor.cancel_desktop");
@@ -19,6 +16,7 @@ public class ModMessages {
     public static final String UI_SHELL_SELECTION = ui("shell_selection");
     public static final String UI_DESKTOP_SELECTION = ui("desktop_selection");
     public static final String UI_MONITOR_GPS = ui("monitor.main.gps");
+    public static final String UI_MONITOR_VORTEX = ui("monitor.main.vortex");
     public static final String UI_MONITOR_DESTINATION = ui("monitor.main.destination");
     public static final String UI_MONITOR_MAIN_TITLE = ui("monitor.main_title");
     public static final String UI_MONITOR_WAYPOINTS = ui("monitor.waypoints");
@@ -74,9 +72,11 @@ public class ModMessages {
     public static final String KEYBIND_EXIT_VIEW = keybind("exit_exterior_view");
     public static final String KEYBIND_TOGGLE_INFO_EXTERIOR_VIEW = keybind("toggle_info_exterior_view");
     public static String GITHUB_RELEASE_PAGE = "https://github.com/Jeryn99/TardisRefined/releases";
+
     /*Item Special cases*/
     public static String ITEM_KEYCHAIN = "item." + TardisRefined.MODID + ".keychain";
     public static String ITEM_GROUP = "itemGroup." + TardisRefined.MODID;
+
     /*Messages*/
     public static String MSG_EXTERIOR_COOLDOWN = message("exterior_cooldown");
     public static String MSG_KEY_BOUND = message("key_bound");
@@ -112,14 +112,15 @@ public class ModMessages {
     public static String CANNOT_START_NO_FUEL = message("cannot_start_no_fuel");
     public static String CURRENT = message("current");
     public static String DESTINATION = message("destination");
-    public static String TOOLTIP_TARDIS_LIST_TITLE = tooltip("tardis_list");
-    public static String TOOLTIP_SCREWDRIVER_DESCRIPTION = tooltip("screwdriver_description");
 
     public static String POSITION = ui("position");
     public static String DIRECTION = ui("direction");
     public static String DIMENSION = ui("dimension");
     public static String DOOR_STATUS = message("door_status");
     public static String LOCK_STATUS = message("lock_status");
+    /*Tool Tips*/
+    public static String TOOLTIP_TARDIS_LIST_TITLE = tooltip("tardis_list");
+    public static String TOOLTIP_SCREWDRIVER_DESCRIPTION = tooltip("screwdriver_description");
 
     public static String message(String translationKey) {
         return "message." + TardisRefined.MODID + "." + translationKey;

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
-import whocraft.tardis_refined.common.network.messages.ChangeDesktopMessage;
+import whocraft.tardis_refined.common.network.messages.C2SChangeDesktop;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.common.util.MiscHelper;
@@ -40,9 +40,10 @@ public class DesktopSelectionScreen extends SelectionScreen {
     }
 
     public static void selectDesktop(DesktopTheme theme) {
-        new ChangeDesktopMessage(Minecraft.getInstance().player.level().dimension(), theme).send();
+        new C2SChangeDesktop(Minecraft.getInstance().player.level().dimension(), theme).send();
         Minecraft.getInstance().setScreen(null);
     }
+
 
     @Override
     protected void init() {

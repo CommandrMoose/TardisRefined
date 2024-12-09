@@ -55,7 +55,6 @@ public class UpgradeArgumentType implements ArgumentType<ResourceLocation> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-
         return SharedSuggestionProvider.suggestResource(TRUpgrades.UPGRADE_DEFERRED_REGISTRY.keySet(), builder);
     }
 

@@ -13,7 +13,6 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import whocraft.tardis_refined.ControlGroupCheckers;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.command.TardisRefinedCommand;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
@@ -36,7 +35,6 @@ public class CommonBus {
     public static void onServerTick(TickEvent.ServerTickEvent event) {
 
         if (event.phase == TickEvent.Phase.END) {
-            ControlGroupCheckers.tickServer(event.getServer());
             TardisTeleportData.tick();
         }
 

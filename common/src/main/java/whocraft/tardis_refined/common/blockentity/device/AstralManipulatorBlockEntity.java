@@ -124,7 +124,7 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
     public void onRightClick(ItemStack itemStack, Player player) {
         if (itemStack.getItem() instanceof ScrewdriverItem screwdriverItem) {
             if (!screwdriverItem.isScrewdriverMode(itemStack, ScrewdriverMode.DRAWING)) {
-                screwdriverItem.setScrewdriverMode(itemStack, ScrewdriverMode.DRAWING, getBlockPos(), null);
+                screwdriverItem.setScrewdriverMode(player, itemStack, ScrewdriverMode.DRAWING, getBlockPos(), null);
                 setShouldDisplay(true);
                 PlayerUtil.sendMessage(player, Component.translatable(ModMessages.ASTRAL_MANIPULATOR_ENGAGED), true);
 
@@ -135,7 +135,7 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
             } else {
 
                 List<BlockPos> points = screwdriverItem.getScrewdriverPoint(itemStack);
-                screwdriverItem.setScrewdriverMode(itemStack, ScrewdriverMode.DISABLED, getBlockPos(), null);
+                screwdriverItem.setScrewdriverMode(player, itemStack, ScrewdriverMode.DISABLED, getBlockPos(), null);
 
                 if (points.size() == 2) {
                     BlockPos pointA = points.get(0);

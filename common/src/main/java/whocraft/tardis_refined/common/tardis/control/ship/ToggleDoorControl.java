@@ -28,7 +28,7 @@ public class ToggleDoorControl extends Control {
     public boolean onRightClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player) {
         if (!operator.getLevel().isClientSide()) {
             if (operator.getInternalDoor() != null) {
-                if (operator.getExteriorManager().locked() || operator.getPilotingManager().isInFlight()) {
+                if (operator.getExteriorManager().locked()) {
                     return false;
                 }
                 BlockEntity blockEntity = operator.getLevel().getBlockEntity(operator.getInternalDoor().getDoorPosition());

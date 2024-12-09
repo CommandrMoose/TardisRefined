@@ -8,17 +8,15 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
-import whocraft.tardis_refined.ControlGroupCheckers;
 import whocraft.tardis_refined.client.TRItemColouring;
 import whocraft.tardis_refined.client.TardisClientLogic;
 import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
@@ -33,12 +31,12 @@ import whocraft.tardis_refined.common.dimension.fabric.DimensionHandlerImpl;
 import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.common.util.TardisHelper;
 import whocraft.tardis_refined.compat.ModCompatChecker;
-import whocraft.tardis_refined.compat.create.CreateIntergrations;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 import whocraft.tardis_refined.registry.TRItemRegistry;
 import whocraft.tardis_refined.registry.TRPointOfInterestTypes;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import static net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.START_WORLD_TICK;
@@ -60,9 +58,6 @@ public class ModEvents {
             ServerLevel world = server.getLevel(Level.OVERWORLD);
             DimensionHandler.loadLevels(world);
 
-            if (ModCompatChecker.create()) {
-                CreateIntergrations.init();
-            }
             // We call this here to make sure blocks are registered
             TRPointOfInterestTypes.registerBlockStates();
 
@@ -76,7 +71,6 @@ public class ModEvents {
             });
         });
 
-        ServerTickEvents.START_SERVER_TICK.register(ControlGroupCheckers::tickServer);
 
         ServerTickEvents.END_SERVER_TICK.register(server -> TardisTeleportData.tick());
 
@@ -112,6 +106,13 @@ public class ModEvents {
     public static void addClientEvents() {
         ClientTickEvents.START_CLIENT_TICK.register(TardisClientLogic::tickClientData);
         ColorProviderRegistry.ITEM.register(TRItemColouring.SCREWDRIVER_COLORS, TRItemRegistry.SCREWDRIVER.get());
+
+        AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
+            if (world.isClientSide) return InteractionResult.PASS;
+            AtomicBoolean stopBreak = new AtomicBoolean(false);
+            TardisPlayerInfo.get(player).ifPresent(tardisPlayerInfo -> stopBreak.set(tardisPlayerInfo.isViewingTardis()));
+            return stopBreak.get() ? InteractionResult.FAIL : InteractionResult.PASS;
+        });
 
         Supplier<GuiGraphics> guiGraphics = () -> new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());
         HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> VortexOverlay.renderOverlay(guiGraphics.get()));

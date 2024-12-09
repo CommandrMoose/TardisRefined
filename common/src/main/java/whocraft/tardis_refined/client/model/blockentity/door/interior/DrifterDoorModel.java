@@ -51,13 +51,18 @@ public class DrifterDoorModel extends ShellDoorModel {
     }
 
     @Override
-    public void renderInteriorDoor(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderFrame(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         door_open.visible = isDoorOpen;
         door_closed.visible = !isDoorOpen;
 
         door_open.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         door_closed.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
+    public void renderPortalMask(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+
     }
 
     @Override

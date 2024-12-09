@@ -129,22 +129,15 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
     public ResourceLocation getIconByState(int entityHealth) {
         if (entityHealth == 10) {
             return ICON_GOOD;
-        }
-
-        if (entityHealth == 8 || entityHealth == 9) {
+        } else if (entityHealth >= 8) {
             return ICON_SLIPPING;
-        }
-
-        if (entityHealth > 5) {
+        } else if (entityHealth > 5) {
             return ICON_WARNING;
-        }
-
-        if (entityHealth > 3) {
+        } else if (entityHealth > 3) {
             return ICON_ALERT;
+        } else {
+            return ICON_DANGER;
         }
-
-        return ICON_DANGER;
-
     }
 
     private void renderControlIcon(ControlEntity entity, Component component, ResourceLocation texture, PoseStack matrixStackIn, MultiBufferSource buffer, int light) {

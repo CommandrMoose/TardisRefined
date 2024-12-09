@@ -11,10 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -22,7 +20,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
@@ -31,7 +28,7 @@ import whocraft.tardis_refined.client.overlays.VortexOverlay;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
-import whocraft.tardis_refined.common.network.messages.ChangeShellMessage;
+import whocraft.tardis_refined.common.network.messages.C2SChangeShell;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPattern;
@@ -109,7 +106,7 @@ public class ShellSelectionScreen extends SelectionScreen {
     }
 
     public void selectShell(ResourceLocation themeId) {
-        new ChangeShellMessage(Minecraft.getInstance().player.level().dimension(), themeId, pattern).send();
+        new C2SChangeShell(Minecraft.getInstance().player.level().dimension(), themeId, pattern).send();
         Minecraft.getInstance().setScreen(null);
     }
 
@@ -231,10 +228,6 @@ public class ShellSelectionScreen extends SelectionScreen {
         for (Map.Entry<ResourceKey<ShellTheme>, ShellTheme> shellTheme : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.entrySet()) {
             ShellTheme theme = shellTheme.getValue();
             ResourceLocation shellThemeId = shellTheme.getKey().location();
-
-            if (theme == ShellTheme.HALF_BAKED.get()) {
-                continue;
-            }
 
             SelectionListEntry selectionListEntry = new SelectionListEntry(theme.getDisplayName(), (entry) -> {
                 this.currentShellTheme = shellThemeId;

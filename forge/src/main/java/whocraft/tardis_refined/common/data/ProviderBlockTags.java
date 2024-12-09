@@ -4,10 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +28,7 @@ public class ProviderBlockTags extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
 
-        for (Map.Entry<ResourceKey<Block>, Block> blocksEntry : TRBlockRegistry.BLOCKS.entrySet()) {
+        for (Map.Entry<ResourceKey<Block>, Block> blocksEntry : TRBlockRegistry.BLOCKS.entrySet().stream().toList()) {
             Block block = blocksEntry.getValue();
 
             if (TRBlockRegistry.BLOCKS.getKey(block).getNamespace().equals(TardisRefined.MODID)) {
@@ -99,10 +96,22 @@ public class ProviderBlockTags extends BlockTagsProvider {
         Set<Block> glassBlocks = new HashSet<>();
         ManipulatorRecipes.MANIPULATOR_CRAFTING_RECIPES.forEach((resourceLocation, manipulatorCraftingRecipe) -> {
             for (ManipulatorCraftingIngredient ingredient : manipulatorCraftingRecipe.ingredients()) {
-                glassBlocks.add(ingredient.inputBlockState().getBlock());
+                if(ingredient.inputBlockState().getBlock() instanceof GlassBlock) {
+                    glassBlocks.add(ingredient.inputBlockState().getBlock());
+                }
             }
         });
-        tag(TRTagKeys.DIAGONAL_COMPAT_GLASS).add(normalBlocks.toArray(new Block[0]));
+        tag(TRTagKeys.DIAGONAL_COMPAT_GLASS).add(glassBlocks.toArray(new Block[0]));
+
+        Set<Block> fenceBlocks = new HashSet<>();
+        ManipulatorRecipes.MANIPULATOR_CRAFTING_RECIPES.forEach((resourceLocation, manipulatorCraftingRecipe) -> {
+            for (ManipulatorCraftingIngredient ingredient : manipulatorCraftingRecipe.ingredients()) {
+                if(ingredient.inputBlockState().getBlock() instanceof FenceBlock) {
+                    fenceBlocks.add(ingredient.inputBlockState().getBlock());
+                }
+            }
+        });
+        tag(TRTagKeys.DIAGONAL_COMPAT_FENCES).add(fenceBlocks.toArray(new Block[0]));
 
     }
 }

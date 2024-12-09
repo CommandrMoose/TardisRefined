@@ -25,12 +25,11 @@ public class TardisArchitectureHandler {
 
     public static final BlockPos DESKTOP_CENTER_POS = new BlockPos(0, 100, 0);
     public static final BlockPos EYE_OF_HARMONY_PLACEMENT = new BlockPos(991, 41, 31);
-    public static final int INTERIOR_SIZE = 150;
 
     public static String currentArsStage = "one";
 
     public static void generateDesktop(ServerLevel operator, DesktopTheme theme) {
-        TardisRefined.LOGGER.debug(String.format("Attempting to generate desktop theme: %s for TARDIS.", theme.getIdentifier()));
+        TardisRefined.LOGGER.debug("Attempting to generate desktop theme: {} for TARDIS.", theme.getIdentifier());
 
         // Fill the area out.
         BlockPos corner = new BlockPos(TardisDimensionConstants.TARDIS_CENTER_POS.getX() - TardisDimensionConstants.DESKTOP_RADIUS, TardisDimensionConstants.TARDIS_ROOT_GENERATION_MIN_HEIGHT, TardisDimensionConstants.TARDIS_CENTER_POS.getZ() - TardisDimensionConstants.DESKTOP_RADIUS);

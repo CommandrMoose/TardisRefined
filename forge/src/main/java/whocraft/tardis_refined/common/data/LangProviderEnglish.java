@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraftforge.common.data.LanguageProvider;
 import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.hum.HumEntry;
 import whocraft.tardis_refined.common.hum.TardisHums;
@@ -29,6 +30,31 @@ public class LangProviderEnglish extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+
+        /*Vortex*/
+        add(VortexRegistry.CLOUDS.get().getTranslationKey(), "Clouds");
+        add(VortexRegistry.FLOW.get().getTranslationKey(), "Flow");
+        add(VortexRegistry.SPACE.get().getTranslationKey(), "Space");
+        add(VortexRegistry.WAVES.get().getTranslationKey(), "Waves");
+        add(VortexRegistry.STARS.get().getTranslationKey(), "Stars");
+        add(VortexRegistry.TWILIGHT_GLOW.get().getTranslationKey(), "Twilight Glow");
+        add(VortexRegistry.AURORA_DREAMS.get().getTranslationKey(), "Aurora Dreams");
+        add(VortexRegistry.DESERT_MIRAGE.get().getTranslationKey(), "Desert Mirage");
+        add(VortexRegistry.NEON_PULSE.get().getTranslationKey(), "Neon Pulse");
+        add(VortexRegistry.OCEAN_BREEZE.get().getTranslationKey(), "Ocean Breeze");
+        add(VortexRegistry.SOLAR_FLARE.get().getTranslationKey(), "Solar Flare");
+        add(VortexRegistry.CRYSTAL_LAGOON.get().getTranslationKey(), "Crystal Lagoon");
+        add(VortexRegistry.VELVET_NIGHT.get().getTranslationKey(), "Velvet Night");
+        add(VortexRegistry.CANDY_POP.get().getTranslationKey(), "Candy Pop");
+        add(VortexRegistry.EMERALD_FOREST.get().getTranslationKey(), "Emerald Forest");
+        add(VortexRegistry.LGBT_RAINBOW.get().getTranslationKey(), "LGBT Rainbow");
+        add(VortexRegistry.TRANSGENDER_FLAG.get().getTranslationKey(), "Transgender Flag");
+        add(VortexRegistry.BISEXUAL_FLAG.get().getTranslationKey(), "Bisexual Flag");
+        add(VortexRegistry.LESBIAN_FLAG.get().getTranslationKey(), "Lesbian Flag");
+        add(VortexRegistry.NON_BINARY_FLAG.get().getTranslationKey(), "Non-Binary Flag");
+        add(VortexRegistry.AGENDER_FLAG.get().getTranslationKey(), "Agender Flag");
+        add(VortexRegistry.GAY_FLAG.get().getTranslationKey(), "Agender Flag");
+
 
         /*Sounds*/
         addSound(TRSoundRegistry.TARDIS_LAND.get(), "TARDIS lands");
@@ -55,6 +81,7 @@ public class LangProviderEnglish extends LanguageProvider {
         addSound(TRSoundRegistry.LOW_FUEL.get(), "Low fuel warning");
         addSound(TRSoundRegistry.CLOISTER_BELL.get(), "Cloister Bell");
         addSound(TRSoundRegistry.MALLET.get(), "Mallet Hit");
+        addSound(TRSoundRegistry.ALARM.get(), "Alarm");
 
         //Hum Sounds
         TardisHums.registerDefaultHums();
@@ -194,11 +221,12 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.UI_MONITOR_UPLOAD_COORDS, "COORD NAVIGATION");
         add(ModMessages.UI_MONITOR_SELECT_HUM, "SOUNDSCAPE");
         add(ModMessages.UI_MONITOR_GPS, "GPS");
+        add(ModMessages.UI_MONITOR_VORTEX, "VORTEX");
         add(ModMessages.UI_MONITOR_DESTINATION, "Destination");
         add(ModMessages.UI_LIST_SELECTION, "Currently selected: &s");
         add(ModMessages.UI_EXTERNAL_SHELL, "EXTERNAL SHELL CONFIGURATION");
         add(ModMessages.UI_SHELL_SELECTION, "EXTERNAL SHELL CONFIGURATION");
-        add(ModMessages.UI_MONITOR_SHELL_VIEW, "FLIGHT VIEW");
+        add(ModMessages.UI_MONITOR_SHELL_VIEW, "SHELL VIEW");
         add(ModMessages.UI_DESKTOP_SELECTION, "DESKTOP CONFIGURATION");
         add(ModMessages.UI_DESKTOP_CONFIGURATION, "DESKTOP CONFIGURATION");
         add(ModMessages.UI_DESKTOP_CANCEL_TITLE, "OPERATION IN PROGRESS");
@@ -244,20 +272,6 @@ public class LangProviderEnglish extends LanguageProvider {
         add("curios.identifier.timelord_sight", "AR Glasses");
 
 
-        /*Create GUI Compatibility*/
-
-       /* add(ModMessages.DOOR_STATUS, "Door: %s");
-        add(ModMessages.LOCK_STATUS, "Locked: %s");
-        add(ModMessages.POSITION, "Position: %s");
-        add(ModMessages.DIRECTION, "Direction: %s");
-        add(ModMessages.DIMENSION, "Dimension: %s");
-        add(ModCompatMessages.createDisplaySource("fuel"), "Fuel");
-        add(ModCompatMessages.createDisplaySource("gps"), "GPS");
-        add(ModCompatMessages.createDisplaySource("destination"), "GPS Destination");
-        add(ModCompatMessages.createDisplaySource("tardis_bigdata"), "Tardis Summary");
-        add(ModCompatMessages.createDisplaySource("door"), "Door Status");
-        add(ModCompatMessages.createDisplaySource("locked"), "Lock Status");*/
-
         /*Shell Themes*/
         addShell(ShellTheme.FACTORY.getId(), "Factory");
         addShell(ShellTheme.POLICE_BOX.getId(), "Police Box");
@@ -277,11 +291,15 @@ public class LangProviderEnglish extends LanguageProvider {
         addShell(ShellTheme.HIEROGLYPH.getId(), "Hieroglyph");
         addShell(ShellTheme.CASTLE.getId(), "Castle");
         addShell(ShellTheme.PATHFINDER.getId(), "Pathfinder");
+        addShell(ShellTheme.HALF_BAKED.getId(), "Half Baked");
 
         /*Tool Tips*/
-        add(ModMessages.TOOLTIP_TARDIS_LIST_TITLE, "Key Set:");
+        add(ModMessages.TOOLTIP_TARDIS_LIST_TITLE, ChatFormatting.YELLOW + "< "
+                + ChatFormatting.GOLD + "Key Set:"
+                + ChatFormatting.YELLOW + " >");
+
         add(ModMessages.CONTROL_DIMENSION_SELECTED, "Selected: %s");
-        add(ModMessages.TOOLTIP_IN_FLIGHT, "In flight");
+        add(ModMessages.TOOLTIP_IN_FLIGHT, ChatFormatting.YELLOW + "* " + ChatFormatting.AQUA + "In Flight" + ChatFormatting.YELLOW + " *");
 
         /*Config*/
         add(ModMessages.CONFIG_IP_COMPAT, "Immersive Portals Compatibility?");

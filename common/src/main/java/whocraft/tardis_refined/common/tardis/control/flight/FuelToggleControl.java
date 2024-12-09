@@ -31,7 +31,6 @@ public class FuelToggleControl extends Control {
 
             TardisPilotingManager pilotManager = operator.getPilotingManager();
 
-
             boolean successful = pilotManager.setPassivelyRefuelling(!pilotManager.isPassivelyRefuelling());
 
             if (successful) {
@@ -58,7 +57,6 @@ public class FuelToggleControl extends Control {
         if (operator == null) {
             return super.getCustomControlName(operator, entity, controlSpecification);
         }
-
         boolean offline = operator.getTardisState() != TardisLevelOperator.STATE_EYE_OF_HARMONY;
         if (offline) {
             return Component.translatable(ModMessages.FUEL_OFFLINE);

@@ -46,6 +46,7 @@ public abstract class ShellModel extends HierarchicalModel {
     ModelPart fade_value;
     float initAlpha = 0;
     float ANIMATION_SPEED = 1.1f;
+    boolean ignoreAnmationAlpha = false;
     AnimationDefinition MODEL_LAND = AnimationDefinition.Builder.withLength(11f)
             .addAnimation("fade_value",
                     new AnimationChannel(AnimationChannel.Targets.POSITION,
@@ -70,8 +71,6 @@ public abstract class ShellModel extends HierarchicalModel {
                             new Keyframe(9.5F, KeyframeAnimations.posVec(0f, 10f, 0f),
                                     AnimationChannel.Interpolations.LINEAR))).build();
     private float currentAlpha = 0;
-    private boolean ignoreAnimationAlpha = false;
-
     public ShellModel(ModelPart root) {
         this.fade_value = root.getChild("fade_value");
         this.initAlpha = this.fade_value.y;
@@ -96,6 +95,14 @@ public abstract class ShellModel extends HierarchicalModel {
 
     private ResourceLocation texture(ShellPattern pattern, boolean isEmmissive) {
         return isEmmissive ? pattern.exteriorDoorTexture().emissiveTexture() : pattern.exteriorDoorTexture().texture();
+    }
+
+    public boolean isIgnoreAnmationAlpha() {
+        return ignoreAnmationAlpha;
+    }
+
+    public void setIgnoreAnmationAlpha(boolean ignoreAnmationAlpha) {
+        this.ignoreAnmationAlpha = ignoreAnmationAlpha;
     }
 
     public float initAlpha() {
@@ -127,17 +134,14 @@ public abstract class ShellModel extends HierarchicalModel {
             this.animate(reactions.ROTOR_ANIMATION, MODEL_TAKEOFF, reactions.takeOffTime * ANIMATION_SPEED);
         }
 
-        currentAlpha = (reactions.isFlying() && !ignoreAnimationAlpha) ? (this.initAlpha() - this.fadeValue().y) * 0.1f : baseAlpha;
+        currentAlpha = (reactions.isFlying()) ? (this.initAlpha() - this.fadeValue().y) * 0.1f : baseAlpha;
 
         handleSpecialAnimation(entity, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, baseAlpha);
-        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, reactions.isFlying() ? this.getCurrentAlpha() : baseAlpha);
+
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, reactions.isFlying() && !ignoreAnmationAlpha ? this.getCurrentAlpha() : baseAlpha);
     }
 
     public void handleSpecialAnimation(GlobalShellBlockEntity entity, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float baseAlpha) {
 
-    }
-
-    public void setIgnoreAnmationAlpha(boolean ignoreAnmationAlpha) {
-        this.ignoreAnimationAlpha = ignoreAnmationAlpha;
     }
 }

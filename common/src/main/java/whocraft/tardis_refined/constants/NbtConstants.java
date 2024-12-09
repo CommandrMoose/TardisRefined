@@ -1,15 +1,7 @@
 package whocraft.tardis_refined.constants;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
-import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 
 public class NbtConstants {
@@ -66,20 +58,24 @@ public class NbtConstants {
     public static final String THROTTLE_STAGE = "throttle_stage";
     public static final String HANDBRAKE_ENGAGED = "handbrake_engaged";
     public static final String CONTROL_INCREMENT_INDEX = "ctrl_increment_index";
-    public static final String CONTROL_CURRENT_EXT = "ctrl_current_ext";
     public static final String CONTROL_AUTOLAND = "ctrl_autoland";
 
     // Location Constant
-    public static final String LOCATION_POSITION = "_location_position";
-    public static final String LOCATION_ROTATION = "_location_rotation";
-    public static final String LOCATION_DIMENSION_MODID = "_location_dimension_id";
-    public static final String LOCATION_DIMENSION_PATH = "_location_dimension_path";
     public static final String KEYCHAIN = "keychain";
+    public static final String TARGET_LOCATION = "target_location";
+    public static final String CURRENT_LOCATION = "current_location";
+    public static final String RETURN_LOCATION = "return_location";
 
     // Flight
     public static final String FLIGHT_DISTANCE = "flight_distance";
     public static final String DISTANCE_COVERED = "distance_covered";
     public static final String SPEED_MODIFIER = "speed_modifier";
+    public static final String TICKS_CRASHING = "ticksCrashing";
+    public static final String IS_IN_RECOVERY = "isInCrashRecovery";
+    public static final String RECOVERY_TICKS = "ticksInCrashRecovery";
+
+    public static final String CURRENT_CONSOLE_POS = "currentConsoleBlockPos";
+    public static final String CAN_USE_CONTROLS = "canUseControls";
 
 
     // Piloting Manager
@@ -88,39 +84,20 @@ public class NbtConstants {
     public static final String IS_PASSIVELY_REFUELING = "is_passively_refueling";
     public static final CharSequence MINECRAFT = "minecraft";
 
-    public static TardisNavLocation getTardisNavLocation(CompoundTag tag, String prefix, TardisLevelOperator operator) {
-        // Extract necessary data from the tag
-        BlockPos position = NbtUtils.readBlockPos(tag.getCompound(prefix + NbtConstants.LOCATION_POSITION));
-        Direction direction = Direction.from2DDataValue(tag.getInt(prefix + NbtConstants.LOCATION_ROTATION));
-        String dimensionModId = tag.getString(prefix + NbtConstants.LOCATION_DIMENSION_MODID);
-        String dimensionPath = tag.getString(prefix + NbtConstants.LOCATION_DIMENSION_PATH);
-
-        // Validate the dimension information
-        if (!dimensionModId.isEmpty() && !dimensionPath.isEmpty()) {
-            ResourceKey<Level> dimensionKey = ResourceKey.create(
-                    Registries.DIMENSION,
-                    new ResourceLocation(dimensionModId, dimensionPath)
-            );
-
-            ServerLevel level = operator.getLevel().getServer().getLevel(dimensionKey);
-            if (level != null) {
-                return new TardisNavLocation(position, direction, level);
-            }
+    public static TardisNavLocation getTardisNavLocation(CompoundTag targetTag, String entry) {
+        if (targetTag.contains(entry)) {
+            CompoundTag savedLocationTag = targetTag.getCompound(entry);
+            return TardisNavLocation.deserialize(savedLocationTag);
         }
-
-        // Return default location if dimension is invalid or not found
         return TardisNavLocation.ORIGIN;
     }
 
-
-    public static void putTardisNavLocation(CompoundTag tag, String prefix, TardisNavLocation location) {
-        tag.put(prefix + NbtConstants.LOCATION_POSITION, NbtUtils.writeBlockPos(location.getPosition()));
-        tag.putInt(prefix + NbtConstants.LOCATION_ROTATION, location.getDirection().get2DDataValue());
-
-
-        if (location == null || location.getDimensionKey() == null) return;
-        ResourceKey<Level> dimKey = location.getDimensionKey();
-        tag.putString(prefix + NbtConstants.LOCATION_DIMENSION_MODID, dimKey.location().getNamespace());
-        tag.putString(prefix + NbtConstants.LOCATION_DIMENSION_PATH, dimKey.location().getPath());
+    public static void writeTardisNavLocation(CompoundTag targetTag, String entry, TardisNavLocation tardisNavLocation) {
+        if (tardisNavLocation == null) {
+            TardisRefined.LOGGER.error("Tried to save a null TardisNavLocation to {}", entry);
+            return;
+        }
+        CompoundTag navigationTag = tardisNavLocation.serialise();
+        targetTag.put(entry, navigationTag);
     }
 }

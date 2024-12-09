@@ -8,14 +8,11 @@ import net.minecraft.world.item.ItemStack;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.items.KeyItem;
-import whocraft.tardis_refined.common.network.messages.screens.OpenMonitorMessage;
-import whocraft.tardis_refined.common.tardis.TardisNavLocation;
+import whocraft.tardis_refined.common.network.messages.screens.S2COpenMonitor;
 import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.util.PlayerUtil;
-import whocraft.tardis_refined.compat.ModCompatChecker;
-import whocraft.tardis_refined.compat.valkyrienskies.VSHelper;
 import whocraft.tardis_refined.constants.ModMessages;
 
 public class MonitorControl extends Control {
@@ -43,21 +40,8 @@ public class MonitorControl extends Control {
                 if (key.interactMonitor(hand, player, controlEntity, player.getUsedItemHand()))
                     isSyncingKey = true;
             }
-            if (!isSyncingKey) {
-                TardisNavLocation currentLocation = operator.getPilotingManager().getCurrentLocation();
-                if (ModCompatChecker.valkyrienSkies()) {
-                    currentLocation = VSHelper.toWorldLocation(currentLocation);
-                }
-
-                new OpenMonitorMessage(
-                    operator.getInteriorManager().isWaitingToGenerate(),
-                    currentLocation,
-                    operator.getPilotingManager().getTargetLocation(),
-                    operator.getUpgradeHandler(),
-                    operator.getLevelKey()
-                ).send((ServerPlayer) player);
-                operator.updatingMonitors.add((ServerPlayer) player);
-            }
+            if (!isSyncingKey)
+                new S2COpenMonitor(operator.getInteriorManager().isWaitingToGenerate(), operator.getPilotingManager().getCurrentLocation(), operator.getPilotingManager().getTargetLocation(), operator.getUpgradeHandler()).send((ServerPlayer) player);
             return true;
         }
         return false;

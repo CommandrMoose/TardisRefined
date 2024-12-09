@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import whocraft.tardis_refined.client.screen.components.BackgroundlessButton;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
-import whocraft.tardis_refined.common.network.messages.upgrades.UnlockUpgradeMessage;
+import whocraft.tardis_refined.common.network.messages.upgrades.C2SUnlockUpgrade;
 import whocraft.tardis_refined.constants.ModMessages;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class BuyUpgradeScreen extends Screen {
         int guiTop = (this.height - GUI_HEIGHT) / 2;
         this.addRenderableWidget(BackgroundlessButton.backgroundlessBuilder(Component.literal("x"), s -> parentScreen.closeOverlayScreen()).bounds(guiLeft + 193, guiTop + 3, 5, 5).build());
         Button button = Button.builder(Component.literal(this.upgrade.getSkillPointsRequired() + " COST"), s -> { //TODO: Add translation key for Cost
-            new UnlockUpgradeMessage(this.upgrade).send();
+            new C2SUnlockUpgrade(this.upgrade).send();
             this.parentScreen.closeOverlayScreen();
             Objects.requireNonNull(Objects.requireNonNull(this.minecraft).player).playSound(SoundEvents.PLAYER_LEVELUP, 1F, 1F);
         }).bounds(guiLeft + 23, guiTop + 33, 54, 20).build();

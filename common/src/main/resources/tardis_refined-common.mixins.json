@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "whocraft.tardis_refined.common.mixin",
+  "package": "whocraft.tardis_refined.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EndDragonFightAccessor",
@@ -12,12 +12,14 @@
     "VillagerMixin"
   ],
   "client": [
-    "FogRendererMixin",
-    "GuiMixin",
     "LocalPlayerMixin",
     "MultiplayerGameModeMixin",
-    "PlayerRenderMixin",
-    "SpectatorGuiMixin"
+    "render.FogRendererMixin",
+    "render.PlayerRenderMixin",
+    "render.buffer.MixinMainTarget",
+    "render.buffer.MixinRenderTarget",
+    "render.ui.GuiMixin",
+    "render.ui.SpectatorGuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

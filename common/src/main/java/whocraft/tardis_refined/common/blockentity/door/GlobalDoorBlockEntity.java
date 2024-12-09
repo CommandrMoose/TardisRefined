@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
+import whocraft.tardis_refined.compat.portals.IPStencil;
 import whocraft.tardis_refined.constants.NbtConstants;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
@@ -125,8 +127,15 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity {
                         cap.setDoorClosed(true); //Tell the Tardis that the door should be closed only if the door is being locked
                     return;
                 }
-                if (!cap.getPilotingManager().isInFlight() && !door.locked()) {
-                    cap.setDoorClosed(door.isOpen()); //Tell the Tardis that the door should be closed if currently open, and should be open if currently closed.
+                if (!door.locked()) {
+                    cap.setDoorClosed(door.isOpen());//Tell the Tardis that the door should be closed if currently open, and should be open if currently closed.
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        if (door.isOpen()) {
+                            IPStencil.loadServerChunks(serverPlayer, cap.getPilotingManager().getCurrentLocation());
+                        } else {
+                            IPStencil.unloadServerChunks(serverPlayer);
+                        }
+                    }
                 }
             });
         }

@@ -33,7 +33,7 @@ public class C2SRequestShellSelection extends MessageC2S {
     public void handle(MessageContext context) {
         ServerLevel serverLevel = context.getPlayer().serverLevel();
         TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
-            new OpenShellSelectionScreen(tardisLevelOperator.getAestheticHandler().getShellTheme()).send(context.getPlayer());
+            new S2COpenShellSelection(tardisLevelOperator.getAestheticHandler().getShellTheme()).send(context.getPlayer());
         });
     }
 }

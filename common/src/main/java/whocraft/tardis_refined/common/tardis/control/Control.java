@@ -1,7 +1,8 @@
 package whocraft.tardis_refined.common.tardis.control;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
@@ -11,9 +12,9 @@ import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEnti
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
-import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.patterns.ConsolePattern;
 import whocraft.tardis_refined.patterns.ConsolePatterns;
+import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 
 public abstract class Control {
     protected final ResourceLocation id;
@@ -22,6 +23,7 @@ public abstract class Control {
      * Determines if this Control should be used for the FlightDance. This can be expanded to be used for other purposes in the future.
      */
     private boolean isCriticalForTardisOperation = false;
+    private boolean canBeUsedPostCrash = false;
     private ConfiguredSound successSound = new ConfiguredSound(SoundEvents.ARROW_HIT_PLAYER);
     private ConfiguredSound failSound = new ConfiguredSound(SoundEvents.ITEM_BREAK);
 
@@ -36,7 +38,7 @@ public abstract class Control {
     }
 
     protected Control(ResourceLocation id, boolean isCriticalForTardisOperation) {
-        this(id, "control." + id.getNamespace() + "." + id.getPath(), isCriticalForTardisOperation);
+        this(id, Util.makeDescriptionId("control", id), isCriticalForTardisOperation);
     }
     protected Control(ResourceLocation id) {
         this(id, false);
@@ -135,6 +137,15 @@ public abstract class Control {
 
     public Component getCustomControlName(TardisLevelOperator operator, ControlEntity entity, ControlSpecification controlSpecification) {
         return Component.translatable(controlSpecification.control().getTranslationKey());
+    }
+
+    public Control setCanBeUsedPostCrash(boolean canBeUsedPostCrash) {
+        this.canBeUsedPostCrash = canBeUsedPostCrash;
+        return this;
+    }
+
+    public boolean canBeUsedPostCrash() {
+        return canBeUsedPostCrash;
     }
 
     /**

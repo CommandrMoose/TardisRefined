@@ -1,33 +1,20 @@
 package whocraft.tardis_refined.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.realmsclient.util.RealmsUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.profiling.ProfileResults;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import java.util.UUID;
-
 public class RenderHelper {
 
     public static Tesselator tesselator;
 
-    public static void renderPlayerFace(GuiGraphics guiGraphics, int i, int j, int k, UUID uUID) {
-        Minecraft minecraft = Minecraft.getInstance();
-        RealmsUtil.renderPlayerFace(guiGraphics, i, j, k, uUID.toString());
-    }
 
     public static void renderFilledBox(PoseStack stack, VertexConsumer vertexConsumer, AABB box, float red, float green, float blue, float alpha, int combinedLightIn) {
         Matrix4f matrix = stack.last().pose();
@@ -91,6 +78,46 @@ public class RenderHelper {
     public static void vertexUVColor(@NotNull PoseStack pose, float x, float y, float z, float u, float v, float r, float g, float b, float a) {
         tesselator.getBuilder().vertex(pose.last().pose(), x, y, z).uv(u, v).color(r, g, b, a).endVertex();
     }
+
+    public static class CustomProgressBar {
+        private final ResourceLocation texture;
+
+        private final int height, width;
+        private final int framesU, framesV, mspf;
+        public boolean animate = true;
+        private int anim = 1;
+        private long last_frame;
+        private boolean started = false;
+
+        public CustomProgressBar(ResourceLocation texture, int texWidth, int texHeight, int height, int width, int fps) {
+            this.texture = texture;
+            this.height = height;
+            this.width = width;
+            this.mspf = 1000 / fps;
+            this.framesU = texHeight / height;
+            this.framesV = texWidth / width;
+        }
+
+        public void blit(GuiGraphics gg, int x, int y, double progress) {
+            if (!started) {
+                started = true;
+                last_frame = System.currentTimeMillis();
+            }
+
+            int u = anim / framesU;
+            int v = anim % framesU;
+
+            gg.blit(texture, x, y, 0, 0, width, height);
+            gg.blit(texture, x, y, width * u, height * v, (int) (width * progress), height);
+
+            if (System.currentTimeMillis() - last_frame > mspf) {
+                anim++;
+                last_frame = System.currentTimeMillis();
+            }
+            if (anim >= framesU * framesV || !animate) anim = 1;
+        }
+    }
+
 
     public static class DynamicTimeKeep {
         public double speed = 1f;

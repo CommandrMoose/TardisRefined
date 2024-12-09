@@ -13,16 +13,15 @@ import org.joml.Matrix4f;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
 import whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen;
+import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
-
-import java.util.Objects;
 
 import static whocraft.tardis_refined.client.renderer.vortex.ShellRenderer.renderShell;
 import static whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen.globalShellBlockEntity;
 
 public class VortexOverlay {
 
-    public static final VortexRenderer VORTEX = new VortexRenderer(VortexRenderer.VortexTypes.FLOW);
+    public static final VortexRenderer VORTEX = new VortexRenderer(VortexRegistry.CLOUDS.get());
 
     private static double tardisX = 0.0D;
     private static double tardisY = 0.0D;
@@ -104,6 +103,8 @@ public class VortexOverlay {
             float width = gg.guiWidth();
             float height = gg.guiHeight();
 
+            VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
+
             /*
                 Needs tweaking, but am not quite sure how to fix.
              */
@@ -158,7 +159,7 @@ public class VortexOverlay {
 
             Matrix4f perspective = new Matrix4f();
             perspective.perspective((float) Math.toRadians(mc.options.fov().get()), width / height, 1, 9999, false, perspective);
-            perspective.translate(0, 0, 11000f - (float) camdist);
+            perspective.translate(0, 0, 11000f - (float) camdist * mulinv - 5 * mul);
             RenderSystem.setProjectionMatrix(perspective, VertexSorting.DISTANCE_TO_ORIGIN);
 
             pose.pushPose();

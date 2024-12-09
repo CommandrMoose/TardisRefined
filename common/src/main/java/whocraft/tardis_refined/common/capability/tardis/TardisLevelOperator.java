@@ -56,10 +56,6 @@ public class TardisLevelOperator {
     public static final int STATE_EYE_OF_HARMONY = 2;
     private final Level level;
     private final ResourceKey<Level> levelKey;
-    private boolean hasInitiallyGenerated = false;
-    private TardisInternalDoor internalDoor = null;
-    public HashSet<ServerPlayer> updatingMonitors = new HashSet<>();
-
     // Managers
     private final TardisExteriorManager exteriorManager;
     private final TardisInteriorManager interiorManager;
@@ -69,8 +65,12 @@ public class TardisLevelOperator {
     private final TardisClientData tardisClientData;
     private final UpgradeHandler upgradeHandler;
     private final AestheticHandler aestheticHandler;
+    private boolean hasInitiallyGenerated = false;
+    private TardisInternalDoor internalDoor = null;
     // TARDIS state refers to different stages of TARDIS creation. This allows for different logic to operate in those moments.
     private int tardisState = 0;
+
+    public HashSet<ServerPlayer> updatingMonitors = new HashSet<>();
 
 
     public TardisLevelOperator(Level level) {
@@ -197,6 +197,7 @@ public class TardisLevelOperator {
             tardisClientData.setIsLanding(exteriorManager.isLanding());
             tardisClientData.setIsTakingOff(exteriorManager.isTakingOff());
             tardisClientData.setIsCrashing(pilotingManager.isCrashing());
+            tardisClientData.setVortex(aestheticHandler.getVortex());
 
             float percentageCompleted = (getPilotingManager().getFlightPercentageCovered() * 100f);
             if (percentageCompleted > 100) {
@@ -214,6 +215,8 @@ public class TardisLevelOperator {
             tardisClientData.setIsTakingOff(exteriorManager.isTakingOff());
             tardisClientData.setThrottleStage(pilotingManager.getThrottleStage());
             tardisClientData.setHandbrakeEngaged(pilotingManager.isHandbrakeOn());
+            tardisClientData.setVortex(aestheticHandler.getVortex());
+
             tardisClientData.sync();
         }
 
@@ -542,11 +545,8 @@ public class TardisLevelOperator {
 
         Direction direction = shellBlockState.getValue(ShellBaseBlock.FACING).getOpposite();
         TardisNavLocation navLocation = new TardisNavLocation(shellBlockPos, direction, shellServerLevel);
-        if (ModCompatChecker.valkyrienSkies()) {
-            navLocation = VSHelper.toWorldLocation(navLocation);
-        }
-        this.pilotingManager.setCurrentLocation(navLocation.copy());
-        this.pilotingManager.setTargetLocation(navLocation.copy());
+        this.pilotingManager.setCurrentLocation(navLocation);
+        this.pilotingManager.setTargetLocation(navLocation);
 
         this.setInitiallyGenerated(true);
         this.setTardisState(TardisLevelOperator.STATE_CAVE);

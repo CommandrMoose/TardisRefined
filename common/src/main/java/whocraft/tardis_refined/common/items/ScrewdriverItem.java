@@ -14,6 +14,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.blockentity.device.AstralManipulatorBlockEntity;
+import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRSoundRegistry;
@@ -48,54 +49,57 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-
-
-        if (context.getLevel() instanceof ServerLevel serverLevel) {
-
-            if (context.getPlayer().isCrouching()) {
-                setScrewdriverMode(context.getItemInHand(), ScrewdriverMode.DISABLED, context.getClickedPos(), serverLevel);
-            } else {
-
-                if (isScrewdriverMode(context.getItemInHand(), ScrewdriverMode.DRAWING) && context.getLevel().getBlockState(context.getClickedPos()).getBlock() != TRBlockRegistry.ASTRAL_MANIPULATOR_BLOCK.get()) {
-                    addBlockPosToScrewdriver(serverLevel, context.getPlayer(), context.getItemInHand(), context.getClickedPos());
-                }
-            }
+        if (!(context.getLevel() instanceof ServerLevel serverLevel)) {
+            return super.useOn(context);
         }
 
+        var player = context.getPlayer();
+        var itemInHand = context.getItemInHand();
+        var clickedPos = context.getClickedPos();
+        var blockState = context.getLevel().getBlockState(clickedPos);
+
+        if (player.isCrouching()) {
+            ScrewdriverMode newMode = isScrewdriverMode(itemInHand, ScrewdriverMode.ENABLED)
+                    ? ScrewdriverMode.DISABLED
+                    : ScrewdriverMode.ENABLED;
+            setScrewdriverMode(context.getPlayer(), itemInHand, newMode, clickedPos, serverLevel);
+        } else if (isScrewdriverMode(itemInHand, ScrewdriverMode.DRAWING)
+                && blockState.getBlock() != TRBlockRegistry.ASTRAL_MANIPULATOR_BLOCK.get()) {
+            addBlockPosToScrewdriver(serverLevel, player, itemInHand, clickedPos);
+        }
 
         return super.useOn(context);
     }
 
-    public void setScrewdriverMode(ItemStack stack, ScrewdriverMode mode, BlockPos sourceChange, @Nullable ServerLevel serverLevel) {
-        CompoundTag itemtag = stack.getOrCreateTag();
 
-        if (itemtag.contains(SCREWDRIVER_MODE)) {
-            ScrewdriverMode currentMode = ScrewdriverMode.valueOf(itemtag.getString(SCREWDRIVER_MODE));
+    public void setScrewdriverMode(Player player, ItemStack stack, ScrewdriverMode mode, BlockPos sourceChange, @Nullable ServerLevel serverLevel) {
+        CompoundTag itemTag = stack.getOrCreateTag();
+        ScrewdriverMode currentMode = itemTag.contains(SCREWDRIVER_MODE)
+                ? ScrewdriverMode.valueOf(itemTag.getString(SCREWDRIVER_MODE))
+                : ScrewdriverMode.DISABLED;
 
-
+        if (serverLevel != null) {
             if (currentMode != ScrewdriverMode.DISABLED && mode == ScrewdriverMode.DISABLED) {
-                if (serverLevel != null) {
-                    playScrewdriverSound(serverLevel, sourceChange, TRSoundRegistry.SCREWDRIVER_DISCARD.get());
-                }
+                // Play the disabled sound when transitioning to DISABLED mode
+                playScrewdriverSound(serverLevel, sourceChange, TRSoundRegistry.SCREWDRIVER_DISCARD.get());
             }
-
-            if (currentMode == ScrewdriverMode.DRAWING && mode == ScrewdriverMode.DISABLED) {
-
-                if (serverLevel != null) {
-                    clearLinkedManipulator(serverLevel, stack);
-                }
-
-
+            if (currentMode == ScrewdriverMode.DRAWING && mode != ScrewdriverMode.DRAWING) {
+                // Clear manipulator if leaving DRAWING mode
+                clearLinkedManipulator(serverLevel, stack);
             }
         }
 
-        itemtag.putString(SCREWDRIVER_MODE, mode.toString());
+        // Update the mode in the item's NBT
+        itemTag.putString(SCREWDRIVER_MODE, mode.toString());
+
         if (mode == ScrewdriverMode.DRAWING) {
-            itemtag.put(LINKED_MANIPULATOR_POS, NbtUtils.writeBlockPos(sourceChange));
+            // Save manipulator position for DRAWING mode
+            itemTag.put(LINKED_MANIPULATOR_POS, NbtUtils.writeBlockPos(sourceChange));
         }
-
-        stack.setTag(itemtag);
+        PlayerUtil.sendMessage(player, mode.toString(), true);
+        stack.setTag(itemTag);
     }
+
 
     public boolean isScrewdriverMode(ItemStack stack, ScrewdriverMode mode) {
         CompoundTag itemtag = stack.getOrCreateTag();
@@ -125,7 +129,7 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
         }
 
         itemtag.put(target, NbtUtils.writeBlockPos(pos));
-        updatedLinkedManipulator((ServerLevel) player.level(), stack, pos, isUpdatingA);
+        updatedLinkedManipulator(player, (ServerLevel) player.level(), stack, pos, isUpdatingA);
 
         itemtag.putBoolean(SCREWDRIVER_B_WAS_LAST_UPDATED, !isUpdatingA);
         stack.setTag(itemtag);
@@ -137,18 +141,17 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
         level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), soundEvent, SoundSource.PLAYERS, 1, 0.875f + level.getRandom().nextFloat() / 4);
     }
 
-    private void updatedLinkedManipulator(ServerLevel level, ItemStack stack, BlockPos pos, boolean isPointA) {
+    private void updatedLinkedManipulator(Player player, ServerLevel level, ItemStack stack, BlockPos pos, boolean isPointA) {
         CompoundTag itemtag = stack.getOrCreateTag();
         if (itemtag.contains(LINKED_MANIPULATOR_POS)) {
             BlockPos manipulator = NbtUtils.readBlockPos(itemtag.getCompound(LINKED_MANIPULATOR_POS));
             if (level.getBlockEntity(manipulator) instanceof AstralManipulatorBlockEntity astralManipulatorBlockEntity) {
 
                 if (!astralManipulatorBlockEntity.setProjectionBlockPos(pos, isPointA)) {
-                    setScrewdriverMode(stack, ScrewdriverMode.DISABLED, pos, level);
+                    setScrewdriverMode(player, stack, ScrewdriverMode.DISABLED, pos, level);
                 }
 
             }
-
         }
     }
 

@@ -85,10 +85,15 @@ public class LiftShellDoorModel extends ShellDoorModel {
     }
 
     @Override
-    public void renderInteriorDoor(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderFrame(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         bone28.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         doorOpen.visible = isDoorOpen;
         doorClosed.visible = !isDoorOpen;
+    }
+
+    @Override
+    public void renderPortalMask(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+
     }
 
     @Override

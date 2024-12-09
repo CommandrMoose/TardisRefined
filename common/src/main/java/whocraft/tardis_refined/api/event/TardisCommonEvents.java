@@ -8,7 +8,6 @@ import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
-import whocraft.tardis_refined.common.tardis.control.Control;
 
 public class TardisCommonEvents {
 
@@ -101,7 +100,7 @@ public class TardisCommonEvents {
          * @param controlEntity       The entity associated with the control.
          * @return True if control can be used, false otherwise.
          */
-        EventResult canControlBeUsed(TardisLevelOperator tardisLevelOperator, Control control, ControlEntity controlEntity);
+        EventResult canControlBeUsed(TardisLevelOperator tardisLevelOperator, whocraft.tardis_refined.common.tardis.control.Control control, ControlEntity controlEntity);
     }
 
 

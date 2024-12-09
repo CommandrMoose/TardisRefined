@@ -101,14 +101,14 @@ public class InternalDoorBlock extends BaseEntityBlock {
             ServerLevel serverLevel = (ServerLevel) level;
             if (serverLevel.getBlockEntity(blockPos) instanceof TardisInternalDoor door) {
 
-                if (TardisLevelOperator.get(serverLevel).isPresent()) {
-                    AABB teleportAABB = this.getCollisionShape(blockState, level, blockPos, CollisionContext.of(entity)).bounds().move(blockPos);
-                    if (TRTeleporter.teleportIfCollided(serverLevel, blockPos, entity, teleportAABB)) {
-                        door.onAttemptEnter(blockState, serverLevel, blockPos, entity);
+                TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
+                    if (!tardisLevelOperator.getPilotingManager().isInFlight()) {
+                        AABB teleportAABB = this.getCollisionShape(blockState, level, blockPos, CollisionContext.of(entity)).bounds().move(blockPos);
+                        if (TRTeleporter.teleportIfCollided(serverLevel, blockPos, entity, teleportAABB)) {
+                            door.onAttemptEnter(blockState, serverLevel, blockPos, entity);
+                        }
                     }
-                }
-
-
+                });
             }
         }
     }

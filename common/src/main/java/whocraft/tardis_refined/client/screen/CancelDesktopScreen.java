@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import whocraft.tardis_refined.common.network.messages.CancelDesktopChangeMessage;
+import whocraft.tardis_refined.common.network.messages.C2SCancelDesktopChange;
 import whocraft.tardis_refined.constants.ModMessages;
 
 import java.awt.*;
@@ -34,7 +34,7 @@ public class CancelDesktopScreen extends Screen {
     protected void init() {
         super.init();
         this.addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_DESKTOP_CANCEL), (button) -> {
-            new CancelDesktopChangeMessage(Minecraft.getInstance().player.level().dimension()).send();
+            new C2SCancelDesktopChange(Minecraft.getInstance().player.level().dimension()).send();
             Minecraft.getInstance().setScreen(null);
         }).bounds(this.width / 2 - (175 / 2), this.height / 2 + 10, 175, 20).build());
 

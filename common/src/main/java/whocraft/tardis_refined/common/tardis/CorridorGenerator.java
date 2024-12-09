@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 
 public class CorridorGenerator {
@@ -37,11 +38,11 @@ public class CorridorGenerator {
                 template.setAuthor("");
                 manager.save(new ResourceLocation(name));
 
-                player.displayClientMessage(Component.translatable("Generated structure at: " + name), false);
+                PlayerUtil.sendMessage(player, Component.translatable("Generated structure at: " + name), false);
             }
 
             if (itemStack.getItem() instanceof InkSacItem) {
-                player.displayClientMessage(Component.translatable("Attempting to generate structure."), false);
+                PlayerUtil.sendMessage(player, (Component.translatable("Attempting to generate structure.")), false);
                 CorridorGenerator.generateFromPosition(level, blockPos, blockPos);
 
             }

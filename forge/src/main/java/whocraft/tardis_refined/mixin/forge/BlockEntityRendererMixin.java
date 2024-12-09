@@ -14,6 +14,7 @@ import whocraft.tardis_refined.common.blockentity.door.RootShellDoorBlockEntity;
 import whocraft.tardis_refined.common.blockentity.life.EyeBlockEntity;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
+
 @Mixin({EyeBlockEntity.class, ConsoleConfigurationBlockEntity.class, GlobalShellBlockEntity.class, RootShellDoorBlockEntity.class, GlobalShellBlockEntity.class, GlobalConsoleBlockEntity.class, BulkHeadDoorBlockEntity.class})
 public class BlockEntityRendererMixin extends BlockEntity implements IForgeBlockEntity {
 
@@ -25,4 +26,5 @@ public class BlockEntityRendererMixin extends BlockEntity implements IForgeBlock
     public AABB getRenderBoundingBox() {
         return INFINITE_EXTENT_AABB;
     }
+
 }

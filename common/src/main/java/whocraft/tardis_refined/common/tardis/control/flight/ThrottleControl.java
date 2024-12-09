@@ -1,10 +1,12 @@
 package whocraft.tardis_refined.common.tardis.control.flight;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.control.Control;
+import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
@@ -48,5 +50,29 @@ public class ThrottleControl extends Control {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return true;
+    }
+
+    @Override
+    public Component getCustomControlName(TardisLevelOperator operator, ControlEntity entity, ControlSpecification controlSpecification) {
+        if (operator.getPilotingManager().isInFlight()) {
+
+            int throttleStage = operator.getPilotingManager().getThrottleStage();
+            int maxThrottleStage = TardisPilotingManager.MAX_THROTTLE_STAGE;
+            int throttlePercentage = maxThrottleStage != 0
+                    ? (int) ((double) throttleStage / maxThrottleStage * 100)
+                    : 0;
+
+            if (throttlePercentage > 100) {
+                throttlePercentage = 100;
+            }
+            return Component.translatable(controlSpecification.control().getTranslationKey()).append(" (" + throttlePercentage + "%)");
+        }
+
+        return super.getCustomControlName(operator, entity, controlSpecification);
     }
 }

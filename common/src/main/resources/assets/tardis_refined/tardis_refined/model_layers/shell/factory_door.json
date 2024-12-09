@@ -1,0 +1,219 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.unknown",
+        "texture_width": 128,
+        "texture_height": 128,
+        "visible_bounds_width": 3,
+        "visible_bounds_height": 3.5,
+        "visible_bounds_offset": [
+          0,
+          1.25,
+          0
+        ]
+      },
+      "bones": [
+        {
+          "name": "frame",
+          "pivot": [
+            0,
+            -2,
+            13
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -9,
+                0,
+                5
+              ],
+              "size": [
+                18,
+                2,
+                3
+              ],
+              "uv": [
+                48,
+                6
+              ]
+            },
+            {
+              "origin": [
+                -9,
+                35,
+                5
+              ],
+              "size": [
+                18,
+                2,
+                3
+              ],
+              "uv": [
+                48,
+                0
+              ]
+            },
+            {
+              "origin": [
+                -5,
+                33,
+                5
+              ],
+              "size": [
+                10,
+                2,
+                2
+              ],
+              "uv": [
+                48,
+                17
+              ]
+            },
+            {
+              "origin": [
+                -9,
+                2,
+                6
+              ],
+              "size": [
+                2,
+                33,
+                2
+              ],
+              "uv": [
+                9,
+                35
+              ]
+            },
+            {
+              "origin": [
+                7,
+                2,
+                6
+              ],
+              "size": [
+                2,
+                33,
+                2
+              ],
+              "uv": [
+                0,
+                35
+              ]
+            },
+            {
+              "origin": [
+                -7,
+                32,
+                6.9
+              ],
+              "size": [
+                14,
+                3,
+                1
+              ],
+              "uv": [
+                48,
+                12
+              ]
+            }
+          ]
+        },
+        {
+          "name": "bone",
+          "parent": "frame",
+          "pivot": [
+            0,
+            18,
+            24
+          ],
+          "rotation": [
+            0,
+            90,
+            0
+          ]
+        },
+        {
+          "name": "right_door",
+          "pivot": [
+            7,
+            18,
+            7.4
+          ],
+          "cubes": [
+            {
+              "origin": [
+                0,
+                2,
+                6.8
+              ],
+              "size": [
+                7,
+                31,
+                1
+              ],
+              "uv": [
+                31,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "left_door",
+          "pivot": [
+            -7,
+            18,
+            7.4
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -7,
+                2,
+                6.8
+              ],
+              "size": [
+                7,
+                31,
+                1
+              ],
+              "uv": [
+                31,
+                33
+              ]
+            }
+          ]
+        },
+        {
+          "name": "portal",
+          "pivot": [
+            0,
+            0,
+            0
+          ],
+          "cubes": [
+            {
+              "origin": [
+                -7,
+                2,
+                7
+              ],
+              "size": [
+                14,
+                33,
+                1
+              ],
+              "uv": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -27,7 +27,7 @@ import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.LevelEvent;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
-import whocraft.tardis_refined.common.network.messages.sync.SyncLevelListMessage;
+import whocraft.tardis_refined.common.network.messages.sync.S2CSyncLevelList;
 
 import java.util.concurrent.Executor;
 import java.util.function.BiFunction;
@@ -94,7 +94,7 @@ public class DimensionHandlerImpl {
 
         MinecraftForge.EVENT_BUS.post(new LevelEvent.Load(newLevel));
 
-        new SyncLevelListMessage(newLevel.dimension(), true).sendToAll();
+        new S2CSyncLevelList(newLevel.dimension(), true).sendToAll();
 
         BlockPos blockPos = new BlockPos(0, 0, 0);
         ChunkPos chunkPos = new ChunkPos(blockPos);

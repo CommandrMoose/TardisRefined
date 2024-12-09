@@ -15,6 +15,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class ItemTagProvider extends ItemTagsProvider {
 
+    public ItemTagProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, CompletableFuture<TagLookup<Item>> completableFuture2, CompletableFuture<TagLookup<Block>> completableFuture3, @Nullable ExistingFileHelper existingFileHelper) {
+        super(arg, completableFuture, completableFuture2, completableFuture3, TardisRefined.MODID, existingFileHelper);
+    }
+
     public ItemTagProvider(PackOutput arg, CompletableFuture<HolderLookup.Provider> completableFuture, CompletableFuture<TagLookup<Block>> completableFuture2, @Nullable ExistingFileHelper existingFileHelper) {
         super(arg, completableFuture, completableFuture2, TardisRefined.MODID, existingFileHelper);
     }

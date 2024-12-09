@@ -13,7 +13,7 @@ import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionL
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.common.hum.HumEntry;
 import whocraft.tardis_refined.common.hum.TardisHums;
-import whocraft.tardis_refined.common.network.messages.hums.ChangeHumMessage;
+import whocraft.tardis_refined.common.network.messages.hums.C2SChangeHum;
 import whocraft.tardis_refined.common.util.MiscHelper;
 
 import java.util.Collection;
@@ -32,7 +32,7 @@ public class HumSelectionScreen extends SelectionScreen {
     }
 
     public static void selectHum(HumEntry theme) {
-        new ChangeHumMessage(Minecraft.getInstance().player.level().dimension(), theme).send();
+        new C2SChangeHum(Minecraft.getInstance().player.level().dimension(), theme).send();
         Minecraft.getInstance().setScreen(null);
     }
 
@@ -79,7 +79,7 @@ public class HumSelectionScreen extends SelectionScreen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int i, int j, float f) {
-        guiGraphics.fillGradient(0, 0, this.width, this.height, -1072689136, -804253680);
+        this.renderBackground(guiGraphics);
 
 
         /*Render Back drop*/

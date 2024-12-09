@@ -19,13 +19,12 @@ import whocraft.tardis_refined.TardisRefined;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static net.minecraft.client.animation.AnimationChannel.Interpolations.CATMULLROM;
 import static net.minecraft.client.animation.AnimationChannel.Interpolations.LINEAR;
-import static net.minecraft.client.animation.AnimationChannel.Targets.POSITION;
-import static net.minecraft.client.animation.AnimationChannel.Targets.ROTATION;
-import static whocraft.tardis_refined.TardisRefined.LOGGER;
 import static net.minecraft.client.animation.AnimationChannel.Targets.*;
 
 /**
@@ -125,7 +124,6 @@ public class JsonToAnimationDefinition {
         if(transformationData == null) return keyframes;
 
         JsonObject jsonObject = transformationData.getAsJsonObject();
-        TardisRefined.LOGGER.info("Keyframe Info: {}", jsonObject);
 
         if (!jsonObject.has("keyframes") || !jsonObject.get("keyframes").isJsonArray()) {
             return keyframes;
@@ -159,9 +157,8 @@ public class JsonToAnimationDefinition {
             Keyframe keyframe = new Keyframe(timestamp, Objects.requireNonNull(targetToVector(targetType, vector3f)), interpolation);
             keyframes.add(keyframe);
         }
-
         // Log the total number of keyframes parsed
-        TardisRefined.LOGGER.info("Total keyframes parsed for target {}: {}", targetToString(targetType), keyframes.size());
+        TardisRefined.LOGGER.debug("({} + {}) Total keyframes parsed: {}", targetToString(targetType), jsonObject.get("bone").getAsString(), keyframes.size());
 
         return keyframes;
     }
@@ -216,9 +213,8 @@ public class JsonToAnimationDefinition {
             JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
             return JsonParser.parseReader(reader).getAsJsonObject();
         } catch (IOException e) {
-            LOGGER.error("Failed to load JSON from resource: {}", resourceLocation, e);
+            e.printStackTrace();
             return null;
         }
     }
-
 }
