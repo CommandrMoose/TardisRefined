@@ -10,6 +10,7 @@ import whocraft.tardis_refined.client.ModelRegistry;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.*;
 import whocraft.tardis_refined.client.model.blockentity.shell.shells.*;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
+import whocraft.tardis_refined.compat.ModCompatChecker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,17 +72,17 @@ public class ShellModelCollection {
         // Doors
         factoryDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.FACTORY_DOOR)), 250f);
         policeBoxDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.POLICE_BOX_DOOR)), 300, true, false);
-        phoneBoothDoorModel = new PhoneBoothDoorModel(context.bakeLayer((ModelRegistry.PHONE_BOOTH_DOOR)));
-        mysticDoorModel = new MysticDoorModel(context.bakeLayer((ModelRegistry.MYSTIC_DOOR)));
+        phoneBoothDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.PHONE_BOOTH_DOOR)), (ModCompatChecker.immersivePortals() ? 1.75f : -1.75f));
+        mysticDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.MYSTIC_DOOR)), 250f);
         drifterDoorModel = new TexInteriorDoorModel(context.bakeLayer((ModelRegistry.DRIFTER_DOOR)));
         presentDoorModel = new PresentDoorModel(context.bakeLayer((ModelRegistry.PRESENT_DOOR)));
         vendingDoorModel = new VendingMachineDoorModel(context.bakeLayer((ModelRegistry.VENDING_DOOR)));
         briefcaseDoorModel = new BriefcaseDoorModel(context.bakeLayer((ModelRegistry.BRIEFCASE_DOOR)));
         groeningDoorModel = new GroeningDoorModel(context.bakeLayer((ModelRegistry.GROENING_DOOR)));
         bigBenDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.BIG_BEN_DOOR)), 275f);
-        nukaDoorModel = new NukaDoorModel(context.bakeLayer((ModelRegistry.NUKA_DOOR)));
+        nukaDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.NUKA_DOOR)), 250f);
         growthDoorModel = new GrowthDoorModel(context.bakeLayer((ModelRegistry.GROWTH_DOOR)));
-        portalooDoorModel = new PortalooDoorModel(context.bakeLayer((ModelRegistry.PORTALOO_DOOR)));
+        portalooDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.PORTALOO_DOOR)), (ModCompatChecker.immersivePortals() ? 1.75f : -1.75f));
         pagodaDoorModel = new PagodaDoorModel(context.bakeLayer((ModelRegistry.PAGODA_DOOR)));
         liftDoorModel = new LiftShellDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
         hieroglyphDoorModel = new HieroglyphShellDoor(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
