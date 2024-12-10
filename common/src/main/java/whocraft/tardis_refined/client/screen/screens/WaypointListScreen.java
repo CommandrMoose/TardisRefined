@@ -18,11 +18,14 @@ import whocraft.tardis_refined.common.network.messages.waypoints.C2SOpenCoordina
 import whocraft.tardis_refined.common.network.messages.waypoints.C2SOpenEditCoordinatesDisplayMessage;
 import whocraft.tardis_refined.common.network.messages.waypoints.C2SRemoveWaypointEntry;
 import whocraft.tardis_refined.common.network.messages.waypoints.C2STravelToWaypoint;
+import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.TardisWaypoint;
+import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.constants.ModMessages;
 
 import java.awt.*;
 import java.util.Collection;
+import java.util.Comparator;
 
 
 public class WaypointListScreen extends MonitorOS {
@@ -99,7 +102,10 @@ public class WaypointListScreen extends MonitorOS {
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 250, 80, leftPos - 70, topPos + 45, topPos + monitorHeight - 45, 12);
         selectionList.setRenderBackground(false);
 
-        for (TardisWaypoint waypointEntry : WAYPOINTS) {
+        Collection<TardisWaypoint> values = WAYPOINTS;
+        values = values.stream().sorted(Comparator.comparing(TardisWaypoint::getName)).toList();
+
+        for (TardisWaypoint waypointEntry : values) {
             selectionList.children().add(new SelectionListEntry(Component.literal(waypointEntry.getLocation().getName()), entry -> {
                 entry.setChecked(true);
                 this.waypoint = waypointEntry;

@@ -14,9 +14,14 @@ import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionL
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.common.network.messages.C2SChangeShell;
+import whocraft.tardis_refined.common.tardis.TardisDesktops;
+import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPatterns;
+
+import java.util.Collection;
+import java.util.Comparator;
 
 public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
 
@@ -85,18 +90,17 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
         int leftPos = width / 2;
         int topPos = (height - monitorHeight) / 2;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 105, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
-
         selectionList.setRenderBackground(false);
 
-        for (Holder.Reference<ShellTheme> shellTheme : ShellTheme.SHELL_THEME_REGISTRY.holders().toList()) {
-            ShellTheme theme = shellTheme.value();
-            ResourceLocation shellThemeId = shellTheme.key().location();
+        Collection<ShellTheme> values = ShellTheme.SHELL_THEME_REGISTRY.stream().toList();
+        values = values.stream()
+                .sorted(Comparator.comparing(theme -> theme.getDisplayName().toString()))
+                .toList();
 
-            if (theme == ShellTheme.HALF_BAKED.get()) {
-                continue;
-            }
+        for (ShellTheme shellTheme : values) {
+            ResourceLocation shellThemeId = ShellTheme.getKey(shellTheme);
 
-            SelectionListEntry selectionListEntry = new SelectionListEntry(theme.getDisplayName(), (entry) -> {
+            SelectionListEntry selectionListEntry = new SelectionListEntry(shellTheme.getDisplayName(), (entry) -> {
                 CURRENTSHELLTHEME = shellThemeId;
 
                 for (Object child : selectionList.children()) {

@@ -22,6 +22,9 @@ import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.registry.TRSoundRegistry;
 
+import java.util.Collection;
+import java.util.Comparator;
+
 public class DesktopSelectionScreen extends MonitorOS {
 
     public static ResourceLocation previousImage = TardisDesktops.FACTORY_THEME.getPreviewTexture();
@@ -101,7 +104,10 @@ public class DesktopSelectionScreen extends MonitorOS {
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
         selectionList.setRenderBackground(false);
 
-        for (DesktopTheme desktop : TardisDesktops.getRegistry().values()) {
+        Collection<DesktopTheme> values = TardisDesktops.getRegistry().values();
+        values = values.stream().sorted(Comparator.comparing(DesktopTheme::getName)).toList();
+
+        for (DesktopTheme desktop : values) {
 
             Component name = Component.literal(MiscHelper.getCleanName(desktop.getIdentifier().getPath()));
             // Check for if the tellraw name is incomplete, or fails to pass.

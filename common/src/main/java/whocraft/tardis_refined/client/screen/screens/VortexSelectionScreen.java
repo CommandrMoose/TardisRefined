@@ -14,8 +14,11 @@ import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.network.messages.C2SChangeVortex;
+import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ModMessages;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 public class VortexSelectionScreen extends MonitorOS {
@@ -79,11 +82,15 @@ public class VortexSelectionScreen extends MonitorOS {
 
         selectionList.setRenderBackground(false);
 
-        for (Holder.Reference<VortexRegistry> vort : VortexRegistry.VORTEX_REGISTRY.holders().toList()) {
-            VortexRegistry theme = vort.value();
-            ResourceLocation vortId = vort.key().location();
+        Collection<VortexRegistry> values = VortexRegistry.VORTEX_REGISTRY.stream().toList();
+        values = values.stream()
+                .sorted(Comparator.comparing(theme -> theme.getDisplayName().toString()))
+                .toList();
 
-            SelectionListEntry selectionListEntry = new SelectionListEntry(theme.getDisplayName(), (entry) -> {
+        for (VortexRegistry vort : values) {
+            ResourceLocation vortId = VortexRegistry.VORTEX_REGISTRY.getKey(vort);
+
+            SelectionListEntry selectionListEntry = new SelectionListEntry(vort.getDisplayName(), (entry) -> {
                 currentVortex = vortId;
 
                 for (Object child : selectionList.children()) {
