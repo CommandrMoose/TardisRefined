@@ -10,29 +10,18 @@ import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 
-public class LeftRightInteriorDoorModel extends ShellDoorModel {
+public class SingleTexInteriorDoorModel extends ShellDoorModel {
 
     private final ModelPart root;
-    public final ModelPart leftDoor;
-    public final ModelPart rightDoor;
+    public final ModelPart door;
     private final ModelPart portal;
     private final ModelPart frame;
-    private final float openAmount;
-    private final boolean openLeft, openRight;
 
-    public LeftRightInteriorDoorModel(ModelPart root, float openAmount) {
-       this(root, openAmount, true, true);
-    }
-
-    public LeftRightInteriorDoorModel(ModelPart root, float openAmount, boolean openLeft, boolean openRight) {
+    public SingleTexInteriorDoorModel(ModelPart root) {
         this.root = root;
-        this.leftDoor = JsonToAnimationDefinition.findPart(this, "left_door");
+        this.door = JsonToAnimationDefinition.findPart(this, "door");
         this.frame = JsonToAnimationDefinition.findPart(this, "frame");
-        this.rightDoor = JsonToAnimationDefinition.findPart(this, "right_door");
         this.portal = JsonToAnimationDefinition.findPart(this, "portal");
-        this.openAmount = openAmount;
-        this.openLeft = openLeft;
-        this.openRight = openRight;
     }
 
 
@@ -51,6 +40,7 @@ public class LeftRightInteriorDoorModel extends ShellDoorModel {
             modelPart.visible = true;
         });
         this.portal.visible = false;
+        door.visible = !open;
         this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
@@ -82,13 +72,7 @@ public class LeftRightInteriorDoorModel extends ShellDoorModel {
 
     @Override
     public void setDoorPosition(boolean open) {
-        if (open) {
-            this.leftDoor.yRot = openLeft ? -openAmount : 0;
-            this.rightDoor.yRot = openRight ? openAmount : 0;
-        } else {
-            this.leftDoor.yRot = 0;
-            this.rightDoor.yRot = 0;
-        }
+        // No OP
     }
 
 }

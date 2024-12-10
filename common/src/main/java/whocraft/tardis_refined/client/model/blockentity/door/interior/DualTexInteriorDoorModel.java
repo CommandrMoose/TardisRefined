@@ -10,18 +10,18 @@ import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 
-public class TexInteriorDoorModel extends ShellDoorModel {
+public class DualTexInteriorDoorModel extends ShellDoorModel {
 
     private final ModelPart root;
-    public final ModelPart door;
+    public final ModelPart open_door;
+    public final ModelPart closed_door;
     private final ModelPart portal;
     private final ModelPart frame;
 
-    private boolean isDoorOpen = false;
-
-    public TexInteriorDoorModel(ModelPart root) {
+    public DualTexInteriorDoorModel(ModelPart root) {
         this.root = root;
-        this.door = JsonToAnimationDefinition.findPart(this, "door");
+        this.open_door = JsonToAnimationDefinition.findPart(this, "door_open");
+        this.closed_door = JsonToAnimationDefinition.findPart(this, "door_closed");
         this.frame = JsonToAnimationDefinition.findPart(this, "frame");
         this.portal = JsonToAnimationDefinition.findPart(this, "portal");
     }
@@ -42,7 +42,8 @@ public class TexInteriorDoorModel extends ShellDoorModel {
             modelPart.visible = true;
         });
         this.portal.visible = false;
-        door.visible = true;
+        closed_door.visible = !open;
+        open_door.visible = !open;
         this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
@@ -74,7 +75,7 @@ public class TexInteriorDoorModel extends ShellDoorModel {
 
     @Override
     public void setDoorPosition(boolean open) {
-       this.isDoorOpen = open;
+        // No OP
     }
 
 }

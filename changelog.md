@@ -24,6 +24,7 @@
 - Enhancement: UI for Gravity Shaft
 - Enhancement: Colored various texts on Key item
 - Enhancement: Alarm now sounds when Fuel is below 5% and the TARDIS is not fueling+
+- Enhancement: Bulkhead doors now have some variants, changed via the Pattern Manipulator
 
 ## Additions
 - Added Item: Mallet 

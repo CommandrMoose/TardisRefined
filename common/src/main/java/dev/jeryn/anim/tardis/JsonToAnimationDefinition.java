@@ -43,6 +43,7 @@ import static net.minecraft.client.animation.AnimationChannel.Targets.*;
 public class JsonToAnimationDefinition {
 
     public static ModelPart findPart(HierarchicalModel hierarchicalModel, String string) {
+        System.out.println(string + " " + hierarchicalModel.getClass());
         return hierarchicalModel.root().getAllParts().filter((modelPart) -> modelPart.hasChild(string)).findFirst().map((modelPart) -> modelPart.getChild(string)).get();
     }
 

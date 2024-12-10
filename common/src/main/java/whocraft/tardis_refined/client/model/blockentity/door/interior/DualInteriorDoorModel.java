@@ -1,29 +1,47 @@
 package whocraft.tardis_refined.client.model.blockentity.door.interior;
 
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 
-public class PresentDoorModel extends ShellDoorModel {
+public class DualInteriorDoorModel extends ShellDoorModel {
 
     private final ModelPart root;
+    public final ModelPart leftDoor;
+    public final ModelPart rightDoor;
     private final ModelPart portal;
-    private final ModelPart door;
     private final ModelPart frame;
+    private final float openAmount;
+    private final boolean openLeft, openRight;
 
-    public PresentDoorModel(ModelPart root) {
-        this.root = root;
-        this.portal = root.getChild("portal");
-        this.door = root.getChild("door");
-        this.frame = root.getChild("frame");
+    public DualInteriorDoorModel(ModelPart root, float openAmount) {
+       this(root, openAmount, true, true);
     }
 
+    public DualInteriorDoorModel(ModelPart root, float openAmount, boolean openLeft, boolean openRight) {
+        this.root = root;
+        this.leftDoor = JsonToAnimationDefinition.findPart(this, "left_door");
+        this.frame = JsonToAnimationDefinition.findPart(this, "frame");
+        this.rightDoor = JsonToAnimationDefinition.findPart(this, "right_door");
+        this.portal = JsonToAnimationDefinition.findPart(this, "portal");
+        this.openAmount = openAmount;
+        this.openLeft = openLeft;
+        this.openRight = openRight;
+    }
+
+
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+        this.portal.visible = false;
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
 
     @Override
     public void renderFrame(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
@@ -38,6 +56,7 @@ public class PresentDoorModel extends ShellDoorModel {
 
     @Override
     public void renderPortalMask(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+
         if (ModCompatChecker.immersivePortals()) {
             if (ImmersivePortalsClient.shouldStopRenderingInPortal()) {
                 return;
@@ -57,12 +76,19 @@ public class PresentDoorModel extends ShellDoorModel {
     }
 
     @Override
-    public void setDoorPosition(boolean open) {
-        this.door.xRot = (open) ? (ModCompatChecker.immersivePortals() ? -1.5f : 1.5F) : 0;
+    public void setupAnim(Entity entity, float f, float g, float h, float i, float j) {
+
     }
 
     @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
+    public void setDoorPosition(boolean open) {
+        if (open) {
+            this.leftDoor.yRot = openLeft ? -openAmount : 0;
+            this.rightDoor.yRot = openRight ? openAmount : 0;
+        } else {
+            this.leftDoor.yRot = 0;
+            this.rightDoor.yRot = 0;
+        }
     }
+
 }
