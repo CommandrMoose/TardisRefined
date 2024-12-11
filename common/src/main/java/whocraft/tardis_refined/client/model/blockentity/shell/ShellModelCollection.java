@@ -95,7 +95,7 @@ public class ShellModelCollection {
 
         liftDoorModel = new DualTexInteriorDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
 
-        hieroglyphDoorModel = new HieroglyphShellDoor(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
+        hieroglyphDoorModel = new DualTexInteriorDoorModel(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
 
         halfBakedDoorModel = new HalfBakedDoorModel(context.bakeLayer((ModelRegistry.HALF_BAKED_DOOR)));
 

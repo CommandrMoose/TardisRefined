@@ -43,7 +43,7 @@ public class DualTexInteriorDoorModel extends ShellDoorModel {
         });
         this.portal.visible = false;
         closed_door.visible = !open;
-        open_door.visible = !open;
+        open_door.visible = open;
         this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
