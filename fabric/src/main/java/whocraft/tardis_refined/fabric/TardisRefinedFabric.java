@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,7 @@ import net.neoforged.fml.config.ModConfig;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.hum.TardisHums;
+import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.common.util.fabric.PlatformImpl;
@@ -30,6 +32,7 @@ import whocraft.tardis_refined.compat.trinkets.TrinketsUtil;
 import whocraft.tardis_refined.fabric.events.ModEvents;
 import whocraft.tardis_refined.patterns.ConsolePatterns;
 import whocraft.tardis_refined.patterns.ShellPatterns;
+import whocraft.tardis_refined.registry.TRItemRegistry;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -95,6 +98,8 @@ public class TardisRefinedFabric implements ModInitializer {
         if (Platform.isModLoaded("trinkets")) {
             CuriosTrinketsUtil.setInstance(new TrinketsUtil());
         }
+
+
 
     }
 }

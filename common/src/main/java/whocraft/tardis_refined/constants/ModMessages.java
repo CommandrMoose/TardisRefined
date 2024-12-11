@@ -71,7 +71,7 @@ public class ModMessages {
     public static final String CMD_ARG_SHELL_INVALID = cmdArgInvalid("shell");
     public static final String KEYBIND_EXIT_VIEW = keybind("exit_exterior_view");
     public static final String KEYBIND_TOGGLE_INFO_EXTERIOR_VIEW = keybind("toggle_info_exterior_view");
-    public static String GITHUB_RELEASE_PAGE = "https://github.com/Jeryn99/TardisRefined/releases";
+    public static String GITHUB_RELEASE_PAGE = "https://github.com/WhoCraft/TardisRefined/releases";
 
     /*Item Special cases*/
     public static String ITEM_KEYCHAIN = "item." + TardisRefined.MODID + ".keychain";
@@ -97,7 +97,6 @@ public class ModMessages {
     public static String TARDIS_IS_ON_THE_WAY = message("tardis_on_the_way");
     public static String LANDING_PAD_NOT_UNLOCKED = message("landing_pad_unlocked");
     public static String LANDING_PAD_TRANSIENT = message("landing_pad_transient");
-    public static String TOOLTIP_IN_FLIGHT = message("tooltip_in_flight");
     public static String RECOVERY_PROGRESS = message("recovery_progress");
     public static String FUEL = message("fuel");
     public static String REFUEL = message("refuel_engaged");
@@ -113,9 +112,18 @@ public class ModMessages {
     public static String CURRENT = message("current");
     public static String DESTINATION = message("destination");
 
+    public static String DIM_NOT_ALLOWED = message("dim_not_allowed");
+    public static String DIM_ALREADY_SAVED = message("dim_already_saved");
+    public static String DIM_POTENTIAL = message("dim_potential");
+    public static String DIM_ADDED_TO_TARDIS = message("dim_added_to_tardis");
+
     /*Tool Tips*/
     public static String TOOLTIP_TARDIS_LIST_TITLE = tooltip("tardis_list");
     public static String TOOLTIP_SCREWDRIVER_DESCRIPTION = tooltip("screwdriver_description");
+    public static String TOOLTIP_IN_FLIGHT = tooltip("tooltip_in_flight");
+    public static String TOOLTIP_DIM_PROGRESS = tooltip("tooltip_dim_progress");
+    public static String TOOLTIP_DIM_SAVED = tooltip("tooltip_dim_saved");
+    public static String TOOLTIP_NO_DIM_SAVED = tooltip("tooltip_no_dim_saved");
 
     public static String message(String translationKey) {
         return "message." + TardisRefined.MODID + "." + translationKey;

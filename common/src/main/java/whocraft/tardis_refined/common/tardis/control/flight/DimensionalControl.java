@@ -10,13 +10,11 @@ import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.control.Control;
+import whocraft.tardis_refined.common.tardis.manager.ProgressionManager;
+import whocraft.tardis_refined.common.util.*;
 import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
-import whocraft.tardis_refined.common.util.DimensionUtil;
-import whocraft.tardis_refined.common.util.MiscHelper;
-import whocraft.tardis_refined.common.util.PlayerUtil;
-import whocraft.tardis_refined.common.util.TardisHelper;
 import whocraft.tardis_refined.constants.ModMessages;
 
 import java.util.ArrayList;
@@ -33,12 +31,12 @@ public class DimensionalControl extends Control {
         super(id, langId);
     }
 
-    private List<ServerLevel> getAllowedDimensions(MinecraftServer server) {
+    private List<ServerLevel> getAllowedDimensions(TardisLevelOperator tardisLevelOperator) {
         var filteredDimensions = new ArrayList<ServerLevel>();
-        var filteredLevels = server.getAllLevels();
+        var filteredLevels = Platform.getServer().getAllLevels();
 
         filteredLevels.forEach(x -> {
-            if (DimensionUtil.isAllowedDimension(x.dimension())) {
+            if (tardisLevelOperator.getProgressionManager().isLevelDiscovered(x.dimension())) {
                 filteredDimensions.add(x);
             }
         });
@@ -68,10 +66,13 @@ public class DimensionalControl extends Control {
                 return false;
             }
 
-            var server = operator.getLevel().getServer();
-            var dimensions = getAllowedDimensions(server);
+            var dimensions = getAllowedDimensions(operator);
             var currentIndex = dimensions.indexOf(pilotManager.getTargetLocation().getLevel());
             var nextIndex = forward ? ((currentIndex >= dimensions.size() - 1) ? 0 : currentIndex + 1) : ((currentIndex <= 0) ? dimensions.size() - 1 : currentIndex - 1);
+
+            if(dimensions.isEmpty()){
+                return false;
+            }
 
             var nextDimension = dimensions.get(nextIndex);
 

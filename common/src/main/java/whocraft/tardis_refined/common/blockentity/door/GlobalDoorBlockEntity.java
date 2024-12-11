@@ -137,9 +137,9 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements Bl
                     cap.setDoorClosed(door.isOpen());//Tell the Tardis that the door should be closed if currently open, and should be open if currently closed.
                     if (player instanceof ServerPlayer serverPlayer) {
                         if (door.isOpen()) {
-                            // IPStencil.loadServerChunks(serverPlayer, cap.getPilotingManager().getCurrentLocation());
+                            //  IPStencil.loadServerChunks(serverPlayer, cap.getPilotingManager().getCurrentLocation());
                         } else {
-                            //   IPStencil.unloadServerChunks(serverPlayer);
+                            //  IPStencil.unloadServerChunks(serverPlayer);
                         }
                     }
                 }

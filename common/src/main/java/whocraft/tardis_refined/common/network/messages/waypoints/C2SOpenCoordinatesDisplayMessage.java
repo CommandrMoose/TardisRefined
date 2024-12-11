@@ -46,10 +46,9 @@ public class C2SOpenCoordinatesDisplayMessage extends MessageC2S {
     @Override
     public void handle(MessageContext context) {
         ServerPlayer serverPlayer = context.getPlayer();
-        MinecraftServer server = context.getPlayer().server;
-        List<ResourceKey<Level>> dimensions = DimensionUtil.getAllowedDimensions(server).stream().toList();
         ServerLevel level = serverPlayer.serverLevel();
         TardisLevelOperator.get(level).ifPresent(tardisLevelOperator -> {
+            List<ResourceKey<Level>> dimensions = tardisLevelOperator.getProgressionManager().getDiscoveredLevels();
             TardisPilotingManager pilotManager = tardisLevelOperator.getPilotingManager();
             TardisNavLocation tardisTarget = pilotManager.getTargetLocation() == null ? TardisNavLocation.ORIGIN : pilotManager.getTargetLocation();
             new S2COpenCoordinatesDisplayMessage(dimensions, coordInput, tardisTarget).send(serverPlayer);

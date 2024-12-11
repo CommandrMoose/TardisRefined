@@ -62,6 +62,8 @@ public class TardisLevelOperator {
     private final TardisClientData tardisClientData;
     private final UpgradeHandler upgradeHandler;
     private final AestheticHandler aestheticHandler;
+    private final ProgressionManager progressionManager;
+
     private boolean hasInitiallyGenerated = false;
     private TardisInternalDoor internalDoor = null;
     // TARDIS state refers to different stages of TARDIS creation. This allows for different logic to operate in those moments.
@@ -79,6 +81,7 @@ public class TardisLevelOperator {
         this.upgradeHandler = new UpgradeHandler(this);
         this.aestheticHandler = new AestheticHandler(this);
         this.flightDanceManager = new FlightDanceManager(this);
+        this.progressionManager = new ProgressionManager();
     }
 
     @ExpectPlatform
@@ -118,6 +121,7 @@ public class TardisLevelOperator {
         compoundTag = this.upgradeHandler.saveData(compoundTag);
         compoundTag = this.aestheticHandler.saveData(compoundTag);
         compoundTag = this.flightDanceManager.saveData(compoundTag);
+        compoundTag = this.progressionManager.saveData(compoundTag);
 
         compoundTag.putInt("tardis_state", this.tardisState);
 
@@ -143,6 +147,7 @@ public class TardisLevelOperator {
         this.upgradeHandler.loadData(tag);
         this.aestheticHandler.loadData(tag);
         this.flightDanceManager.loadData(tag);
+        this.progressionManager.loadData(tag);
 
         this.tardisState = tag.getInt("tardis_state");
 
@@ -222,6 +227,10 @@ public class TardisLevelOperator {
 
     public void setInitiallyGenerated(boolean hasInitiallyGenerated) {
         this.hasInitiallyGenerated = hasInitiallyGenerated;
+    }
+
+    public ProgressionManager getProgressionManager() {
+        return progressionManager;
     }
 
     /**

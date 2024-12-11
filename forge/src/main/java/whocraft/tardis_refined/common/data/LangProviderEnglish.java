@@ -130,6 +130,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(TRItemRegistry.GLASSES.get(), "AR Glasses");
         add(TRItemRegistry.ZEITON_NUGGET.get(), "Zeiton Nugget");
         add(TRItemRegistry.MALLET.get(), "Mallet");
+        add(TRItemRegistry.TEST_TUBE.get(), "Test Tube");
 
         /*Damage Sources*/
         add(TRDamageSources.EYE_OF_HARMONY, "%s was fried by time winds.");
@@ -253,6 +254,10 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.CANNOT_START_NO_FUEL, "Not enough fuel to start");
         add(ModMessages.UI_MONITOR_EJECT, "EMERGENCY EJECT");
         add(ModMessages.UI_EJECT_CANNOT_IN_FLIGHT, "Cannot eject whilst in flight");
+        add(ModMessages.DIM_NOT_ALLOWED, "This dimension cannot be sampled");
+        add(ModMessages.DIM_ALREADY_SAVED, "Already contains a sample");
+        add(ModMessages.DIM_POTENTIAL, "Sampled %s");
+        add(ModMessages.DIM_ADDED_TO_TARDIS, "Added %s to Data Banks");
 
 
         add("curios.identifier.timelord_sight", "AR Glasses");
@@ -297,9 +302,12 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.TOOLTIP_TARDIS_LIST_TITLE, ChatFormatting.YELLOW + "< "
                 + ChatFormatting.GOLD + "Key Set:"
                 + ChatFormatting.YELLOW + " >");
+        add(ModMessages.TOOLTIP_DIM_PROGRESS, ChatFormatting.GREEN + "Decoding Sample: %s");
+        add(ModMessages.TOOLTIP_DIM_SAVED, ChatFormatting.GOLD + "Saved Sample: %s");
+        add(ModMessages.TOOLTIP_NO_DIM_SAVED, ChatFormatting.GRAY + "No Dimension Sample");
+
 
         add(ModMessages.CONTROL_DIMENSION_SELECTED, "Selected: %s");
-        add(ModMessages.TOOLTIP_IN_FLIGHT, ChatFormatting.YELLOW + "* " + ChatFormatting.AQUA + "In Flight" + ChatFormatting.YELLOW + " *");
 
         /*Config*/
         add(ModMessages.CONFIG_IP_COMPAT, "Immersive Portals Compatibility?");
