@@ -125,6 +125,14 @@ public class ModMessages {
     public static String TOOLTIP_DIM_SAVED = tooltip("tooltip_dim_saved");
     public static String TOOLTIP_NO_DIM_SAVED = tooltip("tooltip_no_dim_saved");
 
+    public static String DOOR_STATUS = message("door_status");
+    public static String LOCK_STATUS = message("lock_status");
+    public static String POSITION = message("position");
+    public static String DIRECTION = message("direction");
+    public static String DIMENSION = message("dimension");
+
+
+
     public static String message(String translationKey) {
         return "message." + TardisRefined.MODID + "." + translationKey;
     }
