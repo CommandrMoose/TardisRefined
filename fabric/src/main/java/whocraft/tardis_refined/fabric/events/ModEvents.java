@@ -106,6 +106,7 @@ public class ModEvents {
     public static void addClientEvents() {
         ClientTickEvents.START_CLIENT_TICK.register(TardisClientLogic::tickClientData);
         ColorProviderRegistry.ITEM.register(TRItemColouring.SCREWDRIVER_COLORS, TRItemRegistry.SCREWDRIVER.get());
+        ColorProviderRegistry.ITEM.register(TRItemColouring.SAMPLE_COLORS, TRItemRegistry.TEST_TUBE.get());
 
         AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) -> {
             if (world.isClientSide) return InteractionResult.PASS;

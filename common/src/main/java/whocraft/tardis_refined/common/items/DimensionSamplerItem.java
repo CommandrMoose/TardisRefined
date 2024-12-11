@@ -1,7 +1,9 @@
 package whocraft.tardis_refined.common.items;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -9,12 +11,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.MiscHelper;
@@ -35,6 +36,18 @@ public class DimensionSamplerItem extends Item {
         super(properties);
     }
 
+    public static ItemStack forceColor(ItemStack itemStack, int color) {
+        itemStack.getOrCreateTagElement("display").putInt("color", color);
+        return itemStack;
+    }
+
+    public int getColor(ItemStack itemStack) {
+        CompoundTag compoundTag = itemStack.getTagElement("display");
+        return compoundTag != null && compoundTag.contains("color", 99) ? compoundTag.getInt("color") : DyeColor.PINK.getTextColor();
+    }
+
+
+
     @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
         Player player = useOnContext.getPlayer();
@@ -44,9 +57,9 @@ public class DimensionSamplerItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         if (level instanceof ServerLevel serverLevel) {
             CompoundTag tag = stack.getOrCreateTag();
-
             // Save current dimension as potentialDim when right-clicked
             if (!tag.contains(POTENTIAL_DIM_TAG) && DimensionUtil.isAllowedDimension(level.dimension())) {
+                forceColor(stack, serverLevel.getBlockTint(useOnContext.getClickedPos(), (biome, d, e) -> biome.getFogColor()));
                 savePotentialDim(tag, serverLevel.dimension());
                 PlayerUtil.sendMessage(player, Component.translatable(ModMessages.DIM_POTENTIAL, MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, new ResourceLocation(tag.getString(SAVED_DIM_TAG))))), true);
             } else {
@@ -99,6 +112,27 @@ public class DimensionSamplerItem extends Item {
         }
     }
 
+    public static boolean hasDimAtAll(ItemStack stack){
+        CompoundTag tag = stack.getOrCreateTag();
+        return tag.contains(POTENTIAL_DIM_TAG) || tag.contains(SAVED_DIM_TAG);
+    }
+
+    @Override
+    public Component getName(ItemStack itemStack) {
+        CompoundTag tag = itemStack.getOrCreateTag();
+
+        // Check if either of the dimension tags is present
+        String dimensionTag = tag.contains(POTENTIAL_DIM_TAG) ? POTENTIAL_DIM_TAG : (tag.contains(SAVED_DIM_TAG) ? SAVED_DIM_TAG : null);
+
+        if (dimensionTag != null) {
+            String dimension = MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, new ResourceLocation(tag.getString(dimensionTag))));
+            return Component.literal(dimension + " Sample");
+        }
+
+        return super.getName(itemStack);
+    }
+
+
     private void savePotentialDim(CompoundTag tag, ResourceKey<Level> dimension) {
         tag.putString(POTENTIAL_DIM_TAG, dimension.location().toString());
         tag.putInt(TIMER_TAG, 0);
@@ -123,6 +157,16 @@ public class DimensionSamplerItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         if (tag != null && tag.contains(SAVED_DIM_TAG)) {
             String savedDimString = tag.getString(SAVED_DIM_TAG);
+            ResourceLocation savedDimLocation = new ResourceLocation(savedDimString);
+            return ResourceKey.create(DIMENSION, savedDimLocation);
+        }
+        return null;
+    }
+
+    public static ResourceKey<Level> getPotentialDim(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        if (tag != null && tag.contains(POTENTIAL_DIM_TAG)) {
+            String savedDimString = tag.getString(POTENTIAL_DIM_TAG);
             ResourceLocation savedDimLocation = new ResourceLocation(savedDimString);
             return ResourceKey.create(DIMENSION, savedDimLocation);
         }
