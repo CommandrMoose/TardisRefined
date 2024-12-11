@@ -50,7 +50,11 @@ public class FlyTardisAtPOI extends WorkAtPoi {
 
             if (pilotManager.isInFlight()) {
 
-
+                if(pilotManager.isCrashing()){
+                    BlockPos runAwayPosition = villager.blockPosition().relative(direction, 10);
+                    villager.getNavigation().moveTo(runAwayPosition.getX(), runAwayPosition.getY(), runAwayPosition.getZ(), 2);
+                    return;
+                }
 
             /*    if(pilotManager.canEndFlight()){
                     pilotManager.setThrottleStage(0);

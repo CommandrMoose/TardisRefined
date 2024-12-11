@@ -1,0 +1,39 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.vaultenyt",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 5.5,
+				"visible_bounds_offset": [0, 2.25, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 24, 16]
+				},
+				{
+					"name": "right_door",
+					"parent": "root",
+					"pivot": [0, 0, 16],
+					"cubes": [
+						{"origin": [0, 0, -4], "size": [24, 48, 6], "uv": [64, 54]},
+						{"origin": [0, 0, -5], "size": [24, 48, 8], "uv": [0, 56]}
+					]
+				},
+				{
+					"name": "left_door",
+					"parent": "root",
+					"pivot": [0, 0, 16],
+					"cubes": [
+						{"origin": [-24, 0, -4], "size": [24, 48, 6], "uv": [64, 0]},
+						{"origin": [-24, 0, -5], "size": [24, 48, 8], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

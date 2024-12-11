@@ -1,17 +1,21 @@
 package whocraft.tardis_refined.common.tardis.control.ship;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
+import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 import whocraft.tardis_refined.common.items.KeyItem;
 import whocraft.tardis_refined.common.network.messages.screens.S2COpenMonitor;
 import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
+import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 
@@ -34,6 +38,17 @@ public class MonitorControl extends Control {
             }
 
             ItemStack hand = player.getMainHandItem();
+
+            if(hand.getItem() instanceof DimensionSamplerItem dimTrackerItem){
+                ResourceKey<Level> levelResourceKey = DimensionSamplerItem.getSavedDim(hand);
+                if(levelResourceKey != null) {
+                    operator.getProgressionManager().addDiscoveredLevel(levelResourceKey);
+                    PlayerUtil.sendMessage(player, Component.translatable(ModMessages.DIM_ADDED_TO_TARDIS, MiscHelper.getCleanDimensionName(levelResourceKey)), true);
+                    hand.setCount(0);
+                }
+                return false;
+            }
+
 
             boolean isSyncingKey = false;
             if (hand.getItem() instanceof KeyItem key) {

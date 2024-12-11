@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "predicate": {
+        "tardis_refined:is_sampled": 0.0
+      },
+      "model": "tardis_refined:item/vial"
+    },
+    {
+      "predicate": {
+        "tardis_refined:is_sampled": 1
+      },
+      "model": "tardis_refined:item/sampled"
+    }
+  ]
+}

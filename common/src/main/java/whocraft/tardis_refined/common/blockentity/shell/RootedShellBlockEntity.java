@@ -72,6 +72,7 @@ public class RootedShellBlockEntity extends ShellBaseBlockEntity {
                 TardisLevelOperator.get(interior).ifPresent(tardisLevelOperator -> {
                     if (!tardisLevelOperator.hasInitiallyGenerated()) {
                         tardisLevelOperator.setupInitialCave(serverLevel, blockState, blockPos);
+                        tardisLevelOperator.getProgressionManager().addDiscoveredLevel(level.dimension());
                     }
                     //After we setup the data and desktop, open the doors.
                     tardisLevelOperator.setDoorClosed(false);

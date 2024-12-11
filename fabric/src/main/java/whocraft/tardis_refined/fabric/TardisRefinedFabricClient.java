@@ -7,7 +7,8 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ModelRegistry;
@@ -27,14 +28,14 @@ import whocraft.tardis_refined.client.renderer.blockentity.life.EyeRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.shell.GlobalShellRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.shell.RootShellRenderer;
 import whocraft.tardis_refined.client.renderer.entity.ControlEntityRenderer;
+import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 import whocraft.tardis_refined.fabric.events.ModEvents;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TREntityRegistry;
-
-import java.util.Map;
+import whocraft.tardis_refined.registry.TRItemRegistry;
 
 public class TardisRefinedFabricClient implements ClientModInitializer {
     @Override
@@ -47,6 +48,7 @@ public class TardisRefinedFabricClient implements ClientModInitializer {
         registerEntityRenderers();
 
         KeyBindingHelper.registerKeyBinding(TRKeybinds.EXIT_EXTERIOR_VIEW);
+        ItemProperties.register(TRItemRegistry.TEST_TUBE.get(), new ResourceLocation(TardisRefined.MODID, "is_sampled"), (itemStack, clientLevel, livingEntity, i) -> DimensionSamplerItem.hasDimAtAll(itemStack) ? 1 : 0);
 
     }
 
@@ -71,9 +73,9 @@ public class TardisRefinedFabricClient implements ClientModInitializer {
         BlockEntityRendererRegistry.register(TRBlockEntityRegistry.ARTRON_PILLAR.get(), ArtronPillarRenderer::new);
 
         /*Required to Render Transparency*/
-        for (Map.Entry<ResourceKey<Block>, Block> block : TRBlockRegistry.BLOCKS.entrySet()) {
-            if (TRBlockRegistry.BLOCKS.getKey(block.getValue()).getNamespace().contains(TardisRefined.MODID)) {
-                BlockRenderLayerMap.INSTANCE.putBlock(block.getValue(), RenderType.cutout());
+        for (Block block : TRBlockRegistry.BLOCKS.getRegistry().get()) {
+            if (TRBlockRegistry.BLOCKS.getRegistry().get().getKey(block).getNamespace().contains(TardisRefined.MODID)) {
+                BlockRenderLayerMap.INSTANCE.putBlock(block, RenderType.cutout());
             }
         }
 

@@ -1,0 +1,121 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "frame",
+					"pivot": [0, 0, 7],
+					"cubes": [
+						{"origin": [-9, 32, 6], "size": [18, 3, 1], "inflate": 0.025, "uv": [0, 73]},
+						{"origin": [-9.5, 35, 5.5], "size": [19, 1, 2], "uv": [66, 72]},
+						{"origin": [-5.5, 35.5, 6.225], "size": [11, 5, 1], "uv": [42, 33]},
+						{"origin": [-10, 0, 7.25], "size": [20, 39, 1], "uv": [0, 0]},
+						{"origin": [8, 0, 5.25], "size": [2, 37, 2], "uv": [68, 33]},
+						{"origin": [-8.5, 32.25, 3.5], "size": [3, 1, 3], "uv": [46, 73]},
+						{"origin": [-7.5, 32.225, 4.5], "size": [16, 1, 2], "uv": [74, 31]},
+						{"origin": [-10, 0, 5.25], "size": [2, 37, 2], "uv": [68, 33], "mirror": true},
+						{"origin": [7.5, 16, 4.75], "size": [3, 6, 1], "uv": [58, 73]}
+					]
+				},
+				{
+					"name": "clock_hand",
+					"parent": "frame",
+					"pivot": [0, 37, 5.725],
+					"cubes": [
+						{"origin": [-0.5, 36.5, 5.975], "size": [1, 3, 1], "uv": [74, 75]}
+					]
+				},
+				{
+					"name": "door_closed",
+					"pivot": [0, 0, 7],
+					"cubes": [
+						{"origin": [-8, 0, 6], "size": [16, 32, 1], "uv": [42, 0]},
+						{"origin": [-8, 0, 6.75], "size": [16, 32, 1], "uv": [34, 40]}
+					]
+				},
+				{
+					"name": "bone7",
+					"parent": "door_closed",
+					"pivot": [0, 0, 7]
+				},
+				{
+					"name": "bone6",
+					"parent": "bone7",
+					"pivot": [4, 11, 6.5],
+					"cubes": [
+						{"origin": [5, 11.5, 6.025], "size": [1, 5, 1], "pivot": [5, 16.5, 6.5], "rotation": [0, 0, -24], "uv": [66, 75], "mirror": true},
+						{"origin": [5, 16.5, 6.025], "size": [1, 5, 1], "pivot": [5, 16.5, 6.5], "rotation": [0, 0, 24], "uv": [70, 75], "mirror": true}
+					]
+				},
+				{
+					"name": "bone5",
+					"parent": "bone7",
+					"pivot": [-4, 11, 6.5],
+					"cubes": [
+						{"origin": [-6, 11.5, 6.025], "size": [1, 5, 1], "pivot": [-5, 16.5, 6.5], "rotation": [0, 0, 24], "uv": [66, 75]},
+						{"origin": [-6, 16.5, 6.025], "size": [1, 5, 1], "pivot": [-5, 16.5, 6.5], "rotation": [0, 0, -24], "uv": [70, 75]}
+					]
+				},
+				{
+					"name": "bone4",
+					"parent": "bone7",
+					"pivot": [-4, 11, 6.5],
+					"cubes": [
+						{"origin": [-6, 6, 6.025], "size": [1, 5, 1], "pivot": [-5, 11, 6.5], "rotation": [0, 0, 24], "uv": [66, 75]},
+						{"origin": [-4, 6, 6.025], "size": [1, 5, 1], "pivot": [-4, 11, 6.5], "rotation": [0, 0, -24], "uv": [66, 75], "mirror": true}
+					]
+				},
+				{
+					"name": "bone3",
+					"parent": "bone7",
+					"pivot": [5, 11, 6.5],
+					"cubes": [
+						{"origin": [3, 6, 6.025], "size": [1, 5, 1], "pivot": [4, 11, 6.5], "rotation": [0, 0, 24], "uv": [66, 75]},
+						{"origin": [5, 6, 6.025], "size": [1, 5, 1], "pivot": [5, 11, 6.5], "rotation": [0, 0, -24], "uv": [66, 75], "mirror": true}
+					]
+				},
+				{
+					"name": "bone2",
+					"parent": "bone7",
+					"pivot": [5, 22, 6.5],
+					"cubes": [
+						{"origin": [3, 22, 6.025], "size": [1, 5, 1], "pivot": [4, 22, 6.5], "rotation": [0, 0, -24], "uv": [66, 75]},
+						{"origin": [5, 22, 6.025], "size": [1, 5, 1], "pivot": [5, 22, 6.5], "rotation": [0, 0, 24], "uv": [66, 75], "mirror": true}
+					]
+				},
+				{
+					"name": "bone",
+					"parent": "bone7",
+					"pivot": [-4, 22, 6.5],
+					"cubes": [
+						{"origin": [-6, 22, 6.025], "size": [1, 5, 1], "pivot": [-5, 22, 6.5], "rotation": [0, 0, -24], "uv": [66, 75]},
+						{"origin": [-4, 22, 6.025], "size": [1, 5, 1], "pivot": [-4, 22, 6.5], "rotation": [0, 0, 24], "uv": [66, 75], "mirror": true}
+					]
+				},
+				{
+					"name": "door_open",
+					"pivot": [-13, 0, 7],
+					"cubes": [
+						{"origin": [-8, 0, 6], "size": [3, 32, 1], "uv": [38, 73]}
+					]
+				},
+				{
+					"name": "portal",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-8, 0, 7.25], "size": [16, 32, 1], "uv": [0, 40]}
+					]
+				}
+			]
+		}
+	]
+}

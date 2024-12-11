@@ -41,7 +41,6 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
     }
 
     @Override
-
     public int getColor(ItemStack itemStack) {
         CompoundTag compoundTag = itemStack.getTagElement("display");
         return compoundTag != null && compoundTag.contains("color", 99) ? compoundTag.getInt("color") : DyeColor.PINK.getTextColor();

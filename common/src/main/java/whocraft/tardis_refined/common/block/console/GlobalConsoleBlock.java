@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -203,6 +204,11 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
                         }
                     }
 
+                }
+
+                if(player.getItemInHand(interactionHand).getItem() == Items.LEAD && !level.isClientSide){
+                    LeadItem.bindPlayerMobs(player, level, blockPos);
+                    return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
                 }
             }
         }
