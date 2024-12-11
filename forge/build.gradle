@@ -101,6 +101,7 @@ dependencies {
 
 //    modCompileOnly "curse.maven:configured-457570:${configured_version}"
     //   modCompileOnly "curse.maven:jei-238222:${jei_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     compileOnly "curse.maven:immersive-portals-355440:${immersive_portals_forge_version}"
     modImplementation("curse.maven:curios-309927:5843594")
