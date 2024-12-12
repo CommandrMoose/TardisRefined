@@ -94,19 +94,10 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         int b = height - vPos, r = width - hPos;
         int l1 = hPos + monitorWidth / 5, l2 = (int) (hPos + monitorWidth / 2.5f);
 
-        guiGraphics.fill(l1, vPos, l2, vPos + 40, -1072689136);
-        guiGraphics.fill(l1, vPos + monitorHeight - 40, l2, b, -1072689136);
-
-        guiGraphics.fill(l2, vPos, r, b, -1072689136);
+        guiGraphics.fill(l1, vPos, r, b, -1072689136);
         poseStack.translate(l1, vPos, 0);
         poseStack.mulPose(Axis.ZP.rotationDegrees(90));
-        guiGraphics.fillGradient(0, 0, 40, l1 - hPos, -1072689136, 0x00000000);
-        poseStack.pushPose();
-        poseStack.translate(40, -l2 + l1, 0);
-        guiGraphics.fillGradient(0, 0, monitorHeight - 80, l1 - hPos, -1072689136, 0x00000000);
-        poseStack.popPose();
-        poseStack.translate(monitorHeight - 40, 0, 0);
-        guiGraphics.fillGradient(0, 0, 40, l1 - hPos, -1072689136, 0x00000000);
+        guiGraphics.fillGradient(0, 0, monitorHeight, l1 - hPos, -1072689136, 0x00000000);
         poseStack.popPose();
     }
 
