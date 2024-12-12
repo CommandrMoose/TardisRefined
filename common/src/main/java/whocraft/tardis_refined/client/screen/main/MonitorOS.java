@@ -186,32 +186,29 @@ public class MonitorOS extends Screen {
         guiGraphics.blit(SYMBLS, 0, 0, 32 * (symb % 8), 32 * (symb / 8), 32, 32);
         poseStack.popPose();
 
-        if (RIGHT != null && PREVIOUS != null && RIGHT == PREVIOUS && transitionStartTime >= 0) {
-            float t = (age - transitionStartTime + partialTick) / 10f;
-            float o = -0.5f * Mth.cos(Mth.PI * t) + 0.5f;
+        boolean right = RIGHT != null && PREVIOUS != null && RIGHT == PREVIOUS && transitionStartTime >= 0;
+        boolean left = LEFT != null && PREVIOUS != null && LEFT == PREVIOUS && transitionStartTime >= 0;
+        float t = (age - transitionStartTime + partialTick) / 10f;
+        float o = -0.5f * Mth.cos(Mth.PI * t) + 0.5f;
 
-            poseStack.translate(monitorWidth * o, 0, 0);
-
-            RenderSystem.setShaderColor(1, 1, 1, 1 - t);
-            RIGHT.renderBackdrop(guiGraphics);
-            RIGHT.doRender(guiGraphics, mouseX, mouseY, partialTick);
-            poseStack.translate(-monitorWidth, 0, 0);
-            RenderSystem.setShaderColor(1, 1, 1, t);
-        }
-
-        if (LEFT != null && PREVIOUS != null && LEFT == PREVIOUS && transitionStartTime >= 0) {
-            float t = (age - transitionStartTime + partialTick) / 10f;
-            float o = -0.5f * Mth.cos(Mth.PI * t) + 0.5f;
-
-            poseStack.translate(-monitorWidth * o, 0, 0);
-            RenderSystem.setShaderColor(1, 1, 1, 1 - t);
-            LEFT.renderBackdrop(guiGraphics);
-            LEFT.doRender(guiGraphics, mouseX, mouseY, partialTick);
-            poseStack.translate(monitorWidth, 0, 0);
-            RenderSystem.setShaderColor(1, 1, 1, t);
-        }
+        if (right || left) RenderSystem.setShaderColor(1, 1, 1, o);
         RenderSystem.enableBlend();
         renderBackdrop(guiGraphics);
+        RenderSystem.enableBlend();
+        if (right || left) RenderSystem.setShaderColor(1, 1, 1, 1 - o);
+        if (right) {
+            RIGHT.renderBackdrop(guiGraphics);
+            poseStack.translate(monitorWidth * o, 0, 0);
+            RIGHT.doRender(guiGraphics, mouseX, mouseY, partialTick);
+        }
+
+        if (left) {
+            LEFT.renderBackdrop(guiGraphics);
+            poseStack.translate(-monitorWidth * o, 0, 0);
+            LEFT.doRender(guiGraphics, mouseX, mouseY, partialTick);
+        }
+
+        if (right || left) poseStack.translate(right ? -monitorWidth : monitorWidth, 0, 0);
         RenderSystem.setShaderColor(1, 1, 1, 1);
         doRender(guiGraphics, mouseX, mouseY, partialTick);
 
@@ -248,7 +245,6 @@ public class MonitorOS extends Screen {
     public void tick() {
         super.tick();
         this.age++;
-
         if (transitionStartTime >= 0 && age - transitionStartTime >= 10) transitionStartTime = -1;
 
         if (minecraft == null || minecraft.level == null) return;
