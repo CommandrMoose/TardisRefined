@@ -9,15 +9,19 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.BackgroundlessButton;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
+import whocraft.tardis_refined.client.screen.ponder.PonderScreen;
 import whocraft.tardis_refined.client.screen.screens.DesktopSelectionScreen;
 import whocraft.tardis_refined.client.screen.screens.HumSelectionScreen;
 import whocraft.tardis_refined.client.screen.screens.VortexSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
+import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRecipes;
 import whocraft.tardis_refined.common.network.messages.C2SEjectPlayer;
 import whocraft.tardis_refined.common.network.messages.player.C2SBeginShellView;
 import whocraft.tardis_refined.common.network.messages.screens.C2SRequestShellSelection;
@@ -54,14 +58,17 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         super.init();
         int hPos = (width - monitorWidth) / 2;
         int vPos = (height - monitorHeight) / 2;
-/*
-        Button shellSelectButton = addRenderableWidget(
-                Button.builder(Component.translatable(ModMessages.UI_SHELL_SELECTION),
-                                button -> new C2SRequestShellSelection().send())
-                        .pos(hPos + 5, height / 2)
-                        .size(70, 20).build());
-        shellSelectButton.active = TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler);
 
+        Button shellSelectButton = addRenderableWidget(Button.builder(Component.literal("TEST"), button -> {
+            if (Minecraft.getInstance().level == null) return;
+            if (ManipulatorCraftingRecipe.getAllRecipes(Minecraft.getInstance().level).isEmpty()) return;
+
+            ManipulatorCraftingRecipe recipe = ManipulatorCraftingRecipe.getAllRecipes(Minecraft.getInstance().level).get(Minecraft.getInstance().level.random.nextInt(ManipulatorCraftingRecipe.getAllRecipes(Minecraft.getInstance().level).size() - 1));
+
+            Minecraft.getInstance().setScreen(new PonderScreen(recipe));
+        }).pos(hPos + 5, -(monitorHeight / 2) + height / 2).size(70, 20).build());
+        //shellSelectButton.active = TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler);
+/*
         Button vortxSelectButton = addRenderableWidget(
                 Button.builder(Component.translatable(ModMessages.UI_MONITOR_VORTEX),
                                 button -> this.switchScreenToLeft(new VortexSelectionScreen(currentVortex)))
@@ -69,22 +76,14 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
                         .size(70, 20).build());
         vortxSelectButton.active = true;
 */
-        BackgroundlessButton extView = addRenderableWidget(
-                BackgroundlessButton.backgroundlessBuilder(Component.literal(""),
-                                button -> new C2SBeginShellView().send())
-                        .pos(hPos + 20, -30 + height / 2)
-                        .size(40, 60).build());
+        BackgroundlessButton extView = addRenderableWidget(BackgroundlessButton.backgroundlessBuilder(Component.literal(""), button -> new C2SBeginShellView().send()).pos(hPos + 20, -30 + height / 2).size(40, 60).build());
         extView.setTooltip(Tooltip.create(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW)));
         extView.active = true;
 
-        ejectbtn = addRenderableWidget(
-                Button.builder(Component.translatable(ModMessages.UI_MONITOR_EJECT),
-                                button -> {
-                                    new C2SEjectPlayer().send();
-                                    Minecraft.getInstance().setScreen(null);
-                                })
-                        .pos(-35 + hPos + monitorWidth / 2, vPos + monitorHeight - 20)
-                        .size(70, 20).build());
+        ejectbtn = addRenderableWidget(Button.builder(Component.translatable(ModMessages.UI_MONITOR_EJECT), button -> {
+            new C2SEjectPlayer().send();
+            Minecraft.getInstance().setScreen(null);
+        }).pos(-35 + hPos + monitorWidth / 2, vPos + monitorHeight - 20).size(70, 20).build());
 
     }
 
@@ -132,8 +131,7 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
     public void tick() {
         super.tick();
 
-        if (ejectbtnshow)
-            ejectbtntime += 5 - ejectbtntime / 4;
+        if (ejectbtnshow) ejectbtntime += 5 - ejectbtntime / 4;
         else ejectbtntime -= 5 - (20 - ejectbtntime) / 4;
         if (ejectbtntime > 20) ejectbtntime = 20;
         if (ejectbtntime < 5) ejectbtntime = 5;

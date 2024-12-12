@@ -148,8 +148,43 @@ public class MonitorOS extends Screen {
 
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
-
         poseStack.translate(shakeX, shakeY, 0);
+
+        int symb = 0 % 64;
+        poseStack.pushPose();
+        poseStack.translate(hPos + 10, vPos + 10, 0);
+        poseStack.scale(2, 2, 1);
+        poseStack.mulPose(Axis.ZP.rotationDegrees((float) (System.currentTimeMillis() % 5400L) / 15L));
+        poseStack.translate(-31 / 2f, -31 / 2f, 0);
+        guiGraphics.blit(SYMBLS, 0, 0, 32 * (symb % 8), 32 * (symb / 8), 32, 32);
+        poseStack.popPose();
+
+        symb = 3 % 64;
+        poseStack.pushPose();
+        poseStack.translate(hPos + monitorWidth - 10, vPos + monitorHeight - 10, 0);
+        poseStack.scale(2, 2, 1);
+        poseStack.mulPose(Axis.ZP.rotationDegrees((float) (System.currentTimeMillis() % 5400L) / 15L));
+        poseStack.translate(-31 / 2f, -31 / 2f, 0);
+        guiGraphics.blit(SYMBLS, 0, 0, 32 * (symb % 8), 32 * (symb / 8), 32, 32);
+        poseStack.popPose();
+
+        symb = 9 % 64;
+        poseStack.pushPose();
+        poseStack.translate(hPos + 10, vPos + monitorHeight - 10, 0);
+        poseStack.scale(2, 2, 1);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(-(float) (System.currentTimeMillis() % 5400L) / 15L));
+        poseStack.translate(-31 / 2f, -31 / 2f, 0);
+        guiGraphics.blit(SYMBLS, 0, 0, 32 * (symb % 8), 32 * (symb / 8), 32, 32);
+        poseStack.popPose();
+
+        symb = 8 % 64;
+        poseStack.pushPose();
+        poseStack.translate(hPos + monitorWidth - 10, vPos + 10, 0);
+        poseStack.scale(2, 2, 1);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(-(float) (System.currentTimeMillis() % 5400L) / 15L));
+        poseStack.translate(-31 / 2f, -31 / 2f, 0);
+        guiGraphics.blit(SYMBLS, 0, 0, 32 * (symb % 8), 32 * (symb / 8), 32, 32);
+        poseStack.popPose();
 
         if (RIGHT != null && PREVIOUS != null && RIGHT == PREVIOUS && transitionStartTime >= 0) {
             float t = (age - transitionStartTime + partialTick) / 10f;
