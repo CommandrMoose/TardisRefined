@@ -191,11 +191,11 @@ public class MonitorOS extends Screen {
         float t = (age - transitionStartTime + partialTick) / 10f;
         float o = -0.5f * Mth.cos(Mth.PI * t) + 0.5f;
 
-        if (right || left) RenderSystem.setShaderColor(1, 1, 1, t);
+        if (right || left) RenderSystem.setShaderColor(1, 1, 1, o);
         RenderSystem.enableBlend();
         renderBackdrop(guiGraphics);
         RenderSystem.enableBlend();
-        if (right || left) RenderSystem.setShaderColor(1, 1, 1, 1 - t);
+        if (right || left) RenderSystem.setShaderColor(1, 1, 1, 1 - o);
         if (right) {
             RIGHT.renderBackdrop(guiGraphics);
             poseStack.translate(monitorWidth * o, 0, 0);
