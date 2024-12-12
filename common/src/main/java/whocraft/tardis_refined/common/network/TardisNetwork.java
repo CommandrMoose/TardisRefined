@@ -7,6 +7,7 @@ import whocraft.tardis_refined.common.network.messages.hums.C2SChangeHum;
 import whocraft.tardis_refined.common.network.messages.player.S2CResetPostShellView;
 import whocraft.tardis_refined.common.network.messages.player.C2SExitTardisView;
 import whocraft.tardis_refined.common.network.messages.player.C2SBeginShellView;
+import whocraft.tardis_refined.common.network.messages.screens.S2COpenCraftingScreen;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncTardisPlayerView;
 import whocraft.tardis_refined.common.network.messages.screens.C2SRequestShellSelection;
 import whocraft.tardis_refined.common.network.messages.screens.S2COpenMonitor;
@@ -20,7 +21,7 @@ public class TardisNetwork {
 
     public static final NetworkManager NETWORK = NetworkManager.create(new ResourceLocation(TardisRefined.MODID, "channel"));
 
-    public static MessageType START_VORTEX_SESSION, END_VORTEX_SESSION, TARDIS_EXIT, OPEN_SHELL_SELECT, SYNC_HUMS, OPEN_WAYPOINTS_DISPLAY, DEL_WAYPOINT, CLIENT_OPEN_COORDS_DISPLAY, SERVER_OPEN_COORDS_DISPLAY, UPGRADE_SCREEN_S2C,
+    public static MessageType OPEN_CRAFTING_SCREEN, START_VORTEX_SESSION, END_VORTEX_SESSION, TARDIS_EXIT, OPEN_SHELL_SELECT, SYNC_HUMS, OPEN_WAYPOINTS_DISPLAY, DEL_WAYPOINT, CLIENT_OPEN_COORDS_DISPLAY, SERVER_OPEN_COORDS_DISPLAY, UPGRADE_SCREEN_S2C,
             REQUEST_SHELL_C2S, CLIENT_OPEN_COORDS_SCREEN, SERVER_OPEN_COORDS_SCREEN, CLIENT_OPEN_EDIT_COORDS_SCREEN, SERVER_OPEN_EDIT_COORDS_SCREEN, UPLOAD_WAYPOINT,
             EDIT_WAYPOINT, SET_WAYPOINT, CHANGE_HUM, REQUEST_WAYPOINTS, SYNC_DESKTOPS, SYNC_CONSOLE_PATTERNS, SYNC_SHELL_PATTERNS, SYNC_LEVELS, INT_REACTION,
             OPEN_MONITOR, CHANGE_SHELL, CHANGE_DESKTOP, CANCEL_CHANGE_DESKTOP, UNLOCK_UPGRADE, EJECT_PLAYER, TARDIS_PLAYER_INFO, CHANGE_VORTEX;
@@ -42,6 +43,7 @@ public class TardisNetwork {
         UPGRADE_SCREEN_S2C = NETWORK.registerS2C("upgrade_screen_s2c", S2CDisplayUpgradeScreen::new);
         TARDIS_PLAYER_INFO = NETWORK.registerS2C("tardis_player_info", S2CSyncTardisPlayerView::new);
         END_VORTEX_SESSION = NETWORK.registerS2C("end_vortex_session", S2CResetPostShellView::new);
+        OPEN_CRAFTING_SCREEN = NETWORK.registerS2C("open_crafting_screen", S2COpenCraftingScreen::new);
 
         // C2S Messages
         CHANGE_SHELL = NETWORK.registerC2S("change_shell", C2SChangeShell::new);

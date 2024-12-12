@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import whocraft.tardis_refined.client.screen.ponder.PonderListScreen;
 import whocraft.tardis_refined.client.screen.screens.CancelDesktopScreen;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.client.screen.main.MonitorScreen;
@@ -95,5 +96,10 @@ public class ScreenHandler {
             return;
         }
         Minecraft.getInstance().setScreen(new ShellSelectionScreen(currentShell));
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void openCraftingScreen() {
+        Minecraft.getInstance().setScreen(new PonderListScreen());
     }
 }

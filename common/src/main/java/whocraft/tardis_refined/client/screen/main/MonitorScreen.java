@@ -14,6 +14,7 @@ import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.BackgroundlessButton;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
+import whocraft.tardis_refined.client.screen.ponder.PonderListScreen;
 import whocraft.tardis_refined.client.screen.ponder.PonderScreen;
 import whocraft.tardis_refined.client.screen.screens.DesktopSelectionScreen;
 import whocraft.tardis_refined.client.screen.screens.HumSelectionScreen;
@@ -59,14 +60,6 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         int hPos = (width - monitorWidth) / 2;
         int vPos = (height - monitorHeight) / 2;
 
-        Button shellSelectButton = addRenderableWidget(Button.builder(Component.literal("TEST"), button -> {
-            if (Minecraft.getInstance().level == null) return;
-            if (ManipulatorCraftingRecipe.getAllRecipes(Minecraft.getInstance().level).isEmpty()) return;
-
-            ManipulatorCraftingRecipe recipe = ManipulatorCraftingRecipe.getAllRecipes(Minecraft.getInstance().level).get(Minecraft.getInstance().level.random.nextInt(ManipulatorCraftingRecipe.getAllRecipes(Minecraft.getInstance().level).size() - 1));
-
-            Minecraft.getInstance().setScreen(new PonderScreen(recipe));
-        }).pos(hPos + 5, -(monitorHeight / 2) + height / 2).size(70, 20).build());
         //shellSelectButton.active = TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler);
 /*
         Button vortxSelectButton = addRenderableWidget(

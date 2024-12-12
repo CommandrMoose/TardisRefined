@@ -1,9 +1,12 @@
 package whocraft.tardis_refined.common.crafting.astral_manipulator;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 
@@ -81,7 +84,7 @@ public class ManipulatorRecipes {
                 new ManipulatorCraftingIngredient(new BlockPos(0, 0, 1), Blocks.AMETHYST_BLOCK.defaultBlockState()),
                 new ManipulatorCraftingIngredient(new BlockPos(0, 0, 2), TRBlockRegistry.ZEITON_FUSED_IRON_BLOCK.get().defaultBlockState()),
                 new ManipulatorCraftingIngredient(new BlockPos(1, 0, 0), Blocks.AMETHYST_BLOCK.defaultBlockState()),
-                new ManipulatorCraftingIngredient(new BlockPos(1, 0, 1), Blocks.PISTON.defaultBlockState()),
+                new ManipulatorCraftingIngredient(new BlockPos(1, 0, 1), Blocks.PISTON.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.UP)),
                 new ManipulatorCraftingIngredient(new BlockPos(1, 0, 2), Blocks.AMETHYST_BLOCK.defaultBlockState()),
                 new ManipulatorCraftingIngredient(new BlockPos(2, 0, 0), TRBlockRegistry.ZEITON_FUSED_IRON_BLOCK.get().defaultBlockState()),
                 new ManipulatorCraftingIngredient(new BlockPos(2, 0, 1), Blocks.AMETHYST_BLOCK.defaultBlockState()),
