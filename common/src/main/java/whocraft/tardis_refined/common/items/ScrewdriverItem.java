@@ -23,6 +23,8 @@ import whocraft.tardis_refined.registry.TRSoundRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
+import static whocraft.tardis_refined.common.items.TRItemData.*;
+
 public class ScrewdriverItem extends Item {
 
     public ScrewdriverItem(Properties properties) {
@@ -68,7 +70,7 @@ public class ScrewdriverItem extends Item {
     }
 
     public void setScrewdriverMode(Player player, ItemStack stack, ScrewdriverMode mode, BlockPos sourceChange, @Nullable ServerLevel serverLevel) {
-        ScrewdriverMode currentMode = stack.get(TRItemData.SCREWDRIVER_MODE.get());
+        ScrewdriverMode currentMode = stack.get(SCREWDRIVER_MODE.get());
 
         if (serverLevel != null) {
             if (currentMode != ScrewdriverMode.DISABLED && mode == ScrewdriverMode.DISABLED) {
@@ -80,26 +82,26 @@ public class ScrewdriverItem extends Item {
         }
 
         // Update the mode in the DataComponent
-        stack.set(SCREWDRIVER_MODE, mode);
+        stack.set(SCREWDRIVER_MODE.get(), mode);
 
         if (mode == ScrewdriverMode.DRAWING) {
-            stack.set(LINKED_MANIPULATOR_POS, sourceChange);
+            stack.set(LINKED_MANIPULATOR_POS.get(), sourceChange);
         }
         PlayerUtil.sendMessage(player, mode.toString(), true);
     }
 
     public boolean isScrewdriverMode(ItemStack stack, ScrewdriverMode mode) {
-        return stack.get(SCREWDRIVER_MODE) == mode;
+        return stack.get(SCREWDRIVER_MODE.get()) == mode;
     }
 
     private void addBlockPosToScrewdriver(ServerLevel serverLevel, Player player, ItemStack stack, BlockPos pos) {
-        boolean isUpdatingA = stack.get(SCREWDRIVER_B_WAS_LAST_UPDATED);
-        String target = isUpdatingA ? SCREWDRIVER_POINT_A : SCREWDRIVER_POINT_B;
+        boolean isUpdatingA = Boolean.TRUE.equals(stack.get(SCREWDRIVER_B_WAS_LAST_UPDATED.get()));
+        DataComponentType<BlockPos> target = isUpdatingA ? SCREWDRIVER_POINT_A.get() : SCREWDRIVER_POINT_B.get();
 
         stack.set(target, pos);
         updatedLinkedManipulator(player, serverLevel, stack, pos, isUpdatingA);
 
-        stack.set(SCREWDRIVER_B_WAS_LAST_UPDATED, !isUpdatingA);
+        stack.set(SCREWDRIVER_B_WAS_LAST_UPDATED.get(), !isUpdatingA);
 
         playScrewdriverSound(serverLevel, player.getOnPos(), TRSoundRegistry.SCREWDRIVER_SHORT.get());
     }
@@ -109,7 +111,7 @@ public class ScrewdriverItem extends Item {
     }
 
     private void updatedLinkedManipulator(Player player, ServerLevel level, ItemStack stack, BlockPos pos, boolean isPointA) {
-        BlockPos manipulator = stack.get(LINKED_MANIPULATOR_POS);
+        BlockPos manipulator = stack.get(LINKED_MANIPULATOR_POS.get());
         if (level.getBlockEntity(manipulator) instanceof AstralManipulatorBlockEntity astralManipulatorBlockEntity) {
             if (!astralManipulatorBlockEntity.setProjectionBlockPos(pos, isPointA)) {
                 setScrewdriverMode(player, stack, ScrewdriverMode.DISABLED, pos, level);
@@ -118,27 +120,27 @@ public class ScrewdriverItem extends Item {
     }
 
     private void clearLinkedManipulator(ServerLevel level, ItemStack stack) {
-        BlockPos manipulator = stack.get(LINKED_MANIPULATOR_POS);
+        BlockPos manipulator = stack.get(LINKED_MANIPULATOR_POS.get());
         if (level.getBlockEntity(manipulator) instanceof AstralManipulatorBlockEntity astralManipulatorBlockEntity) {
             astralManipulatorBlockEntity.clearDisplay();
         }
 
-        stack.remove(LINKED_MANIPULATOR_POS);
+        stack.remove(LINKED_MANIPULATOR_POS.get());
     }
 
     public void clearBlockPosFromScrewdriver(ItemStack stack) {
-        stack.remove(SCREWDRIVER_POINT_A);
-        stack.remove(SCREWDRIVER_POINT_B);
-        stack.remove(LINKED_MANIPULATOR_POS);
+        stack.remove(SCREWDRIVER_POINT_A.get());
+        stack.remove(SCREWDRIVER_POINT_B.get());
+        stack.remove(LINKED_MANIPULATOR_POS.get());
     }
 
     public List<BlockPos> getScrewdriverPoint(ItemStack stack) {
         List<BlockPos> listOfBlockPos = new ArrayList<>();
-        if (stack.has(SCREWDRIVER_POINT_A)) {
-            listOfBlockPos.add(stack.get(SCREWDRIVER_POINT_A));
+        if (stack.has(SCREWDRIVER_POINT_A.get())) {
+            listOfBlockPos.add(stack.get(SCREWDRIVER_POINT_A.get()));
         }
-        if (stack.has(SCREWDRIVER_POINT_B)) {
-            listOfBlockPos.add(stack.get(SCREWDRIVER_POINT_B));
+        if (stack.has(SCREWDRIVER_POINT_B.get())) {
+            listOfBlockPos.add(stack.get(SCREWDRIVER_POINT_B.get()));
         }
         return listOfBlockPos;
     }

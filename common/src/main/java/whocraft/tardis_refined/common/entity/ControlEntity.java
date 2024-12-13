@@ -234,7 +234,6 @@ public class ControlEntity extends Entity {
 
         compound.putFloat(NbtConstants.CONTROL_SIZE_WIDTH, this.getEntityData().get(SIZE_WIDTH));
         compound.putFloat(NbtConstants.CONTROL_SIZE_HEIGHT, this.getEntityData().get(SIZE_HEIGHT));
-
     }
 
     @Override

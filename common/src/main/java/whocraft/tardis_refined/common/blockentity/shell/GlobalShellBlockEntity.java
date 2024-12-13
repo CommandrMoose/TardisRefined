@@ -20,6 +20,7 @@ import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.items.KeyItem;
+import whocraft.tardis_refined.common.items.KeyItemData;
 import whocraft.tardis_refined.common.tardis.manager.AestheticHandler;
 import whocraft.tardis_refined.common.tardis.manager.TardisExteriorManager;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
@@ -142,7 +143,7 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
                     return true;
                 }
 
-                boolean validKey = KeyItem.keychainContains(stack, TARDIS_ID);
+                boolean validKey = KeyItemData.containsTardis(stack, TARDIS_ID);
                 if (validKey) {
                     boolean locked = !exteriorManager.locked();
                     tardisLevelOperator.setDoorLocked(locked);

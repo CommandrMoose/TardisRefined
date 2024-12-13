@@ -24,6 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.items.KeyItemData;
 import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.items.KeyItem;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
@@ -66,9 +67,9 @@ public class LandingPadBlock extends Block {
         if (!player.level().isClientSide()) {
             if (level instanceof ServerLevel serverLevel) {
                 if (itemStack.getItem() instanceof KeyItem) {
-                    var keyChain = KeyItem.getKeychain(itemStack);
+                    var keyChain = KeyItemData.getKeychain(itemStack);
                     if (!keyChain.isEmpty()) {
-                        ResourceKey<Level> dimension = KeyItem.getKeychain(itemStack).get(0);
+                        ResourceKey<Level> dimension = KeyItemData.getKeychain(itemStack).get(0);
                         var tardisLevel = Platform.getServer().getLevel(dimension);
                         var operatorOptional = TardisLevelOperator.get(tardisLevel);
                         if (operatorOptional.isEmpty()) {
