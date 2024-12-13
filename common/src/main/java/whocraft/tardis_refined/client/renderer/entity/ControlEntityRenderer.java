@@ -12,9 +12,11 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
@@ -86,39 +88,39 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
         if (!(distanceSquared > 2050.0)) {
 
             boolean isSolid = !entity.isDiscrete();
-            float boundingBoxHeight = entity.getNameTagOffsetY() - 0.3f;
-            int verticalTextOffset = 10;
+            Vec3 vec3 = entity.getAttachments().getNullable(EntityAttachment.NAME_TAG, 0, entity.getViewYRot(f));
+            if (vec3 != null) {
 
-            poseStack.pushPose();
-            poseStack.translate(0.0, boundingBoxHeight, 0.0);
+                int verticalTextOffset = 10;
 
-            poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-            float scale = 0.007F;
-            poseStack.scale(-scale, -scale, scale);
+                poseStack.pushPose();
+                poseStack.translate(vec3.x, vec3.y + 0.5, vec3.z);
 
-            Matrix4f textMatrix = poseStack.last().pose();
+                poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+                float scale = 0.007F;
+                poseStack.scale(-scale, -scale, scale);
 
-            Font font = this.getFont();
+                Matrix4f textMatrix = poseStack.last().pose();
 
-            float textHorizontalPosition = (float) (-font.width(component) / 2);
+                Font font = this.getFont();
 
-            FormattedCharSequence sequence = component.getVisualOrderText();
+                float textHorizontalPosition = (float) (-font.width(component) / 2);
 
-            font.drawInBatch8xOutline(sequence, textHorizontalPosition, (float) verticalTextOffset, 16777215, 0, textMatrix, multiBufferSource, packedLightCoords);
+                FormattedCharSequence sequence = component.getVisualOrderText();
 
-            if (isSolid) {
                 font.drawInBatch8xOutline(sequence, textHorizontalPosition, (float) verticalTextOffset, 16777215, 0, textMatrix, multiBufferSource, packedLightCoords);
+
+                if (isSolid) {
+                    font.drawInBatch8xOutline(sequence, textHorizontalPosition, (float) verticalTextOffset, 16777215, 0, textMatrix, multiBufferSource, packedLightCoords);
+                }
+
+                // Damage used for the icon later on. Left for Jeryn.
+                int entityHealth = entity.getControlHealth();
+
+                poseStack.translate(0.0, 5, 0.0);
+                renderControlIcon(entity, component, getIconByState(entityHealth), poseStack, multiBufferSource, packedLightCoords);
+                poseStack.popPose();
             }
-
-            // Damage used for the icon later on. Left for Jeryn.
-            int entityHealth = entity.getControlHealth();
-
-            poseStack.translate(0.0, 5, 0.0);
-            renderControlIcon(entity, component, getIconByState(entityHealth), poseStack, multiBufferSource, packedLightCoords);
-
-            poseStack.popPose();
-
-
         }
 
 

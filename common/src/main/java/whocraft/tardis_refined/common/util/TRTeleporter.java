@@ -2,7 +2,10 @@ package whocraft.tardis_refined.common.util;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.game.*;
+import net.minecraft.network.protocol.game.ClientboundChangeDifficultyPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
+import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,18 +18,17 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import qouteall.imm_ptl.core.IPGlobal;
-import qouteall.imm_ptl.core.api.PortalAPI;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.registry.TRTagKeys;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TRTeleporter {
@@ -472,7 +474,7 @@ public class TRTeleporter {
             return false;
         }
 
-        double vehicleOffset = entity.getMyRidingOffset(vehicle);
+        double vehicleOffset = entity.getPassengerRidingPosition(entity).y;
 
         Vec3 oldMotion = vehicle.getDeltaMovement();
 
@@ -528,13 +530,8 @@ public class TRTeleporter {
     }
 
     public static boolean canTeleportTo(BlockPos pPos, Level level, Entity entity) {
-        PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic(level, pPos.mutable());
-        if (blockpathtypes != PathType.WALKABLE) {
-            return false;
-        } else {
             BlockPos blockpos = pPos.subtract(entity.blockPosition());
             return level.noCollision(entity, entity.getBoundingBox().move(blockpos));
-        }
     }
 
 
