@@ -133,7 +133,7 @@ public class TardisLevelOperator {
 
         CompoundTag doorPos = tag.getCompound(NbtConstants.TARDIS_INTERNAL_DOOR_POSITION);
         if (doorPos != null) {
-            if (level.getBlockEntity(NbtUtils.readBlockPos(doorPos)) instanceof TardisInternalDoor door) {
+            if (level.getBlockEntity(NbtUtils.readBlockPos(tag, NbtConstants.TARDIS_INTERNAL_DOOR_POSITION)) instanceof TardisInternalDoor door) {
                 this.internalDoor = door;
                 this.internalDoor.setID(tag.getString(NbtConstants.TARDIS_INTERNAL_DOOR_ID));
             }

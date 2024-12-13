@@ -42,7 +42,7 @@ public class C2SExitTardisView extends MessageC2S {
         TardisPlayerInfo.get(player).ifPresent(tardisInfo -> {
             if (tardisInfo.isViewingTardis()) {
                 ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION,
-                        new ResourceLocation(TardisRefined.MODID, tardisInfo.getViewedTardis().toString()));
+                        ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, tardisInfo.getViewedTardis().toString()));
                 ServerLevel tardisLevel = Platform.getServer().getLevel(key);
                 if (tardisLevel != null) {
                     TardisLevelOperator.get(tardisLevel).ifPresent(tardisLevelOperator -> {

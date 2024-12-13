@@ -91,11 +91,11 @@ public class ShellPatternProvider implements DataProvider {
     }
 
     public ResourceLocation exteriorTextureLocation(ResourceLocation themeId) {
-        return new ResourceLocation(themeId.getNamespace(), "textures/blockentity/shell/" + themeId.getPath() + "/" + themeId.getPath() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(themeId.getNamespace(), "textures/blockentity/shell/" + themeId.getPath() + "/" + themeId.getPath() + ".png");
     }
 
     public ResourceLocation interiorTextureLocation(ResourceLocation themeId) {
-        return new ResourceLocation(themeId.getNamespace(), "textures/blockentity/shell/" + themeId.getPath() + "/" + themeId.getPath() + "_interior.png");
+        return ResourceLocation.fromNamespaceAndPath(themeId.getNamespace(), "textures/blockentity/shell/" + themeId.getPath() + "/" + themeId.getPath() + "_interior.png");
     }
 
     protected Path getPath(ResourceLocation themeId) {

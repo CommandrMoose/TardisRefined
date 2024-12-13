@@ -61,7 +61,7 @@ public class RootedShellBlockEntity extends ShellBaseBlockEntity {
         if (level instanceof ServerLevel serverLevel) {
             if (this.shouldSetup()) {
                 //Create a Level Key with a randomised UUID
-                ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TardisRefined.MODID, UUID.randomUUID().toString()));
+                ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, UUID.randomUUID().toString()));
 
                 //Create the Level on demand which will create our capability
                 ServerLevel interior = DimensionHandler.getOrCreateInterior(serverLevel, generatedLevelKey.location());

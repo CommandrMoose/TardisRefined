@@ -92,51 +92,51 @@ public class ModelRegistry {
     }
 
     private static ModelLayerLocation createLocation(String name, String layer) {
-        return new ModelLayerLocation(new ResourceLocation(MODID, name), layer);
+        return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, name), layer);
     }
 
     public static void init() {
-        ROOT_PLANT_STATE_ONE = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_plant_one"), "root_plant_one"), RootPlantStateOneModel::createBodyLayer);
-        ROOT_PLANT_STATE_TWO = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_plant_two"), "root_plant_two"), RootPlantStateTwoModel::createBodyLayer);
-        ROOT_PLANT_STATE_THREE = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_plant_three"), "root_plant_three"), RootPlantStateThreeModel::createBodyLayer);
-        ROOT_PLANT_STATE_FOUR = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_plant_four"), "root_plant_four"), RootPlantStateFourModel::createBodyLayer);
-        ROOT_PLANT_STATE_FIVE = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_plant_five"), "root_plant_five"), RootPlantStateFiveModel::createBodyLayer);
+        ROOT_PLANT_STATE_ONE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_plant_one"), "root_plant_one"), RootPlantStateOneModel::createBodyLayer);
+        ROOT_PLANT_STATE_TWO = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_plant_two"), "root_plant_two"), RootPlantStateTwoModel::createBodyLayer);
+        ROOT_PLANT_STATE_THREE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_plant_three"), "root_plant_three"), RootPlantStateThreeModel::createBodyLayer);
+        ROOT_PLANT_STATE_FOUR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_plant_four"), "root_plant_four"), RootPlantStateFourModel::createBodyLayer);
+        ROOT_PLANT_STATE_FIVE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_plant_five"), "root_plant_five"), RootPlantStateFiveModel::createBodyLayer);
 
-        NUKA_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(MODID, "nuka_console"), "nuka_console"), NukaConsoleModel::createBodyLayer);
-        CRYSTAL_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(MODID, "crystal_console"), "crystal_console"), CrystalConsoleModel::createBodyLayer);
-        VICTORIAN_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(MODID, "victorian_console"), "victorian_console"), VictorianConsoleModel::createBodyLayer);
-        MYST_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(MODID, "myst_console"), "myst_console"), MystConsoleModel::createBodyLayer);
-        INITIATIVE_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(MODID, "initiative_console"), "initiative_console"), InitiativeConsoleModel::createBodyLayer);
-        REFURBISHED_CONSOLE = register(new ModelLayerLocation(new ResourceLocation(MODID, "refurbished_console"), "refurbished_console"), RefurbishedConsoleModel::createBodyLayer);
+        NUKA_CONSOLE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "nuka_console"), "nuka_console"), NukaConsoleModel::createBodyLayer);
+        CRYSTAL_CONSOLE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "crystal_console"), "crystal_console"), CrystalConsoleModel::createBodyLayer);
+        VICTORIAN_CONSOLE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "victorian_console"), "victorian_console"), VictorianConsoleModel::createBodyLayer);
+        MYST_CONSOLE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "myst_console"), "myst_console"), MystConsoleModel::createBodyLayer);
+        INITIATIVE_CONSOLE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "initiative_console"), "initiative_console"), InitiativeConsoleModel::createBodyLayer);
+        REFURBISHED_CONSOLE = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "refurbished_console"), "refurbished_console"), RefurbishedConsoleModel::createBodyLayer);
 
-        ROOT_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_shell"), "root_shell"), RootShellModel::createBodyLayer);
-        FACTORY_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "factory_shell"), "factory_shell"), FactoryShellModel::createBodyLayer);
-        POLICE_BOX_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "police_box_shell"), "police_box_shell"), PoliceBoxModel::createBodyLayer);
-        PHONE_BOOTH_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "phone_booth_shell"), "phone_booth_shell"), PhoneBoothModel::createBodyLayer);
-        MYSTIC_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "mystic_shell"), "mystic_shell"), MysticShellModel::createBodyLayer);
-        DRIFTER_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "drifter_shell"), "drifter_shell"), DrifterShellModel::createBodyLayer);
-        PRESENT_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "present_shell"), "present_shell"), PresentShellModel::createBodyLayer);
-        VENDING_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "vending_shell"), "vending_shell"), VendingMachineShellModel::createBodyLayer);
-        BRIEFCASE_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "briefcase_shell"), "briefcase_shell"), BriefcaseShellModel::createBodyLayer);
-        GROENING_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "groening_shell"), "groening_shell"), GroeningShellModel::createBodyLayer);
-        BIG_BEN_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "big_ben_shell"), "big_ben_shell"), BigBenShellModel::createBodyLayer);
-        NUKA_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "nuka_shell"), "nuka_shell"), NukaShellModel::createBodyLayer);
-        GROWTH_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "growth_shell"), "growth_shell"), GrowthShellModel::createBodyLayer);
-        PORTALOO_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "portaloo_shell"), "portaloo_shell"), PortalooShellModel::createBodyLayer);
-        PAGODA_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "pagoda_shell"), "pagoda_shell"), PagodaShellModel::createBodyLayer);
-        LIFT_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "lift_shell"), "lift_shell"), LiftShellModel::createBodyLayer);
-        HIEROGLYPH_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "hieroglyph_shell"), "hieroglyph_shell"), HieroglyphModel::createBodyLayer);
-        CASTLE_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "castle_shell"), "castle_shell"), CastleShellModel::createBodyLayer);
-        PATHFINDER_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "pathfinder_shell"), "pathfinder_shell"), PathfinderShellModel::createBodyLayer);
-        HALF_BAKED_SHELL = register(new ModelLayerLocation(new ResourceLocation(MODID, "half_baked_shell"), "half_baked_shell"), HalfBakedShellModel::createBodyLayer);
+        ROOT_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_shell"), "root_shell"), RootShellModel::createBodyLayer);
+        FACTORY_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "factory_shell"), "factory_shell"), FactoryShellModel::createBodyLayer);
+        POLICE_BOX_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "police_box_shell"), "police_box_shell"), PoliceBoxModel::createBodyLayer);
+        PHONE_BOOTH_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "phone_booth_shell"), "phone_booth_shell"), PhoneBoothModel::createBodyLayer);
+        MYSTIC_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "mystic_shell"), "mystic_shell"), MysticShellModel::createBodyLayer);
+        DRIFTER_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "drifter_shell"), "drifter_shell"), DrifterShellModel::createBodyLayer);
+        PRESENT_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "present_shell"), "present_shell"), PresentShellModel::createBodyLayer);
+        VENDING_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "vending_shell"), "vending_shell"), VendingMachineShellModel::createBodyLayer);
+        BRIEFCASE_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "briefcase_shell"), "briefcase_shell"), BriefcaseShellModel::createBodyLayer);
+        GROENING_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "groening_shell"), "groening_shell"), GroeningShellModel::createBodyLayer);
+        BIG_BEN_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "big_ben_shell"), "big_ben_shell"), BigBenShellModel::createBodyLayer);
+        NUKA_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "nuka_shell"), "nuka_shell"), NukaShellModel::createBodyLayer);
+        GROWTH_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "growth_shell"), "growth_shell"), GrowthShellModel::createBodyLayer);
+        PORTALOO_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "portaloo_shell"), "portaloo_shell"), PortalooShellModel::createBodyLayer);
+        PAGODA_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "pagoda_shell"), "pagoda_shell"), PagodaShellModel::createBodyLayer);
+        LIFT_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "lift_shell"), "lift_shell"), LiftShellModel::createBodyLayer);
+        HIEROGLYPH_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "hieroglyph_shell"), "hieroglyph_shell"), HieroglyphModel::createBodyLayer);
+        CASTLE_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "castle_shell"), "castle_shell"), CastleShellModel::createBodyLayer);
+        PATHFINDER_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "pathfinder_shell"), "pathfinder_shell"), PathfinderShellModel::createBodyLayer);
+        HALF_BAKED_SHELL = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "half_baked_shell"), "half_baked_shell"), HalfBakedShellModel::createBodyLayer);
 
 
-        ROOT_SHELL_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_shell_door"), "root_shell_door"), RootShellDoorModel::createBodyLayer);
-        BRIEFCASE_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "briefcase_door"), "briefcase_door"), BriefcaseDoorModel::createBodyLayer);
-        GROWTH_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "growth_door"), "growth_door"), GrowthDoorModel::createBodyLayer);
-        PAGODA_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "pagoda_door"), "pagoda_door"), PagodaDoorModel::createBodyLayer);
-        HALF_BAKED_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "half_baked_door"), "half_baked_door"), HalfBakedDoorModel::createBodyLayer);
-        ARTRON_PILLAR = register(new ModelLayerLocation(new ResourceLocation(MODID, "artron_pillar"), "artron_pillar"), ArtronPillarBlockModel::createBodyLayer);
+        ROOT_SHELL_DOOR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "root_shell_door"), "root_shell_door"), RootShellDoorModel::createBodyLayer);
+        BRIEFCASE_DOOR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "briefcase_door"), "briefcase_door"), BriefcaseDoorModel::createBodyLayer);
+        GROWTH_DOOR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "growth_door"), "growth_door"), GrowthDoorModel::createBodyLayer);
+        PAGODA_DOOR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "pagoda_door"), "pagoda_door"), PagodaDoorModel::createBodyLayer);
+        HALF_BAKED_DOOR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "half_baked_door"), "half_baked_door"), HalfBakedDoorModel::createBodyLayer);
+        ARTRON_PILLAR = register(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(MODID, "artron_pillar"), "artron_pillar"), ArtronPillarBlockModel::createBodyLayer);
 
     }
 

@@ -1,9 +1,12 @@
 package whocraft.tardis_refined.common.block.device;
 
 import com.mojang.brigadier.StringReader;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -11,7 +14,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -62,6 +67,11 @@ public class ConsoleConfigurationBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FACING);
@@ -83,11 +93,12 @@ public class ConsoleConfigurationBlock extends BaseEntityBlock {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
+
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 
         if (interactionHand != InteractionHand.MAIN_HAND) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.CONSUME;
         }
 
         if (!player.level().isClientSide()) {
@@ -97,12 +108,12 @@ public class ConsoleConfigurationBlock extends BaseEntityBlock {
 
             if (player.getMainHandItem().getItem() == TRItemRegistry.PATTERN_MANIPULATOR.get()) {
                 this.changePattern(level, blockPos, consolePos, player);
-                return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+                return ItemInteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
             }
 
 
             if (level instanceof ServerLevel serverLevel) {
-                if (serverLevel.dimensionTypeId() == TRDimensionTypes.TARDIS) {
+                if (serverLevel.dimensionTypeRegistration() == TRDimensionTypes.TARDIS) {
                     TardisLevelOperator.get(serverLevel).ifPresent(operator -> {
                         if (!operator.getPilotingManager().isInFlight()) {
                             if (player.isShiftKeyDown()) { //If we are destroying the console block
@@ -124,10 +135,10 @@ public class ConsoleConfigurationBlock extends BaseEntityBlock {
             }
 
 
-            return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+            return ItemInteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
         }
 
-        return InteractionResult.sidedSuccess(true); //Use InteractionResult.sidedSuccess(true) for client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+        return ItemInteractionResult.sidedSuccess(true); //Use InteractionResult.sidedSuccess(true) for client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
     }
 
     /**
@@ -203,7 +214,7 @@ public class ConsoleConfigurationBlock extends BaseEntityBlock {
                 }
 
                 globalConsoleBlockEntity.setPattern(ConsolePatterns.next(currentConsoleThemeId, globalConsoleBlockEntity.pattern()));
-                PlayerUtil.sendMessage(player, Component.Serializer.fromJson(new StringReader(globalConsoleBlockEntity.pattern().name())), true);
+                PlayerUtil.sendMessage(player, Component.Serializer.fromJson(globalConsoleBlockEntity.pattern().name(), level.registryAccess()), true);
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), TRSoundRegistry.PATTERN_MANIPULATOR.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
                 player.getCooldowns().addCooldown(TRItemRegistry.PATTERN_MANIPULATOR.get(), 20);

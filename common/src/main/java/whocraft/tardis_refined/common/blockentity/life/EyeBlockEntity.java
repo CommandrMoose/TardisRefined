@@ -27,7 +27,7 @@ public class EyeBlockEntity extends BlockEntity implements BlockEntityTicker<Eye
             List<Entity> entities = level.getEntities(null, new AABB(blockPos).inflate(3));
             if (entities != null) {
                 for (Entity entity : entities) {
-                    entity.setSecondsOnFire(30);
+                    entity.setRemainingFireTicks(30);
                     entity.hurt(TRDamageSources.getSource(serverLevel, TRDamageSources.EYE_OF_HARMONY), 10000f);
                 }
             }

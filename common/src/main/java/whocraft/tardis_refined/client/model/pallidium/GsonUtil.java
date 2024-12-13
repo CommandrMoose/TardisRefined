@@ -78,21 +78,10 @@ public class GsonUtil {
         return getFloatArray(jsonObject, fields, key);
     }
 
-    public static ItemStack getAsItemStack(JsonObject json, String memberName) {
-        if (json.has(memberName)) {
-            return readItemStack(json.get(memberName));
-        } else {
-            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an itemstack");
-        }
-    }
-
-    public static ItemStack getAsItemStack(JsonObject json, String memberName, @Nullable ItemStack fallback) {
-        return json.has(memberName) ? getAsItemStack(json, memberName) : fallback;
-    }
 
     public static ResourceLocation convertToResourceLocation(JsonElement json, String memberName) {
         if (json.isJsonPrimitive()) {
-            return new ResourceLocation(json.getAsString());
+            return ResourceLocation.parse(json.getAsString());
         } else {
             throw new JsonSyntaxException("Expected " + memberName + " to be a resource location, was " + GsonHelper.getType(json));
         }
@@ -100,7 +89,7 @@ public class GsonUtil {
 
     public static ResourceLocation getAsResourceLocation(JsonObject json, String memberName) {
         if (json.has(memberName)) {
-            return new ResourceLocation(GsonHelper.getAsString(json, memberName));
+            return ResourceLocation.parse(GsonHelper.getAsString(json, memberName));
         } else {
             throw new JsonSyntaxException("Missing " + memberName + ", expected to find a resource location");
         }
@@ -113,9 +102,9 @@ public class GsonUtil {
             String[] s = json.getAsString().split("#", 2);
 
             if (s.length == 1) {
-                return new ModelLayerLocation(new ResourceLocation(s[0]), "main");
+                return new ModelLayerLocation(ResourceLocation.parse(s[0]), "main");
             } else {
-                return new ModelLayerLocation(new ResourceLocation(s[0]), s[1]);
+                return new ModelLayerLocation(ResourceLocation.parse(s[0]), s[1]);
             }
         } else {
             throw new JsonSyntaxException("Expected " + memberName + " to be a model layer location, was " + GsonHelper.getType(json));
@@ -128,9 +117,9 @@ public class GsonUtil {
             String[] s = GsonHelper.getAsString(json, memberName).split("#", 2);
 
             if (s.length == 1) {
-                return new ModelLayerLocation(new ResourceLocation(s[0]), "main");
+                return new ModelLayerLocation(ResourceLocation.parse(s[0]), "main");
             } else {
-                return new ModelLayerLocation(new ResourceLocation(s[0]), s[1]);
+                return new ModelLayerLocation(ResourceLocation.parse(s[0]), s[1]);
             }
         } else {
             throw new JsonSyntaxException("Missing " + memberName + ", expected to find a model layer location");
@@ -257,44 +246,6 @@ public class GsonUtil {
         return f;
     }
 
-    public static Component getAsComponent(JsonObject json, String memberName) {
-        if (GsonHelper.isValidNode(json, memberName)) {
-            return Component.Serializer.fromJson(json.get(memberName));
-        } else {
-            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a Text Component definition");
-        }
-    }
-
-    public static Component getAsComponent(JsonObject json, String memberName, Component fallback) {
-        if (!GsonHelper.isValidNode(json, memberName)) {
-            return fallback;
-        }
-        return getAsComponent(json, memberName);
-    }
-
-    public static List<Component> getAsComponentList(JsonObject json, String memberName) {
-        if (GsonHelper.isValidNode(json, memberName)) {
-            if (json.get(memberName).isJsonPrimitive() || json.get(memberName).isJsonObject()) {
-                return List.of(Objects.requireNonNull(Component.Serializer.fromJson(json.get(memberName))));
-            }
-            JsonArray array = GsonHelper.convertToJsonArray(json.get(memberName), memberName);
-            List<Component> list = new ArrayList<>();
-            for (int i = 0; i < array.size(); i++) {
-                list.add(Component.Serializer.fromJson(array.get(i)));
-            }
-            return list;
-        } else {
-            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a String, a JsonObject, or an array of Text Component definitions");
-        }
-    }
-
-    public static List<Component> getAsComponentList(JsonObject json, String memberName, List<Component> fallback) {
-        if (!GsonHelper.isValidNode(json, memberName)) {
-            return fallback;
-        } else {
-            return getAsComponentList(json, memberName);
-        }
-    }
 
     public static Color getAsColor(JsonObject json, String memberName) {
         if (json.has(memberName)) {
@@ -508,47 +459,7 @@ public class GsonUtil {
         }
     }
 
-    public static JsonObject serializeItemStack(ItemStack stack) {
-        return serializeItemStack(stack, true);
-    }
 
-    public static JsonObject serializeItemStack(ItemStack stack, boolean writeNbt) {
-        JsonObject json = new JsonObject();
-
-        json.addProperty("item", BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
-        json.addProperty("count", stack.getCount());
-
-        if (writeNbt && stack.hasTag()) {
-            json.add("nbt", nbtToJson(stack.getTag()));
-        }
-
-        return json;
-    }
-
-    public static ItemStack readItemStack(JsonElement jsonElement) {
-        if (jsonElement.isJsonPrimitive()) {
-            ResourceLocation id = new ResourceLocation(jsonElement.getAsString());
-
-            if (!BuiltInRegistries.ITEM.containsKey(id)) {
-                throw new JsonParseException("Unknown item '" + id + "'");
-            }
-
-            return new ItemStack(BuiltInRegistries.ITEM.get(id));
-        } else if (jsonElement.isJsonObject()) {
-            var json = jsonElement.getAsJsonObject();
-            ResourceLocation id = new ResourceLocation(GsonHelper.getAsString(json, "item"));
-
-            if (!BuiltInRegistries.ITEM.containsKey(id)) {
-                throw new JsonParseException("Unknown item '" + id + "'");
-            }
-
-            Item item = BuiltInRegistries.ITEM.get(id);
-
-            return new ItemStack(item, GsonHelper.getAsInt(json, "count", 1));
-        } else {
-            throw new JsonParseException("Item stack definition must either be a primitive or an object");
-        }
-    }
 
     public static void forEachInListOrPrimitive(JsonElement element, Consumer<JsonElement> consumer) {
         if (element.isJsonPrimitive() || element.isJsonObject()) {

@@ -27,7 +27,7 @@ import static whocraft.tardis_refined.client.screen.selections.SelectionScreen.B
 
 public class WaypointManageScreen extends Screen {
 
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor.png");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/monitor.png");
     private final CoordInputType coordInputType;
     protected int imageWidth = 256;
     protected int imageHeight = 173;

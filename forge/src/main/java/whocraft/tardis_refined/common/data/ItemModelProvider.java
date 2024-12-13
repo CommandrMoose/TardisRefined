@@ -33,12 +33,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         blockItem(TRBlockRegistry.ZEITON_BLOCK.getId());
         blockItem(TRBlockRegistry.ASTRAL_MAP.getId());
 
-        ResourceLocation leavesTexture = new ResourceLocation("tardis_refined:block/ars_leaves");
+        ResourceLocation leavesTexture = ResourceLocation.fromNamespaceAndPath("tardis_refined:block/ars_leaves");
 
 
-        myFenceInventory(new ResourceLocation(TardisRefined.MODID, "ars_leaves_fence_inventory"), leavesTexture);
+        myFenceInventory(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "ars_leaves_fence_inventory"), leavesTexture);
 
-        blockItem(TRBlockRegistry.ARS_LEAVES_FENCE.getId(), new ResourceLocation(TardisRefined.MODID, "item/ars_leaves_fence_inventory"));
+        blockItem(TRBlockRegistry.ARS_LEAVES_FENCE.getId(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "item/ars_leaves_fence_inventory"));
         blockItem(TRBlockRegistry.TERRAFORMER_BLOCK.getId());
         blockItem(TRBlockRegistry.AIR_LOCK_GENERATION_BLOCK.getId());
         blockItem(TRBlockRegistry.GRAVITY_WELL.getId());
@@ -71,7 +71,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     }
 
     public ItemModelBuilder blockItem(ResourceLocation item) {
-        return getBuilder(item.toString()).parent(new ModelFile.UncheckedModelFile(new ResourceLocation(item.getNamespace(), "block/" + item.getPath())));
+        return getBuilder(item.toString()).parent(new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(item.getNamespace(), "block/" + item.getPath())));
     }
 
     public ItemModelBuilder blockItem(ResourceLocation item, ResourceLocation modelLocation) {

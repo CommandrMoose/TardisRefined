@@ -65,10 +65,10 @@ public class HumProvider implements DataProvider {
             data.forEach((key, hum) -> {
                 TardisRefined.LOGGER.debug("Writing Hum {}", key);
                 try {
-                    JsonObject currentHum = HumEntry.codec().encodeStart(JsonOps.INSTANCE, hum).get()
-                            .ifRight(right -> {
-                                TardisRefined.LOGGER.error(right.message());
-                            }).orThrow().getAsJsonObject();
+                    JsonObject currentHum = HumEntry.codec().encodeStart(JsonOps.INSTANCE, hum)
+                            .ifError(error -> {
+                                TardisRefined.LOGGER.error(error.message());
+                            }).getOrThrow().getAsJsonObject();
                     String outputPath = "data/" + hum.getIdentifier().getNamespace() + "/" + TardisHums.getReloadListener().getFolderName() + "/" + hum.getIdentifier().getPath().replace("/", "_") + ".json";
                     futures.add(DataProvider.saveStable(arg, currentHum, generator.getPackOutput().getOutputFolder().resolve(outputPath)));
                 } catch (Exception exception) {

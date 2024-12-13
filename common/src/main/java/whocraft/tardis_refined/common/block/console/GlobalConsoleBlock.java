@@ -10,7 +10,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -168,10 +170,10 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 
         if (!player.level().isClientSide()) {
-            if (level instanceof ServerLevel serverLevel && level.dimensionTypeId() == TRDimensionTypes.TARDIS) {
+            if (level instanceof ServerLevel serverLevel && level.dimensionTypeRegistration() == TRDimensionTypes.TARDIS) {
                 TardisLevelOperator.get(serverLevel).ifPresent(operator -> {
                     TardisPilotingManager pilotingManager = operator.getPilotingManager();
                     if (serverLevel.getBlockEntity(blockPos) instanceof GlobalConsoleBlockEntity consoleBlockEntity) {
@@ -200,7 +202,7 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
 
                         if (pilotManager.isInRecovery()) {
                             pilotManager.endRecovery();
-                            return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+                            return ItemInteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
                         }
                     }
 
@@ -208,7 +210,7 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
 
                 if(player.getItemInHand(interactionHand).getItem() == Items.LEAD && !level.isClientSide){
                     LeadItem.bindPlayerMobs(player, level, blockPos);
-                    return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+                    return ItemInteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
                 }
             }
         }
@@ -223,11 +225,11 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
         }
 
 
-        return InteractionResult.sidedSuccess(true); //Use InteractionResult.sidedSuccess(true) for client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+        return ItemInteractionResult.sidedSuccess(true); //Use InteractionResult.sidedSuccess(true) for client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
     }
 
     @Override
-    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
+    protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
     }
 }

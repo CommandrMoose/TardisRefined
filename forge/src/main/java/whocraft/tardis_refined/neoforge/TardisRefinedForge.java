@@ -5,7 +5,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import whocraft.tardis_refined.TRConfig;
@@ -19,7 +18,7 @@ import whocraft.tardis_refined.compat.trinkets.CuriosUtil;
 public class TardisRefinedForge {
     public TardisRefinedForge() {
         TardisRefined.init();
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus modEventBus = ModLoadingContext.get().getActiveContainer().getEventBus();
         modEventBus.addListener(this::onGatherData);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TRConfig.COMMON_SPEC);

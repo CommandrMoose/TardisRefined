@@ -19,7 +19,7 @@ import java.util.function.Supplier;
  * <pre>{@code
  * public class TRControlRegistry {
  *
- *     public static final ResourceKey<Registry<Control>> CONTROL_REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(TardisRefined.MODID, "control"));
+ *     public static final ResourceKey<Registry<Control>> CONTROL_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "control"));
  *
  *     public static final DeferredRegistry<Control> TR_CONTROLS =  DeferredRegistry.createCustom(TardisRefined.MODID, CONTROL_REGISTRY_KEY, true);
  *
@@ -27,10 +27,10 @@ import java.util.function.Supplier;
  *     public static final Registry<Control> GLOBAL_CONTROL_REGISTRY = CONTROLS.getRegistry();
  *
  *     //Register using RegistrySupplier if you only need the raw object and no compatibiltiy with other vanilla features
- *     public static final RegistrySupplier<Control> THROTTLE = TR_CONTROLS.register("throttle", () -> new GenericControl(new ResourceLocation(TardisRefined.MODID, "throttle"));
+ *     public static final RegistrySupplier<Control> THROTTLE = TR_CONTROLS.register("throttle", () -> new GenericControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "throttle"));
  *
  *     //Alternatively, register using RegistrySupplierHolder for greater compatibiltiy with vanilla features such as datapack tags
- *     public static final RegistrySupplierHolder<Control, MyCustomControl> STABILISER = TR_CONTROLS.register("stabiliser", () -> new MyCustomControl(new ResourceLocation(TardisRefined.MODID, "stabiliser"));
+ *     public static final RegistrySupplierHolder<Control, MyCustomControl> STABILISER = TR_CONTROLS.register("stabiliser", () -> new MyCustomControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "stabiliser"));
  * }
  *
  * public class TardisConsoleBlock {
@@ -54,10 +54,10 @@ import java.util.function.Supplier;
  *     private static final DeferredRegistry<Control> MY_ADDON_CONTROLS =  DeferredRegistry.createCustom(MyAddonMod.MODID, TRControlRegistry.CONTROL_REGISTRY_KEY, true);
  *
  *     //Register entries to the addon mod's instance of the deferred registry using a RegistrySupplier
- *     public static final RegistrySupplier<Control> SPEED = MY_ADDON_CONTROLS.register("speed", () -> new GenericControl(new ResourceLocation(MyAddonMod.MODID, "speed"));
+ *     public static final RegistrySupplier<Control> SPEED = MY_ADDON_CONTROLS.register("speed", () -> new GenericControl(ResourceLocation.fromNamespaceAndPath(MyAddonMod.MODID, "speed"));
  *
  *     //Alternatively, register using RegistrySupplierHolder for greater compatibiltiy with vanilla features such as datapack tags
- *     public static final RegistrySupplierHolder<Control, SuperTemporalControl> TEMPORAL_PLOTTERS = TR_CONTROLS.register("temporal_plotters", () -> new SuperTemporalControl(new ResourceLocation(MyAddonMod.MODID, "temporal_plotters"));
+ *     public static final RegistrySupplierHolder<Control, SuperTemporalControl> TEMPORAL_PLOTTERS = TR_CONTROLS.register("temporal_plotters", () -> new SuperTemporalControl(ResourceLocation.fromNamespaceAndPath(MyAddonMod.MODID, "temporal_plotters"));
  * }
  *
  * public class MyAddonMod {

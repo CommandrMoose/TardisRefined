@@ -17,7 +17,7 @@ import whocraft.tardis_refined.common.blockentity.door.RootShellDoorBlockEntity;
 
 public class RootShellDoorRenderer implements BlockEntityRenderer<RootShellDoorBlockEntity>, BlockEntityRendererProvider<RootShellDoorBlockEntity> {
 
-    private static final ResourceLocation rootShellDoorTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/internal_door.png");
+    private static final ResourceLocation rootShellDoorTexture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/root/root_plant/internal_door.png");
     private static RootShellDoorModel rootShellDoorModel;
 
     public RootShellDoorRenderer(BlockEntityRendererProvider.Context context) {

@@ -79,12 +79,12 @@ public class PathfinderShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         if (isBaseModel) {
             poseStack.scale(1.05f, 1.05f, 1.05f);
             poseStack.translate(0, -0.07, 0);
         }
-        handleAllAnimations(entity, bone3, isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        handleAllAnimations(entity, bone3, isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
 
         bone3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
         l_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());

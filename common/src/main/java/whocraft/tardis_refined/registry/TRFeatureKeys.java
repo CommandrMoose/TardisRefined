@@ -10,6 +10,6 @@ import whocraft.tardis_refined.TardisRefined;
  */
 public class TRFeatureKeys {
 
-    public static ResourceLocation TARDIS_ROOT_CLUSTER_RL = new ResourceLocation(TardisRefined.MODID, "tardis_root_cluster");
+    public static ResourceLocation TARDIS_ROOT_CLUSTER_RL = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis_root_cluster");
 
 }

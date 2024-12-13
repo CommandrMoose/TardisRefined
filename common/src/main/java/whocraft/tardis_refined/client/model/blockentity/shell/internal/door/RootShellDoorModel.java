@@ -31,9 +31,11 @@ public class RootShellDoorModel extends HierarchicalModel {
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
+
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        stage7.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        stage7.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+
     }
 
     @Override

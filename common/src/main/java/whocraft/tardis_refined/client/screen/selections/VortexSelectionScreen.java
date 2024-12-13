@@ -25,8 +25,8 @@ import java.util.List;
 
 public class VortexSelectionScreen extends SelectionScreen {
 
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/shell.png");
-    public static ResourceLocation NOISE = new ResourceLocation(TardisRefined.MODID, "textures/gui/noise.png");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/shell.png");
+    public static ResourceLocation NOISE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/noise.png");
     private final List<ResourceLocation> vortexList;
     protected int imageWidth = 256;
     protected int imageHeight = 173;

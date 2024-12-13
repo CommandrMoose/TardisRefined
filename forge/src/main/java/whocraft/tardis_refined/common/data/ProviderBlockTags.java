@@ -94,7 +94,7 @@ public class ProviderBlockTags extends BlockTagsProvider {
         Set<Block> glassBlocks = new HashSet<>();
         ManipulatorRecipes.MANIPULATOR_CRAFTING_RECIPES.forEach((resourceLocation, manipulatorCraftingRecipe) -> {
             for (ManipulatorCraftingIngredient ingredient : manipulatorCraftingRecipe.ingredients()) {
-                if(ingredient.inputBlockState().getBlock() instanceof GlassBlock) {
+                if(ingredient.inputBlockState().getBlock() instanceof TransparentBlock) {
                     glassBlocks.add(ingredient.inputBlockState().getBlock());
                 }
             }

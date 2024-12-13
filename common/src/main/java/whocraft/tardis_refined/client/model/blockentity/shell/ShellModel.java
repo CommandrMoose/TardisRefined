@@ -82,7 +82,7 @@ public abstract class ShellModel extends HierarchicalModel {
 
     public abstract void setDoorPosition(boolean open);
 
-    public abstract void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
+    public abstract void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color);
 
     public ResourceLocation getShellTexture(ShellPattern pattern, boolean isEmmissive) {
         return texture(pattern, isEmmissive);
@@ -117,7 +117,7 @@ public abstract class ShellModel extends HierarchicalModel {
         return currentAlpha;
     }
 
-    public void handleAllAnimations(GlobalShellBlockEntity entity, ModelPart root, boolean isBaseModel, boolean isDoorOpen, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float baseAlpha) {
+    public void handleAllAnimations(GlobalShellBlockEntity entity, ModelPart root, boolean isBaseModel, boolean isDoorOpen, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         if (entity.getTardisId() == null) return;
         entity.liveliness.start(12);
 

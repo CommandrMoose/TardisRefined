@@ -118,7 +118,7 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
             List<RAW> raws = new ArrayList<>();
             ResourceLocation fullId = entry.getKey();
             String fullPath = fullId.getPath(); // includes folderName/ and .json
-            ResourceLocation key = new ResourceLocation(fullId.getNamespace(), fullPath.substring(this.folderName.length() + 1, fullPath.length() - EXTENSION_LENGTH));
+            ResourceLocation key = ResourceLocation.fromNamespaceAndPath(fullId.getNamespace(), fullPath.substring(this.folderName.length() + 1, fullPath.length() - EXTENSION_LENGTH));
 
             for (Resource resource : entry.getValue()) {
                 try (Reader reader = resource.openAsReader()) {

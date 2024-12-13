@@ -3,7 +3,7 @@ package whocraft.tardis_refined.common.data;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -23,11 +23,11 @@ public class BiomeModifierProvider {
 
     private static final ResourceKey<BiomeModifier> ADD_TARDIS_ROOT_CLUSTER = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, TRFeatureKeys.TARDIS_ROOT_CLUSTER_RL);
 
-    private static final ResourceKey<BiomeModifier> ZEITON = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(TardisRefined.MODID, "zeiton"));
-    private static final ResourceKey<BiomeModifier> ZEITON_SMALL = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(TardisRefined.MODID, "zeiton_small"));
+    private static final ResourceKey<BiomeModifier> ZEITON = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "zeiton"));
+    private static final ResourceKey<BiomeModifier> ZEITON_SMALL = ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "zeiton_small"));
 
 
-    public static void bootstrap(BootstapContext<BiomeModifier> context) {
+    public static void bootstrap(BootstrapContext<BiomeModifier> context) {
 
         var overworldTags = context.lookup(Registries.BIOME).getOrThrow(BiomeTags.IS_OVERWORLD);
 

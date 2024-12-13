@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.block.shell;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -8,10 +9,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -44,14 +48,20 @@ public class RootedShellBlock extends ShellBaseBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
+    }
+
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!player.getMainHandItem().is(Items.SHEARS)) {
             if (!blockState.getValue(OPEN)) { //If there are roots covering the entrance, tell the player
                 PlayerUtil.sendMessage(player, Component.translatable(ModMessages.ROOT_PLANT_CUT_OPEN), true);
                 level.playSound(player, blockPos, SoundEvents.AZALEA_LEAVES_HIT, SoundSource.BLOCKS, 1, 0.75f + level.getRandom().nextFloat());
-                return InteractionResult.sidedSuccess(level.isClientSide); //Stops hand swinging twice. If InteractionResult = SUCCESS then the hand swing packet is sent twice.
+                return ItemInteractionResult.sidedSuccess(level.isClientSide); //Stops hand swinging twice. If InteractionResult = SUCCESS then the hand swing packet is sent twice.
             }
-            return InteractionResult.FAIL; //Return fail result if the entrance is now opened, so that we don't play the message and exit this method early.
+            return ItemInteractionResult.FAIL; //Return fail result if the entrance is now opened, so that we don't play the message and exit this method early.
         }
 
         //From now one, we assume that the player is holding a vanilla Shears item in their main hand. We will try to generate the Tardis dimension if it doesn't exist, then open the root shell door
@@ -66,7 +76,7 @@ public class RootedShellBlock extends ShellBaseBlock {
             level.playSound(player, player.blockPosition(), SoundEvents.SLIME_JUMP, SoundSource.BLOCKS, 1.0f, 1.0f);
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide); //Stops hand swinging twice. If InteractionResult = SUCCESS then the hand swing packet is sent twice.
+        return ItemInteractionResult.sidedSuccess(level.isClientSide); //Stops hand swinging twice. If InteractionResult = SUCCESS then the hand swing packet is sent twice.
     }
 
     @Nullable

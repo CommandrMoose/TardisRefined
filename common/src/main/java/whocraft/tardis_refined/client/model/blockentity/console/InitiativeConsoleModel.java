@@ -25,11 +25,11 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class InitiativeConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/initiative/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/initiative/flight.json"));
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/initiative/idle.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/initiative/flight.json"));
 
 
-    private static final ResourceLocation INITIATIVE_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/initiative/initiative_console.png");
+    private static final ResourceLocation INITIATIVE_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/initiative/initiative_console.png");
     private final ModelPart root;
     private final ModelPart throttle;
     private final ModelPart handbrake;
@@ -775,8 +775,8 @@ public class InitiativeConsoleModel extends HierarchicalModel implements Console
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -790,7 +790,7 @@ public class InitiativeConsoleModel extends HierarchicalModel implements Console
     }
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 
@@ -809,7 +809,7 @@ public class InitiativeConsoleModel extends HierarchicalModel implements Console
 
         handbrake.xRot = reactions.isHandbrakeEngaged() ? 1f : 0f;
 
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

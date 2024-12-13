@@ -17,7 +17,7 @@ public class TRManipulatorRecipeResultTypes {
     /**
      * Registry Key for the Astral Manipulator Recipe Result type registry. For addon mods, use this as the registry key
      */
-    public static final ResourceKey<Registry<Codec<? extends ManipulatorCraftingResult>>> MANIPULATOR_RECIPE_TYPE_KEY = ResourceKey.createRegistryKey(new ResourceLocation(TardisRefined.MODID, "manipulator_recipe_result"));
+    public static final ResourceKey<Registry<Codec<? extends ManipulatorCraftingResult>>> MANIPULATOR_RECIPE_TYPE_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "manipulator_recipe_result"));
 
     /**
      * Tardis Refined instance of the Astral Manipulator Recipe Result type registry. Addon Mods: DO NOT USE THIS, it is only for Tardis Refined use only

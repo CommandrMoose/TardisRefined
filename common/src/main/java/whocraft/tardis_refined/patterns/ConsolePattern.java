@@ -24,7 +24,7 @@ public class ConsolePattern extends BasePattern {
     private final Optional<ConsoleSoundProfile> consoleSoundProfile;
 
     public ConsolePattern(String identifier, PatternTexture textureDefinition, Optional<ConsoleSoundProfile> consoleSoundProfile) {
-        this(new ResourceLocation(TardisRefined.MODID, identifier), textureDefinition, consoleSoundProfile);
+        this(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, identifier), textureDefinition, consoleSoundProfile);
     }
 
     public ConsolePattern(ResourceLocation identifier, PatternTexture textureDefinition, Optional<ConsoleSoundProfile> consoleSoundProfile) {

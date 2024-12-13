@@ -25,11 +25,11 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class ToyotaConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/toyota/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/toyota/flight.json"));
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/toyota/idle.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/toyota/flight.json"));
 
 
-    private static final ResourceLocation TOYOTA_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/toyota/toyota_console.png");
+    private static final ResourceLocation TOYOTA_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/toyota/toyota_console.png");
     private final ModelPart bone181;
     private final ModelPart throttle;
     private final ModelPart handbrake;
@@ -42,8 +42,8 @@ public class ToyotaConsoleModel extends HierarchicalModel implements ConsoleUnit
 
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ToyotaConsoleModel extends HierarchicalModel implements ConsoleUnit
     }
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
 
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
@@ -77,7 +77,7 @@ public class ToyotaConsoleModel extends HierarchicalModel implements ConsoleUnit
 
         this.handbrake.yRot = reactions.isHandbrakeEngaged() ? 2f : -1f;
 
-        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

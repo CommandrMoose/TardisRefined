@@ -163,8 +163,8 @@ public class NukaShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -174,18 +174,18 @@ public class NukaShellModel extends ShellModel {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        sign.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        right_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        left_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone6.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        black.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        wheel_1.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        wheel_2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        wheel_3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        wheel_4.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        sign.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        right_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        left_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone2.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone6.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        black.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        wheel_1.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        wheel_2.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        wheel_3.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        wheel_4.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

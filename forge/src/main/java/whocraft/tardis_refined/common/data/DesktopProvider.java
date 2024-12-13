@@ -53,10 +53,10 @@ public class DesktopProvider implements DataProvider {
             data.entrySet().forEach(entry -> {
                 try {
                     DesktopTheme desktop = entry.getValue();
-                    JsonObject currentDesktop = DesktopTheme.getCodec().encodeStart(JsonOps.INSTANCE, desktop).get()
-                            .ifRight(right -> {
-                                TardisRefined.LOGGER.error(right.message());
-                            }).orThrow().getAsJsonObject();
+                    JsonObject currentDesktop = DesktopTheme.getCodec().encodeStart(JsonOps.INSTANCE, desktop)
+                            .ifError(error -> {
+                                TardisRefined.LOGGER.error(error.message());
+                            }).getOrThrow().getAsJsonObject();
                     String outputPath = "data/" + desktop.getIdentifier().getNamespace() + "/" + TardisDesktops.getReloadListener().getFolderName() + "/" + desktop.getIdentifier().getPath().replace("/", "_") + ".json";
                     futures.add(DataProvider.saveStable(arg, currentDesktop, generator.getPackOutput().getOutputFolder().resolve(outputPath)));
                 } catch (Exception exception) {

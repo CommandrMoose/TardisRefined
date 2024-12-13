@@ -15,7 +15,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -207,7 +207,7 @@ public class TRTeleporter {
 
             ServerPlayer teleportedPlayer = serverPlayer;
 
-            double vehicleOffset = teleportedPlayer.getMyRidingOffset(vehicle);
+            double vehicleOffset = teleportedPlayer.getPassengerRidingPosition(vehicle).y;
 
             teleportedPlayer.stopRiding(); //Dismount the player from riding the vehicle
 
@@ -528,8 +528,8 @@ public class TRTeleporter {
     }
 
     public static boolean canTeleportTo(BlockPos pPos, Level level, Entity entity) {
-        BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(level, pPos.mutable());
-        if (blockpathtypes != BlockPathTypes.WALKABLE) {
+        PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic(level, pPos.mutable());
+        if (blockpathtypes != PathType.WALKABLE) {
             return false;
         } else {
             BlockPos blockpos = pPos.subtract(entity.blockPosition());

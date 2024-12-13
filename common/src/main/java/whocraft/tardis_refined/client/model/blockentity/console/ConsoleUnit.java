@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 
 public interface ConsoleUnit {
-    void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
+    void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color);
 
     default ResourceLocation getTexture(GlobalConsoleBlockEntity entity, boolean emissiveTexture) {
         if (entity == null || entity.pattern() == null) return getDefaultTexture();

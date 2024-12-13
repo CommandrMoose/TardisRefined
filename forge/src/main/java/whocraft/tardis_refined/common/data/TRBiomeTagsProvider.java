@@ -26,7 +26,7 @@ public class TRBiomeTagsProvider extends BiomeTagsProvider {
                 .addTags(BiomeTags.IS_DEEP_OCEAN)
                 .addTags(BiomeTags.IS_MOUNTAIN)
                 .addOptionalTag(Tags.Biomes.IS_MOUNTAIN.location()) //Add Forge Mountain tag as optional because it contains other entries that vanilla excludes
-                .addOptionalTag(new ResourceLocation("c", "ocean")); //Add Fabric Ocean tag as optional because it contains other entries that vanilla excludes
+                .addOptionalTag(ResourceLocation.fromNamespaceAndPath("c", "ocean")); //Add Fabric Ocean tag as optional because it contains other entries that vanilla excludes
         //Tardis Root Cluster
         tag(TRTagKeys.TARDIS_ROOT_CLUSTER).addTags(TRTagKeys.IS_MOUNTAIN_OR_OCEAN);
 

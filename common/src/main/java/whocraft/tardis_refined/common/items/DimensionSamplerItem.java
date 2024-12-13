@@ -1,9 +1,8 @@
 package whocraft.tardis_refined.common.items;
 
-import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -12,10 +11,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.MiscHelper;
@@ -36,16 +34,19 @@ public class DimensionSamplerItem extends Item {
         super(properties);
     }
 
+    public int getColor(ItemStack itemStack) {
+        DyedItemColor dyedItemColor = itemStack.get(DataComponents.DYED_COLOR);
+        if (dyedItemColor != null) {
+            return dyedItemColor.rgb();
+        }
+
+        return DyeColor.PINK.getTextColor();
+    }
+
     public static ItemStack forceColor(ItemStack itemStack, int color) {
-        itemStack.getOrCreateTagElement("display").putInt("color", color);
+        itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, false));
         return itemStack;
     }
-
-    public int getColor(ItemStack itemStack) {
-        CompoundTag compoundTag = itemStack.getTagElement("display");
-        return compoundTag != null && compoundTag.contains("color", 99) ? compoundTag.getInt("color") : DyeColor.PINK.getTextColor();
-    }
-
 
 
     @Override
@@ -61,7 +62,7 @@ public class DimensionSamplerItem extends Item {
             if (!tag.contains(POTENTIAL_DIM_TAG) && DimensionUtil.isAllowedDimension(level.dimension())) {
                 forceColor(stack, serverLevel.getBlockTint(useOnContext.getClickedPos(), (biome, d, e) -> biome.getFogColor()));
                 savePotentialDim(tag, serverLevel.dimension());
-                PlayerUtil.sendMessage(player, Component.translatable(ModMessages.DIM_POTENTIAL, MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, new ResourceLocation(tag.getString(SAVED_DIM_TAG))))), true);
+                PlayerUtil.sendMessage(player, Component.translatable(ModMessages.DIM_POTENTIAL, MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, ResourceLocation.fromNamespaceAndPath(tag.getString(SAVED_DIM_TAG))))), true);
             } else {
                 PlayerUtil.sendMessage(player, !DimensionUtil.isAllowedDimension(level.dimension()) ? ModMessages.DIM_NOT_ALLOWED : ModMessages.DIM_ALREADY_SAVED, true);
             }
@@ -99,16 +100,16 @@ public class DimensionSamplerItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains(TIMER_TAG) && tag.contains(POTENTIAL_DIM_TAG)) {
             int timer = tag.getInt(TIMER_TAG);
             double progress = (double) timer / TIMER_MAX * 100;
-            tooltip.add(Component.translatable(ModMessages.TOOLTIP_DIM_PROGRESS, Math.round(progress) + "%"));
+            list.add(Component.translatable(ModMessages.TOOLTIP_DIM_PROGRESS, Math.round(progress) + "%"));
         } else if (tag != null && tag.contains(SAVED_DIM_TAG)) {
-            tooltip.add(Component.translatable(ModMessages.TOOLTIP_DIM_SAVED, MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, new ResourceLocation(tag.getString(SAVED_DIM_TAG))))));
+            list.add(Component.translatable(ModMessages.TOOLTIP_DIM_SAVED, MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, ResourceLocation.fromNamespaceAndPath(tag.getString(SAVED_DIM_TAG))))));
         } else {
-            tooltip.add(Component.translatable(ModMessages.TOOLTIP_NO_DIM_SAVED));
+            list.add(Component.translatable(ModMessages.TOOLTIP_NO_DIM_SAVED));
         }
     }
 
@@ -125,7 +126,7 @@ public class DimensionSamplerItem extends Item {
         String dimensionTag = tag.contains(POTENTIAL_DIM_TAG) ? POTENTIAL_DIM_TAG : (tag.contains(SAVED_DIM_TAG) ? SAVED_DIM_TAG : null);
 
         if (dimensionTag != null) {
-            String dimension = MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, new ResourceLocation(tag.getString(dimensionTag))));
+            String dimension = MiscHelper.getCleanDimensionName(ResourceKey.create(DIMENSION, ResourceLocation.fromNamespaceAndPath(tag.getString(dimensionTag))));
             return Component.literal(dimension + " Sample");
         }
 
@@ -157,7 +158,7 @@ public class DimensionSamplerItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         if (tag != null && tag.contains(SAVED_DIM_TAG)) {
             String savedDimString = tag.getString(SAVED_DIM_TAG);
-            ResourceLocation savedDimLocation = new ResourceLocation(savedDimString);
+            ResourceLocation savedDimLocation = ResourceLocation.fromNamespaceAndPath(savedDimString);
             return ResourceKey.create(DIMENSION, savedDimLocation);
         }
         return null;
@@ -167,7 +168,7 @@ public class DimensionSamplerItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         if (tag != null && tag.contains(POTENTIAL_DIM_TAG)) {
             String savedDimString = tag.getString(POTENTIAL_DIM_TAG);
-            ResourceLocation savedDimLocation = new ResourceLocation(savedDimString);
+            ResourceLocation savedDimLocation = ResourceLocation.fromNamespaceAndPath(savedDimString);
             return ResourceKey.create(DIMENSION, savedDimLocation);
         }
         return null;

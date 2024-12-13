@@ -2,6 +2,7 @@ package whocraft.tardis_refined.common.crafting.astral_manipulator;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -118,12 +119,12 @@ public class ManipulatorCraftingRecipe implements CraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer container, Level level) {
+    public boolean matches(CraftingInput recipeInput, Level level) {
         return false;
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -132,8 +133,9 @@ public class ManipulatorCraftingRecipe implements CraftingRecipe {
         return false;
     }
 
+
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         if (result.type() instanceof ManipulatorItemResult manipulatorItemResult) {
             return manipulatorItemResult.recipeOutput();
         }

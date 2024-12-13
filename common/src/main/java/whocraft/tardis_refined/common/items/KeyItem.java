@@ -103,7 +103,7 @@ public class KeyItem extends Item {
 
         for (Tag tag : keychain) {
             String string = tag.getAsString();
-            ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(string));
+            ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(string));
             levels.add(key);
         }
 

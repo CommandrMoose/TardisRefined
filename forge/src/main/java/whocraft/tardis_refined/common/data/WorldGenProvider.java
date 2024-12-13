@@ -33,8 +33,5 @@ public class WorldGenProvider extends DatapackBuiltinEntriesProvider {
         super(output, lookupProvider, BUILDER, Set.of(TardisRefined.MODID));
     }
 
-    public static HolderLookup.Provider createLookup() {
-        return BUILDER.buildPatch(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY), VanillaRegistries.createLookup());
-    }
 
 }

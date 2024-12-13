@@ -22,13 +22,13 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class RefurbishedConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    private static final ResourceLocation REFURBISHED_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/refurbished/refurbished_console.png");
+    private static final ResourceLocation REFURBISHED_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/refurbished/refurbished_console.png");
     private final ModelPart root;
     private final ModelPart throttle;
     private final ModelPart handbrake;
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/refurbished/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/refurbished/flight.json"));
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/refurbished/idle.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/refurbished/flight.json"));
 
 
     public RefurbishedConsoleModel(ModelPart root) {
@@ -1207,8 +1207,8 @@ public class RefurbishedConsoleModel extends HierarchicalModel implements Consol
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -1217,7 +1217,7 @@ public class RefurbishedConsoleModel extends HierarchicalModel implements Consol
     }
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 
@@ -1236,7 +1236,7 @@ public class RefurbishedConsoleModel extends HierarchicalModel implements Consol
 
         handbrake.xRot = reactions.isHandbrakeEngaged() ? 1f : 0f;
 
-        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

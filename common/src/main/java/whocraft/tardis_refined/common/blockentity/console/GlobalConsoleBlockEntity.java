@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.common.blockentity.console;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -81,9 +82,10 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
         return this;
     }
 
+
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
-        super.saveAdditional(compoundTag);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
 
         if (this.consoleTheme != null) {
             compoundTag.putString(NbtConstants.THEME, this.consoleTheme.toString());
@@ -95,15 +97,15 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 
         if (tag.contains(NbtConstants.THEME)) {
-            ResourceLocation themeId = new ResourceLocation(tag.getString(NbtConstants.THEME));
+            ResourceLocation themeId = ResourceLocation.parse(tag.getString(NbtConstants.THEME));
             this.consoleTheme = themeId;
         }
 
         if (tag.contains(NbtConstants.PATTERN)) {
-            ResourceLocation currentPattern = new ResourceLocation(tag.getString(NbtConstants.PATTERN));
+            ResourceLocation currentPattern = ResourceLocation.parse(tag.getString(NbtConstants.PATTERN));
             ResourceLocation theme = this.theme();
             if (ConsolePatterns.doesPatternExist(theme, currentPattern)) {
                 this.basePattern = ConsolePatterns.getPatternOrDefault(theme, currentPattern);
@@ -119,7 +121,7 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
         }
 
 
-        super.load(tag);
+        super.loadAdditional(tag, provider);
 
         this.spawnControlEntities();
     }
@@ -166,11 +168,12 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
 
     }
 
+
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
-        return tag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
+        return super.getUpdateTag(provider);
     }
 
     @Nullable

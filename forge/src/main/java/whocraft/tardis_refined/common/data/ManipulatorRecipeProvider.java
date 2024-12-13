@@ -56,14 +56,14 @@ public class ManipulatorRecipeProvider implements DataProvider {
             data.entrySet().forEach(entry -> {
                 try {
                     ManipulatorCraftingRecipe recipe = entry.getValue();
-                    JsonObject currentRecipe = ManipulatorCraftingRecipe.CODEC.encodeStart(JsonOps.INSTANCE, recipe).get()
-                            .ifLeft(element -> { //Must add type field so that vanilla recognises this as a recipe type
+                    JsonObject currentRecipe = ManipulatorCraftingRecipe.CODEC.encodeStart(JsonOps.INSTANCE, recipe)
+                            .ifSuccess(element -> { //Must add type field so that vanilla recognises this as a recipe type
                                 JsonObject json = element.getAsJsonObject();
                                 json.addProperty("type", ManipulatorCraftingRecipeSerializer.SERIALIZER_ID.toString());
                             })
-                            .ifRight(right -> {
-                                TardisRefined.LOGGER.error(right.message());
-                            }).orThrow().getAsJsonObject();
+                            .ifError(error -> {
+                                TardisRefined.LOGGER.error(error.message());
+                            }).getOrThrow().getAsJsonObject();
                     String outputPath = "data/" + recipe.getId().getNamespace() + "/" + "recipes/astral_manipulator" + "/" + recipe.getId().getPath().replace("/", "_") + ".json";
                     futures.add(DataProvider.saveStable(arg, currentRecipe, generator.getPackOutput().getOutputFolder().resolve(outputPath)));
                 } catch (Exception exception) {

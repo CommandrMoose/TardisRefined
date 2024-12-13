@@ -41,8 +41,8 @@ import java.util.UUID;
 
 public class ShellSelectionScreen extends SelectionScreen {
 
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/shell.png");
-    public static ResourceLocation NOISE = new ResourceLocation(TardisRefined.MODID, "textures/gui/noise.png");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/shell.png");
+    public static ResourceLocation NOISE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/noise.png");
     public static GlobalShellBlockEntity globalShellBlockEntity;
     private final List<ResourceLocation> themeList;
     protected int imageWidth = 256;
@@ -65,7 +65,7 @@ public class ShellSelectionScreen extends SelectionScreen {
         globalShellBlockEntity = new GlobalShellBlockEntity(BlockPos.ZERO, TRBlockRegistry.GLOBAL_SHELL_BLOCK.get().defaultBlockState());
         assert Minecraft.getInstance().level != null;
         globalShellBlockEntity.setLevel(Minecraft.getInstance().level);
-        ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TardisRefined.MODID, UUID.randomUUID().toString()));
+        ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, UUID.randomUUID().toString()));
         globalShellBlockEntity.setTardisId(generatedLevelKey);
         globalShellBlockEntity.setShellTheme(ShellTheme.POLICE_BOX.getId());
         globalShellBlockEntity.setPattern(ShellPatterns.DEFAULT);

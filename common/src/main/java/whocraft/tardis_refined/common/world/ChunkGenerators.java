@@ -14,6 +14,6 @@ import whocraft.tardis_refined.registry.RegistrySupplier;
 
 public class ChunkGenerators {
     public static final DeferredRegistry<Codec<? extends ChunkGenerator>> CHUNK_GENERATORS = DeferredRegistry.create(TardisRefined.MODID, Registries.CHUNK_GENERATOR);
-    public static final ResourceKey<Biome> TARDIS_BIOME = ResourceKey.create(Registries.BIOME, new ResourceLocation(TardisRefined.MODID, "tardis"));
+    public static final ResourceKey<Biome> TARDIS_BIOME = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis"));
     public static final RegistrySupplier<Codec<? extends ChunkGenerator>> TARDIS_CHUNK_GENERATOR = CHUNK_GENERATORS.register("tardis", () -> TardisChunkGenerator.CODEC);
 }

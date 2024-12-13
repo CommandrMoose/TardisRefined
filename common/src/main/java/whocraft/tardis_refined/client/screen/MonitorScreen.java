@@ -30,7 +30,7 @@ import java.awt.*;
 
 public class MonitorScreen extends SelectionScreen {
 
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor.png");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/monitor.png");
     private final TardisNavLocation currentLocation;
     private final TardisNavLocation targetLocation;
     private final UpgradeHandler upgradeHandler;

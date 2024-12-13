@@ -16,7 +16,7 @@ public class VortexRegistry implements Theme {
     /**
      * Registry Key for the Vortex registry.
      */
-    public static final ResourceKey<Registry<VortexRegistry>> VORTEX_REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(TardisRefined.MODID, "vortex"));
+    public static final ResourceKey<Registry<VortexRegistry>> VORTEX_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "vortex"));
 
     /**
      * Deferred Registry for Vortex entries.
@@ -29,95 +29,95 @@ public class VortexRegistry implements Theme {
     public static final Registry<VortexRegistry> VORTEX_REGISTRY = VORTEX_DEFERRED_REGISTRY.getRegistry().get();
 
     // Vortex entries
-    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> CLOUDS = registerVortex(new ResourceLocation(TardisRefined.MODID, "clouds"), new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"), 9, 12, 10f, true, true, VortexGradientTint.BlueOrngGradient, false);
-    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> WAVES = registerVortex(new ResourceLocation(TardisRefined.MODID, "waves"), new ResourceLocation(TardisRefined.MODID, "textures/vortex/waves.png"), 9, 12, 20f, true, true, VortexGradientTint.BlueOrngGradient, false);
-    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> STARS = registerVortex(new ResourceLocation(TardisRefined.MODID, "stars"), new ResourceLocation(TardisRefined.MODID, "textures/vortex/stars.png"), 9, 12, 5f, true, true, VortexGradientTint.PASTEL_GRADIENT, true);
-    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> FLOW = registerVortex(new ResourceLocation(TardisRefined.MODID, "flow"), new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"), 9, 12, 5f, true, true, VortexGradientTint.MODERN_VORTEX, true);
-    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> SPACE = registerVortex(new ResourceLocation(TardisRefined.MODID, "space"), new ResourceLocation(TardisRefined.MODID, "textures/vortex/stars_2.png"), 9, 12, 5f, true, true, VortexGradientTint.MODERN_VORTEX, false);
+    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> CLOUDS = registerVortex(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "clouds"), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"), 9, 12, 10f, true, true, VortexGradientTint.BlueOrngGradient, false);
+    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> WAVES = registerVortex(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "waves"), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/waves.png"), 9, 12, 20f, true, true, VortexGradientTint.BlueOrngGradient, false);
+    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> STARS = registerVortex(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "stars"), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/stars.png"), 9, 12, 5f, true, true, VortexGradientTint.PASTEL_GRADIENT, true);
+    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> FLOW = registerVortex(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "flow"), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"), 9, 12, 5f, true, true, VortexGradientTint.MODERN_VORTEX, true);
+    public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> SPACE = registerVortex(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "space"), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/stars_2.png"), 9, 12, 5f, true, true, VortexGradientTint.MODERN_VORTEX, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> TWILIGHT_GLOW = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "twilight_glow"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "twilight_glow"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.TWILIGHT_GLOW, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> AURORA_DREAMS = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "aurora_dreams"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "aurora_dreams"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.AURORA_DREAMS, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> DESERT_MIRAGE = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "desert_mirage"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "desert_mirage"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.DESERT_MIRAGE, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> NEON_PULSE = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "neon_pulse"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "neon_pulse"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.NEON_PULSE, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> OCEAN_BREEZE = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "ocean_breeze"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "ocean_breeze"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.OCEAN_BREEZE, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> SOLAR_FLARE = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "solar_flare"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "solar_flare"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.SOLAR_FLARE, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> CRYSTAL_LAGOON = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "crystal_lagoon"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "crystal_lagoon"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.CRYSTAL_LAGOON, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> VELVET_NIGHT = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "velvet_night"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "velvet_night"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.VELVET_NIGHT, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> CANDY_POP = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "candy_pop"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "candy_pop"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.CANDY_POP, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> EMERALD_FOREST = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "emerald_forest"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "emerald_forest"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.EMERALD_FOREST, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> LGBT_RAINBOW = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "lgbt_rainbow"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "lgbt_rainbow"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.LGBT_RAINBOW, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> TRANSGENDER_FLAG = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "transgender_flag"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "transgender_flag"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.TRANSGENDER_FLAG, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> BISEXUAL_FLAG = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "bisexual_flag"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "bisexual_flag"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.BISEXUAL_FLAG, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> LESBIAN_FLAG = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "lesbian_flag"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "lesbian_flag"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.LESBIAN_FLAG, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> NON_BINARY_FLAG = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "non_binary_flag"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "non_binary_flag"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.NON_BINARY_FLAG, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> AGENDER_FLAG = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "agender_flag"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "agender_flag"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.AGENDER_FLAG, false);
 
     public static final RegistrySupplierHolder<VortexRegistry, VortexRegistry> GAY_FLAG = registerVortex(
-            new ResourceLocation(TardisRefined.MODID, "gay_flag"),
-            new ResourceLocation(TardisRefined.MODID, "textures/vortex/clouds.png"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "gay_flag"),
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"),
             9, 12, 10f, true, true, VortexGradientTint.GAY_FLAG, false);
 
 

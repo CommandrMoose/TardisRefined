@@ -18,7 +18,7 @@ import whocraft.tardis_refined.common.network.messages.waypoints.*;
 
 public class TardisNetwork {
 
-    public static final NetworkManager NETWORK = NetworkManager.create(new ResourceLocation(TardisRefined.MODID, "channel"));
+    public static final NetworkManager NETWORK = NetworkManager.create(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "channel"));
 
     public static MessageType START_VORTEX_SESSION, END_VORTEX_SESSION, TARDIS_EXIT, OPEN_SHELL_SELECT, SYNC_HUMS, OPEN_WAYPOINTS_DISPLAY, DEL_WAYPOINT, CLIENT_OPEN_COORDS_DISPLAY, SERVER_OPEN_COORDS_DISPLAY, UPGRADE_SCREEN_S2C,
             REQUEST_SHELL_C2S, CLIENT_OPEN_COORDS_SCREEN, SERVER_OPEN_COORDS_SCREEN, CLIENT_OPEN_EDIT_COORDS_SCREEN, SERVER_OPEN_EDIT_COORDS_SCREEN, UPLOAD_WAYPOINT,

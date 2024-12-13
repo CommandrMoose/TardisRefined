@@ -6,7 +6,6 @@ accessible field net/minecraft/server/MinecraftServer levels Ljava/util/Map;
 transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
 extendable	method	net/minecraft/world/entity/Entity	getBoundingBox	()Lnet/minecraft/world/phys/AABB;
 accessible class net/minecraft/core/particles/SimpleParticleType
-accessible class net/minecraft/core/particles/SimpleParticleType$1
 accessible method net/minecraft/server/MinecraftServer wrapRunnable (Ljava/lang/Runnable;)Lnet/minecraft/server/TickTask;
 accessible field net/minecraft/server/level/ServerLevel dragonFight Lnet/minecraft/world/level/dimension/end/EndDragonFight;
 accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/particle/SpriteSet;DDDDDD)V

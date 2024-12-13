@@ -110,7 +110,7 @@ public class DimensionHandler {
             JsonObject jsonObject = TardisRefined.GSON.fromJson(reader, JsonObject.class);
             for (JsonElement dimension : jsonObject.get("tardis_dimensions").getAsJsonArray()) {
                 TardisRefined.LOGGER.info("Attempting to load {}", dimension.getAsString());
-                ResourceLocation id = new ResourceLocation(dimension.getAsString());
+                ResourceLocation id = ResourceLocation.parse(dimension.getAsString());
                 ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, id);
                 if (getExistingLevel(serverLevel, levelKey) == null) {
                     TardisRefined.LOGGER.warn("Level {} not found! Creating new level instance", dimension.getAsString());
@@ -140,7 +140,7 @@ public class DimensionHandler {
 
 
     public static ServerLevel getExistingLevel(ServerLevel serverLevel, String id) {
-        return getExistingLevel(serverLevel, ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TardisRefined.MODID, id)));
+        return getExistingLevel(serverLevel, ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, id)));
     }
 
     public static ServerLevel getExistingLevel(ServerLevel serverLevel, ResourceKey<Level> levelResourceKey) {

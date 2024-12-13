@@ -20,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 import qouteall.imm_ptl.core.api.PortalAPI;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.MiscHelper;
-import qouteall.q_misc_util.api.DimensionAPI;
 import qouteall.q_misc_util.my_util.DQuaternion;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.api.event.EventResult;
@@ -384,7 +383,7 @@ public class ImmersivePortals {
 
         BotiPortalEntity newPortal = entityType.create(world);
         newPortal.setTardisId(UUID.fromString(world.dimension().location().getPath()));
-        newPortal.dimensionTo = portal.level().dimension();
+        newPortal.setDestinationDimension(portal.level().dimension());
         newPortal.setPos(doorPos);
         newPortal.setDestination(portal.getOriginPos());
         newPortal.specificPlayerId = portal.specificPlayerId;

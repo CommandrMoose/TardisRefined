@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -58,12 +59,12 @@ public class LandingPadBlock extends Block {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
+
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 
         if (!player.level().isClientSide()) {
             if (level instanceof ServerLevel serverLevel) {
-                ItemStack itemStack = player.getItemInHand(interactionHand);
                 if (itemStack.getItem() instanceof KeyItem) {
                     var keyChain = KeyItem.getKeychain(itemStack);
                     if (!keyChain.isEmpty()) {
@@ -71,7 +72,7 @@ public class LandingPadBlock extends Block {
                         var tardisLevel = Platform.getServer().getLevel(dimension);
                         var operatorOptional = TardisLevelOperator.get(tardisLevel);
                         if (operatorOptional.isEmpty()) {
-                            return InteractionResult.PASS;
+                            return ItemInteractionResult.CONSUME;
                         }
                         var operator = operatorOptional.get();
 
@@ -84,7 +85,7 @@ public class LandingPadBlock extends Block {
                                 pilotManager.setTargetLocation(new TardisNavLocation(blockPos.above(), player.getDirection().getOpposite(), serverLevel));
                                 serverLevel.playSound(null, blockPos, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1f, 1f);
                                 PlayerUtil.sendMessage(player, Component.translatable(ModMessages.TARDIS_IS_ON_THE_WAY), true);
-                                return InteractionResult.PASS;
+                                return ItemInteractionResult.CONSUME;
                             } else {
 
                                 if (TRUpgrades.LANDING_PAD.get().isUnlocked(upgradeHandler)) {
@@ -95,7 +96,7 @@ public class LandingPadBlock extends Block {
                                     PlayerUtil.sendMessage(player, Component.translatable(ModMessages.LANDING_PAD_NOT_UNLOCKED), true);
                                 }
 
-                                return InteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
+                                return ItemInteractionResult.sidedSuccess(false); //Use InteractionResult.sidedSuccess(false) for non-client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
                             }
                         }
 
@@ -105,6 +106,6 @@ public class LandingPadBlock extends Block {
             }
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.CONSUME;
     }
 }

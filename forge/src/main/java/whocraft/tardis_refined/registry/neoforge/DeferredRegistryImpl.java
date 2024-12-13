@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -65,7 +66,7 @@ public class DeferredRegistryImpl {
 
         @Override
         public void registerToModBus() {
-            this.deferredRegister.register(FMLJavaModLoadingContext.get().getModEventBus());
+            this.deferredRegister.register(ModLoadingContext.get().getActiveContainer().getEventBus());
         }
 
 

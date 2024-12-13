@@ -12,14 +12,8 @@ public class MalletItem extends Item {
     }
 
     @Override
-    public boolean canBeDepleted() {
-        return true;
-    }
-
-    @Override
     public boolean canAttackBlock(BlockState blockState, Level level, BlockPos blockPos, Player player) {
         return !player.isCreative();
     }
-
 
 }

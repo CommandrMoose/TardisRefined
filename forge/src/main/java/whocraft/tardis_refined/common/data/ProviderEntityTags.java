@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ProviderEntityTags extends EntityTypeTagsProvider {
 
-    public static final TagKey<EntityType<?>> ENTITY_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("carryon", "entity_blacklist"));
+    public static final TagKey<EntityType<?>> ENTITY_BLACKLIST = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("carryon", "entity_blacklist"));
 
 
     public ProviderEntityTags(PackOutput output, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable ExistingFileHelper existingFileHelper) {
@@ -35,9 +35,9 @@ public class ProviderEntityTags extends EntityTypeTagsProvider {
         tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).add(EntityType.WITHER);
 
         //Add Create Mod entities to blacklist
-        tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).addOptionalTag(new ResourceLocation("create", "contraption"));
-        tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).addOptionalTag(new ResourceLocation("create", "gantry_contraption"));
-        tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).addOptionalTag(new ResourceLocation("create", "crafting_blueprint"));
+        tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).addOptionalTag(ResourceLocation.fromNamespaceAndPath("create", "contraption"));
+        tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).addOptionalTag(ResourceLocation.fromNamespaceAndPath("create", "gantry_contraption"));
+        tag(TRTagKeys.TARDIS_TELEPORT_BLACKLIST).addOptionalTag(ResourceLocation.fromNamespaceAndPath("create", "crafting_blueprint"));
 
     }
 }

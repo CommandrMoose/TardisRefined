@@ -26,11 +26,11 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 public class CoralConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/coral/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/coral/flight.json"));
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/coral/idle.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/coral/flight.json"));
 
 
-    private static final ResourceLocation CORAL_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/coral/coral_console.png");
+    private static final ResourceLocation CORAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/coral/coral_console.png");
     private final ModelPart throttle;
     private final ModelPart handbrake;
     private final ModelPart base_console;
@@ -47,13 +47,13 @@ public class CoralConsoleModel extends HierarchicalModel implements ConsoleUnit 
 
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        base_console.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        anim_parts.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        base_console.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        anim_parts.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
 
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
@@ -73,8 +73,8 @@ public class CoralConsoleModel extends HierarchicalModel implements ConsoleUnit 
 
         this.handbrake.xRot = !reactions.isHandbrakeEngaged() ? 1f : -0.25f;
 
-        base_console.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        anim_parts.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        base_console.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        anim_parts.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

@@ -20,7 +20,7 @@ public abstract class BasePattern {
     private String name;
 
     public BasePattern(String id) {
-        this(new ResourceLocation(TardisRefined.MODID, id));
+        this(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, id));
     }
 
     public BasePattern(ResourceLocation identifier) {

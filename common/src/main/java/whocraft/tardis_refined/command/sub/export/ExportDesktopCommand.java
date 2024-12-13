@@ -47,7 +47,7 @@ public class ExportDesktopCommand implements Command<CommandSourceStack> {
     }
 
     private static int exportDesktop(CommandContext<CommandSourceStack> context, BlockPos bottomCorner, BlockPos topCorner, boolean includeEntities, String namespace, String desktopId, String datapackName, Component displayName) {
-        ResourceLocation loc = new ResourceLocation(namespace, desktopId);
+        ResourceLocation loc = ResourceLocation.fromNamespaceAndPath(namespace, desktopId);
         DesktopTheme theme = new DesktopTheme(loc, loc, Component.Serializer.toJson(displayName));
         ServerPlayer sender = context.getSource().getPlayer();
 

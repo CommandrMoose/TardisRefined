@@ -55,28 +55,4 @@ public class ProviderLootTable extends LootTableProvider {
         }
     }
 
-    public static class ModEntityLoot extends EntityLootSubProvider {
-
-        protected ModEntityLoot() {
-            super(FeatureFlags.REGISTRY.allFlags());
-        }
-
-        @Override
-        protected Stream<EntityType<?>> getKnownEntityTypes() {
-            ArrayList<@NotNull EntityType<?>> entities = new ArrayList<>();
-            for (EntityType<?> entry : TREntityRegistry.ENTITY_TYPES.getRegistry().get().stream().toList()) {
-                if (entry == TREntityRegistry.CONTROL_ENTITY.get())
-                    break;
-                entities.add(entry);
-            }
-            return entities.stream();
-        }
-
-        @Override
-        public void generate() {
-            getKnownEntityTypes().forEach(entityType -> {
-                add(entityType, new LootTable.Builder());
-            });
-        }
-    }
 }

@@ -1,7 +1,6 @@
 package whocraft.tardis_refined.client;
 
 import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.world.item.DyeableLeatherItem;
 import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 
 public class TRItemColouring {

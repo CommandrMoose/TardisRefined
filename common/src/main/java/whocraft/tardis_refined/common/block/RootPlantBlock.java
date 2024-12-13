@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,6 +46,11 @@ public class RootPlantBlock extends BaseEntityBlock implements SimpleWaterlogged
     public RootPlantBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(AGE, 0).setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
     }
 
     @Override
@@ -150,7 +156,7 @@ public class RootPlantBlock extends BaseEntityBlock implements SimpleWaterlogged
     @Override
     public void onPlace(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
 
-        if (level instanceof ServerLevel serverLevel && level.dimensionTypeId() == TRDimensionTypes.TARDIS) {
+        if (level instanceof ServerLevel serverLevel && level.dimensionTypeRegistration() == TRDimensionTypes.TARDIS) {
             TardisLevelOperator.get(serverLevel).ifPresent(TardisHelper::playCloisterBell);
             serverLevel.destroyBlock(blockPos, true); //Use Level#destroyBlock with boolean flag to TRUE so that it both destroys the block and drops its resources based off its loot table, which is the source of truth.
             return;

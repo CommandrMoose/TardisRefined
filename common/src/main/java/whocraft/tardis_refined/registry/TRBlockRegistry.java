@@ -66,15 +66,15 @@ public class TRBlockRegistry {
         return x.getValue(GlobalConsoleBlock.POWERED) ? 15 : 0;
     })), true, true);
     // Blocks
-    public static final RegistrySupplier<Block> ZEITON_BLOCK = register("zeiton_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL)), true, true);
-    public static final RegistrySupplier<Block> ZEITON_FUSED_IRON_BLOCK = register("zeiton_fused_iron_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL)), true, true);
-    public static final RegistrySupplier<Block> ZEITON_FUSED_COPPER_BLOCK = register("zeiton_fused_copper_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK).sound(SoundType.COPPER)), true, true);
+    public static final RegistrySupplier<Block> ZEITON_BLOCK = register("zeiton_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL)), true, true);
+    public static final RegistrySupplier<Block> ZEITON_FUSED_IRON_BLOCK = register("zeiton_fused_iron_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL)), true, true);
+    public static final RegistrySupplier<Block> ZEITON_FUSED_COPPER_BLOCK = register("zeiton_fused_copper_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).sound(SoundType.COPPER)), true, true);
     public static final RegistrySupplier<Block> ZEITON_ORE = register("zeiton_ore", () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)), true, true);
-    public static final RegistrySupplier<Block> ZEITON_ORE_DEEPSLATE = register("deepslate_zeiton_ore", () -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_GOLD_ORE).requiresCorrectToolForDrops()), true, true);
-    public static final RegistrySupplier<Block> THE_EYE = register("the_eye", () -> new EyeBlock(BlockBehaviour.Properties.copy(Blocks.BEDROCK)), false, false);
-    public static final RegistrySupplier<LanternBlock> ZEITON_LANTERN = register("zeiton_lantern", () -> new LanternBlock(BlockBehaviour.Properties.copy(Blocks.LANTERN).requiresCorrectToolForDrops()), true, true);
-    public static final RegistrySupplier<Block> ARTRON_PILLAR_PORT = register("artron_pillar_port", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)), false, false);
-    public static final RegistrySupplier<Block> ASTRAL_MAP = register("astral_map", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)), true, true);
+    public static final RegistrySupplier<Block> ZEITON_ORE_DEEPSLATE = register("deepslate_zeiton_ore", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_GOLD_ORE).requiresCorrectToolForDrops()), true, true);
+    public static final RegistrySupplier<Block> THE_EYE = register("the_eye", () -> new EyeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK)), false, false);
+    public static final RegistrySupplier<LanternBlock> ZEITON_LANTERN = register("zeiton_lantern", () -> new LanternBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LANTERN).requiresCorrectToolForDrops()), true, true);
+    public static final RegistrySupplier<Block> ARTRON_PILLAR_PORT = register("artron_pillar_port", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK)), false, false);
+    public static final RegistrySupplier<Block> ASTRAL_MAP = register("astral_map", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)), true, true);
 
     private static <T extends Block> RegistrySupplier<T> register(String id, Supplier<T> blockSupplier, boolean addToTab, boolean registerItem) {
         RegistrySupplier<T> registryObject = BLOCKS.register(id, blockSupplier);

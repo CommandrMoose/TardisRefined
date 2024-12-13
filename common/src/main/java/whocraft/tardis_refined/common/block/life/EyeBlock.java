@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.block.life;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -22,6 +23,11 @@ import whocraft.tardis_refined.common.blockentity.life.EyeBlockEntity;
 public class EyeBlock extends BaseEntityBlock {
     public EyeBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
     }
 
     @Override

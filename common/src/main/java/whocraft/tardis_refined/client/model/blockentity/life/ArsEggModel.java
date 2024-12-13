@@ -4,14 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
@@ -22,8 +17,8 @@ import whocraft.tardis_refined.common.blockentity.life.ArsEggBlockEntity;
 
 public class ArsEggModel extends HierarchicalModel {
 
-    public static final AnimationDefinition CRASHING = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/living/ars_egg/crashing.json"));
-    public static final AnimationDefinition SWINGING = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/living/ars_egg/swinging.json"));
+    public static final AnimationDefinition CRASHING = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/living/ars_egg/crashing.json"));
+    public static final AnimationDefinition SWINGING = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/living/ars_egg/swinging.json"));
 
     private final ModelPart Lamp;
     private final ModelPart root;
@@ -37,20 +32,20 @@ public class ArsEggModel extends HierarchicalModel {
     }
 
 
-    public void renderToBuffer(ArsEggBlockEntity arsEggBlockEntity, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(ArsEggBlockEntity arsEggBlockEntity, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         BlockState blockState = arsEggBlockEntity.getBlockState();
 
         if (blockState.hasProperty(ArsEggBlock.ALIVE)) {
             clamp.visible = blockState.getValue(ArsEggBlock.ALIVE);
         }
 
-        Lamp.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        Lamp.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        Lamp.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        Lamp.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

@@ -21,7 +21,7 @@ import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 public class RegistryHelper {
 
     public static ResourceLocation makeKey(String id) {
-        return new ResourceLocation(TardisRefined.MODID, id);
+        return ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, id);
     }
 
     public static ResourceKey<ConfiguredFeature<?, ?>> makeConfiguredFeatureKey(ResourceLocation rl) {
@@ -33,19 +33,19 @@ public class RegistryHelper {
     }
 
     public static TagKey<Biome> makeGenericBiomeTagCollection(String name) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(TardisRefined.MODID, "collections/" + name));
+        return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "collections/" + name));
     }
 
     public static TagKey<Biome> makeBiomeTagForFeature(String name) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(TardisRefined.MODID, "has_structure/" + name));
+        return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "has_structure/" + name));
     }
 
     public static TagKey<Block> makeBlockTag(String modid, String name) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(modid, name));
+        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(modid, name));
     }
 
     public static TagKey<Item> makeItemTag(String modid, String name) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(modid, name));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(modid, name));
     }
 
 

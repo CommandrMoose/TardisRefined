@@ -24,8 +24,8 @@ import static whocraft.tardis_refined.client.screen.selections.ShellSelectionScr
 
 public class DesktopSelectionScreen extends SelectionScreen {
 
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/desktop.png");
-    public static ResourceLocation MONITOR_TEXTURE_OVERLAY = new ResourceLocation(TardisRefined.MODID, "textures/gui/desktop_overlay.png");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/desktop.png");
+    public static ResourceLocation MONITOR_TEXTURE_OVERLAY = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/desktop_overlay.png");
     public static ResourceLocation previousImage = TardisDesktops.FACTORY_THEME.getPreviewTexture();
     protected int imageWidth = 256;
     protected int imageHeight = 173;

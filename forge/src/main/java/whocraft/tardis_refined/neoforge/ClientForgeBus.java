@@ -3,9 +3,9 @@ package whocraft.tardis_refined.neoforge;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientLogic;
@@ -13,15 +13,11 @@ import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
 import whocraft.tardis_refined.client.overlays.GravityOverlay;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
-@Mod.EventBusSubscriber(modid = TardisRefined.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@EventBusSubscriber(modid = TardisRefined.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
 public class ClientForgeBus {
 
     @SubscribeEvent
-    public static void tickTARDIS(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) {
-            return;
-        }
-
+    public static void tickTARDIS(ClientTickEvent event) {
         TardisClientLogic.tickClientData(Minecraft.getInstance());
     }
 
@@ -36,7 +32,7 @@ public class ClientForgeBus {
     }
 
     @SubscribeEvent
-    public static void onRenderOverlay(RenderGuiOverlayEvent.Post guiOverlayEvent) {
+    public static void onRenderOverlay(CustomizeGuiOverlayEvent guiOverlayEvent) {
         GravityOverlay.renderOverlay(guiOverlayEvent.getGuiGraphics());
         ExteriorViewOverlay.renderOverlay(guiOverlayEvent.getGuiGraphics());
     }

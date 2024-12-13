@@ -27,11 +27,11 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/crystal/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/crystal/flight.json"));
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/crystal/idle.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/crystal/flight.json"));
 
 
-    private static final ResourceLocation CRYSTAL_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/crystal/crystal_console.png");
+    private static final ResourceLocation CRYSTAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/crystal/crystal_console.png");
     private final ModelPart base_control;
     private final ModelPart rotor;
     private final ModelPart rotor_purple;
@@ -785,13 +785,13 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        base_control.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        rotor.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        rotor_purple.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        controls.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        spinninglight.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        base_control.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rotor.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rotor_purple.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        controls.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        spinninglight.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -801,7 +801,7 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
 
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 
@@ -823,12 +823,12 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
 
         this.handbrake.xRot = reactions.isHandbrakeEngaged() ? 0f : -0.5f;
 
-        base_control.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        rotor.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        rotor_purple.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        controls.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        spinninglight.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        base_control.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rotor.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rotor_purple.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        controls.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        spinninglight.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
 
     }
 

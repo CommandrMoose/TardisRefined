@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.block.device;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,6 +32,11 @@ public class FlightDetectorBlock extends HorizontalDirectionalBlock implements E
 
     public FlightDetectorBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return null;
     }
 
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {

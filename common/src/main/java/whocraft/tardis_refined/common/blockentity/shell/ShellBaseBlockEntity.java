@@ -2,6 +2,7 @@ package whocraft.tardis_refined.common.blockentity.shell;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -64,27 +65,27 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void loadAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadAdditional(pTag, provider);
         if (pTag.contains(NbtConstants.TARDIS_ID))
-            this.TARDIS_ID = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(pTag.getString(NbtConstants.TARDIS_ID)));
+            this.TARDIS_ID = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(pTag.getString(NbtConstants.TARDIS_ID)));
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = this.saveWithFullMetadata();
-        this.saveAdditional(tag);
-        return tag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
+        return super.getUpdateTag(provider);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
         if (this.TARDIS_ID == null) {
             TardisRefined.LOGGER.error("Error in saveAdditional: null Tardis ID (Invalid block or not terraformed yet?) [" + this.getBlockPos().toShortString() + "]");
             return;
         }
 
-        super.saveAdditional(pTag);
+        super.saveAdditional(pTag, provider);
         if (this.TARDIS_ID != null)
             pTag.putString(NbtConstants.TARDIS_ID, TARDIS_ID.location().toString());
     }

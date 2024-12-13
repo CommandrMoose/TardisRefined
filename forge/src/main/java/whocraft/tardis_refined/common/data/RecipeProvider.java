@@ -41,13 +41,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get(), 9).requires(TRBlockRegistry.ZEITON_BLOCK.get()).unlockedBy("has_crafting_table", has(TRBlockRegistry.ZEITON_BLOCK.get())).save(consumer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TRItemRegistry.ZEITON_NUGGET.get(), 9).requires(TRItemRegistry.ZEITON_INGOT.get()).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_INGOT.get())).save(consumer);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get()).pattern("ZZZ").pattern("ZZZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer, new ResourceLocation(TardisRefined.MODID, "zeiton_ingot_from_nugget"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get()).pattern("ZZZ").pattern("ZZZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "zeiton_ingot_from_nugget"));
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TRBlockRegistry.ZEITON_LANTERN.get()).pattern("ZZZ").pattern("ZTZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).define('T', Items.TORCH).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TRItemRegistry.MALLET.get()).pattern("ZZZ").pattern("ZZZ").pattern(" S ").define('Z', Blocks.STONE).define('S', Items.STICK).unlockedBy("has_crafting_table", has(Blocks.STONE)).save(consumer);
 
 
         // Smelting
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(TRItemRegistry.RAW_ZEITON.get()), RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get(), 0.7F, 300).unlockedBy("has_any_zeiton", has(TRItemRegistry.RAW_ZEITON.get())).save(consumer, new ResourceLocation(TardisRefined.MODID, "smelt_zeiton"));
-        SimpleCookingRecipeBuilder.blasting(Ingredient.of(TRItemRegistry.RAW_ZEITON.get()), RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get(), 0.8F, 150).unlockedBy("has_any_zeiton", has(TRItemRegistry.RAW_ZEITON.get())).save(consumer, new ResourceLocation(TardisRefined.MODID, "blast_zeiton"));
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(TRItemRegistry.RAW_ZEITON.get()), RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get(), 0.7F, 300).unlockedBy("has_any_zeiton", has(TRItemRegistry.RAW_ZEITON.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "smelt_zeiton"));
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(TRItemRegistry.RAW_ZEITON.get()), RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get(), 0.8F, 150).unlockedBy("has_any_zeiton", has(TRItemRegistry.RAW_ZEITON.get())).save(consumer, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "blast_zeiton"));
     }
 }

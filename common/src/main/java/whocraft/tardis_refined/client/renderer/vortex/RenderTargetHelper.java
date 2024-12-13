@@ -177,9 +177,13 @@ public class RenderTargetHelper {
     @Environment(value = EnvType.CLIENT)
     public static class StencilBufferStorage extends RenderBuffers {
 
-        private final SortedMap<RenderType, BufferBuilder> typeBufferBuilder = Util.make(new Object2ObjectLinkedOpenHashMap(), map -> {
+        private final Object2ObjectLinkedOpenHashMap typeBufferBuilder = Util.make(new Object2ObjectLinkedOpenHashMap(), map -> {
             put(map, getConsumer());
         });
+
+        public StencilBufferStorage(int i) {
+            super(i);
+        }
 
         public static RenderType getConsumer() {
             RenderType.CompositeState parameters = RenderType.CompositeState.builder()

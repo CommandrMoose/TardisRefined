@@ -20,11 +20,11 @@ public class PatternTexture {
     private boolean hasEmissiveTexture = false;
 
     public PatternTexture(String textureLocation, boolean hasEmissiveTexture) {
-        this(new ResourceLocation(TardisRefined.MODID, textureLocation), hasEmissiveTexture);
+        this(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, textureLocation), hasEmissiveTexture);
     }
 
     public PatternTexture(String textureLocation) {
-        this(new ResourceLocation(TardisRefined.MODID, textureLocation));
+        this(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, textureLocation));
     }
 
     public PatternTexture(ResourceLocation textureLocation) {
@@ -34,7 +34,7 @@ public class PatternTexture {
     public PatternTexture(ResourceLocation textureLocation, boolean hasEmissiveTexture) {
         this.textureLocation = textureLocation;
         this.hasEmissiveTexture = hasEmissiveTexture;
-        this.emissiveTexture = new ResourceLocation(textureLocation.getNamespace(), textureLocation.getPath().replace(".png", "_emissive.png"));
+        this.emissiveTexture = ResourceLocation.fromNamespaceAndPath(textureLocation.getNamespace(), textureLocation.getPath().replace(".png", "_emissive.png"));
     }
 
     public static Codec<PatternTexture> getCodec() {

@@ -5,5 +5,5 @@ import whocraft.tardis_refined.TardisRefined;
 
 public class ResourceConstants {
 
-    public static final ResourceLocation DEFAULT_PATTERN_ID = new ResourceLocation(TardisRefined.MODID, "default");
+    public static final ResourceLocation DEFAULT_PATTERN_ID = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "default");
 }

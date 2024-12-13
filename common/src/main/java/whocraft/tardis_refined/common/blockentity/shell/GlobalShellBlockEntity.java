@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.common.blockentity.shell;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -75,17 +76,16 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-
+    public void loadAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadAdditional(pTag, provider);
         if (pTag.contains(NbtConstants.THEME)) {
-            ResourceLocation themeId = new ResourceLocation(pTag.getString(NbtConstants.THEME));
+            ResourceLocation themeId = ResourceLocation.parse(pTag.getString(NbtConstants.THEME));
             this.shellTheme = themeId;
         }
 
         if (pTag.contains(NbtConstants.PATTERN)) {
             if (this.shellTheme != null) {
-                ResourceLocation currentPattern = new ResourceLocation(pTag.getString(NbtConstants.PATTERN));
+                ResourceLocation currentPattern = ResourceLocation.parse(pTag.getString(NbtConstants.PATTERN));
                 if (ShellPatterns.doesPatternExist(this.shellTheme, currentPattern)) {
                     this.basePattern = ShellPatterns.getPatternOrDefault(this.shellTheme, currentPattern);
                 }
@@ -101,9 +101,10 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
         }
     }
 
+
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.saveAdditional(pTag, provider);
         if (this.shellTheme != null) {
             pTag.putString(NbtConstants.THEME, this.shellTheme.toString());
         }
@@ -111,6 +112,7 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
             pTag.putString(NbtConstants.PATTERN, this.basePattern.id().toString());
         }
     }
+
 
     public boolean onRightClick(BlockState blockState, ItemStack stack, Level level, BlockPos blockPos, Player player) {
 

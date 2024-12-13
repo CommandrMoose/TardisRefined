@@ -11,6 +11,6 @@ public class TRDimensionTypes {
     public static ResourceKey<DimensionType> TARDIS;
 
     public static void register() {
-        TARDIS = ResourceKey.create(Registries.DIMENSION_TYPE, new ResourceLocation(TardisRefined.MODID, "tardis"));
+        TARDIS = ResourceKey.create(Registries.DIMENSION_TYPE, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis"));
     }
 }

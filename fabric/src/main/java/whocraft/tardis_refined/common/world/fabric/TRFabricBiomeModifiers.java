@@ -22,9 +22,9 @@ public class TRFabricBiomeModifiers {
      * Fabric's Biome Modification API isn't data driven and must be called for each feature/structure we add to a biome
      */
     private static void addToBiome(String featureName, String biomeKeyName, GenerationStep.Decoration step) {
-        BiomeModifications.create(new ResourceLocation(TardisRefined.MODID, featureName))
+        BiomeModifications.create(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, featureName))
                 .add(ModificationPhase.ADDITIONS,
-                        (context) -> context.hasTag(TagKey.create(Registries.BIOME, new ResourceLocation(TardisRefined.MODID, biomeKeyName))),
-                        (context) -> context.getGenerationSettings().addFeature(step, ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(TardisRefined.MODID, featureName))));
+                        (context) -> context.hasTag(TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, biomeKeyName))),
+                        (context) -> context.getGenerationSettings().addFeature(step, ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, featureName))));
     }
 }

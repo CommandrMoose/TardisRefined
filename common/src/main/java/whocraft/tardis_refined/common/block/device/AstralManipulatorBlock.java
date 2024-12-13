@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -12,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -53,18 +54,18 @@ public class AstralManipulatorBlock extends Block implements EntityBlock {
         return Shapes.join(Block.box(0, 0, 0, 16, 12, 16), Block.box(4, 12, 4, 12, 14, 12), BooleanOp.OR);
     }
 
+
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 
         if (level instanceof ServerLevel serverLevel && interactionHand == InteractionHand.MAIN_HAND) {
 
             if (level.getBlockEntity(blockPos) instanceof AstralManipulatorBlockEntity astralManipulatorBlockEntity) {
-                ItemStack itemStack = player.getItemInHand(interactionHand);
 
                 if (itemStack == ItemStack.EMPTY) {
                     astralManipulatorBlockEntity.clearDisplay();
 
-                    return InteractionResult.sidedSuccess(false);
+                    return ItemInteractionResult.sidedSuccess(false);
                 } else {
 
                     if (itemStack.getItem() instanceof ScrewdriverItem) {
@@ -80,7 +81,7 @@ public class AstralManipulatorBlock extends Block implements EntityBlock {
 
         }
 
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
     @Override

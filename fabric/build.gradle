@@ -136,11 +136,10 @@ dependencies {
 
     // Immersive Portals Start
 
-    modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${rootProject.immersive_portals_version}")
-    modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:${rootProject.immersive_portals_version}")
-    modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:build:${rootProject.immersive_portals_version}")
+    modCompileOnlyApi ("com.github.iPortalTeam:ImmersivePortalsMod:${rootProject.immersive_portals_version}")
 
- //   modImplementation "maven.modrinth:nsight-loader:1.1.0"
+
+    //   modImplementation "maven.modrinth:nsight-loader:1.1.0"
 
 
     /*  // If working on Immersive Portals, change modCompileOnlyApi to modImplementation for the following two entries, this will enable Immersive Portals in Dev

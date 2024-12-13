@@ -17,11 +17,11 @@ import whocraft.tardis_refined.common.blockentity.shell.RootPlantBlockEntity;
 
 public class RootPlantRenderer implements BlockEntityRenderer<RootPlantBlockEntity>, BlockEntityRendererProvider<RootPlantBlockEntity> {
 
-    private static final ResourceLocation rootPlantOneTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_one.png");
-    private static final ResourceLocation rootPlantTwoTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_two.png");
-    private static final ResourceLocation rootPlantThreeTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_three.png");
-    private static final ResourceLocation rootPlantFourTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_four.png");
-    private static final ResourceLocation rootPlantFiveTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_five.png");
+    private static final ResourceLocation rootPlantOneTexture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_one.png");
+    private static final ResourceLocation rootPlantTwoTexture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_two.png");
+    private static final ResourceLocation rootPlantThreeTexture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_three.png");
+    private static final ResourceLocation rootPlantFourTexture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_four.png");
+    private static final ResourceLocation rootPlantFiveTexture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_five.png");
     private static RootPlantStateOneModel rootPlantStateOneModel;
     private static RootPlantStateTwoModel rootPlantStateTwoModel;
     private static RootPlantStateThreeModel rootPlantStateThreeModel;

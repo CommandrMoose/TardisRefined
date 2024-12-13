@@ -30,7 +30,7 @@ public class ProgressionManager extends BaseHandler {
         }
 
         for (String defaults : TRConfig.SERVER.ADVENTURE_MODE_DEFAULTS.get()) {
-            ResourceKey<Level> level = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(defaults));
+            ResourceKey<Level> level = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(defaults));
             addDiscoveredLevel(level);
         }
 
@@ -81,7 +81,7 @@ public class ProgressionManager extends BaseHandler {
             ALLOWED_LEVELS.clear();
             for (Tag levelTag : levelsList) {
                 String levelKey = levelTag.getAsString();
-                ResourceKey<Level> level = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(levelKey));
+                ResourceKey<Level> level = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(levelKey));
                 ALLOWED_LEVELS.add(level);
             }
         }

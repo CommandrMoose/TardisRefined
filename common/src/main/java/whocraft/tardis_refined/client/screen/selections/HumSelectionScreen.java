@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 public class HumSelectionScreen extends SelectionScreen {
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor.png");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/monitor.png");
     protected int imageWidth = 256;
     protected int imageHeight = 173;
     private HumEntry currentHumEntry;

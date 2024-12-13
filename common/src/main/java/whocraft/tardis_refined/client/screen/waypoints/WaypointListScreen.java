@@ -26,10 +26,10 @@ import java.util.Collection;
 
 public class WaypointListScreen extends SelectionScreen {
 
-    public static final ResourceLocation TRASH_LOCATION = new ResourceLocation(TardisRefined.MODID, "trash");
-    public static final ResourceLocation OKAY_TEXTURE = new ResourceLocation(TardisRefined.MODID, "okay");
-    public static final ResourceLocation EDIT_TEXTURE = new ResourceLocation(TardisRefined.MODID, "edit");
-    public static ResourceLocation MONITOR_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor.png");
+    public static final ResourceLocation TRASH_LOCATION = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "trash");
+    public static final ResourceLocation OKAY_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "okay");
+    public static final ResourceLocation EDIT_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "edit");
+    public static ResourceLocation MONITOR_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/monitor.png");
     private final Component noWaypointsLabel = Component.translatable(ModMessages.UI_MONITOR_NO_WAYPOINTS);
     protected int imageWidth = 256;
     protected int imageHeight = 173;

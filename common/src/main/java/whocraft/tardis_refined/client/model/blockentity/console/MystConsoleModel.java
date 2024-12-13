@@ -38,7 +38,7 @@ public class MystConsoleModel extends HierarchicalModel implements ConsoleUnit {
                                     AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(4f, KeyframeAnimations.degreeVec(0f, 240f, 0f),
                                     AnimationChannel.Interpolations.LINEAR))).build();
-    private static final ResourceLocation MYST_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/myst/myst_console.png");
+    private static final ResourceLocation MYST_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/myst/myst_console.png");
     private final ModelPart root;
     private final ModelPart base_console;
     private final ModelPart controls;
@@ -580,10 +580,10 @@ public class MystConsoleModel extends HierarchicalModel implements ConsoleUnit {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        base_console.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        controls.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        rotor.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        base_console.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        controls.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rotor.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -597,7 +597,7 @@ public class MystConsoleModel extends HierarchicalModel implements ConsoleUnit {
     }
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
         this.animate(reactions.ROTOR_ANIMATION, MODEL_ROTOR_LOOP, Minecraft.getInstance().player.tickCount);
@@ -607,7 +607,7 @@ public class MystConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
         handbrake.xRot = reactions.isHandbrakeEngaged() ? 1f : 0f;
 
-        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

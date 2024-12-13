@@ -5,6 +5,7 @@ import com.mojang.serialization.Lifecycle;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -65,7 +66,7 @@ public class DimensionHandlerImpl {
         if (dimensionRegistry instanceof MappedRegistry<LevelStem> writableRegistry) {
             MappedRegistryAccessor accessor = (MappedRegistryAccessor) writableRegistry;
             accessor.setFrozen(false); //Must unfreeze registry to allow our dimension to persist
-            writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
+            writableRegistry.register(dimensionKey, dimension, RegistrationInfo.BUILT_IN);
         } else {
             throw new IllegalStateException(String.format("Unable to register dimension %s -- dimension registry not writable", dimensionKey.location()));
         }

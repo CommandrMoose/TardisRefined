@@ -14,7 +14,7 @@ public class TRControlRegistry {
     /**
      * Registry Key for the Controls registry. For addon mods, use this as the registry key
      */
-    public static final ResourceKey<Registry<Control>> CONTROL_REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(TardisRefined.MODID, "control"));
+    public static final ResourceKey<Registry<Control>> CONTROL_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "control"));
 
     /**
      * Tardis Refined instance of the Controls registry. Addon Mods: DO NOT USE THIS, it is only for Tardis Refined use only
@@ -27,22 +27,22 @@ public class TRControlRegistry {
     public static final Registry<Control> CONTROL_REGISTRY = CONTROL_DEFERRED_REGISTRY.getRegistry().get();
 
     // Tardis refined controls
-    public static final RegistrySupplier<Control> DOOR_TOGGLE = register(new ToggleDoorControl(new ResourceLocation(TardisRefined.MODID, "door_toggle")));
+    public static final RegistrySupplier<Control> DOOR_TOGGLE = register(new ToggleDoorControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "door_toggle")));
     public static final RegistrySupplier<Control> X = register(new CoordinateControl(CoordinateButton.X, TardisRefined.MODID));
     public static final RegistrySupplier<Control> Y = register(new CoordinateControl(CoordinateButton.Y, TardisRefined.MODID));
     public static final RegistrySupplier<Control> Z = register(new CoordinateControl(CoordinateButton.Z, TardisRefined.MODID));
-    public static final RegistrySupplier<Control> INCREMENT = register(new IncrementControl(new ResourceLocation(TardisRefined.MODID, "increment")));
-    public static final RegistrySupplier<Control> ROTATE = register(new RotationControl(new ResourceLocation(TardisRefined.MODID, "rotate")));
-    public static final RegistrySupplier<Control> RANDOM = register(new RandomControl(new ResourceLocation(TardisRefined.MODID, "random")));
-    public static final RegistrySupplier<Control> THROTTLE = register(new ThrottleControl(new ResourceLocation(TardisRefined.MODID, "throttle")));
-    public static final RegistrySupplier<Control> MONITOR = register(new MonitorControl(new ResourceLocation(TardisRefined.MODID, "monitor")).setCanBeUsedPostCrash(true));
-    public static final RegistrySupplier<Control> DIMENSION = register(new DimensionalControl(new ResourceLocation(TardisRefined.MODID, "dimension")));
-    public static final RegistrySupplier<Control> FAST_RETURN = register(new FastReturnControl(new ResourceLocation(TardisRefined.MODID, "fast_return")));
-    public static final RegistrySupplier<Control> READOUT = register(new ReadoutControl(new ResourceLocation(TardisRefined.MODID, "read_out")));
-    public static final RegistrySupplier<Control> GENERIC_NO_SHOW = register(new GenericControl(new ResourceLocation(TardisRefined.MODID, "generic_no_show")));
-    public static final RegistrySupplier<Control> HANDBRAKE = register(new HandbrakeControl(new ResourceLocation(TardisRefined.MODID, "hand_brake")));
-    public static final RegistrySupplier<Control> FUEL = register(new FuelToggleControl(new ResourceLocation(TardisRefined.MODID, "fuel")));
-    public static final RegistrySupplier<Control> EXTERIOR_DISPLAY = register(new ExteriorDisplayControl(new ResourceLocation(TardisRefined.MODID, "exterior_display")));
+    public static final RegistrySupplier<Control> INCREMENT = register(new IncrementControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "increment")));
+    public static final RegistrySupplier<Control> ROTATE = register(new RotationControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "rotate")));
+    public static final RegistrySupplier<Control> RANDOM = register(new RandomControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "random")));
+    public static final RegistrySupplier<Control> THROTTLE = register(new ThrottleControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "throttle")));
+    public static final RegistrySupplier<Control> MONITOR = register(new MonitorControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "monitor")).setCanBeUsedPostCrash(true));
+    public static final RegistrySupplier<Control> DIMENSION = register(new DimensionalControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "dimension")));
+    public static final RegistrySupplier<Control> FAST_RETURN = register(new FastReturnControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "fast_return")));
+    public static final RegistrySupplier<Control> READOUT = register(new ReadoutControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "read_out")));
+    public static final RegistrySupplier<Control> GENERIC_NO_SHOW = register(new GenericControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "generic_no_show")));
+    public static final RegistrySupplier<Control> HANDBRAKE = register(new HandbrakeControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "hand_brake")));
+    public static final RegistrySupplier<Control> FUEL = register(new FuelToggleControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "fuel")));
+    public static final RegistrySupplier<Control> EXTERIOR_DISPLAY = register(new ExteriorDisplayControl(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "exterior_display")));
 
     public static Control get(ResourceLocation id) {
         Control potentialTheme = CONTROL_REGISTRY.get(id);

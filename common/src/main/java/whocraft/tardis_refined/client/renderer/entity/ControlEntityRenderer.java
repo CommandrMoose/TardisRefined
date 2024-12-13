@@ -25,11 +25,11 @@ import whocraft.tardis_refined.compat.CuriosTrinketsUtil;
 
 public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
 
-    private static ResourceLocation ICON_GOOD = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_good.png");
-    private static ResourceLocation ICON_SLIPPING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_slipping.png");
-    private static ResourceLocation ICON_WARNING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_warning.png");
-    private static ResourceLocation ICON_ALERT = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_alert.png");
-    private static ResourceLocation ICON_DANGER = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_danger.png");
+    private static ResourceLocation ICON_GOOD = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/sprites/control/control_good.png");
+    private static ResourceLocation ICON_SLIPPING = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/sprites/control/control_slipping.png");
+    private static ResourceLocation ICON_WARNING = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/sprites/control/control_warning.png");
+    private static ResourceLocation ICON_ALERT = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/sprites/control/control_alert.png");
+    private static ResourceLocation ICON_DANGER = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/gui/sprites/control/control_danger.png");
 
     public ControlEntityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -41,11 +41,10 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
 
     private static void vertex(VertexConsumer builder, PoseStack matrixStack, float x, float y, float z, float u, float v, int alpha, int light) {
         PoseStack.Pose entry = matrixStack.last();
-        builder.vertex(entry.pose(), x, y, z)
-                .color(255, 255, 255, alpha)
-                .uv(u, v)
-                .overlayCoords(OverlayTexture.NO_OVERLAY)
-                .uv2(light)
+        builder.addVertex(entry.pose(), x, y, z).setColor(255, 255, 255, alpha)
+                .setUv(u, v)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setUv2(light)
                 .normal(entry.normal(), 0F, 0F, -1F)
                 .endVertex();
     }
@@ -67,7 +66,7 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
     @Override
     public void render(ControlEntity entity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
         if (this.shouldShowName(entity)) {
-            this.renderNameTag(entity, entity.getDisplayName(), poseStack, multiBufferSource, i);
+            this.renderNameTag(entity, entity.getDisplayName(), poseStack, multiBufferSource, i, f);
         }
 
         Level entityLevel = entity.level();
@@ -82,7 +81,7 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
     }
 
     @Override
-    protected void renderNameTag(ControlEntity entity, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLightCoords) {
+    protected void renderNameTag(ControlEntity entity, Component component, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLightCoords, float f) {
 
         double distanceSquared = this.entityRenderDispatcher.distanceToSqr(entity);
         if (!(distanceSquared > 2050.0)) {

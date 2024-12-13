@@ -45,7 +45,7 @@ public class CreateCommand {
         ServerLevel level = context.getSource().getLevel();
 
         //Create a Level Key with a randomised UUID
-        ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(TardisRefined.MODID, UUID.randomUUID().toString()));
+        ResourceKey<Level> generatedLevelKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, UUID.randomUUID().toString()));
 
         MutableComponent tardisId = TardisHelper.createTardisIdComponent(generatedLevelKey.location());
 

@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.capability.fabric;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -28,14 +29,12 @@ public class TardisLevelOperatorDummy extends TardisLevelOperatorImpl {
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void readFromNbt(CompoundTag compoundTag, HolderLookup.Provider provider) {
 
     }
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void writeToNbt(CompoundTag compoundTag, HolderLookup.Provider provider) {
 
     }
-
-
 }

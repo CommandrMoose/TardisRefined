@@ -147,7 +147,7 @@ public class ConsolePatterns {
      * @implSpec INTERNAL USE ONLY
      */
     private static ResourceLocation createConsolePatternTextureLocation(ResourceLocation themeId, String textureName) {
-        ResourceLocation texture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/" + themeId.getPath().toLowerCase(Locale.ENGLISH) + "/" + textureName + ".png");
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/" + themeId.getPath().toLowerCase(Locale.ENGLISH) + "/" + textureName + ".png");
 
         return texture;
     }

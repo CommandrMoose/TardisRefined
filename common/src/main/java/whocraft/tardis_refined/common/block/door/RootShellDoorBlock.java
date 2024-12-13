@@ -60,22 +60,12 @@ public class RootShellDoorBlock extends GlobalDoorBlock {
 
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        switch (blockState.getValue(FACING)) {
-
-            case SOUTH:
-                return SOUTH_AABB;
-            case WEST:
-                return WEST_AABB;
-            case NORTH:
-                return NORTH_AABB;
-            case EAST:
-            default:
-                return EAST_AABB;
-        }
+        return switch (blockState.getValue(FACING)) {
+            case SOUTH -> SOUTH_AABB;
+            case WEST -> WEST_AABB;
+            case NORTH -> NORTH_AABB;
+            default -> EAST_AABB;
+        };
     }
 
-    @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        return InteractionResult.SUCCESS;
-    }
 }

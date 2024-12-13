@@ -26,10 +26,10 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
 
 
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/nuka/flight.json"));
+    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/console/nuka/flight.json"));
 
 
-    private static final ResourceLocation NUKA_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/nuka/nuka_console.png");
+    private static final ResourceLocation NUKA_TEXTURE = ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/console/nuka/nuka_console.png");
     private final ModelPart rotor_zminus3_yplus5_rotateY;
     private final ModelPart panels;
     private final ModelPart console;
@@ -440,14 +440,14 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        rotor_zminus3_yplus5_rotateY.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        panels.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        console.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone37.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone43.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone67.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone61.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        rotor_zminus3_yplus5_rotateY.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        panels.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        console.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone37.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone43.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone67.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone61.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -461,7 +461,7 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
     }
 
     @Override
-    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         root().getAllParts().forEach(ModelPart::resetPose);
         panels.getAllParts().forEach(ModelPart::resetPose);
         console.getAllParts().forEach(ModelPart::resetPose);
@@ -475,13 +475,13 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
         float rot = -1f + (2 * ((float) reactions.getThrottleStage() / TardisPilotingManager.MAX_THROTTLE_STAGE));
         throttle.xRot = rot;
 
-        rotor_zminus3_yplus5_rotateY.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        panels.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        console.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone37.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone43.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone67.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone61.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        rotor_zminus3_yplus5_rotateY.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        panels.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        console.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone37.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone43.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone67.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone61.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

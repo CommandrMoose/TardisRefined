@@ -209,8 +209,8 @@ public class BigBenShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -240,7 +240,7 @@ public class BigBenShellModel extends ShellModel {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
 
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR);
@@ -265,25 +265,25 @@ public class BigBenShellModel extends ShellModel {
         S_big_hand.zRot = (float) Math.toRadians(-minuteHandDegree);
         S_small_hand.zRot = (float) Math.toRadians(-hourHandDegree);
 
-        door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        sides.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone9.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone24.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone4.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone5.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone28.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone15.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone19.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone27.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        N_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        N_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        S_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        S_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        W_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        W_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        E_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        E_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        door.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        sides.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone9.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone24.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone4.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone5.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone28.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone15.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone19.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone27.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        N_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        N_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        S_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        S_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        W_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        W_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        E_big_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        E_small_hand.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override

@@ -55,7 +55,7 @@ public class CorridorTeleporterBlockEntity extends BlockEntity implements BlockE
             timeSinceTriggeredTicks = 0;
             this.cooldownTicks = TICKS_FOR_COOLDOWN;
 
-            if (level.dimensionTypeId() != TRDimensionTypes.TARDIS) {
+            if (level.dimensionTypeRegistration() != TRDimensionTypes.TARDIS) {
                 level.playSound(null, getBlockPos(), SoundEvents.BLAZE_DEATH, SoundSource.BLOCKS, 1, 0.5f);
                 return;
             }

@@ -51,7 +51,7 @@ public class TRSoundRegistry {
     public static final RegistrySupplier<SoundEvent> GRAVITY_TUNNEL = setUpSound("gravity_tunnel");
 
     private static RegistrySupplier<SoundEvent> setUpSound(String soundName) {
-        SoundEvent sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(TardisRefined.MODID, soundName));
+        SoundEvent sound = SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, soundName));
         return SOUNDS.register(soundName, () -> sound);
     }
 }

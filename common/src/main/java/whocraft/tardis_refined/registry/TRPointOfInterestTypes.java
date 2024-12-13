@@ -13,8 +13,8 @@ import whocraft.tardis_refined.TardisRefined;
 
 public class TRPointOfInterestTypes {
 
-    public static final ResourceKey<PoiType> CONSOLE_UNIT = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, new ResourceLocation(TardisRefined.MODID, "console_unit"));
-    public static final ResourceKey<PoiType> ASTRAL_MAP = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, new ResourceLocation(TardisRefined.MODID, "astral_map"));
+    public static final ResourceKey<PoiType> CONSOLE_UNIT = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "console_unit"));
+    public static final ResourceKey<PoiType> ASTRAL_MAP = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "astral_map"));
 
     ;
     public static final DeferredRegistry<PoiType> POIS = DeferredRegistry.create(TardisRefined.MODID, Registries.POINT_OF_INTEREST_TYPE);

@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.common.blockentity.device;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -54,8 +55,8 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
-        super.saveAdditional(compoundTag);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
 
         compoundTag.putBoolean(SHOULD_DISPLAY, this.shouldDisplay);
 
@@ -104,20 +105,27 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag tag) {
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 
         if (tag.contains(MAN_POINT_A)) {
-            this.pointABlockPos = NbtUtils.readBlockPos(tag.getCompound(MAN_POINT_A));
+            this.pointABlockPos = NbtUtils.readBlockPos(tag, MAN_POINT_A).get();
         }
         if (tag.contains(MAN_POINT_B)) {
-            this.pointBBlockPos = NbtUtils.readBlockPos(tag.getCompound(MAN_POINT_B));
+            this.pointBBlockPos = NbtUtils.readBlockPos(tag, MAN_POINT_B).get();
         }
 
         if (tag.contains(SHOULD_DISPLAY)) {
             this.shouldDisplay = tag.getBoolean(SHOULD_DISPLAY);
         }
 
-        super.load(tag);
+        super.loadAdditional(tag, provider);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
+        return super.getUpdateTag(provider);
     }
 
 
@@ -196,13 +204,6 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
         setChanged();
     }
 
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = new CompoundTag();
-        saveAdditional(tag);
-        return tag;
-    }
-
-
     private boolean attemptToBuild(BlockPos pointA, BlockPos pointB) {
 
         var submittedBlocks = new ArrayList<ManipulatorCraftingIngredient>();
@@ -264,13 +265,13 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
                     level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
                 }
 
-                List<ItemEntity> droppedItems = getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(pointABlockPos, pointBBlockPos).inflate(1));
+                List<ItemEntity> droppedItems = getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(pointABlockPos.getCenter(), pointBBlockPos.getCenter()).inflate(1));
                 droppedItems.forEach(Entity::discard);
 
                 if (recipe.result() instanceof ManipulatorBlockResult blockResult) {
                     BlockState blockState = blockResult.recipeOutput();
                     if (blockState != null) {
-                        Vec3 centerVector = new AABB(pointABlockPos, pointBBlockPos).getCenter();
+                        Vec3 centerVector = new AABB(pointABlockPos.getCenter(), pointBBlockPos.getCenter()).getCenter();
                         int min = Math.min(pointABlockPos.getY(), pointBBlockPos.getY());
 
                         BlockPos centerPos = new BlockPos((int) centerVector.x, min, (int) centerVector.z);

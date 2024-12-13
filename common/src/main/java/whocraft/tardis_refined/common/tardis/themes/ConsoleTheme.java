@@ -18,7 +18,7 @@ public class ConsoleTheme implements Theme {
     /**
      * Registry Key for the ConsoleTheme registry. For addon mods, use this as the registry key
      */
-    public static final ResourceKey<Registry<ConsoleTheme>> CONSOLE_THEME_REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(TardisRefined.MODID, "console_theme"));
+    public static final ResourceKey<Registry<ConsoleTheme>> CONSOLE_THEME_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "console_theme"));
 
     /**
      * Tardis Refined instance of the ConsoleTheme registry. Addon Mods: DO NOT USE THIS, it is only for Tardis Refined use only
@@ -48,7 +48,7 @@ public class ConsoleTheme implements Theme {
     }
 
     private static RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> registerConsoleTheme(String id, ConsoleThemeDetails themeDetails) {
-        return CONSOLE_THEME_DEFERRED_REGISTRY.registerHolder(id, () -> new ConsoleTheme(new ResourceLocation(TardisRefined.MODID, id), themeDetails));
+        return CONSOLE_THEME_DEFERRED_REGISTRY.registerHolder(id, () -> new ConsoleTheme(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, id), themeDetails));
     }
 
     public ControlSpecification[] getControlSpecificationList() {

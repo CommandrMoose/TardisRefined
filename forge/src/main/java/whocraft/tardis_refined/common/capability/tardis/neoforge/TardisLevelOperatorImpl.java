@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.capabilities.*;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -19,7 +20,7 @@ import whocraft.tardis_refined.registry.TRDimensionTypes;
 
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TardisRefined.MODID)
+@EventBusSubscriber(modid = TardisRefined.MODID)
 public class TardisLevelOperatorImpl implements ICapabilitySerializable<CompoundTag> {
 
     public static Capability<TardisLevelOperator> TARDIS_DATA = CapabilityManager.get(new CapabilityToken<>() {
@@ -42,7 +43,7 @@ public class TardisLevelOperatorImpl implements ICapabilitySerializable<Compound
     public static void onLevelCapabilities(AttachCapabilitiesEvent<Level> event) {
         if (event.getObject() instanceof ServerLevel level) {
             if (level.dimensionTypeId().location() == TRDimensionTypes.TARDIS.location()) {
-                event.addCapability(new ResourceLocation(TardisRefined.MODID, "tardis_data"), new TardisLevelOperatorImpl((ServerLevel) event.getObject()));
+                event.addCapability(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis_data"), new TardisLevelOperatorImpl((ServerLevel) event.getObject()));
             }
         }
     }

@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.common.blockentity.device;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -37,35 +38,32 @@ public class ConsoleConfigurationBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
-        super.saveAdditional(compoundTag);
-
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
         if (this.consoleTheme != null) {
             compoundTag.putString(NbtConstants.THEME, theme().toString());
         }
-
     }
 
     @Override
-    public void load(CompoundTag tag) {
-
-        if (tag.contains(NbtConstants.THEME)) {
-            ResourceLocation themeId = new ResourceLocation(tag.getString(NbtConstants.THEME));
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        if (compoundTag.contains(NbtConstants.THEME)) {
+            ResourceLocation themeId = ResourceLocation.parse(compoundTag.getString(NbtConstants.THEME));
             this.consoleTheme = themeId;
         }
 
         if (this.consoleTheme == null) {
             this.consoleTheme = this.theme();
         }
-
-        super.load(tag);
+        super.loadAdditional(compoundTag, provider);
     }
 
+
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = this.saveWithFullMetadata();
-        this.saveAdditional(tag);
-        return tag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
+        return super.getUpdateTag(provider);
     }
 
 

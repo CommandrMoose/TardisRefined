@@ -242,11 +242,11 @@ public class TardisClientData {
         recoveryTicks = compoundTag.getInt("recoveryTicks");
         journeyProgress = compoundTag.getFloat("journeyProgress");
         // Load shellTheme and shellPattern
-        shellTheme = new ResourceLocation(compoundTag.getString("shellTheme"));
-        shellPattern = new ResourceLocation(compoundTag.getString("shellPattern"));
-        vortex = new ResourceLocation(compoundTag.getString("vortex"));
+        shellTheme = ResourceLocation.fromNamespaceAndPath(compoundTag.getString("shellTheme"));
+        shellPattern = ResourceLocation.fromNamespaceAndPath(compoundTag.getString("shellPattern"));
+        vortex = ResourceLocation.fromNamespaceAndPath(compoundTag.getString("vortex"));
 
-        setHumEntry(TardisHums.getHumById(new ResourceLocation(compoundTag.getString(NbtConstants.TARDIS_CURRENT_HUM))));
+        setHumEntry(TardisHums.getHumById(ResourceLocation.fromNamespaceAndPath(compoundTag.getString(NbtConstants.TARDIS_CURRENT_HUM))));
 
         fuel = compoundTag.getDouble(NbtConstants.FUEL);
         maximumFuel = compoundTag.getDouble(NbtConstants.MAXIMUM_FUEL);

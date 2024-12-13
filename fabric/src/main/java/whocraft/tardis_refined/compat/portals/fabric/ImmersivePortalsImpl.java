@@ -4,7 +4,5 @@ import net.minecraft.world.entity.EntityType;
 import qouteall.imm_ptl.core.portal.Portal;
 
 public class ImmersivePortalsImpl {
-    public static EntityType<Portal> retrievePortalType() {
-        return Portal.entityType;
-    }
+
 }

@@ -68,7 +68,7 @@ public class TardisArchitectureHandler {
             if (level.getBlockState(pos).getBlock() == TRBlockRegistry.AIR_LOCK_GENERATION_BLOCK.get()) {
 
                 TardisLevelOperator.get(level).ifPresent(cap -> {
-                    Optional<StructureTemplate> structureNBT = level.getLevel().getStructureManager().get(new ResourceLocation(TardisRefined.MODID, "corridors/airlock_entrance"));
+                    Optional<StructureTemplate> structureNBT = level.getLevel().getStructureManager().get(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "corridors/airlock_entrance"));
                     structureNBT.ifPresent(structure -> {
                         BlockPos offsetPosition = new BlockPos(3, 2, 0);
                         structure.placeInWorld(level.getLevel(), pos.subtract(offsetPosition), pos.subtract(offsetPosition), new StructurePlaceSettings(), level.getLevel().random, 2);
@@ -89,7 +89,7 @@ public class TardisArchitectureHandler {
 
         currentArsStage = tardisLevelOperator.getUpgradeHandler().getProgressLevel();
 
-        Optional<StructureTemplate> structureNBT = level.getLevel().getStructureManager().get(new ResourceLocation(TardisRefined.MODID, "rooms/ars/room_ars_stage_" + currentArsStage));
+        Optional<StructureTemplate> structureNBT = level.getLevel().getStructureManager().get(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "rooms/ars/room_ars_stage_" + currentArsStage));
         structureNBT.ifPresent(structure -> {
             structure.placeInWorld(level.getLevel(), TardisDimensionConstants.ARS_TREE_PLACEMENT_POS, TardisDimensionConstants.ARS_TREE_PLACEMENT_POS, new StructurePlaceSettings(), level.getLevel().random, Block.UPDATE_ALL);
         });

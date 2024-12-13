@@ -27,7 +27,7 @@ public class CoordinateControl extends Control {
     }
 
     public CoordinateControl(CoordinateButton button, String modid) {
-        this(button, new ResourceLocation(modid, button.name().toLowerCase() + "_cord"));
+        this(button, ResourceLocation.fromNamespaceAndPath(modid, button.name().toLowerCase() + "_cord"));
     }
 
     @Override

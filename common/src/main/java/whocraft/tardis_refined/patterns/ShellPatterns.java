@@ -150,19 +150,19 @@ public class ShellPatterns {
     }
 
     public static ResourceLocation exteriorTextureLocation(ResourceLocation themeId, String textureName) {
-        return new ResourceLocation(TardisRefined.MODID, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + ".png");
+        return ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + ".png");
     }
 
     public static ResourceLocation exteriorTextureLocation(ResourceLocation themeId, String modid, String textureName) {
-        return new ResourceLocation(modid, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + ".png");
+        return ResourceLocation.fromNamespaceAndPath(modid, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + ".png");
     }
 
     public static ResourceLocation interiorTextureLocation(ResourceLocation themeId, String modid, String textureName) {
-        return new ResourceLocation(modid, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + "_interior.png");
+        return ResourceLocation.fromNamespaceAndPath(modid, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + "_interior.png");
     }
 
     public static ResourceLocation interiorTextureLocation(ResourceLocation themeId, String textureName) {
-        return new ResourceLocation(TardisRefined.MODID, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + "_interior.png");
+        return ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/blockentity/shell/" + themeId.getPath() + "/" + textureName + "_interior.png");
     }
 
     /**

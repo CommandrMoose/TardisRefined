@@ -7,10 +7,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.capabilities.*;
-import net.neoforged.neoforge.common.util.LazyOptional;
-import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.TardisRefined;
@@ -18,7 +17,7 @@ import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TardisRefined.MODID)
+@EventBusSubscriber(modid = TardisRefined.MODID)
 public class TardisPlayerInfoImpl {
 
     public static Capability<TardisPlayerInfo> TARDIS_PLAYER_INFO = CapabilityManager.get(new CapabilityToken<>() {
@@ -32,7 +31,7 @@ public class TardisPlayerInfoImpl {
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> e) {
         if (e.getObject() instanceof Player player) {
-            e.addCapability(new ResourceLocation(TardisRefined.MODID, "tardis_player_info"), new TardisPlayerInfoProvider(new TardisPlayerInfo(player)));
+            e.addCapability(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis_player_info"), new TardisPlayerInfoProvider(new TardisPlayerInfo(player)));
         }
     }
 

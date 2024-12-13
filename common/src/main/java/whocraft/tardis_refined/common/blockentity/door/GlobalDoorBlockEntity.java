@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.common.blockentity.door;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -68,10 +69,10 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements Bl
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag compoundTag = new CompoundTag();
-        saveAdditional(compoundTag);
-        return compoundTag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        CompoundTag tag = super.getUpdateTag(provider);
+        saveAdditional(tag, provider);
+        return super.getUpdateTag(provider);
     }
 
     @Nullable
@@ -80,17 +81,18 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements Bl
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void loadAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadAdditional(pTag, provider);
 
         if (pTag.contains(NbtConstants.THEME)) {
-            ResourceLocation themeId = new ResourceLocation(pTag.getString(NbtConstants.THEME));
+            ResourceLocation themeId = ResourceLocation.parse(pTag.getString(NbtConstants.THEME));
             this.shellTheme = themeId;
         }
 
         if (pTag.contains(NbtConstants.PATTERN)) {
-            ResourceLocation currentPattern = new ResourceLocation(pTag.getString(NbtConstants.PATTERN));
+            ResourceLocation currentPattern = ResourceLocation.parse(pTag.getString(NbtConstants.PATTERN));
             if (ShellPatterns.doesPatternExist(this.shellTheme, currentPattern)) {
                 this.basePattern = ShellPatterns.getPatternOrDefault(this.shellTheme, currentPattern);
             }
@@ -107,8 +109,8 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements Bl
 
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.saveAdditional(pTag, provider);
         if (this.shellTheme != null) {
             pTag.putString(NbtConstants.THEME, this.shellTheme.toString());
         }

@@ -21,7 +21,7 @@ import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class MysticShellModel extends ShellModel {
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/shell/myst/idle.json"));
+    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "animated/shell/myst/idle.json"));
 
     private final ModelPart right_door;
     private final ModelPart left_door;
@@ -272,20 +272,20 @@ public class MysticShellModel extends ShellModel {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        right_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        left_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone6.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone7.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone10.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone11.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        side_animations.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone56.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bone58.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        gold_animations.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        right_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        left_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone3.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone6.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone7.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone10.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone11.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        side_animations.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone56.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bone58.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        gold_animations.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        bb_main.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
@@ -310,8 +310,8 @@ public class MysticShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 
     @Override
