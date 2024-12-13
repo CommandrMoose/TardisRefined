@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class TRVillagerProfession {
 
-    public static final DeferredRegistry<VillagerProfession> PROFESSIONS = DeferredRegistry.create(TardisRefined.MODID, Registries.VILLAGER_PROFESSION);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(TardisRefined.MODID, Registries.VILLAGER_PROFESSION);
 
     public static final RegistrySupplier<VillagerProfession> PILOT = registerVillagerProfession("pilot", () -> createVillagerProfession(
             "pilot",

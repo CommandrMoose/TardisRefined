@@ -19,7 +19,7 @@ public class TRControlRegistry {
     /**
      * Tardis Refined instance of the Controls registry. Addon Mods: DO NOT USE THIS, it is only for Tardis Refined use only
      */
-    public static final DeferredRegistry<Control> CONTROL_DEFERRED_REGISTRY = DeferredRegistry.createCustom(TardisRefined.MODID, CONTROL_REGISTRY_KEY, true);
+    public static final DeferredRegister<Control> CONTROL_DEFERRED_REGISTRY = DeferredRegister.createCustom(TardisRefined.MODID, CONTROL_REGISTRY_KEY, true);
 
     /**
      * Instance of registry containing all Control entries. Addon mod entries will be included in this registry as long as they are use the same ResourceKey<Registry<ObjectType>>.

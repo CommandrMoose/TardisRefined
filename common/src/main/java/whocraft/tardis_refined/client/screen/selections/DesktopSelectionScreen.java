@@ -115,14 +115,13 @@ public class DesktopSelectionScreen extends SelectionScreen {
 
     @Override
     public Component getSelectedDisplayName() {
-        return Component.Serializer.fromJson(currentDesktopTheme.getName());
+        return Component.Serializer.fromJson(currentDesktopTheme.getName(), Minecraft.getInstance().player.registryAccess());
     }
 
     @Override
     public ObjectSelectionList createSelectionList() {
         int leftPos = width / 2 + 45;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 57, 80, leftPos, this.topPos + 30, this.topPos + this.imageHeight - 60, 12);
-        selectionList.setRenderBackground(false);
 
         for (DesktopTheme desktop : TardisDesktops.getRegistry().values()) {
 
@@ -131,7 +130,7 @@ public class DesktopSelectionScreen extends SelectionScreen {
 
             // Check for if the tellraw name is incomplete, or fails to pass.
             try {
-                var json = Component.Serializer.fromJson(new StringReader(desktop.getName()));
+                var json = Component.Serializer.fromJson(desktop.getName(), Minecraft.getInstance().player.registryAccess());
                 name = json;
             } catch (Exception ex) {
                 TardisRefined.LOGGER.error("Could not process Name for datapack desktop " + desktop.getIdentifier().toString());

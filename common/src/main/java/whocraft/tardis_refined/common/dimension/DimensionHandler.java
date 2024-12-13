@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.FixedBiomeSource;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import whocraft.tardis_refined.TardisRefined;
@@ -135,7 +136,7 @@ public class DimensionHandler {
     public static LevelStem formLevelStem(MinecraftServer server, ResourceKey<LevelStem> stem) {
         RegistryAccess access = server.registryAccess();
 
-        return new LevelStem(access.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(TRDimensionTypes.TARDIS), new TardisChunkGenerator(access.registryOrThrow(Registries.BIOME).getHolderOrThrow(ChunkGenerators.TARDIS_BIOME)));
+        return new LevelStem(access.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(TRDimensionTypes.TARDIS), new TardisChunkGenerator(new FixedBiomeSource(access.registryOrThrow(Registries.BIOME).getHolderOrThrow(ChunkGenerators.TARDIS_BIOME))));
     }
 
 

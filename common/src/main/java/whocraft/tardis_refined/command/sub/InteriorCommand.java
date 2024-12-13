@@ -49,7 +49,7 @@ public class InteriorCommand implements Command<CommandSourceStack> {
             }
             return Command.SINGLE_SUCCESS;
         }
-        PlayerUtil.sendMessage(sender, Component.translatable(ModMessages.CMD_DIM_NOT_A_TARDIS, tardis.dimensionTypeId().location().toString()), false);
+        PlayerUtil.sendMessage(sender, Component.translatable(ModMessages.CMD_DIM_NOT_A_TARDIS, tardis.dimensionTypeRegistration()), false);
         return 0;
     }
 

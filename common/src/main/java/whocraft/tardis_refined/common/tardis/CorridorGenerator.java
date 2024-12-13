@@ -33,10 +33,10 @@ public class CorridorGenerator {
 
                 String name = "gs_r" + level.getRandom().nextInt(1000);
                 StructureTemplateManager manager = level.getServer().getStructureManager();
-                StructureTemplate template = manager.getOrCreate(ResourceLocation.fromNamespaceAndPath(name));
+                StructureTemplate template = manager.getOrCreate(ResourceLocation.parse(name));
                 template.fillFromWorld(level, blockPos.above(), new BlockPos(48, 28, 48), false, Blocks.STRUCTURE_VOID);
                 template.setAuthor("");
-                manager.save(ResourceLocation.fromNamespaceAndPath(name));
+                manager.save(ResourceLocation.parse(name));
 
                 PlayerUtil.sendMessage(player, Component.translatable("Generated structure at: " + name), false);
             }
@@ -132,7 +132,7 @@ public class CorridorGenerator {
             return createResourceLocation("room_entry_ew");
         }
 
-        return ResourceLocation.fromNamespaceAndPath("");
+        return ResourceLocation.parse("");
     }
 
     private static ResourceLocation getRoomPieceResourceLocation(BlockState[] results) {
@@ -212,7 +212,7 @@ public class CorridorGenerator {
         }
 
 
-        return ResourceLocation.fromNamespaceAndPath("");
+        return ResourceLocation.parse("");
     }
 
     private static boolean doesBlockExist(BlockState blockState) {
@@ -272,7 +272,7 @@ public class CorridorGenerator {
             return createResourceLocation("corridor_piece_nsw");
         }
 
-        return ResourceLocation.fromNamespaceAndPath("");
+        return ResourceLocation.parse("");
     }
 
     private static ResourceLocation createResourceLocation(String id) {

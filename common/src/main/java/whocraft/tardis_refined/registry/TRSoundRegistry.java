@@ -6,7 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 import whocraft.tardis_refined.TardisRefined;
 
 public class TRSoundRegistry {
-    public static final DeferredRegistry<SoundEvent> SOUNDS = DeferredRegistry.create(TardisRefined.MODID, Registries.SOUND_EVENT);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(TardisRefined.MODID, Registries.SOUND_EVENT);
 
     public static final RegistrySupplier<SoundEvent> TARDIS_TAKEOFF = setUpSound("tardis_takeoff");
     public static final RegistrySupplier<SoundEvent> TARDIS_LAND = setUpSound("tardis_land");

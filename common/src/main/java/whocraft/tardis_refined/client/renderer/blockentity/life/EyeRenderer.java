@@ -26,16 +26,16 @@ public class EyeRenderer implements BlockEntityRenderer<EyeBlockEntity>, BlockEn
     }
 
     private static void vertex01(VertexConsumer iVertexBuilder, Matrix4f matrix4f, int p_229061_2_) {
-        iVertexBuilder.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(255, 255, 255, p_229061_2_).endVertex();
-        iVertexBuilder.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(255, 255, 255, p_229061_2_).endVertex();
+        iVertexBuilder.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(255, 255, 255, p_229061_2_);
+        iVertexBuilder.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(255, 255, 255, p_229061_2_);
     }
 
     private static void vertex2(VertexConsumer iVertexBuilder, Matrix4f matrix4f, float p_229060_2_, float p_229060_3_) {
-        iVertexBuilder.addVertex(matrix4f, -HALF_SQRT_3 * p_229060_3_, p_229060_2_, -0.5F * p_229060_3_).setColor(255, 93, 0, 0).endVertex();
+        iVertexBuilder.addVertex(matrix4f, -HALF_SQRT_3 * p_229060_3_, p_229060_2_, -0.5F * p_229060_3_).setColor(255, 93, 0, 0);
     }
 
     private static void vertex3(VertexConsumer iVertexBuilder, Matrix4f matrix4f, float p_229062_2_, float p_229062_3_) {
-        iVertexBuilder.addVertex(matrix4f, HALF_SQRT_3 * p_229062_3_, p_229062_2_, -0.5F * p_229062_3_).setColor(255, 93, 0, 0).endVertex();
+        iVertexBuilder.addVertex(matrix4f, HALF_SQRT_3 * p_229062_3_, p_229062_2_, -0.5F * p_229062_3_).setColor(255, 93, 0, 0);
     }
 
     private static void vertex4(VertexConsumer iVertexBuilder, Matrix4f matrix4f, float p_229063_2_, float p_229063_3_) {

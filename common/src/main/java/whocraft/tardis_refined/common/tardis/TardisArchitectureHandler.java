@@ -43,7 +43,7 @@ public class TardisArchitectureHandler {
             }
         }
 
-        List<Entity> desktopEntities = operator.getLevel().getEntitiesOfClass(Entity.class, new AABB(corner, farCorner));
+        List<Entity> desktopEntities = operator.getLevel().getEntitiesOfClass(Entity.class, new AABB(corner.getCenter(), farCorner.getCenter()));
         desktopEntities.forEach(Entity::discard); //Don't teleport entities to a hard coded coordinate, that causes hanging entity out of world issues. In other cases, if another mod defines that coordinate as a safe area (possible) that will mean the entities never get killed.
 
         Optional<StructureTemplate> structureNBT = operator.getLevel().getStructureManager().get(theme.getStructureLocation());

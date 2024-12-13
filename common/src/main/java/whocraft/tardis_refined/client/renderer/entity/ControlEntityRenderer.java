@@ -44,9 +44,8 @@ public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
         builder.addVertex(entry.pose(), x, y, z).setColor(255, 255, 255, alpha)
                 .setUv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setUv2(light)
-                .normal(entry.normal(), 0F, 0F, -1F)
-                .endVertex();
+                .setLight(light)
+                .setNormal( 0F, 0F, -1F);
     }
 
     @Override

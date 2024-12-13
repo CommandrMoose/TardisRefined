@@ -1,13 +1,12 @@
+
 package whocraft.tardis_refined.registry;
 
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Supplier;
 
-/**
- * Stores an object within a supplier so that it can be called but populated at a later time.
- */
 public class RegistrySupplier<T> implements Supplier<T> {
+
     private final ResourceLocation id;
     private Supplier<T> supplier;
     private T raw;

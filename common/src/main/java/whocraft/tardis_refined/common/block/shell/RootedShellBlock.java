@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -71,7 +72,7 @@ public class RootedShellBlock extends ShellBaseBlock {
 
         //Logic to play sounds if the player tries to break the root plant for additional sound design
         if (player != null) {
-            player.getMainHandItem().hurtAndBreak(1, player, entity -> entity.broadcastBreakEvent(interactionHand));
+            player.getMainHandItem().hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
             level.playSound(player, player.blockPosition(), SoundEvents.GROWING_PLANT_CROP, SoundSource.BLOCKS, 1.0f, 1.0f);
             level.playSound(player, player.blockPosition(), SoundEvents.SLIME_JUMP, SoundSource.BLOCKS, 1.0f, 1.0f);
         }

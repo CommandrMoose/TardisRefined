@@ -8,21 +8,18 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import whocraft.tardis_refined.registry.DeferredRegistry;
-import whocraft.tardis_refined.registry.RegistrySupplier;
-import whocraft.tardis_refined.registry.RegistrySupplierHolder;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-public class DeferredRegistryImpl {
+public class DeferredRegisterImpl {
 
-    public static <T> DeferredRegistry<T> create(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
+    public static <T> DeferredRegister<T> create(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
         return new Impl<>(modid, resourceKey);
     }
 
-    public static <T> DeferredRegistry<T> createCustom(String modid, ResourceKey<Registry<T>> resourceKey, boolean syncToClient) {
+    public static <T> DeferredRegister<T> createCustom(String modid, ResourceKey<Registry<T>> resourceKey, boolean syncToClient) {
         //Create a deferredRegister instance to be passed on to Tardis Refined's {@link DeferredRegister} object later
         DeferredRegister<T> deferredRegister = DeferredRegister.create(resourceKey, modid);
         deferredRegister.makeRegistry(builder -> builder.maxId(Integer.MAX_VALUE - 1).sync(syncToClient)); //Tell Neoforge to register our registry when NewRegistryEvent fires. DO NOT call this anywhere else.
@@ -30,7 +27,7 @@ public class DeferredRegistryImpl {
     }
 
     @SuppressWarnings("unchecked")
-    public static class Impl<T> extends DeferredRegistry<T> {
+    public static class Impl<T> extends DeferredRegister<T> {
 
         private final DeferredRegister<T> deferredRegister;
 
@@ -78,9 +75,9 @@ public class DeferredRegistryImpl {
         }
 
         @Override
-        public <I extends T> RegistrySupplierHolder<T, I> registerHolder(String id, Supplier<I> sup) {
+        public <I extends T> RegistryHolder<T, I> registerHolder(String id, Supplier<I> sup) {
             DeferredHolder<T, I> deferredHolder = this.deferredRegister.register(id, sup);
-            RegistrySupplierHolder<T, I> registryHolder = RegistrySupplierHolder.create(this.resourceKey, deferredHolder.getId());
+            RegistryHolder<T, I> registryHolder = RegistryHolder.create(this.resourceKey, deferredHolder.getId());
             return registryHolder;
         }
 

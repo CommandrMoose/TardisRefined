@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.common.crafting.astral_manipulator;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
@@ -20,12 +21,15 @@ import java.util.*;
  * Main recipe object for the Astral Manipulator.
  **/
 public class ManipulatorCraftingRecipe implements CraftingRecipe {
-    public static final Codec<ManipulatorCraftingRecipe> CODEC = RecordCodecBuilder.create(
+    public static final MapCodec<ManipulatorCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(
             builder -> builder.group(
-                    ManipulatorCraftingIngredient.CODEC.listOf().fieldOf("ingredients").forGetter(ManipulatorCraftingRecipe::ingredients),
-                    ManipulatorCraftingResult.RESULT_CODEC.fieldOf("result").forGetter(ManipulatorCraftingRecipe::result)
+                    ManipulatorCraftingIngredient.CODEC.listOf()
+                            .fieldOf("ingredients").forGetter(ManipulatorCraftingRecipe::ingredients),
+                    ManipulatorCraftingResult.RESULT_CODEC
+                            .fieldOf("result").forGetter(ManipulatorCraftingRecipe::result)
             ).apply(builder, ManipulatorCraftingRecipe::new)
     );
+
     // List of ingredient blocks for the recipe to work.
     private List<ManipulatorCraftingIngredient> ingredients;
     private ManipulatorCraftingResult result;

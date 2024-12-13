@@ -6,7 +6,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import whocraft.tardis_refined.constants.ModMessages;
-import whocraft.tardis_refined.registry.RegistrySupplier;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRItemRegistry;
 

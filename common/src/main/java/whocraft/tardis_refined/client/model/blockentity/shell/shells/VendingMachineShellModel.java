@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class VendingMachineShellModel extends ShellModel {
@@ -48,9 +49,12 @@ public class VendingMachineShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        int finalColor = RenderHelper.rgbaToInt(red, green, blue, this.getCurrentAlpha());
+        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+
     }
+
 
     @Override
     public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {

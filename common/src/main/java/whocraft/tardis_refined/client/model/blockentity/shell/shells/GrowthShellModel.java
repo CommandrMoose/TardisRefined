@@ -8,6 +8,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class GrowthShellModel extends ShellModel {
@@ -172,12 +173,13 @@ public class GrowthShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,  float red, float green, float blue, float alpha) {
+        int finalColor = RenderHelper.rgbaToInt(red, green, blue, this.getCurrentAlpha());
+        handleAllAnimations(entity, root(), isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         door_open.visible = open;
         door_closed.visible = !open;
-        door_open.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
-        door_closed.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
+        door_open.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
+        door_closed.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
     }
 
     @Override

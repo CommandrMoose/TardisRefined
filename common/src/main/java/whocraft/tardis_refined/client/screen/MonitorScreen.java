@@ -66,7 +66,6 @@ public class MonitorScreen extends SelectionScreen {
     public GenericMonitorSelectionList createSelectionList() {
         int leftPos = this.width / 2 - 75;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 250, 80, leftPos - 70, this.topPos + 30, this.topPos + this.imageHeight - 45, 10);
-        selectionList.setRenderBackground(false);
 
         selectionList.children().add(new SelectionListEntry(Component.translatable(ModMessages.UI_EXTERNAL_SHELL), entry -> new C2SRequestShellSelection().send(), leftPos, TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(upgradeHandler)));
 

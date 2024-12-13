@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ComponentArgument;
@@ -26,7 +27,7 @@ import java.nio.file.Path;
 
 public class ExportDesktopCommand implements Command<CommandSourceStack> {
 
-    public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static ArgumentBuilder<CommandSourceStack, ?> register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
         return Commands.literal("desktop")
                 .then(Commands.argument("pos1", BlockPosArgument.blockPos())
                         .then(Commands.argument("pos2", BlockPosArgument.blockPos())
@@ -34,7 +35,7 @@ public class ExportDesktopCommand implements Command<CommandSourceStack> {
                                         .then(Commands.argument("namespace", StringArgumentType.word())
                                                 .then(Commands.argument("desktop_id", StringArgumentType.word())
                                                         .then(Commands.argument("datapack_name", StringArgumentType.string())
-                                                                .then(Commands.argument("desktop_display_name", ComponentArgument.textComponent())
+                                                                .then(Commands.argument("desktop_display_name", ComponentArgument.textComponent(commandBuildContext))
                                                                         .executes(context -> exportDesktop(context, BlockPosArgument.getSpawnablePos(context, "pos1"),
                                                                                 BlockPosArgument.getSpawnablePos(context, "pos2"),
                                                                                 BoolArgumentType.getBool(context, "include_entities"),
@@ -48,7 +49,7 @@ public class ExportDesktopCommand implements Command<CommandSourceStack> {
 
     private static int exportDesktop(CommandContext<CommandSourceStack> context, BlockPos bottomCorner, BlockPos topCorner, boolean includeEntities, String namespace, String desktopId, String datapackName, Component displayName) {
         ResourceLocation loc = ResourceLocation.fromNamespaceAndPath(namespace, desktopId);
-        DesktopTheme theme = new DesktopTheme(loc, loc, Component.Serializer.toJson(displayName));
+        DesktopTheme theme = new DesktopTheme(loc, loc, Component.Serializer.toJson(displayName, context.getSource().registryAccess()));
         ServerPlayer sender = context.getSource().getPlayer();
 
         MinecraftServerStorageAccessor accessor = (MinecraftServerStorageAccessor) context.getSource().getServer();

@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ModelRegistry;
 import whocraft.tardis_refined.client.model.blockentity.shell.internal.door.RootShellDoorModel;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.block.shell.RootedShellBlock;
 import whocraft.tardis_refined.common.blockentity.door.RootShellDoorBlockEntity;
 
@@ -34,7 +35,8 @@ public class RootShellDoorRenderer implements BlockEntityRenderer<RootShellDoorB
         BlockState state = blockEntity.getBlockState();
         float rotation = state.getValue(RootedShellBlock.FACING).toYRot();
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
-        rootShellDoorModel.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucent(rootShellDoorTexture)), i, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        rootShellDoorModel.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucent(rootShellDoorTexture)), i, OverlayTexture.NO_OVERLAY, RenderHelper.rgbaToInt(
+                1f, 1f, 1f, 1f));
         poseStack.popPose();
     }
 

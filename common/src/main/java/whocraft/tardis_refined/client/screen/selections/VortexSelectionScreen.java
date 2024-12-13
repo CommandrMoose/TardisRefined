@@ -170,8 +170,6 @@ public class VortexSelectionScreen extends SelectionScreen {
         int leftPos = width / 2 - 5;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, leftPos, this.topPos + 30, this.topPos + this.imageHeight - 60, 12);
 
-        selectionList.setRenderBackground(false);
-
         for (Holder.Reference<VortexRegistry> shellTheme : VortexRegistry.VORTEX_REGISTRY.holders().toList()) {
             VortexRegistry theme = shellTheme.value();
             ResourceLocation shellThemeId = shellTheme.key().location();

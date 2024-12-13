@@ -2,18 +2,15 @@ package whocraft.tardis_refined.common.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.registries.Registries;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.registry.DeferredRegistry;
-import whocraft.tardis_refined.common.items.ScrewdriverMode;
+import whocraft.tardis_refined.registry.DeferredRegister;
 import whocraft.tardis_refined.registry.RegistrySupplier;
 
 public class TRItemData {
 
     // Deferred Registry for Data Components
-    public static final DeferredRegistry<DataComponentType<?>> ITEMS = DeferredRegistry.create(TardisRefined.MODID, Registries.DATA_COMPONENT_TYPE);
+    public static final DeferredRegister<DataComponentType<?>> ITEMS = DeferredRegister.create(TardisRefined.MODID, Registries.DATA_COMPONENT_TYPE);
 
     // Register DataComponentTypes
     public static final RegistrySupplier<DataComponentType<?>> SCREWDRIVER_MODE = ITEMS.register("screwdriver_mode", () -> DataComponentType.builder().persistent(ScrewdriverMode.CODEC).build());

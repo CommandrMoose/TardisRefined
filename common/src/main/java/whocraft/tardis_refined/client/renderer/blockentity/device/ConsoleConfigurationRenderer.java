@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleModelCollection;
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleUnit;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.block.device.ConsoleConfigurationBlock;
 import whocraft.tardis_refined.common.block.door.GlobalDoorBlock;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
@@ -52,7 +53,7 @@ public class ConsoleConfigurationRenderer implements BlockEntityRenderer<Console
 
             ConsoleUnit consoleModel = ConsoleModelCollection.getInstance().getConsoleModel(theme);
             if (consoleModel != null) {
-                consoleModel.renderConsole(null, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getDefaultTexture())), packedLight, OverlayTexture.NO_OVERLAY, 0.635f, 0.392f, 0.878f, 0.5f);
+                consoleModel.renderConsole(null, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getDefaultTexture())), packedLight, OverlayTexture.NO_OVERLAY, RenderHelper.rgbaToInt(635f, 0.392f, 0.878f, 0.5f));
             }
         }
 

@@ -17,7 +17,7 @@ public class GravityUtil {
     private static final double ACCELERATION = 0.2;
 
     public static boolean isInAntiGrav(Player player, AABB box, Level level) {
-        if (level.dimensionTypeId() != TRDimensionTypes.TARDIS) return false;
+        if (level.dimensionTypeRegistration() != TRDimensionTypes.TARDIS) return false;
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (BlockPos pos : betweenClosed(new BlockPos((int) box.maxX, (int) box.maxY, (int) box.maxZ), new BlockPos((int) box.minX, (int) box.minY, (int) box.minZ))) {

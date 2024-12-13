@@ -41,29 +41,29 @@ public class TardisRefined {
 
     public static void init() {
 
-        VortexRegistry.VORTEX_DEFERRED_REGISTRY.registerToModBus();
+        VortexRegistry.VORTEX_DEFERRED_REGISTRY.register();
 
-        TRItemRegistry.TABS.registerToModBus();
-        TRBlockRegistry.BLOCKS.registerToModBus();
-        TRItemRegistry.ITEMS.registerToModBus();
-        TREntityRegistry.ENTITY_TYPES.registerToModBus();
-        TRSoundRegistry.SOUNDS.registerToModBus();
-        TRBlockEntityRegistry.BLOCK_ENTITY_TYPES.registerToModBus();
-        TRManipulatorRecipeResultTypes.MANIPULATOR_RECIPE_RESULT_DEFERRED_REGISTRY.registerToModBus();
-        TRCraftingRecipeTypes.RECIPE_TYPE_DEFERRED_REGISTRY.registerToModBus();
-        TRCraftingRecipeSerializers.RECIPE_SERIALIZERS.registerToModBus();
+        TRItemRegistry.TABS.register();
+        TRBlockRegistry.BLOCKS.register();
+        TRItemRegistry.ITEMS.register();
+        TREntityRegistry.ENTITY_TYPES.register();
+        TRSoundRegistry.SOUNDS.register();
+        TRBlockEntityRegistry.BLOCK_ENTITY_TYPES.register();
+        TRManipulatorRecipeResultTypes.MANIPULATOR_RECIPE_RESULT_DEFERRED_REGISTRY.register();
+        TRCraftingRecipeTypes.RECIPE_TYPE_DEFERRED_REGISTRY.register();
+        TRCraftingRecipeSerializers.RECIPE_SERIALIZERS.register();
         TRDimensionTypes.register();
-        ChunkGenerators.CHUNK_GENERATORS.registerToModBus();
-        Features.FEATURES.registerToModBus();
-        TRParticles.TYPES.registerToModBus();
-        TRUpgrades.UPGRADE_DEFERRED_REGISTRY.registerToModBus();
-        ConsoleTheme.CONSOLE_THEME_DEFERRED_REGISTRY.registerToModBus();
-        ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.registerToModBus();
-        TRControlRegistry.CONTROL_DEFERRED_REGISTRY.registerToModBus();
-        TRArgumentTypeRegistry.COMMAND_ARGUMENT_TYPES.registerToModBus();
+        ChunkGenerators.CHUNK_GENERATORS.register();
+        Features.FEATURES.register();
+        TRParticles.TYPES.register();
+        TRUpgrades.UPGRADE_DEFERRED_REGISTRY.register();
+        ConsoleTheme.CONSOLE_THEME_DEFERRED_REGISTRY.register();
+        ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.register();
+        TRControlRegistry.CONTROL_DEFERRED_REGISTRY.register();
+        TRArgumentTypeRegistry.COMMAND_ARGUMENT_TYPES.register();
 
-        TRPointOfInterestTypes.POIS.registerToModBus();
-        TRVillagerProfession.PROFESSIONS.registerToModBus();
+        TRPointOfInterestTypes.POIS.register();
+        TRVillagerProfession.PROFESSIONS.register();
         //     TRPointOfInterestTypes.registerBlockStates();
 
         TRTagKeys.init();

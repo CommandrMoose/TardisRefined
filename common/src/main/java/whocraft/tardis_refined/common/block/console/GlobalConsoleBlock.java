@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.common.block.console;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -52,6 +53,11 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
 
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
     }
 
     @Nullable

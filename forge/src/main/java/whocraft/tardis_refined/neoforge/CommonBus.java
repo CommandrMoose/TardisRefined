@@ -69,7 +69,7 @@ public class CommonBus {
 
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
-        TardisRefinedCommand.register(event.getDispatcher());
+        TardisRefinedCommand.register(event.getDispatcher(), event.getBuildContext());
     }
 
     @SubscribeEvent

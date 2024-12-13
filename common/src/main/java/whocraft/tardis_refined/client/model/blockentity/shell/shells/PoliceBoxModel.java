@@ -7,6 +7,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class PoliceBoxModel extends ShellModel {
@@ -155,16 +156,18 @@ public class PoliceBoxModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         if (isBaseModel) {
             poseStack.scale(1.05f, 1.05f, 1.05f);
             poseStack.translate(0, -0.07, 0);
         }
-        handleAllAnimations(entity, frame, isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        int finalColor = RenderHelper.rgbaToInt(red, green, blue, getCurrentAlpha());
+        handleAllAnimations(entity, frame, isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, getCurrentAlpha());
 
-        frame.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
-        left_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
-        right_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
+        frame.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
+        left_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
+        right_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
     }
+
 
 }

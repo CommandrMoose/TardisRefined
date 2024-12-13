@@ -61,7 +61,7 @@ public class TardisNavLocation {
         TardisNavLocation loc = new TardisNavLocation(
                 BlockPos.of(tag.getLong("position")),
                 Direction.values()[tag.getInt("direction")],
-                ResourceKey.create(Registries.DIMENSION, ResourceLocation.fromNamespaceAndPath(tag.getString("dimension"))));
+                ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(tag.getString("dimension"))));
 
         if (tag.contains("name"))
             loc.setName(tag.getString("name"));

@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class PathfinderShellModel extends ShellModel {
@@ -79,15 +80,18 @@ public class PathfinderShellModel extends ShellModel {
     }
 
     @Override
-    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+    public void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         if (isBaseModel) {
             poseStack.scale(1.05f, 1.05f, 1.05f);
             poseStack.translate(0, -0.07, 0);
         }
-        handleAllAnimations(entity, bone3, isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        handleAllAnimations(entity, bone3, isBaseModel, open, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, getCurrentAlpha());
 
-        bone3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
-        l_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
-        r_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, this.getCurrentAlpha());
+        int finalColor = RenderHelper.rgbaToInt(red, green, blue, this.getCurrentAlpha());
+
+        bone3.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
+        l_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
+        r_door.render(poseStack, vertexConsumer, packedLight, packedOverlay, finalColor);
     }
+
 }
