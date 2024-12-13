@@ -13,14 +13,15 @@ import java.util.function.Supplier;
 
 public class TRVillagerProfession {
 
-    public static final DeferredRegistry<VillagerProfession> PROFESSIONS = DeferredRegistry.create(TardisRefined.MODID, Registries.VILLAGER_PROFESSION);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(TardisRefined.MODID, Registries.VILLAGER_PROFESSION);
 
-    public static final RegistrySupplier<VillagerProfession> PILOT = registerVillagerProfession("pilot", () -> createVillagerProfession(
+    public static final RegistryHolder<VillagerProfession, VillagerProfession> PILOT = registerVillagerProfession("pilot", () -> createVillagerProfession(
             "pilot",
             TRPointOfInterestTypes.CONSOLE_UNIT,
             TRSoundRegistry.DESTINATION_DING
     ));
-    public static final RegistrySupplier<VillagerProfession> ASTRONOMER = registerVillagerProfession("astronomer", () -> createVillagerProfession(
+
+    public static final RegistryHolder<VillagerProfession, VillagerProfession> ASTRONOMER = registerVillagerProfession("astronomer", () -> createVillagerProfession(
             "astronomer",
             TRPointOfInterestTypes.ASTRAL_MAP,
             new Supplier<SoundEvent>() {
@@ -31,7 +32,7 @@ public class TRVillagerProfession {
             }
     ));
 
-    public static RegistrySupplier<VillagerProfession> registerVillagerProfession(String name, Supplier<VillagerProfession> villagerProfessionSupplier) {
+    public static RegistryHolder<VillagerProfession, VillagerProfession> registerVillagerProfession(String name, Supplier<VillagerProfession> villagerProfessionSupplier) {
         return PROFESSIONS.register(name, villagerProfessionSupplier);
     }
 

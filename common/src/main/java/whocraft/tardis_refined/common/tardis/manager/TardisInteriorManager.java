@@ -148,10 +148,10 @@ public class TardisInteriorManager extends TickableHandler {
         this.isGeneratingDesktop = tag.getBoolean(NbtConstants.TARDIS_IM_GENERATING_DESKTOP);
         this.interiorGenerationCooldown = tag.getInt(NbtConstants.TARDIS_IM_GENERATION_COOLDOWN);
         this.hasGeneratedCorridors = tag.getBoolean(NbtConstants.TARDIS_IM_GENERATED_CORRIDORS);
-        this.preparedTheme = TardisDesktops.getDesktopById(ResourceLocation.fromNamespaceAndPath(tag.getString(NbtConstants.TARDIS_IM_PREPARED_THEME)));
-        this.currentTheme = tag.contains(NbtConstants.TARDIS_IM_CURRENT_THEME) ? TardisDesktops.getDesktopById(ResourceLocation.fromNamespaceAndPath((NbtConstants.TARDIS_IM_CURRENT_THEME))) : preparedTheme;
-        this.corridorAirlockCenter = NbtUtils.readBlockPos(tag.getCompound(NbtConstants.TARDIS_IM_AIRLOCK_CENTER));
-        this.humEntry = TardisHums.getHumById(ResourceLocation.fromNamespaceAndPath(tag.getString(NbtConstants.TARDIS_CURRENT_HUM)));
+        this.preparedTheme = TardisDesktops.getDesktopById(ResourceLocation.parse(tag.getString(NbtConstants.TARDIS_IM_PREPARED_THEME)));
+        this.currentTheme = tag.contains(NbtConstants.TARDIS_IM_CURRENT_THEME) ? TardisDesktops.getDesktopById(ResourceLocation.parse((NbtConstants.TARDIS_IM_CURRENT_THEME))) : preparedTheme;
+        this.corridorAirlockCenter = NbtUtils.readBlockPos(tag, NbtConstants.TARDIS_IM_AIRLOCK_CENTER).get();
+        this.humEntry = TardisHums.getHumById(ResourceLocation.parse(tag.getString(NbtConstants.TARDIS_CURRENT_HUM)));
 
         this.fuelForIntChange = tag.getDouble(NbtConstants.TARDIS_IM_FUEL_FOR_INT_CHANGE);
         if (!tag.contains(NbtConstants.TARDIS_IM_FUEL_FOR_INT_CHANGE)) {
@@ -318,7 +318,7 @@ public class TardisInteriorManager extends TickableHandler {
     }
 
     public List<LivingEntity> getCorridorEntities(Level level) {
-        return level.getEntitiesOfClass(LivingEntity.class, new AABB(STATIC_CORRIDOR_POSITION.north(2).west(2), STATIC_CORRIDOR_POSITION.south(2).east(2).above(4)));
+        return level.getEntitiesOfClass(LivingEntity.class, new AABB(STATIC_CORRIDOR_POSITION.north(2).west(2).getCenter(), STATIC_CORRIDOR_POSITION.south(2).east(2).above(4).getCenter()));
     }
 
     public List<LivingEntity> getAirlockEntities(Level level) {
@@ -327,7 +327,7 @@ public class TardisInteriorManager extends TickableHandler {
             return new ArrayList<>();
         }
 
-        return level.getEntitiesOfClass(LivingEntity.class, new AABB(corridorAirlockCenter.north(2).west(2), corridorAirlockCenter.south(2).east(2).above(4)));
+        return level.getEntitiesOfClass(LivingEntity.class, new AABB(corridorAirlockCenter.north(2).west(2).getCenter(), corridorAirlockCenter.south(2).east(2).above(4).getCenter()));
     }
 
     public boolean isInAirlock(LivingEntity livingEntity) {

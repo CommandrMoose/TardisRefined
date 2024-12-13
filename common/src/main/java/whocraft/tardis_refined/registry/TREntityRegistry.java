@@ -10,9 +10,9 @@ import whocraft.tardis_refined.common.entity.ControlEntity;
 
 public class TREntityRegistry {
 
-    public static final DeferredRegistry<EntityType<?>> ENTITY_TYPES = DeferredRegistry.create(TardisRefined.MODID, Registries.ENTITY_TYPE);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(TardisRefined.MODID, Registries.ENTITY_TYPE);
 
-    public static final RegistrySupplier<EntityType<ControlEntity>> CONTROL_ENTITY = ENTITY_TYPES.register("console_control", () -> registerStatic(ControlEntity::new, MobCategory.MISC, 0.125F, 0.125F, 64, 40, "console_control"));
+    public static final RegistryHolder<EntityType<?>, EntityType<ControlEntity>> CONTROL_ENTITY = ENTITY_TYPES.register("console_control", () -> registerStatic(ControlEntity::new, MobCategory.MISC, 0.125F, 0.125F, 64, 40, "console_control"));
 
     /**
      * @param factory

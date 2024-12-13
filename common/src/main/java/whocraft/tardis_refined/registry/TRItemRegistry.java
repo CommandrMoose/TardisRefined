@@ -12,27 +12,30 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class TRItemRegistry {
-    public static final DeferredRegistry<CreativeModeTab> TABS = DeferredRegistry.create(TardisRefined.MODID, Registries.CREATIVE_MODE_TAB);
-    public static final RegistrySupplier<CreativeModeTab> MAIN_TAB = TABS.register("main_tab", TRItemRegistry::getCreativeTab);
-    public static final DeferredRegistry<Item> ITEMS = DeferredRegistry.create(TardisRefined.MODID, Registries.ITEM);
-    public static List<RegistrySupplier<Item>> TAB_ITEMS = new ArrayList<>();
-    public static final RegistrySupplier<Item> KEY = register("tardis_key", () -> new KeyItem(new Item.Properties().stacksTo(1)), true);
-    public static final RegistrySupplier<Item> SCREWDRIVER = register("amethyst_screwdriver", () -> new ScrewdriverItem(new Item.Properties().stacksTo(1)), true);
-    public static final RegistrySupplier<Item> PATTERN_MANIPULATOR = register("pattern_manipulator", () -> new Item(new Item.Properties().stacksTo(1)), true);
-    public static final RegistrySupplier<Item> DRILL = register("drill", () -> new DrillItem(new Item.Properties().stacksTo(1)), true);
 
-    public static final RegistrySupplier<Item> RAW_ZEITON = register("raw_zeiton", () -> new Item(new Item.Properties()), true);
-    public static final RegistrySupplier<ZeitonIngotItem> ZEITON_INGOT = register("zeiton_ingot", () -> new ZeitonIngotItem(new Item.Properties()), true);
-    public static final RegistrySupplier<Item> ZEITON_NUGGET = register("zeiton_nugget", () -> new Item(new Item.Properties()), true);
-    public static final RegistrySupplier<GlassesItem> GLASSES = register("glasses", () -> new GlassesItem(new Item.Properties()), true);
-    public static final RegistrySupplier<MalletItem> MALLET = register("mallet", () -> new MalletItem(new Item.Properties().stacksTo(1).durability(50)), true);
-    public static final RegistrySupplier<DimensionSamplerItem> TEST_TUBE = register("test_tube", () -> new DimensionSamplerItem(new Item.Properties().stacksTo(1)), true);
+    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(TardisRefined.MODID, Registries.CREATIVE_MODE_TAB);
+    public static final RegistryHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = TABS.register("main_tab", TRItemRegistry::getCreativeTab);
 
 
-    private static <T extends Item> RegistrySupplier<T> register(String id, Supplier<T> itemSupplier, boolean addToTab) {
-        RegistrySupplier<T> item = ITEMS.register(id, itemSupplier);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(TardisRefined.MODID, Registries.ITEM);
+    public static List<RegistryHolder<Item, ?>> TAB_ITEMS = new ArrayList<>();
+    public static final RegistryHolder<Item, ?> KEY = register("tardis_key", () -> new KeyItem(new Item.Properties().stacksTo(1)), true);
+    public static final RegistryHolder<Item, ?> SCREWDRIVER = register("amethyst_screwdriver", () -> new ScrewdriverItem(new Item.Properties().stacksTo(1)), true);
+    public static final RegistryHolder<Item, ?> PATTERN_MANIPULATOR = register("pattern_manipulator", () -> new Item(new Item.Properties().stacksTo(1)), true);
+    public static final RegistryHolder<Item, ?> DRILL = register("drill", () -> new DrillItem(new Item.Properties().stacksTo(1)), true);
+
+    public static final RegistryHolder<Item, ?> RAW_ZEITON = register("raw_zeiton", () -> new Item(new Item.Properties()), true);
+    public static final RegistryHolder<Item, ?> ZEITON_INGOT = register("zeiton_ingot", () -> new ZeitonIngotItem(new Item.Properties()), true);
+    public static final RegistryHolder<Item, ?> ZEITON_NUGGET = register("zeiton_nugget", () -> new Item(new Item.Properties()), true);
+    public static final RegistryHolder<Item, ?> GLASSES = register("glasses", () -> new GlassesItem(new Item.Properties()), true);
+    public static final RegistryHolder<Item, ?> MALLET = register("mallet", () -> new MalletItem(new Item.Properties().stacksTo(1).durability(50)), true);
+    public static final RegistryHolder<Item, ?> TEST_TUBE = register("test_tube", () -> new DimensionSamplerItem(new Item.Properties().stacksTo(1)), true);
+
+
+    private static <T extends Item> RegistryHolder<Item, ?> register(String id, Supplier<T> itemSupplier, boolean addToTab) {
+        RegistryHolder<Item, ?> item = ITEMS.register(id, itemSupplier);
         if (addToTab) {
-            TAB_ITEMS.add((RegistrySupplier<Item>) item);
+            TAB_ITEMS.add(item);
         }
         return item;
     }

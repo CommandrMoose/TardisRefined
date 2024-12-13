@@ -127,12 +127,11 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
                     // if we fail to parse json, log an error and continue
                     // if we succeeded, add the resulting T to the map
                     this.codec.decode(JsonOps.INSTANCE, element)
-                            .get()
-                            .ifLeft(result -> {
+                            .ifSuccess(result -> {
                                 raws.add(result.getFirst());
                                 TardisRefined.LOGGER.info("Adding entry for {}", key);
                             })
-                            .ifRight(partial -> TardisRefined.LOGGER.error("Error deserializing json {} in folder {} from pack {}: {}", key, this.folderName, resource.sourcePackId(), partial.message()));
+                            .ifError(partial -> TardisRefined.LOGGER.error("Error deserializing json {} in folder {} from pack {}: {}", key, this.folderName, resource.sourcePackId(), partial.message()));
                 } catch (Exception e) {
                     TardisRefined.LOGGER.error(String.format(Locale.ENGLISH, "Error reading resource %s in folder %s from pack %s: ", key, this.folderName, resource.sourcePackId()), e);
                 }

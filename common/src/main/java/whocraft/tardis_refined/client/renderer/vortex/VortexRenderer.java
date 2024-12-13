@@ -60,7 +60,7 @@ public class VortexRenderer {
             renderCylinder(pose, row);
 
             pose.popPose();
-            tesselator.end();
+          //TODO ?  tesselator.end();
         }
 
         if (this.vortexType.hasDecals()) {
@@ -76,7 +76,7 @@ public class VortexRenderer {
                 pose.popPose();
             }
             //this.lightning_strike /= this.vortexType.rows / 2f;
-            tesselator.end();
+           //TODO ? tesselator.end();
         }
         this.lightning_strike *= 0.9f;
         pose.popPose();

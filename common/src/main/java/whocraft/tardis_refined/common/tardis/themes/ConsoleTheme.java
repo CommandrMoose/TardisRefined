@@ -8,9 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.themes.console.*;
-import whocraft.tardis_refined.patterns.sound.ConsoleSoundProfile;
-import whocraft.tardis_refined.registry.DeferredRegistry;
-import whocraft.tardis_refined.registry.RegistrySupplierHolder;
+import whocraft.tardis_refined.registry.DeferredRegister;
+import whocraft.tardis_refined.registry.RegistryBuilder;
+import whocraft.tardis_refined.registry.RegistryHolder;
 
 
 public class ConsoleTheme implements Theme {
@@ -19,26 +19,23 @@ public class ConsoleTheme implements Theme {
      * Registry Key for the ConsoleTheme registry. For addon mods, use this as the registry key
      */
     public static final ResourceKey<Registry<ConsoleTheme>> CONSOLE_THEME_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "console_theme"));
+    public static final Registry<ConsoleTheme> CONSOLE_THEME_REGISTRY = RegistryBuilder.create(CONSOLE_THEME_REGISTRY_KEY).build();
 
     /**
      * Tardis Refined instance of the ConsoleTheme registry. Addon Mods: DO NOT USE THIS, it is only for Tardis Refined use only
      */
-    public static final DeferredRegistry<ConsoleTheme> CONSOLE_THEME_DEFERRED_REGISTRY = DeferredRegistry.createCustom(TardisRefined.MODID, CONSOLE_THEME_REGISTRY_KEY, true);
-    /**
-     * Instance of registry containing all ConsoleTheme entries. Addon mod entries will be included in this registry as long as they are use the same ResourceKey<Registry<ObjectType>>.
-     */
-    public static final Registry<ConsoleTheme> CONSOLE_THEME_REGISTRY = CONSOLE_THEME_DEFERRED_REGISTRY.getRegistry().get();
+    public static final DeferredRegister<ConsoleTheme> CONSOLE_THEME_DEFERRED_REGISTRY = DeferredRegister.create(TardisRefined.MODID, CONSOLE_THEME_REGISTRY_KEY);
 
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> FACTORY = registerConsoleTheme("factory", new FactoryConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> CRYSTAL = registerConsoleTheme("crystal", new CrystalConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> COPPER = registerConsoleTheme("copper", new CopperConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> CORAL = registerConsoleTheme("coral", new CoralConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> TOYOTA = registerConsoleTheme("toyota", new ToyotaConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> VICTORIAN = registerConsoleTheme("victorian", new VictorianConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> MYST = registerConsoleTheme("myst", new MystConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> NUKA = registerConsoleTheme("nuka", new NukaConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> INITIATIVE = registerConsoleTheme("initiative", new InitiativeConsoleTheme());
-    public static final RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> REFURBISHED = registerConsoleTheme("refurbished", new RefurbishedConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> FACTORY = registerConsoleTheme("factory", new FactoryConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> CRYSTAL = registerConsoleTheme("crystal", new CrystalConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> COPPER = registerConsoleTheme("copper", new CopperConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> CORAL = registerConsoleTheme("coral", new CoralConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> TOYOTA = registerConsoleTheme("toyota", new ToyotaConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> VICTORIAN = registerConsoleTheme("victorian", new VictorianConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> MYST = registerConsoleTheme("myst", new MystConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> NUKA = registerConsoleTheme("nuka", new NukaConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> INITIATIVE = registerConsoleTheme("initiative", new InitiativeConsoleTheme());
+    public static final RegistryHolder<ConsoleTheme, ConsoleTheme> REFURBISHED = registerConsoleTheme("refurbished", new RefurbishedConsoleTheme());
     private final ConsoleThemeDetails consoleThemeDetails;
     private ResourceLocation translationKey;
 
@@ -47,8 +44,8 @@ public class ConsoleTheme implements Theme {
         this.consoleThemeDetails = consoleThemeDetails;
     }
 
-    private static RegistrySupplierHolder<ConsoleTheme, ConsoleTheme> registerConsoleTheme(String id, ConsoleThemeDetails themeDetails) {
-        return CONSOLE_THEME_DEFERRED_REGISTRY.registerHolder(id, () -> new ConsoleTheme(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, id), themeDetails));
+    private static RegistryHolder<ConsoleTheme, ConsoleTheme> registerConsoleTheme(String id, ConsoleThemeDetails themeDetails) {
+        return CONSOLE_THEME_DEFERRED_REGISTRY.register(id, () -> new ConsoleTheme(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, id), themeDetails));
     }
 
     public ControlSpecification[] getControlSpecificationList() {

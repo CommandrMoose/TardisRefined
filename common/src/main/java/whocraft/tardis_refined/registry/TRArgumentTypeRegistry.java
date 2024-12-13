@@ -14,15 +14,15 @@ import whocraft.tardis_refined.command.arguments.UpgradeArgumentType;
 
 public class TRArgumentTypeRegistry {
 
-    public static final DeferredRegistry<ArgumentTypeInfo<?, ?>> COMMAND_ARGUMENT_TYPES = DeferredRegistry.create(TardisRefined.MODID, Registries.COMMAND_ARGUMENT_TYPE);
+    public static final DeferredRegister<ArgumentTypeInfo<?, ?>> COMMAND_ARGUMENT_TYPES = DeferredRegister.create(TardisRefined.MODID, Registries.COMMAND_ARGUMENT_TYPE);
 
-    public static final RegistrySupplier<SingletonArgumentInfo<UpgradeArgumentType>> UPGRADE_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("upgrade", () ->
+    public static final RegistryHolder<ArgumentTypeInfo<?, ?>, ?> UPGRADE_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("upgrade", () ->
             registerByClass(UpgradeArgumentType.class, SingletonArgumentInfo.contextFree(UpgradeArgumentType::upgradeArgumentType)));
 
-    public static final RegistrySupplier<SingletonArgumentInfo<DesktopArgumentType>> DESKTOP_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("desktop", () ->
+    public static final RegistryHolder<ArgumentTypeInfo<?, ?>, ?> DESKTOP_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("desktop", () ->
             registerByClass(DesktopArgumentType.class, SingletonArgumentInfo.contextFree(DesktopArgumentType::desktopArgumentType)));
 
-    public static final RegistrySupplier<SingletonArgumentInfo<ShellArgumentType>> SHELL_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("shell", () ->
+    public static final RegistryHolder<ArgumentTypeInfo<?, ?>, ?> SHELL_ARGUMENT = COMMAND_ARGUMENT_TYPES.register("shell", () ->
             registerByClass(ShellArgumentType.class, SingletonArgumentInfo.contextFree(ShellArgumentType::shellArgumentType)));
 
     private static synchronized <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>, I extends ArgumentTypeInfo<A, T>> I registerByClass(Class<A> infoClass, I argumentTypeInfo) {

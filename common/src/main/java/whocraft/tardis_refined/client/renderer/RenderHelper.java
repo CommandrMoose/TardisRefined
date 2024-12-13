@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.resources.ResourceLocation;
@@ -40,35 +41,35 @@ public class RenderHelper {
 
     public static void renderFilledBox(PoseStack stack, VertexConsumer vertexConsumer, AABB box, int color, int combinedLightIn) {
         Matrix4f matrix = stack.last().pose();
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
 
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
 
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
 
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
 
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.maxY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.maxX, (float) box.minY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
 
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(color).setUv2(combinedLightIn);
-        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(color).setUv2(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.minY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.maxZ).setColor(color).setLight(combinedLightIn);
+        vertexConsumer.addVertex(matrix, (float) box.minX, (float) box.maxY, (float) box.minZ).setColor(color).setLight(combinedLightIn);
     }
 
 
@@ -93,12 +94,14 @@ public class RenderHelper {
         else RenderSystem.disableCull();
         RenderSystem.enableDepthTest();
         tesselator = Tesselator.getInstance();
-        tesselator.getBuilder().begin(mode, DefaultVertexFormat.POSITION_TEX_COLOR);
+        tesselator.begin(mode, DefaultVertexFormat.POSITION_TEX_COLOR);
         return tesselator;
     }
 
     public static void vertexUVColor(@NotNull PoseStack pose, float x, float y, float z, float u, float v, float r, float g, float b, float a) {
-        tesselator.getBuilder().addVertex(pose.last().pose(), x, y, z).setUv(u, v).setColor(r, g, b, a);
+        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+
+        tesselator.addVertex(pose.last().pose(), x, y, z).setUv(u, v).setColor(r, g, b, a);
     }
 
     public static class CustomProgressBar {

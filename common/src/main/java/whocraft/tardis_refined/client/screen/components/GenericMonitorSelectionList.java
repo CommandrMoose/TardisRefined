@@ -17,7 +17,7 @@ public class GenericMonitorSelectionList<T extends ObjectSelectionList.Entry<T>>
      * @param itemHeight - height of each item in the list
      */
     public GenericMonitorSelectionList(Minecraft minecraft, int width, int height, int xLeftPos, int yStart, int yEnd, int itemHeight) {
-        super(minecraft, width, height, yStart, yEnd, itemHeight); //Don't add anything to the y1 variable otherwise the entry button will be slighter taller than expected
+        super(minecraft, width, height, yStart, yEnd); //Don't add anything to the y1 variable otherwise the entry button will be slighter taller than expected
         this.setLeftPos(xLeftPos);
         this.setRenderHeader(false, 0);
 
@@ -31,11 +31,6 @@ public class GenericMonitorSelectionList<T extends ObjectSelectionList.Entry<T>>
     @Override
     protected int getScrollbarPosition() {
         return this.x0 + this.width;
-    }
-
-    @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
 

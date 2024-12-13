@@ -1,9 +1,12 @@
 package whocraft.tardis_refined.common.crafting.astral_manipulator;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import whocraft.tardis_refined.TardisRefined;
@@ -20,9 +23,15 @@ public class ManipulatorCraftingRecipeSerializer implements RecipeSerializer<Man
 
     }
 
+
     @Override
-    public Codec<ManipulatorCraftingRecipe> codec() {
+    public MapCodec<ManipulatorCraftingRecipe> codec() {
         return ManipulatorCraftingRecipe.CODEC;
+    }
+
+    @Override
+    public StreamCodec<RegistryFriendlyByteBuf, ManipulatorCraftingRecipe> streamCodec() {
+        return null;
     }
 
     @Override

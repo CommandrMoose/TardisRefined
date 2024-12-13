@@ -123,7 +123,6 @@ public class WaypointListScreen extends SelectionScreen {
     public GenericMonitorSelectionList createSelectionList() {
         int leftPos = this.width / 2 - 100;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 250, 80, leftPos - 70, this.topPos + 45, this.topPos + this.imageHeight - 45, 12);
-        selectionList.setRenderBackground(false);
 
         for (TardisWaypoint waypointEntry : WAYPOINTS) {
             selectionList.children().add(new SelectionListEntry(Component.literal(waypointEntry.getLocation().getName()), entry -> {

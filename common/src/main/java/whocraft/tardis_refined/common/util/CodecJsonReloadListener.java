@@ -95,12 +95,11 @@ public class CodecJsonReloadListener<T> extends SimpleJsonResourceReloadListener
             // if we fail to parse json, log an error and continue
             // if we succeeded, add the resulting T to the map
             this.codec.decode(JsonOps.INSTANCE, element)
-                    .get()
-                    .ifLeft(result -> {
+                    .ifSuccess(result -> {
                         entries.put(key, result.getFirst());
                         TardisRefined.LOGGER.info("Adding entry {}", key);
                     })
-                    .ifRight(partial -> TardisRefined.LOGGER.error("Failed to parse data json for {} due to: {}", key, partial.message()));
+                    .ifError(partial -> TardisRefined.LOGGER.error("Failed to parse data json for {} due to: {}", key, partial.message()));
         }
         return entries;
     }

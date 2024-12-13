@@ -27,7 +27,7 @@ public class UpgradeWidget {
 
 
     private static final int[] TEST_SPLIT_OFFSETS = new int[]{0, 10, -10, 25, -25};
-    private static final ResourceLocation TITLE_BOX_SPRITE = ResourceLocation.fromNamespaceAndPath("advancements/title_box");
+    private static final ResourceLocation TITLE_BOX_SPRITE = ResourceLocation.parse("advancements/title_box");
     public final Upgrade upgradeEntry;
     private final UpgradeTab tab;
     private final UpgradeHandler upgradeHandler;

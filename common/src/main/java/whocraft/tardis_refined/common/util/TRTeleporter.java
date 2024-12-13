@@ -162,7 +162,7 @@ public class TRTeleporter {
         if (teleportedEntity instanceof LivingEntity livingEntity) {
             if (livingEntity instanceof ServerPlayer serverPlayer) {
                 for (MobEffectInstance effectInstance : new ArrayList<>(livingEntity.getActiveEffects())) {
-                    serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effectInstance));
+                    serverPlayer.connection.send(new ClientboundUpdateMobEffectPacket(serverPlayer.getId(), effectInstance, false));
                 }
             } else {
                 reAddStatusEffectTempFix(livingEntity);

@@ -94,8 +94,8 @@ public class CuriosTrinketsUtil {
         private final String identifier;
 
         public Slot(String forge, String fabric) {
-            this.forge = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("curios:" + forge));
-            this.fabric = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("trinkets:" + fabric));
+            this.forge = TagKey.create(Registries.ITEM, ResourceLocation.parse("curios:" + forge));
+            this.fabric = TagKey.create(Registries.ITEM, ResourceLocation.parse("trinkets:" + fabric));
             this.identifier = Platform.isForge() ? forge : fabric;
         }
 

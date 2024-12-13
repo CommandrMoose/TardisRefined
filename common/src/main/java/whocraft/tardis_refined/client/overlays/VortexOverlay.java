@@ -105,7 +105,7 @@ public class VortexOverlay {
             float width = gg.guiWidth();
             float height = gg.guiHeight();
 
-            VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
+            VORTEX.vortexType = VortexRegistry.VORTEX_REGISTRY.get(tardisClientData.getVortex());
 
             /*
                 Needs tweaking, but am not quite sure how to fix.

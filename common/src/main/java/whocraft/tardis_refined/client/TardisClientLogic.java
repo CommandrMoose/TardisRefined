@@ -58,7 +58,7 @@ public class TardisClientLogic {
             }
         });
 
-        if (player.level().dimensionTypeId() == TRDimensionTypes.TARDIS) {
+        if (player.level().dimensionTypeRegistration() == TRDimensionTypes.TARDIS) {
             ClientLevel tardisLevel = Minecraft.getInstance().level;
             createWorldAmbience(player);
             handleTardisLoopingSounds(clientData, player, tardisLevel);

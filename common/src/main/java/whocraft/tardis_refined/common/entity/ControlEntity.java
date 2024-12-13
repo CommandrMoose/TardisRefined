@@ -257,9 +257,7 @@ public class ControlEntity extends Entity {
                         if (itemStack.is(TRItemRegistry.MALLET.get()) && !player.getCooldowns().isOnCooldown(TRItemRegistry.MALLET.get())) {
                             player.getCooldowns().addCooldown(TRItemRegistry.MALLET.get(), 600);
                             playSound(TRSoundRegistry.MALLET.get());
-                            itemStack.hurtAndBreak(15, player, (livingEntityx) -> {
-                                livingEntityx.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-                            });
+                            itemStack.hurtAndBreak(15, player, EquipmentSlot.MAINHAND);
 
                             getConsoleBlockEntity().getControlEntityList().forEach(controlEntity -> {
                                 controlEntity.realignControl();

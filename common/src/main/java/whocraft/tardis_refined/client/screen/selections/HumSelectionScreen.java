@@ -98,14 +98,13 @@ public class HumSelectionScreen extends SelectionScreen {
 
     @Override
     public Component getSelectedDisplayName() {
-        return Component.Serializer.fromJson(currentHumEntry.getNameComponent());
+        return Component.Serializer.fromJson(currentHumEntry.getNameComponent(), Minecraft.getInstance().player.registryAccess());
     }
 
     @Override
     public ObjectSelectionList createSelectionList() {
         int leftPos = this.width / 2 - 75;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 150, 80, leftPos, this.topPos + 30, this.topPos + this.imageHeight - 60, 12);
-        selectionList.setRenderBackground(false);
 
         Collection<HumEntry> knownHums = TardisHums.getRegistry().values();
         knownHums = knownHums.stream().sorted(Comparator.comparing(HumEntry::getNameComponent)).toList();
@@ -115,7 +114,7 @@ public class HumSelectionScreen extends SelectionScreen {
 
             // Check for if the tellraw name is incomplete, or fails to pass.
             try {
-                var json = Component.Serializer.fromJson(new StringReader(humEntry.getNameComponent()));
+                var json = Component.Serializer.fromJson(humEntry.getNameComponent(), Minecraft.getInstance().player.registryAccess());
                 name = json;
             } catch (Exception ex) {
                 TardisRefined.LOGGER.error("Could not process Name for hum " + humEntry.getIdentifier().toString());

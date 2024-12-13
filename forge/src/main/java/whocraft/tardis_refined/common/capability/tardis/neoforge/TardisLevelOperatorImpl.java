@@ -42,7 +42,7 @@ public class TardisLevelOperatorImpl implements ICapabilitySerializable<Compound
     @SubscribeEvent
     public static void onLevelCapabilities(AttachCapabilitiesEvent<Level> event) {
         if (event.getObject() instanceof ServerLevel level) {
-            if (level.dimensionTypeId().location() == TRDimensionTypes.TARDIS.location()) {
+            if (level.dimensionTypeRegistration().location() == TRDimensionTypes.TARDIS.location()) {
                 event.addCapability(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis_data"), new TardisLevelOperatorImpl((ServerLevel) event.getObject()));
             }
         }
@@ -52,7 +52,7 @@ public class TardisLevelOperatorImpl implements ICapabilitySerializable<Compound
     public static void onLevelTick(TickEvent.LevelTickEvent event) {
         if (event.level instanceof ServerLevel level) {
             if (event.phase == TickEvent.Phase.START) {
-                if (event.level.dimensionTypeId().location() == TRDimensionTypes.TARDIS.location()) {
+                if (event.level.dimensionTypeRegistration().location() == TRDimensionTypes.TARDIS.location()) {
                     event.level.getCapability(TardisLevelOperatorImpl.TARDIS_DATA).ifPresent(x -> x.tick(level));
                 }
             }

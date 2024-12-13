@@ -20,7 +20,7 @@ public class DimensionUtil {
     public static Set<ResourceKey<Level>> getTardisLevels(MinecraftServer server) {
         Set<ResourceKey<Level>> set = Sets.newHashSet();
         for (ServerLevel level : server.getAllLevels()) {
-            if (level.dimensionTypeId() == TRDimensionTypes.TARDIS) {
+            if (level.dimensionTypeRegistration() == TRDimensionTypes.TARDIS) {
                 set.add(level.dimension());
             }
         }

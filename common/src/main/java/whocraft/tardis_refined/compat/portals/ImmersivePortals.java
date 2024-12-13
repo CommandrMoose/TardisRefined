@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import qouteall.dimlib.api.DimensionAPI;
 import qouteall.imm_ptl.core.api.PortalAPI;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.MiscHelper;
@@ -34,7 +35,7 @@ import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.compat.ModCompatChecker;
-import whocraft.tardis_refined.registry.RegistrySupplier;
+import whocraft.tardis_refined.registry.RegistryHolder;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class ImmersivePortals {
     private static final Map<UUID, PortalEntry> EXISTING_PORTALS = new HashMap<>();
     // First 4 is exterior, last 4 is door offsets, in order of East, South, West, North
     private static final Map<ResourceLocation, PortalOffets> THEME_OFFSETS = new HashMap<>();
-    public static RegistrySupplier<EntityType<BotiPortalEntity>> BOTI_PORTAL = null;
+    public static RegistryHolder<EntityType<?>, EntityType<BotiPortalEntity>> BOTI_PORTAL = null;
 
     public static void clearPortalCache() {
         EXISTING_PORTALS.clear();
@@ -226,8 +227,8 @@ public class ImmersivePortals {
 
 
     private static void detectMissingSetup() {
-        for (ResourceLocation value : ShellTheme.SHELL_THEME_REGISTRY.keySet()) {
-            if (!isShellThemeSupported(value) && !value.equals(ShellTheme.getKey(ShellTheme.BRIEFCASE.get()))) {
+        for (RegistryHolder<ShellTheme, ? extends ShellTheme> value : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.getEntries()) {
+            if (!isShellThemeSupported(value.getId()) && !value.getId().equals(ShellTheme.getKey(ShellTheme.BRIEFCASE.get()))) {
                 TardisRefined.LOGGER.info("{} shell has not been setup for ImmersivePortals", value);
             }
         }
@@ -248,7 +249,7 @@ public class ImmersivePortals {
                 if (!door.isMainDoor()) {
                     return true;
                 }
-                if (serverLevel.dimensionTypeId().equals(TRDimensionTypes.TARDIS)) {
+                if (serverLevel.dimensionTypeRegistration().equals(TRDimensionTypes.TARDIS)) {
                     TardisLevelOperator.get(serverLevel).ifPresent(ImmersivePortals::destroyPortals);
                 }
             }
@@ -390,11 +391,10 @@ public class ImmersivePortals {
 
         //TODO Is this important? newPortal.initCullableRange(portal.cullableXStart * portal.scaling, portal.cullableXEnd * portal.scaling, -portal.cullableYStart * portal.scaling, -portal.cullableYEnd * portal.scaling);
 
-        newPortal.width = portal.width;
-        newPortal.height = portal.height;
-        newPortal.axisW = new Vec3(1, 0, 0);
-        newPortal.axisH = new Vec3(0, 1, 0);
-
+        newPortal.setWidth(portal.getWidth());
+        newPortal.setHeight(portal.getHeight());
+        newPortal.setAxisH(new Vec3(1, 0, 0));
+        newPortal.setAxisW(new Vec3(0, 1, 0));
         PortalManipulation.rotatePortalBody(newPortal, DQuaternion.fromMcQuaternion(quat.toMcQuaternion()));
 
         return newPortal;

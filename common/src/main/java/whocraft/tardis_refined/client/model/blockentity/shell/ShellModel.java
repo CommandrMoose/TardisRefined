@@ -13,6 +13,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.client.TardisClientData;
+import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 import whocraft.tardis_refined.patterns.ShellPattern;
 
@@ -82,7 +83,7 @@ public abstract class ShellModel extends HierarchicalModel {
 
     public abstract void setDoorPosition(boolean open);
 
-    public abstract void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color);
+    public abstract void renderShell(GlobalShellBlockEntity entity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha);
 
     public ResourceLocation getShellTexture(ShellPattern pattern, boolean isEmmissive) {
         return texture(pattern, isEmmissive);
@@ -117,7 +118,7 @@ public abstract class ShellModel extends HierarchicalModel {
         return currentAlpha;
     }
 
-    public void handleAllAnimations(GlobalShellBlockEntity entity, ModelPart root, boolean isBaseModel, boolean isDoorOpen, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+    public void handleAllAnimations(GlobalShellBlockEntity entity, ModelPart root, boolean isBaseModel, boolean isDoorOpen, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay,  float red, float green, float blue, float alpha) {
         if (entity.getTardisId() == null) return;
         entity.liveliness.start(12);
 
@@ -134,11 +135,11 @@ public abstract class ShellModel extends HierarchicalModel {
             this.animate(reactions.ROTOR_ANIMATION, MODEL_TAKEOFF, reactions.takeOffTime * ANIMATION_SPEED);
         }
 
-        currentAlpha = (reactions.isFlying()) ? (this.initAlpha() - this.fadeValue().y) * 0.1f : baseAlpha;
+        currentAlpha = (reactions.isFlying()) ? (this.initAlpha() - this.fadeValue().y) * 0.1f : alpha;
 
-        handleSpecialAnimation(entity, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, baseAlpha);
+        handleSpecialAnimation(entity, poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 
-        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, reactions.isFlying() && !ignoreAnmationAlpha ? this.getCurrentAlpha() : baseAlpha);
+        this.root().render(poseStack, vertexConsumer, packedLight, packedOverlay, RenderHelper.rgbaToInt(red, green, blue, reactions.isFlying() && !ignoreAnmationAlpha ? this.getCurrentAlpha() : alpha));
     }
 
     public void handleSpecialAnimation(GlobalShellBlockEntity entity, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float baseAlpha) {

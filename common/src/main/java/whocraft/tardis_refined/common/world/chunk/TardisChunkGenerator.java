@@ -1,6 +1,6 @@
 package whocraft.tardis_refined.common.world.chunk;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -10,9 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.biome.FixedBiomeSource;
+import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.world.ChunkGenerators;
@@ -33,14 +30,13 @@ import whocraft.tardis_refined.registry.TRARSStructurePieceRegistry;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.function.Function;
 
 import static whocraft.tardis_refined.common.tardis.TardisArchitectureHandler.EYE_OF_HARMONY_PLACEMENT;
 
 public class TardisChunkGenerator extends ChunkGenerator {
-    public static final Codec<TardisChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(RegistryOps.retrieveElement(ChunkGenerators.TARDIS_BIOME)).apply(instance, instance.stable(TardisChunkGenerator::new)));
+    public static final MapCodec<TardisChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(RegistryOps.retrieveElement(ChunkGenerators.TARDIS_BIOME)).apply(instance, instance.stable(TardisChunkGenerator::new)));
 
 
     public final RandomSource random;
@@ -50,11 +46,21 @@ public class TardisChunkGenerator extends ChunkGenerator {
     public final int arsChunkSize = ARSStructurePiece.LOCKED_PIECE_CHUNK_SIZE;
     private final int chunkSize = 16;
 
-
-    public TardisChunkGenerator(Holder<Biome> holder) {
-        super(new FixedBiomeSource(holder));
+    public TardisChunkGenerator(BiomeSource biomeSource) {
+        super(biomeSource);
         this.random = RandomSource.create();
     }
+
+    public TardisChunkGenerator(BiomeSource biomeSource, Function<Holder<Biome>, BiomeGenerationSettings> function) {
+        super(biomeSource, function);
+        this.random = RandomSource.create();
+    }
+
+
+    /*public TardisChunkGenerator(Holder<Biome> holder) {
+        super(new FixedBiomeSource(holder));
+        this.random = RandomSource.create();
+    }*/
 
     @Override
     public void applyBiomeDecoration(WorldGenLevel pLevel, ChunkAccess pChunk, StructureManager pStructureManager) {
@@ -173,8 +179,9 @@ public class TardisChunkGenerator extends ChunkGenerator {
         //super.createReferences(pLevel, pStructureManager, pChunk);
     }
 
+
     @Override
-    public Codec<TardisChunkGenerator> codec() {
+    protected MapCodec<? extends ChunkGenerator> codec() {
         return CODEC;
     }
 
@@ -198,7 +205,7 @@ public class TardisChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(Executor executor, Blender p_223210_, RandomState p_223211_, StructureManager p_223212_, ChunkAccess access) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState randomState, StructureManager structureManager, ChunkAccess access) {
 
         // Flatworlds appear to use this function instead of the surface.
         BlockPos cornerPos = new BlockPos(access.getPos().getMinBlockX(), TardisDimensionConstants.TARDIS_ROOT_GENERATION_MIN_HEIGHT - 5, access.getPos().getMinBlockZ());
@@ -212,7 +219,6 @@ public class TardisChunkGenerator extends ChunkGenerator {
                 access.setBlockState(pos, TRBlockRegistry.FOOLS_STONE.get().defaultBlockState(), false);
             }
         }
-
 
         return CompletableFuture.completedFuture(access);
     }

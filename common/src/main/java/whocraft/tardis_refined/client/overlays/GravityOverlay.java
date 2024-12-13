@@ -52,7 +52,7 @@ public class GravityOverlay {
             // Calculate the longest key text width
             int maxWidth = Math.max(fontRenderer.width(ascendKeyText), fontRenderer.width(descendKeyText));
 
-            MultiBufferSource.BufferSource renderImpl = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+            MultiBufferSource.BufferSource renderImpl = Minecraft.getInstance().renderBuffers().bufferSource();
 
             // Render both key texts
             fontRenderer.drawInBatch(

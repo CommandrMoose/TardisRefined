@@ -8,8 +8,8 @@ import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCra
 
 public class TRCraftingRecipeSerializers {
 
-    public static final DeferredRegistry<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegistry.create(TardisRefined.MODID, Registries.RECIPE_SERIALIZER);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(TardisRefined.MODID, Registries.RECIPE_SERIALIZER);
 
-    public static final RegistrySupplier<ManipulatorCraftingRecipeSerializer> ASTRAL_MANIPULATOR = RECIPE_SERIALIZERS.register("astral_manipulator", () -> new ManipulatorCraftingRecipeSerializer());
+    public static final RegistryHolder<RecipeSerializer<?>, ManipulatorCraftingRecipeSerializer> ASTRAL_MANIPULATOR = RECIPE_SERIALIZERS.register("astral_manipulator", () -> new ManipulatorCraftingRecipeSerializer());
 
 }

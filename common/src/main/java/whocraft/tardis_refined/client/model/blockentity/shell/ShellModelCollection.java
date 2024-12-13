@@ -125,7 +125,7 @@ public class ShellModelCollection {
     }
 
     private void validateModels() {
-        for (ResourceLocation resourceLocation : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.keySet()) {
+        for (ResourceLocation resourceLocation : ShellTheme.SHELL_THEME_REGISTRY.keySet()) {
             if(!SHELL_MODELS.containsKey(resourceLocation)){
                 TardisRefined.LOGGER.info("There was no model setup for shell theme {}", resourceLocation);
             }

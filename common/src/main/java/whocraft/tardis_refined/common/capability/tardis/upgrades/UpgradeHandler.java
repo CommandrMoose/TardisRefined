@@ -35,7 +35,7 @@ public class UpgradeHandler {
     }
 
     public double calculateProgress() {
-        int totalUpgrades = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.getRegistry().get().size();
+        int totalUpgrades = TRUpgrades.UPGRADE_REGISTRY.size();
         int unlockedCount = unlockedUpgrades.size();
 
         if (totalUpgrades == 0) {
@@ -185,7 +185,7 @@ public class UpgradeHandler {
         ListTag unlockedUpgradesTag = new ListTag();
         for (Upgrade upgrade : this.unlockedUpgrades) {
 
-            if (TRUpgrades.UPGRADE_DEFERRED_REGISTRY.getKey(upgrade) == null) {
+            if (TRUpgrades.UPGRADE_REGISTRY.getKey(upgrade) == null) {
                 continue;
             }
 
@@ -203,7 +203,7 @@ public class UpgradeHandler {
         this.overallTardisPoints = nbt.getInt("OverallPoints");
         this.unlockedUpgrades.clear();
         for (Tag upgrade : nbt.getList("UnlockedUpgrades", StringTag.TAG_STRING)) {
-            this.unlockedUpgrades.add(TRUpgrades.UPGRADE_REGISTRY.get(ResourceLocation.fromNamespaceAndPath(upgrade.getAsString())));
+            this.unlockedUpgrades.add(TRUpgrades.UPGRADE_REGISTRY.get(ResourceLocation.parse(upgrade.getAsString())));
         }
     }
 }

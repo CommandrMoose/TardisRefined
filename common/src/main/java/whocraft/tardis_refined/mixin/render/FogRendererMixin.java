@@ -41,7 +41,7 @@ public class FogRendererMixin {
 
             ClientLevel level = Minecraft.getInstance().level;
 
-            if (level.dimensionTypeId() != TRDimensionTypes.TARDIS) return;
+            if (level.dimensionTypeRegistration() != TRDimensionTypes.TARDIS) return;
 
             TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 

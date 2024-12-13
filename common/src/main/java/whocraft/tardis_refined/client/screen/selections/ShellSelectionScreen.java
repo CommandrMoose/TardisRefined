@@ -37,6 +37,7 @@ import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ShellSelectionScreen extends SelectionScreen {
@@ -97,7 +98,7 @@ public class ShellSelectionScreen extends SelectionScreen {
 
         patternButton = addRenderableWidget(Button.builder(Component.literal(""), button -> {
             pattern = ShellPatterns.next(this.patternCollection, this.pattern);
-            button.setMessage(Component.Serializer.fromJson(new StringReader(this.pattern.name())));
+            button.setMessage(Objects.requireNonNull(Component.Serializer.fromJson(this.pattern.name(), Minecraft.getInstance().level.registryAccess())));
         }).pos(width / 2 + 14, (height) / 2 + 34).size(70, 20).build());
 
         patternButton.visible = false; //Hide when initialised. We will only show it when there are more than 1 pattern for a shell (via its {@link PatternCollection} )
@@ -227,8 +228,6 @@ public class ShellSelectionScreen extends SelectionScreen {
         int leftPos = width / 2 - 5;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, leftPos, this.topPos + 30, this.topPos + this.imageHeight - 60, 12);
 
-        selectionList.setRenderBackground(false);
-
         for (Holder.Reference<ShellTheme> shellTheme : ShellTheme.SHELL_THEME_REGISTRY.holders().toList()) {
             ShellTheme theme = shellTheme.value();
             ResourceLocation shellThemeId = shellTheme.key().location();
@@ -250,7 +249,7 @@ public class ShellSelectionScreen extends SelectionScreen {
                 patternButton.visible = themeHasPatterns;
 
                 if (themeHasPatterns) //Update the button name now that we have confirmed that there is more than one pattern in the shell
-                    this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(pattern.name())));
+                    this.patternButton.setMessage(Objects.requireNonNull(Component.Serializer.fromJson(pattern.name(), Minecraft.getInstance().level.registryAccess())));
 
                 age = 0;
                 entry.setChecked(true);

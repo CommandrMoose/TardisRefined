@@ -83,10 +83,11 @@ public class BotiPortalEntity extends Portal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(TARDIS_ID, Optional.of(UUID.randomUUID()));
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(TARDIS_ID, Optional.of(UUID.randomUUID()));
     }
+
 
     public UUID getTardisId() {
         return this.getEntityData().get(TARDIS_ID).get();

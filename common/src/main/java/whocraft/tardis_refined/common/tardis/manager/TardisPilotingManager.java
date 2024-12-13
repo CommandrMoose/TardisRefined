@@ -118,7 +118,7 @@ public class TardisPilotingManager extends TickableHandler {
         this.targetLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.TARGET_LOCATION);
         this.fastReturnLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.RETURN_LOCATION);
 
-        this.currentConsoleBlockPos = NbtUtils.readBlockPos(tag.getCompound(CURRENT_CONSOLE_POS));
+        this.currentConsoleBlockPos = NbtUtils.readBlockPos(tag, CURRENT_CONSOLE_POS).get();
 
 
         this.ticksCrashing = tag.getInt(NbtConstants.TICKS_CRASHING);
@@ -1150,7 +1150,7 @@ public class TardisPilotingManager extends TickableHandler {
     private int getLatestSpeedModifier() {
         UpgradeHandler upgradeHandler = this.operator.getUpgradeHandler();
 
-        this.speedModifier = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.entrySet().stream()
+        this.speedModifier = TRUpgrades.UPGRADE_REGISTRY.entrySet().stream()
                 .map(Map.Entry::getValue)
                 .filter(upgrade -> upgrade instanceof SpeedUpgrade)
                 .map(upgrade -> (SpeedUpgrade) upgrade)

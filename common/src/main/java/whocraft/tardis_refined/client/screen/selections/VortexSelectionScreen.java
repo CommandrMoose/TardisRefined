@@ -105,7 +105,7 @@ public class VortexSelectionScreen extends SelectionScreen {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(20));
         VORTEX.time.speed = 0.3;
-        VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(currentVortex);
+        VORTEX.vortexType = VortexRegistry.VORTEX_REGISTRY.get(currentVortex);
         VORTEX.renderVortex(guiGraphics, 1, false);
         RenderSystem.restoreProjectionMatrix();
         poseStack.popPose();
@@ -161,7 +161,7 @@ public class VortexSelectionScreen extends SelectionScreen {
 
     @Override
     public Component getSelectedDisplayName() {
-        VortexRegistry theme = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(this.currentVortex);
+        VortexRegistry theme = VortexRegistry.VORTEX_REGISTRY.get(this.currentVortex);
         return theme.getDisplayName();
     }
 
@@ -169,8 +169,6 @@ public class VortexSelectionScreen extends SelectionScreen {
     public GenericMonitorSelectionList createSelectionList() {
         int leftPos = width / 2 - 5;
         GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 100, 80, leftPos, this.topPos + 30, this.topPos + this.imageHeight - 60, 12);
-
-        selectionList.setRenderBackground(false);
 
         for (Holder.Reference<VortexRegistry> shellTheme : VortexRegistry.VORTEX_REGISTRY.holders().toList()) {
             VortexRegistry theme = shellTheme.value();

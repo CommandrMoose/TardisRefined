@@ -53,17 +53,6 @@ public class PlayerUtil {
         }
     }
 
-    public static void applyPotionIfAbsent(LivingEntity player, MobEffect potion, int length, int amplifier, boolean ambient, boolean showParticles) {
-        if (potion == null) return;
-        if (player.getEffect(potion) == null) {
-            player.addEffect(new MobEffectInstance(potion, length, amplifier, ambient, showParticles));
-        }
-    }
-
-    public static AABB getReach(BlockPos pos, int range) {
-        return new AABB(pos.above(range).north(range).west(range), pos.below(range).south(range).east(range));
-    }
-
     /**
      * Checks if the given item is in the given hand of the given entity.
      *

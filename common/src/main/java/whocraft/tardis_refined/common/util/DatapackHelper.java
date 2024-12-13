@@ -41,10 +41,10 @@ public class DatapackHelper {
         Path datapackRoot = rootDir.resolve(datapackName);
         Path datapackDataFolder = datapackRoot.resolve("data");
         String fileExtension = ".json";
-        JsonObject currentDesktop = DesktopTheme.getCodec().encodeStart(JsonOps.INSTANCE, desktop).get()
-                .ifRight(right -> {
+        JsonObject currentDesktop = DesktopTheme.getCodec().encodeStart(JsonOps.INSTANCE, desktop)
+                .ifError(right -> {
                     TardisRefined.LOGGER.error(right.message());
-                }).orThrow().getAsJsonObject();
+                }).getOrThrow().getAsJsonObject();
         Path output = createAndValidatePathToDatapackObject(datapackDataFolder, desktop.getIdentifier(), TardisDesktops.getReloadListener(), fileExtension);
         createPackDefinition(datapackRoot);
         if (createStructure(level, bottomCorner, topCorner, includeEntities, structure, datapackDataFolder)) {
@@ -99,7 +99,7 @@ public class DatapackHelper {
             return false;
         }
 
-        AABB boundingBox = new AABB(bottomCorner, topCorner);
+        AABB boundingBox = new AABB(bottomCorner.getCenter(), topCorner.getCenter());
 
         ////===Size Calculation Start===
         // This mimics using the Structure Block's Detect Size feature with CORNER mode, where the start and end corners need to be placed one block diagonally outside the structure area.
@@ -163,13 +163,13 @@ public class DatapackHelper {
 
     private static Path createAndValidatePathToDatapackObject(Path path, ResourceLocation resourceLocation, String folderName, String fileExtension) {
         if (resourceLocation.getPath().contains("//")) {
-            throw ResourceLocation.fromNamespaceAndPathException("Invalid resource path: " + resourceLocation);
+            throw new IllegalArgumentException("Invalid resource path: " + resourceLocation);
         } else {
             Path path2 = createPathToResult(path, resourceLocation, folderName, fileExtension);
             if (path2.startsWith(path) && FileUtil.isPathNormalized(path2) && FileUtil.isPathPortable(path2)) {
                 return path2;
             } else {
-                throw ResourceLocation.fromNamespaceAndPathException("Invalid resource path: " + path2);
+                throw new IllegalArgumentException("Invalid resource path: " + path2);
             }
         }
     }
@@ -180,7 +180,7 @@ public class DatapackHelper {
             Path folder = datapackRoot.resolve(folderName);
             return FileUtil.createPathToResource(folder, resourceLocation.getPath(), fileExtension);
         } catch (InvalidPathException e) {
-            throw ResourceLocation.fromNamespaceAndPathException("Invalid resource path: " + resourceLocation, e);
+            throw new IllegalArgumentException("Invalid resource path: " + resourceLocation, e);
         }
     }
 }
