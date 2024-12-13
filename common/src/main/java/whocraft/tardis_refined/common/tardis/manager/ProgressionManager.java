@@ -60,6 +60,11 @@ public class ProgressionManager extends BaseHandler {
     }
 
     public boolean isLevelDiscovered(ResourceKey<Level> level) {
+
+        if(!TRConfig.SERVER.ADVENTURE_MODE.get()){
+            return true;
+        }
+
         return ALLOWED_LEVELS.contains(level);
     }
 
