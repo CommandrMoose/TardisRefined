@@ -2,44 +2,38 @@ package whocraft.tardis_refined.common.network.messages.sync;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
 import whocraft.tardis_refined.common.network.MessageType;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.network.handler.HandleSyncDimensions;
 
-public class S2CSyncLevelList extends MessageS2C {
+public record S2CSyncLevelList(ResourceKey<Level> level, boolean add) implements CustomPacketPayload, NetworkManager.Handler<S2CSyncLevelList> {
 
-    public ResourceKey<Level> level;
-    public boolean add;
+    public static final CustomPacketPayload.Type<S2CSyncLevelList> TYPE = new CustomPacketPayload.Type<S2CSyncLevelList>(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "sync_levels"));
 
-    public S2CSyncLevelList(ResourceKey<Level> level, boolean add) {
-        this.level = level;
-        this.add = add;
-    }
+    public static final StreamCodec<FriendlyByteBuf, S2CSyncLevelList> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeResourceKey(ref.level());
+                buf.writeBoolean(ref.add());
+            },
+            buf -> new S2CSyncLevelList(buf.readResourceKey(Registries.DIMENSION), buf.readBoolean())
+    );
 
-    public S2CSyncLevelList(FriendlyByteBuf buf) {
-        this.level = buf.readResourceKey(Registries.DIMENSION);
-        this.add = buf.readBoolean();
-    }
-
-    @NotNull
     @Override
-    public MessageType getType() {
-        return TardisNetwork.SYNC_LEVELS;
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeResourceKey(this.level);
-        buf.writeBoolean(this.add);
-    }
-
-    @Override
-    public void handle(MessageContext context) {
+    public void receive(S2CSyncLevelList value, NetworkManager.Context context) {
         HandleSyncDimensions.handleDimSyncPacket(this.level, this.add);
     }
 }

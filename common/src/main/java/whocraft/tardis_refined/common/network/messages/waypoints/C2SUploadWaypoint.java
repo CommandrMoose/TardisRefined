@@ -2,61 +2,54 @@ package whocraft.tardis_refined.common.network.messages.waypoints;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.waypoints.CoordInputType;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.network.MessageC2S;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.network.NetworkManager;
+import net.minecraft.network.codec.StreamCodec;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.manager.TardisWaypointManager;
 
-public class C2SUploadWaypoint extends MessageC2S {
+public record C2SUploadWaypoint(TardisNavLocation tardisNavLocation, CoordInputType coordInputType)
+        implements CustomPacketPayload, NetworkManager.Handler<C2SUploadWaypoint> {
 
-    TardisNavLocation tardisNavLocation;
-    CoordInputType coordInputType;
+    public static final CustomPacketPayload.Type<C2SUploadWaypoint> TYPE = new CustomPacketPayload.Type<>(
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "upload_waypoint"));
 
-    public C2SUploadWaypoint(TardisNavLocation tardisNavLocation, CoordInputType coordInputType) {
-        this.tardisNavLocation = tardisNavLocation;
-        this.coordInputType = coordInputType;
-    }
+    public static final StreamCodec<FriendlyByteBuf, C2SUploadWaypoint> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeNbt(ref.tardisNavLocation().serialise());
+                buf.writeUtf(ref.coordInputType().name());
+            },
+            buf -> new C2SUploadWaypoint(
+                    TardisNavLocation.deserialize(buf.readNbt()),
+                    CoordInputType.valueOf(buf.readUtf())
+            )
+    );
 
-
-    public C2SUploadWaypoint(FriendlyByteBuf buf) {
-        CompoundTag tardisNav = buf.readNbt();
-        this.tardisNavLocation = TardisNavLocation.deserialize(tardisNav);
-        this.coordInputType = CoordInputType.valueOf(buf.readUtf());
-    }
-
-
-    @NotNull
     @Override
-    public MessageType getType() {
-        return TardisNetwork.UPLOAD_WAYPOINT;
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeNbt(tardisNavLocation.serialise());
-        buf.writeUtf(coordInputType.name());
-    }
-
-    @Override
-    public void handle(MessageContext context) {
-        ServerPlayer player = context.getPlayer();
+    public void receive(C2SUploadWaypoint value, NetworkManager.Context context) {
+        ServerPlayer player = (ServerPlayer) context.getPlayer();
         ServerLevel serverLevel = player.serverLevel();
 
         TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
-            if (coordInputType == CoordInputType.WAYPOINT) {
+            if (value.coordInputType() == CoordInputType.WAYPOINT) {
                 TardisWaypointManager tardisWaypointManager = tardisLevelOperator.getTardisWaypointManager();
-                tardisWaypointManager.addWaypoint(tardisNavLocation.copy(), tardisNavLocation.getName());
+                tardisWaypointManager.addWaypoint(value.tardisNavLocation().copy(), value.tardisNavLocation().getName());
             } else {
                 TardisPilotingManager pilotManager = tardisLevelOperator.getPilotingManager();
-                pilotManager.setTargetLocation(tardisNavLocation.copy());
+                pilotManager.setTargetLocation(value.tardisNavLocation().copy());
             }
         });
     }

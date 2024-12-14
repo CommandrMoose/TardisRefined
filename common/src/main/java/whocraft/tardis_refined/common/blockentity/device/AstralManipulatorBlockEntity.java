@@ -23,10 +23,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.block.device.AstralManipulatorBlock;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorBlockResult;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingIngredient;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorItemResult;
 import whocraft.tardis_refined.common.items.ScrewdriverItem;
 import whocraft.tardis_refined.common.items.ScrewdriverMode;
 import whocraft.tardis_refined.common.util.PlayerUtil;
@@ -206,7 +202,7 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
 
     private boolean attemptToBuild(BlockPos pointA, BlockPos pointB) {
 
-        var submittedBlocks = new ArrayList<ManipulatorCraftingIngredient>();
+     /*   var submittedBlocks = new ArrayList<ManipulatorCraftingIngredient>();
 
         // Grab the absolutes for these items.
         float xDiff = Math.abs(pointA.getX() - pointB.getX());
@@ -291,7 +287,7 @@ public class AstralManipulatorBlockEntity extends BlockEntity {
                 return true;
             }
 
-        }
+        }*/
 
         return false;
     }

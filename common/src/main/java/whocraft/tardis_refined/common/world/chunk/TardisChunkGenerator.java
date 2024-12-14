@@ -3,14 +3,13 @@ package whocraft.tardis_refined.common.world.chunk;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,20 +23,22 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.world.ChunkGenerators;
 import whocraft.tardis_refined.constants.TardisDimensionConstants;
 import whocraft.tardis_refined.registry.TRARSStructurePieceRegistry;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
 
 import static whocraft.tardis_refined.common.tardis.TardisArchitectureHandler.EYE_OF_HARMONY_PLACEMENT;
 
 public class TardisChunkGenerator extends ChunkGenerator {
-    public static final MapCodec<TardisChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(RegistryOps.retrieveElement(ChunkGenerators.TARDIS_BIOME)).apply(instance, instance.stable(TardisChunkGenerator::new)));
 
+    public static final MapCodec<TardisChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance ->
+            instance.group(
+                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(tardisChunkGenerator -> tardisChunkGenerator.biomeSource)
+            ).apply(instance, instance.stable(TardisChunkGenerator::new))
+    );
 
     public final RandomSource random;
 
@@ -51,10 +52,6 @@ public class TardisChunkGenerator extends ChunkGenerator {
         this.random = RandomSource.create();
     }
 
-    public TardisChunkGenerator(BiomeSource biomeSource, Function<Holder<Biome>, BiomeGenerationSettings> function) {
-        super(biomeSource, function);
-        this.random = RandomSource.create();
-    }
 
 
     /*public TardisChunkGenerator(Holder<Biome> holder) {

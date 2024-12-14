@@ -2,18 +2,19 @@ package whocraft.tardis_refined.common.network.messages;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.api.event.ShellChangeSources;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.network.*;
+import whocraft.tardis_refined.common.network.messages.upgrades.S2CDisplayUpgradeScreen;
 import whocraft.tardis_refined.registry.TRUpgrades;
-import whocraft.tardis_refined.common.network.MessageC2S;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPattern;
@@ -21,39 +22,32 @@ import whocraft.tardis_refined.patterns.ShellPatterns;
 
 import java.util.Optional;
 
-public class C2SChangeShell extends MessageC2S {
+public record C2SChangeShell(ResourceKey<Level> resourceKey, ResourceLocation shellTheme, ShellPattern pattern) implements CustomPacketPayload, NetworkManager.Handler<C2SChangeShell> {
 
-    private final ResourceKey<Level> resourceKey;
-    private final ResourceLocation shellTheme;
-    private final ShellPattern pattern;
+    public static final CustomPacketPayload.Type<C2SChangeShell> TYPE = new CustomPacketPayload.Type<>(
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "change_shell"));
 
-    public C2SChangeShell(ResourceKey<Level> tardisLevel, ResourceLocation theme, ShellPattern pattern) {
-        this.resourceKey = tardisLevel;
-        this.shellTheme = theme;
-        this.pattern = pattern;
-    }
+    public static final StreamCodec<FriendlyByteBuf, C2SChangeShell> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeResourceKey(ref.resourceKey());
+                buf.writeResourceLocation(ref.shellTheme());
+                buf.writeResourceLocation(ref.pattern().id());
+            },
+            buf -> new C2SChangeShell(
+                    buf.readResourceKey(Registries.DIMENSION),
+                    buf.readResourceLocation(),
+                    ShellPatterns.getPatternOrDefault(buf.readResourceLocation(), ShellPatterns.DEFAULT.id())
+            )
+    );
 
-    public C2SChangeShell(FriendlyByteBuf buffer) {
-        resourceKey = buffer.readResourceKey(Registries.DIMENSION);
-        this.shellTheme = buffer.readResourceLocation();
-        this.pattern = ShellPatterns.getPatternOrDefault(shellTheme, buffer.readResourceLocation());
-    }
-
-    @NotNull
-    @Override
-    public MessageType getType() {
-        return TardisNetwork.CHANGE_SHELL;
-    }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeResourceKey(this.resourceKey);
-        buf.writeResourceLocation(this.shellTheme);
-        buf.writeResourceLocation(pattern.id());
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void handle(MessageContext context) {
+    public void receive(C2SChangeShell value, NetworkManager.Context context) {
         Optional<ServerLevel> level = Optional.ofNullable(context.getPlayer().getServer().levels.get(resourceKey));
         level.flatMap(TardisLevelOperator::get).ifPresent(y -> {
             if (TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(y.getUpgradeHandler()) && y.getExteriorManager().hasEnoughFuelForShellChange()) {
@@ -63,8 +57,5 @@ public class C2SChangeShell extends MessageC2S {
                 PlayerUtil.sendMessage(context.getPlayer(), ModMessages.HARDWARE_OFFLINE, true);
             }
         });
-
     }
-
-
 }

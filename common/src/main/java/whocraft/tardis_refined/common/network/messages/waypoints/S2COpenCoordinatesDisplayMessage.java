@@ -3,70 +3,63 @@ package whocraft.tardis_refined.common.network.messages.waypoints;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ScreenHandler;
 import whocraft.tardis_refined.client.screen.waypoints.CoordInputType;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class S2COpenCoordinatesDisplayMessage extends MessageS2C {
+public record S2COpenCoordinatesDisplayMessage(List<ResourceKey<Level>> levels, CoordInputType coordInputType, TardisNavLocation tardisNavLocation) implements CustomPacketPayload, NetworkManager.Handler<S2COpenCoordinatesDisplayMessage> {
 
-    CoordInputType coordInputType;
-    private TardisNavLocation tardisNavLocation;
-    private List<ResourceKey<Level>> levels;
+    // Register the message type for identification
+    public static final CustomPacketPayload.Type<S2COpenCoordinatesDisplayMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "open_coords_display"));
 
-    public S2COpenCoordinatesDisplayMessage(List<ResourceKey<Level>> waypoints, CoordInputType coordInputType, TardisNavLocation tardisNavLocation) {
-        this.levels = waypoints;
-        this.coordInputType = coordInputType;
-        this.tardisNavLocation = tardisNavLocation;
+    // Serializer for this message
+    public static final StreamCodec<FriendlyByteBuf, S2COpenCoordinatesDisplayMessage> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeNbt(ref.tardisNavLocation.serialise());
+                buf.writeUtf(ref.coordInputType.name());
+                buf.writeInt(ref.levels.size());
+                for (ResourceKey<Level> level : ref.levels) {
+                    buf.writeResourceKey(level);
+                }
+            },
+            buf -> {
+                TardisNavLocation navLocation = TardisNavLocation.deserialize(buf.readNbt());
+                CoordInputType inputType = CoordInputType.valueOf(buf.readUtf());
+                List<ResourceKey<Level>> levels = new ArrayList<>();
+                int size = buf.readInt();
+                for (int i = 0; i < size; i++) {
+                    levels.add(buf.readResourceKey(Registries.DIMENSION));
+                }
+                return new S2COpenCoordinatesDisplayMessage(levels, inputType, navLocation);
+            }
+    );
+
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public S2COpenCoordinatesDisplayMessage(FriendlyByteBuf friendlyByteBuf) {
-        CompoundTag tardisNav = friendlyByteBuf.readNbt();
-        tardisNavLocation = TardisNavLocation.deserialize(tardisNav);
-        coordInputType = CoordInputType.valueOf(friendlyByteBuf.readUtf());
-        levels = new ArrayList<>();
-        int size = friendlyByteBuf.readInt();
-        for (int i = 0; i < size; i++) {
-            ResourceKey<Level> levelResourceKey = friendlyByteBuf.readResourceKey(Registries.DIMENSION);
-            levels.add(levelResourceKey);
+    @Override
+    public void receive(S2COpenCoordinatesDisplayMessage value, NetworkManager.Context context) {
+        if (context.isClient()) {
+            value.handleDisplay();
         }
-    }
-
-    @NotNull
-    @Override
-    public MessageType getType() {
-        return TardisNetwork.SERVER_OPEN_COORDS_DISPLAY;
-    }
-
-    @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeNbt(tardisNavLocation.serialise());
-        buf.writeUtf(coordInputType.name());
-        buf.writeInt(levels.size());
-        for (ResourceKey<Level> levelResourceKey : levels) {
-            buf.writeResourceKey(levelResourceKey);
-        }
-    }
-
-    @Override
-    public void handle(MessageContext context) {
-        handleDisplay();
     }
 
     @Environment(EnvType.CLIENT)
     private void handleDisplay() {
+        // Open the coordinates screen on the client
         ScreenHandler.openCoordinatesScreen(levels, coordInputType, tardisNavLocation);
     }
-
 }

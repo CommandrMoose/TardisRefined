@@ -7,6 +7,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -40,7 +41,7 @@ public class RenderTargetHelper {
 
     public RenderTarget renderTarget;
     private static final RenderTargetHelper RENDER_TARGET_HELPER = new RenderTargetHelper();
-    public static StencilBufferStorage stencilBufferStorage = new StencilBufferStorage();
+    public static StencilBufferStorage stencilBufferStorage = new StencilBufferStorage(512);
 
     public static void renderVortex(GlobalDoorBlockEntity blockEntity, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
@@ -53,7 +54,7 @@ public class RenderTargetHelper {
         TardisClientData tardisClientData = TardisClientData.getInstance(blockEntity.getLevel().dimension());
 
 
-        VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
+        VORTEX.vortexType = VortexRegistry.VORTEX_REGISTRY.get(tardisClientData.getVortex());
 
         if (tardisClientData.isFlying() && isOpen) {
             renderDoorOpen(blockEntity, stack, packedLight, rotation, currentModel, isOpen, tardisClientData);
@@ -85,7 +86,7 @@ public class RenderTargetHelper {
         // Render Door Frame
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
         currentModel.setDoorPosition(isOpen);
-        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, RenderHelper.rgbaToInt( 1f, 1f, 1f, 1f));
         imBuffer.endBatch();
 
         // Enable and configure stencil buffer
@@ -98,7 +99,7 @@ public class RenderTargetHelper {
         // Render portal mask with depth writing enabled
         RenderSystem.depthMask(true);
         stack.pushPose();
-        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
+        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, RenderHelper.rgbaToInt(0f, 0f, 0f, 1f));
         imBuffer.endBatch();
         stack.popPose();
         RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering
@@ -195,11 +196,12 @@ public class RenderTargetHelper {
                     QUADS, 256, false, true, parameters);
         }
 
-        private final MultiBufferSource.BufferSource consumer = MultiBufferSource.immediateWithBuffers(typeBufferBuilder, new BufferBuilder(256));
+        private final MultiBufferSource.BufferSource consumer = MultiBufferSource.immediate(new ByteBufferBuilder(256));
 
-        private static void put(Object2ObjectLinkedOpenHashMap<RenderType, BufferBuilder> builderStorage, RenderType layer) {
-            builderStorage.put(layer, new BufferBuilder(layer.bufferSize()));
+        private static void put(Object2ObjectLinkedOpenHashMap<RenderType, ByteBufferBuilder> object2ObjectLinkedOpenHashMap, RenderType renderType) {
+            object2ObjectLinkedOpenHashMap.put(renderType, new ByteBufferBuilder(renderType.bufferSize()));
         }
+
 
         public MultiBufferSource.BufferSource getVertexConsumer() {
             return this.consumer;

@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -133,7 +134,7 @@ public class CodecJsonReloadListener<T> extends SimpleJsonResourceReloadListener
      * @param packetFactory
      * @return
      */
-    public CodecJsonReloadListener<T> setSyncPacket(final NetworkManager networkManager, final Function<Map<ResourceLocation, T>, MessageS2C> packetFactory) {
+    public CodecJsonReloadListener<T> setSyncPacket(final NetworkManager networkManager, final CustomPacketPayload packetFactory) {
         return this;
     }
 

@@ -3,13 +3,11 @@ package whocraft.tardis_refined;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.LowerCaseEnumTypeAdapterFactory;
 import org.slf4j.Logger;
 import whocraft.tardis_refined.client.TRParticles;
 import whocraft.tardis_refined.common.VortexRegistry;
-import whocraft.tardis_refined.registry.TRUpgrades;
 import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncConsolePatterns;
@@ -21,7 +19,6 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.common.world.ChunkGenerators;
 import whocraft.tardis_refined.common.world.Features;
-import whocraft.tardis_refined.registry.TRARSStructurePieceRegistry;
 import whocraft.tardis_refined.patterns.ConsolePatterns;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.*;
@@ -35,8 +32,7 @@ public class TardisRefined {
 
     public static Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
-            .registerTypeHierarchyAdapter(Component.class, new Component.Serializer()).
-            registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
+            .registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
             .registerTypeAdapterFactory(new LowerCaseEnumTypeAdapterFactory()).create();
 
     public static void init() {
@@ -49,9 +45,9 @@ public class TardisRefined {
         TREntityRegistry.ENTITY_TYPES.register();
         TRSoundRegistry.SOUNDS.register();
         TRBlockEntityRegistry.BLOCK_ENTITY_TYPES.register();
-        TRManipulatorRecipeResultTypes.MANIPULATOR_RECIPE_RESULT_DEFERRED_REGISTRY.register();
+       // TRManipulatorRecipeResultTypes.MANIPULATOR_RECIPE_RESULT_DEFERRED_REGISTRY.register();
         TRCraftingRecipeTypes.RECIPE_TYPE_DEFERRED_REGISTRY.register();
-        TRCraftingRecipeSerializers.RECIPE_SERIALIZERS.register();
+       // TRCraftingRecipeSerializers.RECIPE_SERIALIZERS.register();
         TRDimensionTypes.register();
         ChunkGenerators.CHUNK_GENERATORS.register();
         Features.FEATURES.register();

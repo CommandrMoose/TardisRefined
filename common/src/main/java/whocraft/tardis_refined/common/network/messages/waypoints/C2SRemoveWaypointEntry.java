@@ -1,52 +1,44 @@
 package whocraft.tardis_refined.common.network.messages.waypoints;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.network.MessageC2S;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.network.*;
 import whocraft.tardis_refined.common.tardis.manager.TardisWaypointManager;
 
 import java.util.UUID;
 
-public class C2SRemoveWaypointEntry extends MessageC2S {
+public record C2SRemoveWaypointEntry(UUID waypointId) implements CustomPacketPayload, NetworkManager.Handler<C2SRemoveWaypointEntry> {
 
-    UUID waypointId;
+    public static final CustomPacketPayload.Type<C2SRemoveWaypointEntry> TYPE = new CustomPacketPayload.Type<>(
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "delete_waypoint")
+    );
 
-    public C2SRemoveWaypointEntry(UUID waypointId) {
-        this.waypointId = waypointId;
-    }
+    public static final StreamCodec<FriendlyByteBuf, C2SRemoveWaypointEntry> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> buf.writeUUID(ref.waypointId()),
+            buf -> new C2SRemoveWaypointEntry(buf.readUUID())
+    );
 
-
-    public C2SRemoveWaypointEntry(FriendlyByteBuf buf) {
-        waypointId = buf.readUUID();
-    }
-
-
-    @NotNull
     @Override
-    public MessageType getType() {
-        return TardisNetwork.DEL_WAYPOINT;
+    public @NotNull CustomPacketPayload.Type<?> type() {
+        return TYPE;
     }
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeUUID(waypointId);
-    }
-
-    @Override
-    public void handle(MessageContext context) {
-        ServerPlayer player = context.getPlayer();
+    public void receive(C2SRemoveWaypointEntry value, NetworkManager.Context context) {
+        ServerPlayer player = (ServerPlayer) context.getPlayer();
         ServerLevel serverLevel = player.serverLevel();
 
         TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
-            TardisWaypointManager tardisWaypointManager = tardisLevelOperator.getTardisWaypointManager();
-            tardisWaypointManager.deleteWaypoint(waypointId);
-            new S2CWaypointsListScreen(tardisWaypointManager.getWaypoints()).send(player);
+            TardisWaypointManager waypointManager = tardisLevelOperator.getTardisWaypointManager();
+            waypointManager.deleteWaypoint(value.waypointId());
+            new S2CWaypointsListScreen(waypointManager.getWaypoints()).send(player);
         });
     }
 }

@@ -4,23 +4,27 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ScreenHandler;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.network.NetworkManager;
 
-public class S2CDisplayUpgradeScreen extends MessageS2C {
+public record S2CDisplayUpgradeScreen(
+        CompoundTag compoundTag) implements CustomPacketPayload, NetworkManager.Handler<S2CDisplayUpgradeScreen> {
 
-    public CompoundTag compoundTag;
+    public static final CustomPacketPayload.Type<S2CDisplayUpgradeScreen> TYPE = new CustomPacketPayload.Type<>(
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "display_upgrade_screen"));
 
-    public S2CDisplayUpgradeScreen(CompoundTag compoundTag) {
-        this.compoundTag = compoundTag;
-    }
+    public static final StreamCodec<FriendlyByteBuf, S2CDisplayUpgradeScreen> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> buf.writeNbt(ref.compoundTag()),
+            buf -> new S2CDisplayUpgradeScreen(buf.readNbt())
+    );
 
-    public S2CDisplayUpgradeScreen(FriendlyByteBuf friendlyByteBuf) {
-        compoundTag = friendlyByteBuf.readNbt();
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Environment(EnvType.CLIENT)
@@ -28,20 +32,10 @@ public class S2CDisplayUpgradeScreen extends MessageS2C {
         ScreenHandler.displayUpgradesScreen(compoundTag);
     }
 
-    @NotNull
     @Override
-    public MessageType getType() {
-        return TardisNetwork.UPGRADE_SCREEN_S2C;
+    public void receive(S2CDisplayUpgradeScreen value, NetworkManager.Context context) {
+        if (context.isClient()) {
+            display(value.compoundTag());
+        }
     }
-
-    @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeNbt(compoundTag);
-    }
-
-    @Override
-    public void handle(MessageContext context) {
-        display(compoundTag);
-    }
-
 }

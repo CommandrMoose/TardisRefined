@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.PlayerFaceRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.resources.ResourceLocation;
@@ -100,8 +101,8 @@ public class RenderHelper {
 
     public static void vertexUVColor(@NotNull PoseStack pose, float x, float y, float z, float u, float v, float r, float g, float b, float a) {
         MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-
-        tesselator.addVertex(pose.last().pose(), x, y, z).setUv(u, v).setColor(r, g, b, a);
+        VertexConsumer vertexConsumer = buffers.getBuffer(RenderType.cutout());
+        vertexConsumer.addVertex(pose.last().pose(), x, y, z).setUv(u, v).setColor(r, g, b, a);
     }
 
     public static class CustomProgressBar {

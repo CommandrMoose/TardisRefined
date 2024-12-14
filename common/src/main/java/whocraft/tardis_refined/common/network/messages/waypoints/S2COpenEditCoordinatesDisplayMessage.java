@@ -2,58 +2,49 @@ package whocraft.tardis_refined.common.network.messages.waypoints;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ScreenHandler;
-import whocraft.tardis_refined.client.screen.waypoints.CoordInputType;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
-import whocraft.tardis_refined.common.tardis.TardisNavLocation;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.tardis.TardisWaypoint;
 
-import java.util.ArrayList;
-import java.util.List;
+public record S2COpenEditCoordinatesDisplayMessage(
+        TardisWaypoint waypoint) implements CustomPacketPayload, NetworkManager.Handler<S2COpenEditCoordinatesDisplayMessage> {
 
-public class S2COpenEditCoordinatesDisplayMessage extends MessageS2C {
+    // Register the message type for identification
+    public static final CustomPacketPayload.Type<S2COpenEditCoordinatesDisplayMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "open_edit_coords_screen"));
 
-    TardisWaypoint waypoint;
-
-    public S2COpenEditCoordinatesDisplayMessage(TardisWaypoint waypoint) {
-        this.waypoint = waypoint;
-
-    }
-
-    public S2COpenEditCoordinatesDisplayMessage(FriendlyByteBuf friendlyByteBuf) {
-        CompoundTag tardisNav = friendlyByteBuf.readNbt();
-        waypoint = TardisWaypoint.deserialise(tardisNav);
-    }
-
-    @NotNull
-    @Override
-    public MessageType getType() {
-        return TardisNetwork.SERVER_OPEN_EDIT_COORDS_SCREEN;
-    }
+    // Serializer for this message
+    public static final StreamCodec<FriendlyByteBuf, S2COpenEditCoordinatesDisplayMessage> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeNbt(ref.waypoint.serialise());
+            },
+            buf -> {
+                CompoundTag tardisNav = buf.readNbt();
+                TardisWaypoint waypoint = TardisWaypoint.deserialise(tardisNav);
+                return new S2COpenEditCoordinatesDisplayMessage(waypoint);
+            }
+    );
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeNbt(waypoint.serialise());
-
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void handle(MessageContext context) {
-        handleDisplay();
+    public void receive(S2COpenEditCoordinatesDisplayMessage value, NetworkManager.Context context) {
+        if (context.isClient()) {
+            value.handleDisplay();
+        }
     }
 
     @Environment(EnvType.CLIENT)
     private void handleDisplay() {
+        // Open the edit coordinates screen on the client
         ScreenHandler.openEditCoordinatesScreen(waypoint);
     }
-
 }

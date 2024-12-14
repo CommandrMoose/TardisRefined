@@ -1,77 +1,85 @@
 package whocraft.tardis_refined.common.network;
 
-
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import whocraft.tardis_refined.common.util.Platform;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.minecraft.world.level.ChunkPos;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class NetworkManager {
 
-    public static final Map<String, MessageType> toServer = new HashMap<>();
-    protected final ResourceLocation channelName;
-    protected final Map<String, MessageType> toClient = new HashMap<>();
+    private static final NetworkManager INSTANCE = make();
 
-    public NetworkManager(ResourceLocation channelName) {
-        this.channelName = channelName;
+    public static NetworkManager get() {
+        return INSTANCE;
     }
 
     @ExpectPlatform
-    public static NetworkManager create(ResourceLocation channelName) {
+    private static NetworkManager make() {
         throw new AssertionError();
     }
 
-    public MessageType registerS2C(String id, MessageDecoder<MessageS2C> decoder) {
-        var msgType = new MessageType(id, this, decoder, false);
-        this.toClient.put(id, msgType);
-        return msgType;
-    }
+    @Environment(EnvType.CLIENT)
+    public abstract <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.Handler<T> receiver);
 
-    public MessageType registerC2S(String id, MessageDecoder<MessageC2S> decoder) {
-        var msgType = new MessageType(id, this, decoder, true);
-        this.toServer.put(id, msgType);
-        return msgType;
-    }
+    public abstract <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, NetworkManager.Handler<T> receiver);
 
-    public abstract void sendToServer(MessageC2S message);
+    public abstract <T extends CustomPacketPayload> Packet<?> toC2SPacket(T payload);
 
-    public abstract void sendToPlayer(ServerPlayer player, MessageS2C message);
+    public abstract <T extends CustomPacketPayload> Packet<?> toS2CPacket(T payload);
 
-    public abstract void sendToTrackingAndSelf(ServerPlayer player, MessageS2C message);
+    @Environment(EnvType.CLIENT)
+    public abstract void sendToServer(CustomPacketPayload payload, CustomPacketPayload... payloads);
 
-    public abstract void sendToTracking(Entity entity, MessageS2C message);
+    public abstract void sendToPlayer(ServerPlayer player, CustomPacketPayload payload, CustomPacketPayload... payloads);
 
-    public abstract void sendToTracking(BlockEntity entity, MessageS2C message);
+    public abstract void sendToPlayersInDimension(ServerLevel level, CustomPacketPayload payload, CustomPacketPayload... payloads);
 
-    public void sendToDimension(Level level, MessageS2C message) {
-        if (!level.isClientSide) {
-            for (Player player : level.players()) {
-                this.sendToPlayer((ServerPlayer) player, message);
-            }
-        }
-    }
+    public abstract void sendToPlayersNear(
+            ServerLevel level,
+            @Nullable ServerPlayer excluded,
+            double x,
+            double y,
+            double z,
+            double radius,
+            CustomPacketPayload payload,
+            CustomPacketPayload... payloads);
 
-    public void sendToAllPlayers(MessageS2C message) {
-        MinecraftServer server = Platform.getServer();
-        if (server == null) return;
-        List<ServerPlayer> players = server.getPlayerList().getPlayers();
-        players.forEach(entry -> sendToPlayer(entry, message));
-    }
+    public abstract void sendToAllPlayers(CustomPacketPayload payload, CustomPacketPayload... payloads);
+
+    public abstract void sendToPlayersTrackingEntity(Entity entity, CustomPacketPayload payload, CustomPacketPayload... payloads);
+
+    public abstract void sendToPlayersTrackingEntityAndSelf(Entity entity, CustomPacketPayload payload, CustomPacketPayload... payloads);
+
+    public abstract void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, CustomPacketPayload payload, CustomPacketPayload... payloads);
 
     @FunctionalInterface
-    public interface MessageDecoder<T extends Message> {
+    public interface Handler<T> {
+        void receive(T value, Context context);
+    }
 
-        T decode(FriendlyByteBuf buf);
+    public interface Context {
+
+        Player getPlayer();
+
+        void queue(Runnable runnable);
+
+        boolean isClient();
+
+        default boolean isServer() {
+            return !this.isClient();
+        }
+
+        RegistryAccess getRegistryAccess();
 
     }
 

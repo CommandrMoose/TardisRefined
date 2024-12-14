@@ -26,7 +26,9 @@ public class TRItemData {
     public static final RegistryHolder<DataComponentType<?>, DataComponentType<BlockPos>> SCREWDRIVER_POINT_A = ITEMS.register("screwdriver_point_a", () -> DataComponentType.<BlockPos>builder().persistent(BlockPos.CODEC).build());
     public static final RegistryHolder<DataComponentType<?>, DataComponentType<BlockPos>> SCREWDRIVER_POINT_B = ITEMS.register("screwdriver_point_b", () -> DataComponentType.<BlockPos>builder().persistent(BlockPos.CODEC).build());
     public static final RegistryHolder<DataComponentType<?>, DataComponentType<Boolean>> SCREWDRIVER_B_WAS_LAST_UPDATED = ITEMS.register("screwdriver_b_was_last_updated", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).build());
-    public static final RegistryHolder<DataComponentType<?>, DataComponentType<DataComponentType<?>>> POTENTIAL_DIM = ITEMS.register("potential_dim", () -> DataComponentType.<Boolean>builder().persistent().build());
+    public static final RegistryHolder<DataComponentType<?>, DataComponentType<Integer>> TIMER = ITEMS.register("timer", () -> DataComponentType.<Integer>builder().persistent(Codec.INT).build());
+    public static final RegistryHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> POTENTIAL_DIM = ITEMS.register("potential_dim", () -> DataComponentType.<ResourceLocation>builder().persistent(ResourceLocation.CODEC).build());
+    public static final RegistryHolder<DataComponentType<?>, DataComponentType<ResourceLocation>> SAVED_DIM = ITEMS.register("saved_dim", () -> DataComponentType.<ResourceLocation>builder().persistent(ResourceLocation.CODEC).build());
 
     // Key Item
     public static final RegistryHolder<DataComponentType<?>, DataComponentType<List<ResourceKey<Level>>>> KEYCHAIN = ITEMS.register("keychain", () -> DataComponentType.<List<ResourceKey<Level>>>builder().persistent(listOfResourceKeys()).build());

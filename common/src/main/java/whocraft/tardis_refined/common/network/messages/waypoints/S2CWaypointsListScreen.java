@@ -4,57 +4,57 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ScreenHandler;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.tardis.TardisWaypoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class S2CWaypointsListScreen extends MessageS2C {
+public record S2CWaypointsListScreen(Collection<TardisWaypoint> waypoints) implements CustomPacketPayload, NetworkManager.Handler<S2CWaypointsListScreen> {
 
-    private Collection<TardisWaypoint> waypoints;
+    // Register the message type for identification
+    public static final CustomPacketPayload.Type<S2CWaypointsListScreen> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "open_waypoints_display"));
 
-    public S2CWaypointsListScreen(Collection<TardisWaypoint> waypoints) {
-        this.waypoints = waypoints;
+    // Serializer for this message
+    public static final StreamCodec<FriendlyByteBuf, S2CWaypointsListScreen> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeInt(ref.waypoints.size());
+                for (TardisWaypoint waypoint : ref.waypoints) {
+                    buf.writeNbt(waypoint.serialise());
+                }
+            },
+            buf -> {
+                int size = buf.readInt();
+                Collection<TardisWaypoint> waypoints = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    CompoundTag tardisWay = buf.readNbt();
+                    TardisWaypoint waypoint = TardisWaypoint.deserialise(tardisWay);
+                    waypoints.add(waypoint);
+                }
+                return new S2CWaypointsListScreen(waypoints);
+            }
+    );
+
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public S2CWaypointsListScreen(FriendlyByteBuf friendlyByteBuf) {
-        waypoints = new ArrayList<>();
-        int size = friendlyByteBuf.readInt();
-        for (int i = 0; i < size; i++) {
-            CompoundTag tardisWay = friendlyByteBuf.readNbt();
-            TardisWaypoint waypoint = TardisWaypoint.deserialise(tardisWay);
-
-            waypoints.add(waypoint);
+    @Override
+    public void receive(S2CWaypointsListScreen value, NetworkManager.Context context) {
+        if (context.isClient()) {
+            value.handleScreens();
         }
-    }
-
-    @NotNull
-    @Override
-    public MessageType getType() {
-        return TardisNetwork.OPEN_WAYPOINTS_DISPLAY;
-    }
-
-    @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(waypoints.size());
-        for (TardisWaypoint waypoint : waypoints) {
-            buf.writeNbt(waypoint.serialise());
-        }
-    }
-
-    @Override
-    public void handle(MessageContext context) {
-        handleScreens();
     }
 
     @Environment(EnvType.CLIENT)
     private void handleScreens() {
+        // Open the waypoints screen on the client
         ScreenHandler.setWaypointScreen(waypoints);
     }
 }

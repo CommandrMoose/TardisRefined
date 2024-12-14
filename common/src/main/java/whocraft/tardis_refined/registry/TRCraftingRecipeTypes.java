@@ -6,13 +6,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
 
 public class TRCraftingRecipeTypes {
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_DEFERRED_REGISTRY = DeferredRegister.create(TardisRefined.MODID, Registries.RECIPE_TYPE);
+/*
 
     public static final RegistryHolder<RecipeType<?>, RecipeType<ManipulatorCraftingRecipe>> ASTRAL_MANIPULATOR_RECIPE = RECIPE_TYPE_DEFERRED_REGISTRY.register("astral_manipulator_recipe", () -> registerRecipeType(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "astral_manipulator_recipe")));
+*/
 
     /**
      * Need a custom registry method as vanilla will register our entries under the minecraft namspace which creates a duplicate entry

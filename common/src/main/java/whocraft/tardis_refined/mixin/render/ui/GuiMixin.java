@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.mixin.render.ui;
 
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,8 +13,8 @@ import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 @Mixin(Gui.class)
 public class GuiMixin {
 
-    @Inject(method = "renderHotbar(FLnet/minecraft/client/gui/GuiGraphics;)V", at = @At(value = "HEAD"), cancellable = true)
-    public void renderHotbar(float f, GuiGraphics guiGraphics, CallbackInfo ci) {
+    @Inject(method = "renderHotbarAndDecorations(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V", at = @At(value = "HEAD"), cancellable = true)
+    public void renderHotbar(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         TardisPlayerInfo.get(Minecraft.getInstance().player).ifPresent(tardisPlayerInfo -> {
             if (tardisPlayerInfo.isViewingTardis()) {
                 ci.cancel();
@@ -21,8 +22,8 @@ public class GuiMixin {
         });
     }
 
-    @Inject(method = "renderCrosshair(Lnet/minecraft/client/gui/GuiGraphics;)V", at = @At(value = "HEAD"), cancellable = true)
-    private void renderCrosshair(GuiGraphics guiGraphics, CallbackInfo ci) {
+    @Inject(method = "renderCrosshair(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V", at = @At(value = "HEAD"), cancellable = true)
+    private void renderCrosshair(GuiGraphics guiGraphics, DeltaTracker deltaTracker, CallbackInfo ci) {
         TardisPlayerInfo.get(Minecraft.getInstance().player).ifPresent(tardisPlayerInfo -> {
             if (tardisPlayerInfo.isViewingTardis()) {
                 ci.cancel();

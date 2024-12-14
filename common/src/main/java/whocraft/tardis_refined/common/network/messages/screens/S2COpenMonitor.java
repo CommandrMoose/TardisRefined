@@ -4,55 +4,52 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ScreenHandler;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 
+public record S2COpenMonitor(
+        boolean desktopGenerating,
+        TardisNavLocation currentLocation,
+        TardisNavLocation targetLocation,
+        CompoundTag upgradeHandlerNbt
+) implements CustomPacketPayload, NetworkManager.Handler<S2COpenMonitor> {
 
-public class S2COpenMonitor extends MessageS2C {
+    public static final CustomPacketPayload.Type<S2COpenMonitor> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "open_monitor"));
 
-    private final boolean desktopGenerating;
-    private TardisNavLocation currentLocation, targetLocation;
-    private CompoundTag upgradeHandlerNbt;
-
-    public S2COpenMonitor(boolean desktopGenerating, TardisNavLocation currentLocation, TardisNavLocation targetLocation, UpgradeHandler upgradeHandler) {
-        this.desktopGenerating = desktopGenerating;
-        this.currentLocation = currentLocation;
-        this.targetLocation = targetLocation;
-        this.upgradeHandlerNbt = upgradeHandler.saveData(new CompoundTag());
-
-    }
-
-    public S2COpenMonitor(FriendlyByteBuf friendlyByteBuf) {
-        this.desktopGenerating = friendlyByteBuf.readBoolean();
-        this.currentLocation = TardisNavLocation.deserialize(friendlyByteBuf.readNbt());
-        this.targetLocation = TardisNavLocation.deserialize(friendlyByteBuf.readNbt());
-        this.upgradeHandlerNbt = friendlyByteBuf.readNbt();
-    }
-
-    @NotNull
-    @Override
-    public MessageType getType() {
-        return TardisNetwork.OPEN_MONITOR;
-    }
+    public static final StreamCodec<FriendlyByteBuf, S2COpenMonitor> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeBoolean(ref.desktopGenerating);
+                buf.writeNbt(ref.currentLocation.serialise());
+                buf.writeNbt(ref.targetLocation.serialise());
+                buf.writeNbt(ref.upgradeHandlerNbt);
+            },
+            buf -> new S2COpenMonitor(
+                    buf.readBoolean(),
+                    TardisNavLocation.deserialize(buf.readNbt()),
+                    TardisNavLocation.deserialize(buf.readNbt()),
+                    buf.readNbt()
+            )
+    );
 
     @Override
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeBoolean(this.desktopGenerating);
-        buf.writeNbt(currentLocation.serialise());
-        buf.writeNbt(targetLocation.serialise());
-        buf.writeNbt(upgradeHandlerNbt);
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-
     @Override
-    public void handle(MessageContext context) {
-        handleScreens();
+    public void receive(S2COpenMonitor value, NetworkManager.Context context) {
+        if (context.isClient()) {
+            value.handleScreens();
+        }
     }
 
     @Environment(EnvType.CLIENT)
@@ -60,5 +57,4 @@ public class S2COpenMonitor extends MessageS2C {
         // Open the monitor.
         ScreenHandler.openMonitorScreen(desktopGenerating, upgradeHandlerNbt, currentLocation, targetLocation);
     }
-
 }

@@ -1,50 +1,48 @@
 package whocraft.tardis_refined.common.network.messages.sync;
 
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.NotNull;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.network.NetworkManager;
 
-public class S2CSyncTardisPlayerView extends MessageS2C {
-    public int entityID;
-    public CompoundTag nbt;
+public record S2CSyncTardisPlayerView(int entityID,
+                                      CompoundTag nbt) implements CustomPacketPayload, NetworkManager.Handler<S2CSyncTardisPlayerView> {
 
-    public S2CSyncTardisPlayerView(int entityID, CompoundTag nbt) {
-        this.entityID = entityID;
-        this.nbt = nbt;
-    }
+    public static final CustomPacketPayload.Type<S2CSyncTardisPlayerView> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "tardis_player_info"));
 
-    public S2CSyncTardisPlayerView(FriendlyByteBuf buf) {
-        this.entityID = buf.readInt();
-        this.nbt = buf.readNbt();
-    }
+    public static final StreamCodec<FriendlyByteBuf, S2CSyncTardisPlayerView> STREAM_CODEC = StreamCodec.of(
+            (buf, ref) -> {
+                buf.writeInt(ref.entityID());
+                buf.writeNbt(ref.nbt());
+            },
+            buf -> {
+                int entityID = buf.readInt();
+                CompoundTag nbt = buf.readNbt();
+                return new S2CSyncTardisPlayerView(entityID, nbt);
+            }
+    );
 
-    @NotNull
+
     @Override
-    public MessageType getType() {
-        return TardisNetwork.TARDIS_PLAYER_INFO;
-    }
-
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeInt(this.entityID);
-        buf.writeNbt(this.nbt);
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
     @Override
-    public void handle(MessageContext context) {
+    public void receive(S2CSyncTardisPlayerView value, NetworkManager.Context context) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
-        Entity entity = level.getEntity(this.entityID);
-        if (entity != null)
-            TardisPlayerInfo.get((Player) entity).ifPresent((c) -> c.loadData(this.nbt));
+        Entity entity = level.getEntity(value.entityID());
+        if (entity instanceof Player player) {
+            TardisPlayerInfo.get(player).ifPresent(info -> info.loadData(value.nbt()));
+        }
     }
 }
