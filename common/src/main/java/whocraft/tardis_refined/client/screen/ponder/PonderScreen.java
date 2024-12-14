@@ -6,10 +6,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,8 +24,8 @@ import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCra
 import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
 import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorItemResult;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PonderScreen extends MonitorOS {
 
@@ -41,17 +41,9 @@ public class PonderScreen extends MonitorOS {
     public PonderScreen(ManipulatorCraftingRecipe recipe) {
         super(getResultName(recipe), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
 
-        this.setEvents(new MonitorOSRun() {
-            @Override
-            public void onPress() {
+        this.setEvents(() -> {
 
-            }
-        }, new MonitorOSRun() {
-            @Override
-            public void onPress() {
-                ScreenHandler.openCraftingScreen();
-            }
-        });
+        }, ScreenHandler::openCraftingScreen);
 
         this.recipe = recipe;
         int minX = 100, maxX = -100, minY = 100, maxY = -100, minZ = 100, maxZ = -100;
@@ -72,12 +64,10 @@ public class PonderScreen extends MonitorOS {
     public static Component getResultName(ManipulatorCraftingRecipe recipe) {
         if (recipe.result() instanceof ManipulatorBlockResult blockResult) {
             BlockState blockState = blockResult.recipeOutput();
-            return blockState.getBlock().getName().setStyle(Style.EMPTY);
-        } else {
-            if (recipe.result() instanceof ManipulatorItemResult itemResult) {
-                ItemStack itemStack = itemResult.recipeOutput();
-                return itemStack.getHoverName();
-            }
+            return blockState.getBlock().getName();
+        } else if (recipe.result() instanceof ManipulatorItemResult itemResult) {
+            ItemStack itemStack = itemResult.recipeOutput();
+            return itemStack.getHoverName();
         }
         return Component.literal("What on earth are you crafting?");
     }
@@ -93,20 +83,25 @@ public class PonderScreen extends MonitorOS {
     public ObjectSelectionList<SelectionListEntry> createSelectionList() {
         int leftPos = width / 2;
         int topPos = (height - monitorHeight) / 2;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 105, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12);
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(
+                this.minecraft, 105, 80, leftPos, topPos + 15, topPos + monitorHeight - 30, 12
+        );
         selectionList.setRenderBackground(false);
 
-        Set<String> uniqueNames = new HashSet<>();
+        // Map to track item names and their counts
+        Map<String, Integer> itemCounts = new HashMap<>();
         for (ManipulatorCraftingIngredient ingredient : recipe.ingredients()) {
-            ItemStack stack = new ItemStack(ingredient.inputBlockState().getBlock());
-            String itemName = stack.getHoverName().getString();
+            String itemName = new ItemStack(ingredient.inputBlockState().getBlock()).getHoverName().getString();
+            itemCounts.put(itemName, itemCounts.getOrDefault(itemName, 0) + 1);
+        }
 
-            if (uniqueNames.add(itemName)) { // Ensures duplicates are avoided
-                SelectionListEntry selectionListEntry = new SelectionListEntry(ingredient.inputBlockState().getBlock().getName(), (entry) -> {
-
-                }, leftPos);
-                selectionList.children().add(selectionListEntry);
-            }
+        // Add entries to the selection list with item count
+        for (Map.Entry<String, Integer> entry : itemCounts.entrySet()) {
+            String itemNameWithCount = entry.getValue() + "x " + entry.getKey();
+            SelectionListEntry selectionListEntry = new SelectionListEntry(
+                    Component.literal(itemNameWithCount), (entryCallback) -> {
+            }, leftPos);
+            selectionList.children().add(selectionListEntry);
         }
 
         return selectionList;
@@ -139,7 +134,7 @@ public class PonderScreen extends MonitorOS {
             pose.translate(pos.getX(), pos.getY(), pos.getZ());
             assert minecraft.level != null;
             RenderSystem.setShaderColor(1, 1, 1, 1);
-            minecraft.getBlockRenderer().renderSingleBlock(s, guiGraphics.pose(), guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY);
+            minecraft.getBlockRenderer().renderSingleBlock(s, guiGraphics.pose(), guiGraphics.bufferSource(), LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
             pose.popPose();
             i++;
         }
@@ -158,8 +153,8 @@ public class PonderScreen extends MonitorOS {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (isDragging) {
-            rotationY += deltaX * 0.5f;
-            rotationX -= deltaY * 0.5f;
+            rotationY += (float) (deltaX * 0.5f);
+            rotationX -= (float) (deltaY * 0.5f);
             rotationX = Math.max(-90, Math.min(90, rotationX));
         }
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
@@ -170,7 +165,6 @@ public class PonderScreen extends MonitorOS {
         isDragging = true;
         return super.mouseClicked(mouseX, mouseY, button);
     }
-
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {

@@ -21,7 +21,7 @@ public class TRPoiTypeTagsProvider extends PoiTypeTagsProvider {
     protected void addTags(HolderLookup.Provider arg) {
         var appender = tag(PoiTypeTags.ACQUIRABLE_JOB_SITE);
         appender.add(TRPointOfInterestTypes.CONSOLE_UNIT);
-        appender.add(TRPointOfInterestTypes.ASTRAL_MAP);
+       // appender.add(TRPointOfInterestTypes.ASTRAL_MAP);
     }
 
 }
