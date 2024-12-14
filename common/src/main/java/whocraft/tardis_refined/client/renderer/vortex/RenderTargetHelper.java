@@ -84,7 +84,7 @@ public class RenderTargetHelper {
         // Render Door Frame
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
         currentModel.setDoorPosition(isOpen);
-        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityCutout(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         imBuffer.endBatch();
 
         // Enable and configure stencil buffer
@@ -97,7 +97,7 @@ public class RenderTargetHelper {
         // Render portal mask with depth writing enabled
         RenderSystem.depthMask(true);
         stack.pushPose();
-        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
+        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
         imBuffer.endBatch();
         stack.popPose();
         RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering
@@ -136,8 +136,8 @@ public class RenderTargetHelper {
             stack.translate(0, 0, -0.01);
         }
 
-        currentModel.renderFrame(blockEntity, isOpen, true, stack, bufferSource.getBuffer(RenderType.entityCutout(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
-        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, bufferSource.getBuffer(RenderType.entityTranslucentCull(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        currentModel.renderFrame(blockEntity, isOpen, true, stack, bufferSource.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, bufferSource.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         stack.popPose();
     }
 

@@ -3,6 +3,7 @@ package whocraft.tardis_refined.common.crafting.astral_manipulator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
@@ -21,6 +22,10 @@ public class ManipulatorCraftingIngredient {
     private BlockPos relativeBlockPos;
     // The block state that must exist at that position.
     private BlockState blockState;
+
+    public ManipulatorCraftingIngredient(BlockPos pos, Block block) {
+        this(pos, block.defaultBlockState());
+    }
 
     public ManipulatorCraftingIngredient(BlockPos pos, BlockState blockState) {
         this.relativeBlockPos = pos;

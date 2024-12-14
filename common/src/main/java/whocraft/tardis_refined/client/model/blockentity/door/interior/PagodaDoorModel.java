@@ -82,6 +82,7 @@ public class PagodaDoorModel extends ShellDoorModel {
 
     @Override
     public void renderFrame(GlobalDoorBlockEntity doorBlockEntity, boolean open, boolean isBaseModel, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        setDoorPosition(open);
         door.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         bone10.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         bone9.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

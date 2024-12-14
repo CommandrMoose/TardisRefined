@@ -2,6 +2,11 @@ package whocraft.tardis_refined.common.block.door;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,28 +23,50 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.blockentity.door.BulkHeadDoorBlockEntity;
+import whocraft.tardis_refined.registry.TRItemRegistry;
+import whocraft.tardis_refined.registry.TRSoundRegistry;
+
+import java.util.Arrays;
 
 public class BulkHeadDoorBlock extends BaseEntityBlock {
+
+    public enum BulkHeadType implements StringRepresentable {
+        ROUGH("rough"), MODERN("modern");
+
+        private final String name;
+
+        BulkHeadType(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name;
+        }
+    }
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
     public static final BooleanProperty LOCKED = BooleanProperty.create("locked");
+    public static final EnumProperty<BulkHeadType> TYPE = EnumProperty.create("bulkhead", BulkHeadType.class);
 
     public BulkHeadDoorBlock(Properties properties) {
         super(properties.sound(SoundType.ANVIL));
 
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(LOCKED, true));
+        this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, BulkHeadType.MODERN).setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(LOCKED, true));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING, OPEN, LOCKED);
+        builder.add(FACING, OPEN, LOCKED, TYPE);
     }
 
     @Override
@@ -47,7 +74,7 @@ public class BulkHeadDoorBlock extends BaseEntityBlock {
 
         BlockState state = super.getStateForPlacement(blockPlaceContext);
         if (canSurvive(state, blockPlaceContext.getLevel(), blockPlaceContext.getClickedPos())) {
-            return state.setValue(FACING, blockPlaceContext.getHorizontalDirection()).setValue(OPEN, false).setValue(LOCKED, false);
+            return state.setValue(FACING, blockPlaceContext.getHorizontalDirection()).setValue(OPEN, false).setValue(LOCKED, false).setValue(TYPE, BulkHeadType.MODERN);
         }
         return null;
     }
@@ -76,6 +103,21 @@ public class BulkHeadDoorBlock extends BaseEntityBlock {
 
 
     @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (player.getItemInHand(interactionHand).getItem() == TRItemRegistry.PATTERN_MANIPULATOR.get()) {
+            if (blockState.hasProperty(TYPE)) {
+                BlockState nextType = blockState.cycle(TYPE);
+                level.setBlock(blockPos, nextType, 3);
+                level.playSound(player, blockPos, TRSoundRegistry.PATTERN_MANIPULATOR.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                return InteractionResult.SUCCESS;
+            }
+        }
+
+        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+    }
+
+
+    @Override
     public void playerDestroy(Level level, Player player, BlockPos blockPos, BlockState blockState, @Nullable BlockEntity blockEntity, ItemStack itemStack) {
         super.playerDestroy(level, player, blockPos, blockState, blockEntity, itemStack);
         destroy(level, blockPos, blockState);
@@ -89,28 +131,28 @@ public class BulkHeadDoorBlock extends BaseEntityBlock {
     }
 
     private void changeBlockStates(Level level, BlockPos blockPos, BlockState blockState, BlockState blockToSet) {
-        level.setBlock(blockPos.above(), blockToSet, 2);
-        level.setBlock(blockPos.above(2), blockToSet, 2);
+        level.setBlock(blockPos.above(), blockToSet, Block.UPDATE_CLIENTS);
+        level.setBlock(blockPos.above(2), blockToSet, Block.UPDATE_CLIENTS);
 
 
         if (blockState.getValue(FACING) == Direction.NORTH || blockState.getValue(FACING) == Direction.SOUTH) {
-            level.setBlock(blockPos.east(), blockToSet, 2);
-            level.setBlock(blockPos.above().east(), blockToSet, 2);
-            level.setBlock(blockPos.above(2).east(), blockToSet, 2);
+            level.setBlock(blockPos.east(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above().east(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above(2).east(), blockToSet, Block.UPDATE_CLIENTS);
 
-            level.setBlock(blockPos.west(), blockToSet, 2);
-            level.setBlock(blockPos.above().west(), blockToSet, 2);
-            level.setBlock(blockPos.above(2).west(), blockToSet, 2);
+            level.setBlock(blockPos.west(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above().west(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above(2).west(), blockToSet, Block.UPDATE_CLIENTS);
         }
 
         if (blockState.getValue(FACING) == Direction.EAST || blockState.getValue(FACING) == Direction.WEST) {
-            level.setBlock(blockPos.north(), blockToSet, 2);
-            level.setBlock(blockPos.above().north(), blockToSet, 2);
-            level.setBlock(blockPos.above(2).north(), blockToSet, 2);
+            level.setBlock(blockPos.north(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above().north(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above(2).north(), blockToSet, Block.UPDATE_CLIENTS);
 
-            level.setBlock(blockPos.south(), blockToSet, 2);
-            level.setBlock(blockPos.above().south(), blockToSet, 2);
-            level.setBlock(blockPos.above(2).south(), blockToSet, 2);
+            level.setBlock(blockPos.south(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above().south(), blockToSet, Block.UPDATE_CLIENTS);
+            level.setBlock(blockPos.above(2).south(), blockToSet, Block.UPDATE_CLIENTS);
         }
     }
 

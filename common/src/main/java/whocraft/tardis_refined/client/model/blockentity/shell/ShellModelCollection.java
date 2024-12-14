@@ -2,7 +2,6 @@ package whocraft.tardis_refined.client.model.blockentity.shell;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.api.event.TardisClientEvents;
@@ -10,6 +9,7 @@ import whocraft.tardis_refined.client.ModelRegistry;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.*;
 import whocraft.tardis_refined.client.model.blockentity.shell.shells.*;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
+import whocraft.tardis_refined.compat.ModCompatChecker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,25 +69,36 @@ public class ShellModelCollection {
         halfBakedShellModel = new HalfBakedShellModel(context.bakeLayer((ModelRegistry.HALF_BAKED_SHELL)));
 
         // Doors
-        factoryDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.FACTORY_DOOR)), 250f);
-        policeBoxDoorModel = new PoliceBoxDoorModel(context.bakeLayer((ModelRegistry.POLICE_BOX_DOOR)));
-        phoneBoothDoorModel = new PhoneBoothDoorModel(context.bakeLayer((ModelRegistry.PHONE_BOOTH_DOOR)));
-        mysticDoorModel = new MysticDoorModel(context.bakeLayer((ModelRegistry.MYSTIC_DOOR)));
-        drifterDoorModel = new DrifterDoorModel(context.bakeLayer((ModelRegistry.DRIFTER_DOOR)));
-        presentDoorModel = new PresentDoorModel(context.bakeLayer((ModelRegistry.PRESENT_DOOR)));
-        vendingDoorModel = new VendingMachineDoorModel(context.bakeLayer((ModelRegistry.VENDING_DOOR)));
-        briefcaseDoorModel = new BriefcaseDoorModel(context.bakeLayer((ModelRegistry.BRIEFCASE_DOOR)));
-        groeningDoorModel = new GroeningDoorModel(context.bakeLayer((ModelRegistry.GROENING_DOOR)));
+        factoryDoorModel = new DualInteriorDoorModel(context.bakeLayer((ModelRegistry.FACTORY_DOOR)), 250f);
+        mysticDoorModel = new DualInteriorDoorModel(context.bakeLayer((ModelRegistry.MYSTIC_DOOR)), 250f);
+        nukaDoorModel = new DualInteriorDoorModel(context.bakeLayer((ModelRegistry.NUKA_DOOR)), 250f);
+        castleDoorModel = new DualInteriorDoorModel(context.bakeLayer((ModelRegistry.CASTLE_DOOR)), -90);
+        pathfinderDoorModel = new DualInteriorDoorModel(context.bakeLayer((ModelRegistry.PATHFINDER_DOOR)), 275f);
+        policeBoxDoorModel = new DualInteriorDoorModel(context.bakeLayer((ModelRegistry.POLICE_BOX_DOOR)), 300, true, false);
+
         bigBenDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.BIG_BEN_DOOR)), 275f);
-        nukaDoorModel = new NukaDoorModel(context.bakeLayer((ModelRegistry.NUKA_DOOR)));
+        phoneBoothDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.PHONE_BOOTH_DOOR)), (ModCompatChecker.immersivePortals() ? 1.75f : -1.75f));
+        portalooDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.PORTALOO_DOOR)), (ModCompatChecker.immersivePortals() ? 1.75f : -1.75f));
+        groeningDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.GROENING_DOOR)), -275f);
+
+        drifterDoorModel = new SingleTexInteriorDoorModel(context.bakeLayer((ModelRegistry.DRIFTER_DOOR)));
+        vendingDoorModel = new SingleTexInteriorDoorModel(context.bakeLayer((ModelRegistry.VENDING_DOOR)));
+
+        presentDoorModel = new PresentDoorModel(context.bakeLayer((ModelRegistry.PRESENT_DOOR)));
+
+
+        briefcaseDoorModel = new BriefcaseDoorModel(context.bakeLayer((ModelRegistry.BRIEFCASE_DOOR)));
+
         growthDoorModel = new GrowthDoorModel(context.bakeLayer((ModelRegistry.GROWTH_DOOR)));
-        portalooDoorModel = new PortalooDoorModel(context.bakeLayer((ModelRegistry.PORTALOO_DOOR)));
+
         pagodaDoorModel = new PagodaDoorModel(context.bakeLayer((ModelRegistry.PAGODA_DOOR)));
-        liftDoorModel = new LiftShellDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
-        hieroglyphDoorModel = new HieroglyphShellDoor(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
-        castleDoorModel = new CastleShellDoorModel(context.bakeLayer((ModelRegistry.CASTLE_DOOR)));
-        pathfinderDoorModel = new LeftRightInteriorDoorModel(context.bakeLayer((ModelRegistry.PATHFINDER_DOOR)), 275f);
+
+        liftDoorModel = new DualTexInteriorDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
+
+        hieroglyphDoorModel = new DualTexInteriorDoorModel(context.bakeLayer((ModelRegistry.HIEROGLYPH_DOOR)));
+
         halfBakedDoorModel = new HalfBakedDoorModel(context.bakeLayer((ModelRegistry.HALF_BAKED_DOOR)));
+
 
         TardisClientEvents.SHELLENTRY_MODELS_SETUP.invoker().setUpShellAndInteriorModels(context);
 

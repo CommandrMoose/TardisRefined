@@ -2,7 +2,7 @@
 
 ![TARDIS Refined](https://wiki.tardisrefined.net/TARDIS-Refined-Wiki/tardis_refined_v2.png)
 
-## Bug Fixes
+#### Bug Fixes
 - Bug fix: Added "Compatibility" with [Diagonal Windows](https://www.curseforge.com/minecraft/mc-mods/diagonal-windows)
 - Bug fix: Exception Ticking World [#388](https://github.com/WhoCraft/TardisRefined/issues/388)
 - Bug fix: Nuka Console Duplicate Control Entity Failing Flight Dance Events [#376](https://github.com/WhoCraft/TardisRefined/issues/376)
@@ -15,18 +15,21 @@
 - Bug fix: Fixed a bug where the overlay keybinds always rendered the default key
 - Bug fix: Fixed a bug where a new TARDIS would believe it was at 0,0,0
 
-## Enhancements
+#### Enhancements
+- Enhancement: Added Adventure Mode
 - Enhancement: Standing in a Crashed smoke of a crashed TARDIS will cause 0.5 damage to the player for the duration their standing in it
 - Enhancement: Recovery Progress of crashed TARDIS now displayed on controls until repair is complete
 - Enhancement: Recovery Progress of crashed TARDIS is now displayed on Key tooltip
 - Enhancement: Holographic exteriors on consoles now spin according to throttle
 - Enhancement: Shell Viewer/Time Vortex (Accessed Via Monitor Screen)
 - Enhancement: Speed up downwards descent for Gravity Shaft
-- Enhancement: UI for Gravity Shaft
+- Enhancement: Improved UI for Gravity Shaft
 - Enhancement: Colored various texts on Key item
 - Enhancement: Alarm now sounds when Fuel is below 5% and the TARDIS is not fueling+
+- Enhancement: Bulkhead doors now have some variants, changed via the Pattern Manipulator
+- Enhancement: Alarm now sounds when Fuel is below 5% and the TARDIS is not fueling
 
-## Additions
+#### Additions
 - Added Item: Mallet 
 - Added Villager: Pilot  (POI: Console)
 - Added Interior: Useable Terraformed 
@@ -54,7 +57,7 @@
 - Added Vortex: Agender Flag
 - Added Vortex: Gay Flag
 
-## Textures, Models & Animations
+#### Textures, Models & Animations
 - Texture: Updated all Factory Console Variants
 - Model: Updated Coral Console Model
 - Model: Updated Victorian Console Model
@@ -72,18 +75,20 @@
 - Animation: Added Victorian Console Power on Animation
 - Animation: Added Victorian Console Power off Animation
 
+#### Adventure Mode
+Mod Pack creators can now enable adventure mode in the server config - this will activate a mode where players have to visit a dimension and sample it in order to have their TARDIS travel there - Mod Pack creators can also add levels to automatically be sampled by a TARDIS
 
-## Compatibility
+#### Compatibility Notes
 - [Trinkets](https://wiki.tardisrefined.net/extendedinventorymods.html#trinkets)
 - [Curios](https://wiki.tardisrefined.net/extendedinventorymods.html#curios)
 - [Diagonal Windows](https://wiki.tardisrefined.net/diagonal-blocks-windows-walls.html#diagonal-walls)
 
 
-## Technical changes
+#### Technical changes
 - Most animations for Consoles are now loaded from JSON
 - Some models for Consoles are now loaded from JSON
 
-## NOTE
+#### NOTE
 - Upon updating to this version, your previous: ``Return Location``, ``Current Location`` and ``Target Location`` will be reset 
 This will not lead to any other data loss and your TARDIS will be exactly where you left it, take off once and you will be all sorted. This was a required change to resolve some issues
 

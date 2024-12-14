@@ -26,6 +26,7 @@ public class TRItemRegistry {
     public static final RegistrySupplier<Item> ZEITON_NUGGET = register("zeiton_nugget", () -> new Item(new Item.Properties()), true);
     public static final RegistrySupplier<GlassesItem> GLASSES = register("glasses", () -> new GlassesItem(new Item.Properties()), true);
     public static final RegistrySupplier<MalletItem> MALLET = register("mallet", () -> new MalletItem(new Item.Properties().stacksTo(1).durability(50)), true);
+    public static final RegistrySupplier<DimensionSamplerItem> TEST_TUBE = register("test_tube", () -> new DimensionSamplerItem(new Item.Properties().stacksTo(1)), true);
 
 
     private static <T extends Item> RegistrySupplier<T> register(String id, Supplier<T> itemSupplier, boolean addToTab) {
