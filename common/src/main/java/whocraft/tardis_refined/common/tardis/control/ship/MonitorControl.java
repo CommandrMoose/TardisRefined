@@ -1,6 +1,8 @@
 package whocraft.tardis_refined.common.tardis.control.ship;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +13,7 @@ import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 import whocraft.tardis_refined.common.items.KeyItem;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.screens.S2COpenMonitor;
 import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
@@ -55,8 +58,13 @@ public class MonitorControl extends Control {
                 if (key.interactMonitor(hand, player, controlEntity, player.getUsedItemHand()))
                     isSyncingKey = true;
             }
-            if (!isSyncingKey)
-                new S2COpenMonitor(operator.getInteriorManager().isWaitingToGenerate(), operator.getPilotingManager().getCurrentLocation(), operator.getPilotingManager().getTargetLocation(), operator.getUpgradeHandler()).send((ServerPlayer) player);
+            CustomPacketPayload packet;
+            if (!isSyncingKey) {
+                if (player instanceof ServerPlayer serverPlayer) {
+                    packet = new S2COpenMonitor(operator.getInteriorManager().isWaitingToGenerate(), operator.getPilotingManager().getCurrentLocation(), operator.getPilotingManager().getTargetLocation(), operator.getUpgradeHandler().saveData(new CompoundTag()));
+                    NetworkManager.get().sendToPlayer(serverPlayer, packet);
+                }
+            }
             return true;
         }
         return false;

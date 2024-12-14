@@ -25,6 +25,7 @@ import net.minecraft.world.level.storage.DerivedLevelData;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.WorldData;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncLevelList;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
@@ -97,7 +98,7 @@ public class DimensionHandlerImpl {
 
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, newLevel);
 
-        new S2CSyncLevelList(newLevel.dimension(), true).sendToAll();
+        NetworkManager.get().sendToAllPlayers(new S2CSyncLevelList(newLevel.dimension(), true));
 
 
         BlockPos blockPos = new BlockPos(0, 0, 0);

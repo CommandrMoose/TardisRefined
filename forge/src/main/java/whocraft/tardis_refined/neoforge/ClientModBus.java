@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
@@ -34,13 +35,11 @@ import whocraft.tardis_refined.client.renderer.blockentity.shell.RootShellRender
 import whocraft.tardis_refined.client.renderer.entity.ControlEntityRenderer;
 import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 import whocraft.tardis_refined.mixin.forge.ReloadableResourceManagerMixin;
-import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
-import whocraft.tardis_refined.registry.TREntityRegistry;
-import whocraft.tardis_refined.registry.TRItemRegistry;
+import whocraft.tardis_refined.registry.*;
 
 import java.util.List;
 
-@EventBusSubscriber(modid = TardisRefined.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = TardisRefined.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModBus {
 
     @SubscribeEvent
@@ -68,7 +67,7 @@ public class ClientModBus {
     public static void onBuildTabsContent(BuildCreativeModeTabContentsEvent event) {
 
         if (event.getTab() == TRItemRegistry.MAIN_TAB.get()) {
-            for (RegistrySupplier<Item> item : TRItemRegistry.TAB_ITEMS.stream().toList()) {
+            for (RegistryHolder<Item, ?> item : TRItemRegistry.TAB_ITEMS.stream().toList()) {
                 event.accept(item.get());
             }
         }

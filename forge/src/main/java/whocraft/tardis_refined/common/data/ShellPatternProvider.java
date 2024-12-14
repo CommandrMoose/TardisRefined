@@ -59,10 +59,10 @@ public class ShellPatternProvider implements DataProvider {
         if (!data.isEmpty()) {
             data.forEach((key, patternCollection) -> {
                 try {
-                    JsonObject currentPatternCollection = ShellPatternCollection.CODEC.encodeStart(JsonOps.INSTANCE, patternCollection).get()
-                            .ifRight(right -> {
+                    JsonObject currentPatternCollection = ShellPatternCollection.CODEC.encodeStart(JsonOps.INSTANCE, patternCollection)
+                            .ifError(right -> {
                                 TardisRefined.LOGGER.error(right.message());
-                            }).orThrow().getAsJsonObject();
+                            }).getOrThrow().getAsJsonObject();
                     Path output = getPath(patternCollection.themeId());
                     futures.add(DataProvider.saveStable(arg, currentPatternCollection, output));
                 } catch (Exception exception) {

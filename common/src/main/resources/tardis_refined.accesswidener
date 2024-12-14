@@ -19,6 +19,8 @@ accessible method net/minecraft/client/renderer/LevelRenderer renderEndSky (Lcom
 accessible method net/minecraft/world/level/biome/Biome getGrassColorFromTexture ()I
 accessible class net/minecraft/client/renderer/RenderType$CompositeState
 
+accessible field net/minecraft/client/multiplayer/MultiPlayerGameMode connection Lnet/minecraft/client/multiplayer/ClientPacketListener;
+
 # Needed for Loading Models from JSON, jesus christ
 accessible field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
 accessible field net/minecraft/client/model/geom/builders/LayerDefinition material Lnet/minecraft/client/model/geom/builders/MaterialDefinition;

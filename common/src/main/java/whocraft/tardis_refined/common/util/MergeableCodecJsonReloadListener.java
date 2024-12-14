@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
@@ -13,7 +14,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.network.MessageS2C;
 import whocraft.tardis_refined.common.network.NetworkManager;
 
 import java.io.Reader;
@@ -178,7 +178,7 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
      * @param packetFactory
      * @return
      */
-    public MergeableCodecJsonReloadListener<RAW, PROCESSED> setSyncPacket(final NetworkManager networkManager, final Function<Map<ResourceLocation, PROCESSED>, MessageS2C> packetFactory) {
+    public MergeableCodecJsonReloadListener<RAW, PROCESSED> setSyncPacket(final NetworkManager networkManager, final Function<Map<ResourceLocation, PROCESSED>, CustomPacketPayload> packetFactory) {
         return this;
     }
 
@@ -189,8 +189,8 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
      * @param networkManager
      * @param packetFactory  - applies the data to a sync packet that uses Message2C instance with a constructor containing a Map of entries
      */
-    protected void handleSyncPacket(ServerPlayer player, final NetworkManager networkManager, final Function<Map<ResourceLocation, PROCESSED>, MessageS2C> packetFactory) {
-        MessageS2C packet = packetFactory.apply(this.data);
+    protected void handleSyncPacket(ServerPlayer player, final NetworkManager networkManager, final Function<Map<ResourceLocation, PROCESSED>, CustomPacketPayload> packetFactory) {
+        CustomPacketPayload packet = packetFactory.apply(this.data);
         if (player == null)
             networkManager.sendToAllPlayers(packet);
         else networkManager.sendToPlayer(player, packet);

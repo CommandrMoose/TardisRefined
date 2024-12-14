@@ -20,14 +20,16 @@ public class VortexRegistry implements Theme {
     public static final ResourceKey<Registry<VortexRegistry>> VORTEX_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "vortex"));
 
     /**
+     * Registry instance containing all Vortex entries.
+     */
+    public static final Registry<VortexRegistry> VORTEX_REGISTRY = RegistryBuilder.create(VORTEX_REGISTRY_KEY).build();
+
+    /**
      * Deferred Registry for Vortex entries.
      */
     public static final DeferredRegister<VortexRegistry> VORTEX_DEFERRED_REGISTRY = DeferredRegister.create(TardisRefined.MODID, VORTEX_REGISTRY_KEY);
 
-    /**
-     * Registry instance containing all Vortex entries.
-     */
-    public static final Registry<VortexRegistry> VORTEX_REGISTRY = RegistryBuilder.create(VORTEX_REGISTRY_KEY).build();
+
 
     // Vortex entries
     public static final RegistryHolder<VortexRegistry, VortexRegistry> CLOUDS = registerVortex(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "clouds"), ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "textures/vortex/clouds.png"), 9, 12, 10f, true, true, VortexGradientTint.BlueOrngGradient, false);

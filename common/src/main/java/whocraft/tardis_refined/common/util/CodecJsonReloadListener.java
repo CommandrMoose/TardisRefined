@@ -12,7 +12,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.network.MessageS2C;
 import whocraft.tardis_refined.common.network.NetworkManager;
 
 import java.util.HashMap;
@@ -145,8 +144,8 @@ public class CodecJsonReloadListener<T> extends SimpleJsonResourceReloadListener
      * @param networkManager
      * @param packetFactory  - applies the data to a sync packet that uses Message2C instance with a constructor containing a Map of entries
      */
-    protected void handleSyncPacket(ServerPlayer player, final NetworkManager networkManager, final Function<Map<ResourceLocation, T>, MessageS2C> packetFactory) {
-        MessageS2C packet = packetFactory.apply(this.data);
+    protected void handleSyncPacket(ServerPlayer player, final NetworkManager networkManager, final Function<Map<ResourceLocation, T>, CustomPacketPayload> packetFactory) {
+        CustomPacketPayload packet = packetFactory.apply(this.data);
         if (player == null)
             networkManager.sendToAllPlayers(packet);
         else networkManager.sendToPlayer(player, packet);

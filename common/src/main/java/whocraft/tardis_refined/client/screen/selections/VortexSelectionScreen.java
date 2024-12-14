@@ -18,6 +18,7 @@ import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.common.VortexRegistry;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.C2SChangeVortex;
 import whocraft.tardis_refined.constants.ModMessages;
 
@@ -69,7 +70,7 @@ public class VortexSelectionScreen extends SelectionScreen {
     }
 
     public void selectVortex(ResourceLocation themeId) {
-        new C2SChangeVortex(Minecraft.getInstance().player.level().dimension(), themeId).send();
+        NetworkManager.get().sendToServer(new C2SChangeVortex(Minecraft.getInstance().player.level().dimension(), themeId));
         Minecraft.getInstance().setScreen(null);
     }
 

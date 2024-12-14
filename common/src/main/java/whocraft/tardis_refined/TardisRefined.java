@@ -32,7 +32,6 @@ public class TardisRefined {
 
     public static Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
-            .registerTypeHierarchyAdapter(Style.class, new Style.Serializer())
             .registerTypeAdapterFactory(new LowerCaseEnumTypeAdapterFactory()).create();
 
     public static void init() {
@@ -45,9 +44,9 @@ public class TardisRefined {
         TREntityRegistry.ENTITY_TYPES.register();
         TRSoundRegistry.SOUNDS.register();
         TRBlockEntityRegistry.BLOCK_ENTITY_TYPES.register();
-       // TRManipulatorRecipeResultTypes.MANIPULATOR_RECIPE_RESULT_DEFERRED_REGISTRY.register();
+       //TODO! TRManipulatorRecipeResultTypes.MANIPULATOR_RECIPE_RESULT_DEFERRED_REGISTRY.register();
         TRCraftingRecipeTypes.RECIPE_TYPE_DEFERRED_REGISTRY.register();
-       // TRCraftingRecipeSerializers.RECIPE_SERIALIZERS.register();
+       //TODO! TRCraftingRecipeSerializers.RECIPE_SERIALIZERS.register();
         TRDimensionTypes.register();
         ChunkGenerators.CHUNK_GENERATORS.register();
         Features.FEATURES.register();
@@ -60,15 +59,16 @@ public class TardisRefined {
 
         TRPointOfInterestTypes.POIS.register();
         TRVillagerProfession.PROFESSIONS.register();
-        //     TRPointOfInterestTypes.registerBlockStates();
 
         TRTagKeys.init();
         TardisNetwork.init();
-        TardisDesktops.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncDesktops::new);
+
+        //TODO!
+      /*  TardisDesktops.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncDesktops::new);
         ConsolePatterns.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncConsolePatterns::new);
         ShellPatterns.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncShellPatterns::new);
         TardisHums.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncHums::new);
-
+*/
         registerFallbackEntries();
     }
 

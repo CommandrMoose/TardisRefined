@@ -55,8 +55,8 @@ public class SoundProvider extends SoundDefinitionsProvider {
 
 
         add(TRSoundRegistry.CLOISTER_BELL.get(),
-                basicSound("cloister_bell", SoundDefinition.Sound.sound(ResourceLocation.fromNamespaceAndPath("block/bell/resonate"), SoundDefinition.SoundType.SOUND).pitch(0.85),
-                        SoundDefinition.Sound.sound(ResourceLocation.fromNamespaceAndPath("block/bell/resonate"), SoundDefinition.SoundType.SOUND).pitch(0.9)
+                basicSound("cloister_bell", SoundDefinition.Sound.sound(ResourceLocation.parse("block/bell/resonate"), SoundDefinition.SoundType.SOUND).pitch(0.85),
+                        SoundDefinition.Sound.sound(ResourceLocation.parse("block/bell/resonate"), SoundDefinition.SoundType.SOUND).pitch(0.9)
                 ));
     }
 

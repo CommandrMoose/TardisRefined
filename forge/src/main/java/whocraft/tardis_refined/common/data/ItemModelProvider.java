@@ -33,7 +33,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         blockItem(TRBlockRegistry.ZEITON_BLOCK.getId());
         blockItem(TRBlockRegistry.ASTRAL_MAP.getId());
 
-        ResourceLocation leavesTexture = ResourceLocation.fromNamespaceAndPath("tardis_refined:block/ars_leaves");
+        ResourceLocation leavesTexture = ResourceLocation.parse("tardis_refined:block/ars_leaves");
 
 
         myFenceInventory(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "ars_leaves_fence_inventory"), leavesTexture);

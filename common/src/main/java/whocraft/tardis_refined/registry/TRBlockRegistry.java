@@ -43,8 +43,8 @@ public class TRBlockRegistry {
     public static final RegistryHolder<Block, ?> ARS_LEAVES = register("ars_leaves", () -> new ARSLeavesBlock(BlockBehaviour.Properties.of().noOcclusion().strength(3, 3).sound(SoundType.AZALEA_LEAVES)), false, true);
 
     //////////// REMOVE THESE BLOCKS FROM CREATIVE TABS BEFORE PRODUCTION
-    public static final RegistryHolder<Block, ?> ARS_LEAVES_SLAB = register("ars_leaves_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().noOcclusion().strength(3, 3).sound(SoundType.AZALEA_LEAVES)), false, true);
-    public static final RegistryHolder<Block, ?> ARS_LEAVES_FENCE = register("ars_leaves_fence", () -> new FenceBlock(BlockBehaviour.Properties.of().noOcclusion().strength(3, 3).sound(SoundType.AZALEA_LEAVES)), false, true);
+    public static final RegistryHolder<Block, SlabBlock> ARS_LEAVES_SLAB = register("ars_leaves_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().noOcclusion().strength(3, 3).sound(SoundType.AZALEA_LEAVES)), false, true);
+    public static final RegistryHolder<Block, FenceBlock> ARS_LEAVES_FENCE = register("ars_leaves_fence", () -> new FenceBlock(BlockBehaviour.Properties.of().noOcclusion().strength(3, 3).sound(SoundType.AZALEA_LEAVES)), false, true);
     // Devices
     public static final RegistryHolder<Block, ?> TERRAFORMER_BLOCK = register("terraformer", () -> new TerraformerBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
     public static final RegistryHolder<Block, ?> AIR_LOCK_GENERATION_BLOCK = register("air_lock_generator", () -> new AirLockGenerationBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), false, true);
@@ -52,7 +52,7 @@ public class TRBlockRegistry {
     ///////////////////////////////////////////////////////////////////////////////
     public static final RegistryHolder<Block, ?> CONSOLE_CONFIGURATION_BLOCK = register("console_configuration", () -> new ConsoleConfigurationBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
     public static final RegistryHolder<Block, ?> ASTRAL_MANIPULATOR_BLOCK = register("astral_manipulator", () -> new AstralManipulatorBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion().lightLevel((x) -> {
-        return x.getValue(GlobalConsoleBlock.POWERED) ? 15 : 0;
+        return x.getValue(AstralManipulatorBlock.POWERED) ? 15 : 0;
     })), true, true);
     public static final RegistryHolder<Block, ?> GRAVITY_WELL = register("gravity_well", () -> new AntiGravityBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
     public static final RegistryHolder<Block, ?> CORRIDOR_TELEPORTER = register("corridor_teleporter", () -> new CorridorTeleporterBlock(BlockBehaviour.Properties.of().strength(3, 3).sound(SoundType.ANVIL).noOcclusion()), true, true);
@@ -76,8 +76,8 @@ public class TRBlockRegistry {
     public static final RegistryHolder<Block, ?> ARTRON_PILLAR_PORT = register("artron_pillar_port", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK)), false, false);
     public static final RegistryHolder<Block, ?> ASTRAL_MAP = register("astral_map", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)), true, true);
 
-    private static <T extends Block> RegistryHolder<Block, ?> register(String id, Supplier<T> blockSupplier, boolean addToTab, boolean registerItem) {
-        RegistryHolder<Block, ?> registryObject = BLOCKS.register(id, blockSupplier);
+    private static <T extends Block> RegistryHolder<Block, T> register(String id, Supplier<T> blockSupplier, boolean addToTab, boolean registerItem) {
+        RegistryHolder<Block, T> registryObject = BLOCKS.register(id, blockSupplier);
         if (registerItem) {
             RegistryHolder<Item, ?> itemSupplier = TRItemRegistry.ITEMS.register(id, () -> new BlockItem(registryObject.get(), new Item.Properties()));
             if (addToTab) {

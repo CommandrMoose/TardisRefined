@@ -8,14 +8,10 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.network.MessageContext;
 import whocraft.tardis_refined.common.network.NetworkManager;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public record S2CSyncDesktops(Map<ResourceLocation, DesktopTheme> desktops) implements CustomPacketPayload, NetworkManager.Handler<S2CSyncDesktops> {

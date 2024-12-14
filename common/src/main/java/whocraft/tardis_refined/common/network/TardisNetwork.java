@@ -29,7 +29,6 @@ public class TardisNetwork {
         NETWORK.registerS2C(S2CSyncConsolePatterns.TYPE, S2CSyncConsolePatterns.STREAM_CODEC, (value, context) -> value.receive(value, context));
         NETWORK.registerS2C(S2CSyncShellPatterns.TYPE, S2CSyncShellPatterns.STREAM_CODEC, (value, context) -> value.receive(value, context));
         NETWORK.registerS2C(S2CSyncDesktops.TYPE, S2CSyncDesktops.STREAM_CODEC, (value, context) -> value.receive(value, context));
-        NETWORK.registerS2C(S2COpenCoordinatesDisplayMessage.TYPE, S2COpenCoordinatesDisplayMessage.STREAM_CODEC, (value, context) -> value.receive(value, context));
         NETWORK.registerS2C(S2COpenEditCoordinatesDisplayMessage.TYPE, S2COpenEditCoordinatesDisplayMessage.STREAM_CODEC, (value, context) -> value.receive(value, context));
         NETWORK.registerS2C(S2CWaypointsListScreen.TYPE, S2CWaypointsListScreen.STREAM_CODEC, (value, context) -> value.receive(value, context));
         NETWORK.registerS2C(S2COpenCoordinatesDisplayMessage.TYPE, S2COpenCoordinatesDisplayMessage.STREAM_CODEC, (value, context) -> value.receive(value, context));

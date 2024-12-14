@@ -13,6 +13,7 @@ import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionL
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.common.hum.HumEntry;
 import whocraft.tardis_refined.common.hum.TardisHums;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.hums.C2SChangeHum;
 import whocraft.tardis_refined.common.util.MiscHelper;
 
@@ -32,7 +33,7 @@ public class HumSelectionScreen extends SelectionScreen {
     }
 
     public static void selectHum(HumEntry theme) {
-        new C2SChangeHum(Minecraft.getInstance().player.level().dimension(), theme).send();
+        NetworkManager.get().sendToServer(new C2SChangeHum(Minecraft.getInstance().player.level().dimension(), theme));
         Minecraft.getInstance().setScreen(null);
     }
 

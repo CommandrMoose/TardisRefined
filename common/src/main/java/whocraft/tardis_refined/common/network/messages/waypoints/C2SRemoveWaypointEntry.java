@@ -38,7 +38,7 @@ public record C2SRemoveWaypointEntry(UUID waypointId) implements CustomPacketPay
         TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
             TardisWaypointManager waypointManager = tardisLevelOperator.getTardisWaypointManager();
             waypointManager.deleteWaypoint(value.waypointId());
-            new S2CWaypointsListScreen(waypointManager.getWaypoints()).send(player);
+            NetworkManager.get().sendToPlayer(player, new S2CWaypointsListScreen(waypointManager.getWaypoints()));
         });
     }
 }

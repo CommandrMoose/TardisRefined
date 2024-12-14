@@ -27,7 +27,7 @@ import java.util.Optional;
 public record C2SChangeDesktop(ResourceKey<Level> resourceKey, DesktopTheme desktopTheme) implements CustomPacketPayload, NetworkManager.Handler<C2SChangeDesktop> {
 
     public static final CustomPacketPayload.Type<C2SChangeDesktop> TYPE = new CustomPacketPayload.Type<>(
-            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "change_vortex"));
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "change_desktop"));
 
     public static final StreamCodec<FriendlyByteBuf, C2SChangeDesktop> STREAM_CODEC = StreamCodec.of(
             (buf, ref) -> {

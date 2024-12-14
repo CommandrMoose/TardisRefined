@@ -39,11 +39,6 @@ import java.util.List;
 
 public class MiscHelper {
 
-    @ExpectPlatform
-    public static Packet<ClientGamePacketListener> spawnPacket(Entity entity) {
-        throw new RuntimeException(TardisRefined.PLATFORM_ERROR);
-    }
-
     public static boolean isBlockPosInBox(BlockPos blockPos, AABB aabb) {
         return aabb.contains(blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }

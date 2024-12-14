@@ -87,7 +87,7 @@ if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
                 curseforge {
                     token = CURSE_API_KEY
                     id = "782697"
-                    gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
+                    gameVersions.addAll "Java 21", "$rootProject.minecraft_version"
                 }
             }
 
@@ -123,7 +123,7 @@ dependencies {
 
     modCompileOnly "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
     modCompileOnly "curse.maven:jei-238222:${rootProject.jei_fabric_version}"
-    modImplementation "curse.maven:huge-structure-blocks-474114:4803539"
+    modImplementation "curse.maven:huge-structure-blocks-474114:5628953"
 
     // Trinkets
     modImplementation ("dev.emi:trinkets:${rootProject.trinkets_version}") {

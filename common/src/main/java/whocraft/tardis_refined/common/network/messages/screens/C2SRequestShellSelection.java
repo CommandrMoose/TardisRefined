@@ -31,7 +31,7 @@ public record C2SRequestShellSelection() implements CustomPacketPayload, Network
     public void receive(C2SRequestShellSelection value, NetworkManager.Context context) {
         ServerLevel serverLevel = (ServerLevel) context.getPlayer().level();
         TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
-            new S2COpenShellSelection(tardisLevelOperator.getAestheticHandler().getShellTheme()).send((ServerPlayer) context.getPlayer());
+            NetworkManager.get().sendToPlayer((ServerPlayer) context.getPlayer(), new S2COpenShellSelection(tardisLevelOperator.getAestheticHandler().getShellTheme()));
         });
     }
 }

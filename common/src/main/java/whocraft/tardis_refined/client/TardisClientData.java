@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.hum.HumEntry;
 import whocraft.tardis_refined.common.hum.TardisHums;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncTardisClientData;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.NbtConstants;
@@ -257,7 +258,7 @@ public class TardisClientData {
      * server-side, as calling it client-side may cause the game to crash.
      */
     public void sync() {
-        new S2CSyncTardisClientData(getLevelKey(), serializeNBT()).sendToAll();
+        NetworkManager.get().sendToAllPlayers(new S2CSyncTardisClientData(getLevelKey(), serializeNBT()));
     }
 
     public Vec3 fogColor(boolean isCrashing) {

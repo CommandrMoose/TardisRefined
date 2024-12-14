@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.TardisTeleportData;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.player.C2SExitTardisView;
 import whocraft.tardis_refined.common.network.messages.player.S2CResetPostShellView;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncTardisPlayerView;
@@ -133,7 +134,7 @@ public class TardisPlayerInfo implements TardisPilot {
         TardisTeleportData.scheduleEntityTeleport(serverPlayer, getPlayerPreviousPos().getDimensionKey(), targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), playerPreviousYaw, playerPreviousRot);
         updatePlayerAbilities(serverPlayer, serverPlayer.getAbilities(), false);
         serverPlayer.onUpdateAbilities();
-        new S2CResetPostShellView().send(serverPlayer);
+        NetworkManager.get().sendToPlayer(serverPlayer, new S2CResetPostShellView());
 
         setPlayerPreviousPos(TardisNavLocation.ORIGIN);
         setRenderVortex(false);
@@ -220,14 +221,14 @@ public class TardisPlayerInfo implements TardisPilot {
 
         S2CSyncTardisPlayerView message = new S2CSyncTardisPlayerView(this.player.getId(), nbt);
         if (serverPlayerEntity == null) {
-            message.sendToAll();
+            NetworkManager.get().sendToAllPlayers(message);
         } else {
-            message.send(serverPlayerEntity);
+            NetworkManager.get().sendToPlayer(serverPlayerEntity, message);
         }
     }
 
     public static void onExitKeybindPressed(){
-        new C2SExitTardisView().send();
+        NetworkManager.get().sendToServer(new C2SExitTardisView());
     }
 
     @Override

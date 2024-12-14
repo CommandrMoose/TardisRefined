@@ -1,154 +1,143 @@
-package whocraft.tardis_refined.common.network.neoforge;
+package net.threetag.palladiumcore.network.neoforge;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.NetworkEvent;
-import net.neoforged.neoforge.network.NetworkRegistry;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.PlayNetworkDirection;
-import net.neoforged.neoforge.network.simple.SimpleChannel;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.network.MessageC2S;
-import whocraft.tardis_refined.common.network.MessageS2C;
-import whocraft.tardis_refined.common.network.MessageType;
 import whocraft.tardis_refined.common.network.NetworkManager;
-
-import java.util.Optional;
+import whocraft.tardis_refined.neoforge.TardisRefinedForge;
 
 public class NetworkManagerImpl extends NetworkManager {
 
-    private final SimpleChannel channel;
-
-    public NetworkManagerImpl(ResourceLocation channelName) {
-        super(channelName);
-        this.channel = NetworkRegistry.newSimpleChannel(channelName, () -> "1.0.0", (s) -> true, (s) -> true);
-        this.channel.registerMessage(0, ToServer.class, ToServer::toBytes, ToServer::new, ToServer::handle, Optional.of(PlayNetworkDirection.PLAY_TO_SERVER));
-        this.channel.registerMessage(1, ToClient.class, ToClient::toBytes, ToClient::new, ToClient::handle, Optional.of(PlayNetworkDirection.PLAY_TO_CLIENT));
-    }
-
-    public static NetworkManager create(ResourceLocation channelName) {
-        return new NetworkManagerImpl(channelName);
+    public static NetworkManager make() {
+        return new NetworkManagerImpl();
     }
 
     @Override
-    public void sendToServer(MessageC2S message) {
-        if (!this.toServer.containsValue(message.getType())) {
-            TardisRefined.LOGGER.error("Message type not registered: " + message.getType().getId());
-            return;
-        }
-
-        this.channel.sendToServer(new ToServer(message));
+    public <T extends CustomPacketPayload> void registerS2C(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Handler<T> receiver) {
+        TardisRefinedForge.whenModBusAvailable(TardisRefined.MODID, bus -> {
+            bus.<RegisterPayloadHandlersEvent>addListener(event -> {
+                event.registrar(type.id().getNamespace()).optional().playToClient(type, codec, (arg, context) -> {
+                    receiver.receive(arg, makeContext(context.player(), context, true));
+                });
+            });
+        });
     }
 
     @Override
-    public void sendToPlayer(ServerPlayer player, MessageS2C message) {
-        if (!this.toClient.containsValue(message.getType())) {
-            TardisRefined.LOGGER.error("Message type not registered: " + message.getType().getId());
-            return;
-        }
-
-        this.channel.send(PacketDistributor.PLAYER.with(() -> player), new ToClient(message));
+    public <T extends CustomPacketPayload> void registerC2S(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, Handler<T> receiver) {
+        TardisRefinedForge.whenModBusAvailable(TardisRefined.MODID, bus -> {
+            bus.<RegisterPayloadHandlersEvent>addListener(event -> {
+                event.registrar(type.id().getNamespace()).optional().playToServer(type, codec, (arg, context) -> {
+                    receiver.receive(arg, makeContext(context.player(), context, false));
+                });
+            });
+        });
     }
 
     @Override
-    public void sendToTrackingAndSelf(ServerPlayer player, MessageS2C message) {
-        if (!this.toClient.containsValue(message.getType())) {
-            TardisRefined.LOGGER.error("Message type not registered: " + message.getType().getId());
-            return;
-        }
-        this.channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), message);
+    public <T extends CustomPacketPayload> Packet<?> toC2SPacket(T payload) {
+        return new ServerboundCustomPayloadPacket(payload);
     }
 
     @Override
-    public void sendToTracking(Entity entity, MessageS2C message) {
-        if (!this.toClient.containsValue(message.getType())) {
-            TardisRefined.LOGGER.error("Message type not registered: " + message.getType().getId());
-            return;
-        }
-        this.channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), message);
+    public <T extends CustomPacketPayload> Packet<?> toS2CPacket(T payload) {
+        return new ClientboundCustomPayloadPacket(payload);
     }
 
     @Override
-    public void sendToTracking(BlockEntity blockEntity, MessageS2C message) {
-        if (!this.toClient.containsValue(message.getType())) {
-            TardisRefined.LOGGER.error("Message type not registered: " + message.getType().getId());
-            return;
-        }
-        this.channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> blockEntity.getLevel().getChunkAt(blockEntity.getBlockPos())), message);
+    @OnlyIn(Dist.CLIENT)
+    public void sendToServer(CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToServer(payload, payloads);
     }
 
+    @Override
+    public void sendToPlayer(ServerPlayer player, CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToPlayer(player, payload, payloads);
+    }
 
-    public class ToServer {
+    @Override
+    public void sendToPlayersInDimension(ServerLevel level, CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToPlayersInDimension(level, payload, payloads);
+    }
 
-        private final MessageC2S message;
+    @Override
+    public void sendToPlayersNear(ServerLevel level, @Nullable ServerPlayer excluded, double x, double y, double z, double radius, CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToPlayersNear(level, excluded, x, y, z, radius, payload, payloads);
+    }
 
-        public ToServer(MessageC2S message) {
-            this.message = message;
-        }
+    @Override
+    public void sendToAllPlayers(CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToAllPlayers(payload, payloads);
+    }
 
-        public ToServer(FriendlyByteBuf buf) {
-            var msgId = buf.readUtf();
+    @Override
+    public void sendToPlayersTrackingEntity(Entity entity, CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToPlayersTrackingEntity(entity, payload, payloads);
+    }
 
-            if (!NetworkManagerImpl.this.toServer.containsKey(msgId)) {
-                TardisRefined.LOGGER.error("Unknown message id received on server: " + msgId);
-                this.message = null;
-                return;
+    @Override
+    public void sendToPlayersTrackingEntityAndSelf(Entity entity, CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, payload, payloads);
+    }
+
+    @Override
+    public void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, CustomPacketPayload payload, CustomPacketPayload... payloads) {
+        PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, payload, payloads);
+    }
+
+    private static Context makeContext(Player player, IPayloadContext queue, boolean client) {
+        return new Context() {
+            @Override
+            public Player getPlayer() {
+                return player;
             }
 
-            MessageType type = NetworkManagerImpl.this.toServer.get(msgId);
-            this.message = (MessageC2S) type.getDecoder().decode(buf);
-        }
-
-        public static void handle(ToServer msg, NetworkEvent.Context ctx) {
-            if (msg.message != null) {
-                ctx.enqueueWork(() -> msg.message.handle(() -> ctx.getSender()));
+            @Override
+            public void queue(Runnable runnable) {
+                queue.enqueueWork(runnable);
             }
-            ctx.setPacketHandled(true);
-        }
 
-        public void toBytes(FriendlyByteBuf buf) {
-            buf.writeUtf(this.message.getType().getId());
-            this.message.toBytes(buf);
-        }
+            @Override
+            public boolean isClient() {
+                return client;
+            }
 
+            @Override
+            public RegistryAccess getRegistryAccess() {
+                return client ? getClientRegistryAccess() : player.registryAccess();
+            }
+        };
     }
 
-    public class ToClient {
-
-        private final MessageS2C message;
-
-        public ToClient(MessageS2C message) {
-            this.message = message;
+    @OnlyIn(Dist.CLIENT)
+    public static RegistryAccess getClientRegistryAccess() {
+        if (Minecraft.getInstance().level != null) {
+            return Minecraft.getInstance().level.registryAccess();
+        } else if (Minecraft.getInstance().getConnection() != null) {
+            return Minecraft.getInstance().getConnection().registryAccess();
+        } else if (Minecraft.getInstance().gameMode != null) {
+            return Minecraft.getInstance().gameMode.connection.registryAccess();
         }
 
-        public ToClient(FriendlyByteBuf buf) {
-            var msgId = buf.readUtf();
-
-            if (!NetworkManagerImpl.this.toClient.containsKey(msgId)) {
-                TardisRefined.LOGGER.error("Unknown message id received on client: " + msgId);
-                this.message = null;
-                return;
-            }
-
-            MessageType type = NetworkManagerImpl.this.toClient.get(msgId);
-            this.message = (MessageS2C) type.getDecoder().decode(buf);
-        }
-
-        public static void handle(ToClient msg, NetworkEvent.Context ctx) {
-            if (msg.message != null) {
-                ctx.enqueueWork(() -> msg.message.handle(() -> null));
-            }
-            ctx.setPacketHandled(true);
-        }
-
-        public void toBytes(FriendlyByteBuf buf) {
-            buf.writeUtf(this.message.getType().getId());
-            this.message.toBytes(buf);
-        }
-
+        // Fail-safe
+        return RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
     }
-
 }

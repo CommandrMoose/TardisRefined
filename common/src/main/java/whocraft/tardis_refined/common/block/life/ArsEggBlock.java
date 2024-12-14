@@ -34,6 +34,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.blockentity.life.ArsEggBlockEntity;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.upgrades.S2CDisplayUpgradeScreen;
 import whocraft.tardis_refined.common.util.TardisHelper;
 
@@ -133,7 +134,7 @@ public class ArsEggBlock extends BaseEntityBlock {
             TardisLevelOperator.get(serverPlayer.serverLevel()).ifPresent(tardisLevelOperator -> {
                 if (TardisHelper.isInArsArea(blockPos)) {
                     CompoundTag upgradeNbt = tardisLevelOperator.getUpgradeHandler().saveData(new CompoundTag());
-                    new S2CDisplayUpgradeScreen(upgradeNbt).send(serverPlayer);
+                    NetworkManager.get().sendToPlayer(serverPlayer, new S2CDisplayUpgradeScreen(upgradeNbt));
                 }
             });
         }

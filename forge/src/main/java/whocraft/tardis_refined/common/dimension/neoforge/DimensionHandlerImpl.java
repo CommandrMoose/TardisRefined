@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.storage.WorldData;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncLevelList;
 
 import java.util.concurrent.Executor;
@@ -58,7 +60,7 @@ public class DimensionHandlerImpl {
         Registry<LevelStem> dimensionRegistry = server.registryAccess().registryOrThrow(Registries.LEVEL_STEM);
         if (dimensionRegistry instanceof MappedRegistry<LevelStem> writableRegistry) {
             writableRegistry.unfreeze(); //Must unfreeze registry to allow our dimension to persist. This Neoforge method is deprecated so we may need to use an Accessor Mixin in the future.
-            writableRegistry.register(dimensionKey, dimension, Lifecycle.stable());
+            writableRegistry.register(dimensionKey, dimension, RegistrationInfo.BUILT_IN);
         } else {
             throw new IllegalStateException(String.format("Unable to register dimension %s -- dimension registry not writable", dimensionKey.location()));
         }
@@ -91,7 +93,7 @@ public class DimensionHandlerImpl {
 
         NeoForge.EVENT_BUS.post(new LevelEvent.Load(newLevel));
 
-        new S2CSyncLevelList(newLevel.dimension(), true).sendToAll();
+        NetworkManager.get().sendToAllPlayers(new S2CSyncLevelList(newLevel.dimension(), true));
 
         BlockPos blockPos = new BlockPos(0, 0, 0);
         ChunkPos chunkPos = new ChunkPos(blockPos);

@@ -8,13 +8,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.TardisClientLogic;
 import whocraft.tardis_refined.common.network.NetworkManager;
-import whocraft.tardis_refined.common.network.MessageType;
-import whocraft.tardis_refined.common.network.TardisNetwork;
 
 public record S2CSyncTardisClientData(ResourceKey<Level> level, CompoundTag compoundTag) implements CustomPacketPayload, NetworkManager.Handler<S2CSyncTardisClientData> {
 

@@ -12,6 +12,7 @@ import whocraft.tardis_refined.client.screen.components.CommonTRWidgets;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.selections.SelectionScreen;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.waypoints.C2SOpenCoordinatesDisplayMessage;
 import whocraft.tardis_refined.common.network.messages.waypoints.C2SOpenEditCoordinatesDisplayMessage;
 import whocraft.tardis_refined.common.network.messages.waypoints.C2SRemoveWaypointEntry;
@@ -62,7 +63,7 @@ public class WaypointListScreen extends SelectionScreen {
 
         setEvents(() -> {
             if (waypoint != null) {
-                new C2STravelToWaypoint(waypoint.getId()).send();
+                new C2STravelToWaypoint(waypoint.getId());
                 Minecraft.getInstance().setScreen(null);
             }
             Minecraft.getInstance().setScreen(null);
@@ -70,14 +71,14 @@ public class WaypointListScreen extends SelectionScreen {
             @Override
             public void onPress() {
                 if (waypoint != null) {
-                    new C2SRemoveWaypointEntry(waypoint.getId()).send();
+                    NetworkManager.get().sendToServer(new C2SRemoveWaypointEntry(waypoint.getId()));
                 }
             }
         });
 
 
         SpriteIconButton newWaypointButton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable("Submit"), (arg) -> {
-            new C2SOpenCoordinatesDisplayMessage(CoordInputType.WAYPOINT).send();
+            NetworkManager.get().sendToServer(new C2SOpenCoordinatesDisplayMessage(CoordInputType.WAYPOINT));
         }, true, BUTTON_LOCATION));
 
         newWaypointButton.setTooltip(Tooltip.create(Component.translatable(ModMessages.UI_MONITOR_WAYPOINT_CREATE)));
@@ -87,7 +88,7 @@ public class WaypointListScreen extends SelectionScreen {
         this.loadButton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable("Submit"), (arg) -> {
             if (waypoint != null) {
 
-                new C2STravelToWaypoint(waypoint.getId()).send();
+                NetworkManager.get().sendToServer(new C2STravelToWaypoint(waypoint.getId()));
                 Minecraft.getInstance().setScreen(null);
             }
         }, true, OKAY_TEXTURE));
@@ -99,7 +100,7 @@ public class WaypointListScreen extends SelectionScreen {
 
         this.editButton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable("Edit"), (arg) -> {
             if (waypoint != null) {
-                new C2SOpenEditCoordinatesDisplayMessage(waypoint.getId()).send();
+                NetworkManager.get().sendToServer(new C2SOpenEditCoordinatesDisplayMessage(waypoint.getId()));
                 Minecraft.getInstance().setScreen(null);
             }
         }, true, EDIT_TEXTURE));
@@ -109,7 +110,7 @@ public class WaypointListScreen extends SelectionScreen {
         this.editButton.active = false;
 
         this.trashButton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable("Submit"), (arg) -> {
-            new C2SRemoveWaypointEntry(waypoint.getId()).send();
+            NetworkManager.get().sendToServer(new C2SRemoveWaypointEntry(waypoint.getId()));
 
         }, true, TRASH_LOCATION));
 

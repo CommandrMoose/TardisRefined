@@ -58,10 +58,10 @@ public class ConsolePatternProvider implements DataProvider {
             data.entrySet().forEach(entry -> {
                 try {
                     ConsolePatternCollection patternCollection = entry.getValue();
-                    JsonObject currentPatternCollection = ConsolePatternCollection.CODEC.encodeStart(JsonOps.INSTANCE, patternCollection).get()
-                            .ifRight(right -> {
+                    JsonObject currentPatternCollection = ConsolePatternCollection.CODEC.encodeStart(JsonOps.INSTANCE, patternCollection)
+                            .ifError(right -> {
                                 TardisRefined.LOGGER.error(right.message());
-                            }).orThrow().getAsJsonObject();
+                            }).getOrThrow().getAsJsonObject();
                     Path output = getPath(patternCollection.themeId());
                     futures.add(DataProvider.saveStable(arg, currentPatternCollection, output));
                 } catch (Exception exception) {

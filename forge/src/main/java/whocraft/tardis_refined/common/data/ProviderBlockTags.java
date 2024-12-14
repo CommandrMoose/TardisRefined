@@ -1,6 +1,8 @@
 package whocraft.tardis_refined.common.data;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
@@ -8,8 +10,7 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingIngredient;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRecipes;
+import whocraft.tardis_refined.registry.RegistryHolder;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRTagKeys;
 
@@ -26,10 +27,10 @@ public class ProviderBlockTags extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
 
-        for (Block blocksEntry : TRBlockRegistry.BLOCKS.getRegistry().get().stream().toList()) {
-            Block block = blocksEntry;
+        for (RegistryHolder<Block, ? extends Block> blocksEntry : TRBlockRegistry.BLOCKS.getEntries()) {
+            Block block = blocksEntry.get();
 
-            if (TRBlockRegistry.BLOCKS.getKey(block).getNamespace().equals(TardisRefined.MODID)) {
+            if (BuiltInRegistries.BLOCK.getKey(block).getNamespace().equals(TardisRefined.MODID)) {
                 /*Fences*/
                 if (block instanceof FenceBlock fenceBlock) {
                     tag(BlockTags.FENCES).add(fenceBlock);
@@ -79,7 +80,8 @@ public class ProviderBlockTags extends BlockTagsProvider {
                 .add(TRBlockRegistry.ASTRAL_MANIPULATOR_BLOCK.get());
 
 
-        // ===== DIAGONAL WALLS =====
+        //TODO!!!!
+      /*  // ===== DIAGONAL WALLS =====
         // This is cursed, but we gotta do what we gotta do
 
         // Blocks
@@ -110,6 +112,6 @@ public class ProviderBlockTags extends BlockTagsProvider {
             }
         });
         tag(TRTagKeys.DIAGONAL_COMPAT_FENCES).add(fenceBlocks.toArray(new Block[0]));
-
+*/
     }
 }

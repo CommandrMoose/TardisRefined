@@ -1,3 +1,6 @@
+// TODO!!!!!
+
+/*
 package whocraft.tardis_refined.common.data;
 
 import com.google.common.base.Preconditions;
@@ -8,9 +11,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipeSerializer;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,3 +85,4 @@ public class ManipulatorRecipeProvider implements DataProvider {
     }
 
 }
+*/

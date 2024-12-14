@@ -39,8 +39,8 @@ public class TRBlockModelProvider extends BlockStateProvider {
 
     public JsonObject lantern(Block block) {
         VariantBlockStateBuilder builder = getVariantBuilder(block).forAllStates(blockState -> blockState.getValue(LanternBlock.HANGING) ?
-                ConfiguredModel.builder().modelFile(models().withExistingParent("block/zeiton_lantern_hanging", ResourceLocation.fromNamespaceAndPath("block/template_hanging_lantern")).texture("lantern", ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "block/zeiton_lantern"))).build() :
-                ConfiguredModel.builder().modelFile(models().withExistingParent("block/zeiton_lantern", ResourceLocation.fromNamespaceAndPath("block/template_lantern")).texture("lantern", ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "block/zeiton_lantern"))).build());
+                ConfiguredModel.builder().modelFile(models().withExistingParent("block/zeiton_lantern_hanging", ResourceLocation.parse("block/template_hanging_lantern")).texture("lantern", ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "block/zeiton_lantern"))).build() :
+                ConfiguredModel.builder().modelFile(models().withExistingParent("block/zeiton_lantern", ResourceLocation.parse("block/template_lantern")).texture("lantern", ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "block/zeiton_lantern"))).build());
 
         return builder.toJson();
     }
@@ -51,14 +51,6 @@ public class TRBlockModelProvider extends BlockStateProvider {
         return builder.toJson();
     }
 
-    public ResourceLocation getBlockResourceLocation(Block block) {
-        return BLOCKS.getRegistry().get().getKey(block);
-    }
-
-    public ResourceLocation getBlockTextureResourceLocation(Block block) {
-        ResourceLocation blockTex = BLOCKS.getRegistry().get().getKey(block);
-        return ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "block/" + blockTex.getPath());
-    }
 
     public JsonObject customLocation(Block block, ResourceLocation resourceLocation) {
         return getVariantBuilder(block).partialState().modelForState().modelFile(models().getExistingFile(resourceLocation)).addModel().toJson();
@@ -84,8 +76,8 @@ public class TRBlockModelProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        ResourceLocation leavesTexture = ResourceLocation.fromNamespaceAndPath("tardis_refined:block/ars_leaves");
-        ResourceLocation growthStoneTexture = ResourceLocation.fromNamespaceAndPath("tardis_refined:block/growth_stone");
+        ResourceLocation leavesTexture = ResourceLocation.parse("tardis_refined:block/ars_leaves");
+        ResourceLocation growthStoneTexture = ResourceLocation.parse("tardis_refined:block/growth_stone");
 
 /*
         Blocks that are rendered in code

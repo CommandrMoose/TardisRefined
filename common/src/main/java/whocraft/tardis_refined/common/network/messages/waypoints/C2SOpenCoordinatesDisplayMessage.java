@@ -23,7 +23,7 @@ import java.util.List;
 public record C2SOpenCoordinatesDisplayMessage(CoordInputType coordInput) implements CustomPacketPayload, NetworkManager.Handler<C2SOpenCoordinatesDisplayMessage> {
 
     public static final CustomPacketPayload.Type<C2SOpenCoordinatesDisplayMessage> TYPE = new CustomPacketPayload.Type<>(
-            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "open_coords_display"));
+            ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "c2s_open_coords_display"));
 
     public static final StreamCodec<FriendlyByteBuf, C2SOpenCoordinatesDisplayMessage> STREAM_CODEC = StreamCodec.of(
             (buf, ref) -> buf.writeUtf(ref.coordInput().name()),

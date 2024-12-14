@@ -7,12 +7,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageType;
 import whocraft.tardis_refined.common.network.NetworkManager;
-import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.network.handler.HandleSyncDimensions;
 
 public record S2CSyncLevelList(ResourceKey<Level> level, boolean add) implements CustomPacketPayload, NetworkManager.Handler<S2CSyncLevelList> {

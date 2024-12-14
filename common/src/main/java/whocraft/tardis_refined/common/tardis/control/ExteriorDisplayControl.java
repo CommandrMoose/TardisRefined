@@ -1,11 +1,13 @@
 package whocraft.tardis_refined.common.tardis.control;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.screens.S2COpenShellSelection;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
@@ -29,7 +31,8 @@ public class ExteriorDisplayControl extends Control {
     }
 
     private void sendPacket(ServerPlayer player, TardisLevelOperator tardisLevelOperator) {
-        new S2COpenShellSelection(tardisLevelOperator.getAestheticHandler().getShellTheme()).send(player);
+        CustomPacketPayload packet = new S2COpenShellSelection(tardisLevelOperator.getAestheticHandler().getShellTheme());
+        NetworkManager.get().sendToPlayer(player, packet);
     }
 
 

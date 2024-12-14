@@ -237,11 +237,6 @@ public class ControlEntity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
-        return MiscHelper.spawnPacket(this);
-    }
-
-    @Override
     public boolean hurt(DamageSource damageSource, float f) {
         if (damageSource.getDirectEntity() instanceof Player player) { //Using getDirectEntity can allow for players to indirectly interact with controls, such as through primed TNT
             if (this.level() instanceof ServerLevel serverLevel) {

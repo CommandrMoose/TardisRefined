@@ -40,7 +40,7 @@ public record C2SOpenEditCoordinatesDisplayMessage(UUID waypointId) implements C
             TardisWaypointManager waypointManager = tardisLevelOperator.getTardisWaypointManager();
             TardisWaypoint waypoint = waypointManager.getWaypointById(value.waypointId());
             if (waypoint != null) {
-                new S2COpenEditCoordinatesDisplayMessage(waypoint).send(player);
+                NetworkManager.get().sendToPlayer(player, new S2COpenEditCoordinatesDisplayMessage(waypoint));
             }
         });
     }

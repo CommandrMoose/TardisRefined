@@ -4,14 +4,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientLogic;
-import whocraft.tardis_refined.common.network.MessageContext;
-import whocraft.tardis_refined.common.network.MessageType;
 import whocraft.tardis_refined.common.network.NetworkManager;
-import whocraft.tardis_refined.common.network.TardisNetwork;
-import whocraft.tardis_refined.common.network.messages.screens.S2COpenShellSelection;
 
 public record S2CResetPostShellView() implements CustomPacketPayload, NetworkManager.Handler<S2CResetPostShellView> {
 

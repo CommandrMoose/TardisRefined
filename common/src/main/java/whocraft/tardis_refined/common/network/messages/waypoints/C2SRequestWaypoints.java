@@ -37,7 +37,7 @@ public record C2SRequestWaypoints() implements CustomPacketPayload, NetworkManag
         TardisLevelOperator.get(level).ifPresent(tardisLevelOperator -> {
             TardisWaypointManager waypointManager = tardisLevelOperator.getTardisWaypointManager();
             Collection<TardisWaypoint> waypoints = waypointManager.getWaypoints();
-            new S2CWaypointsListScreen(waypoints).send(player);
+            NetworkManager.get().sendToPlayer(player, new S2CWaypointsListScreen(waypoints));
         });
     }
 }

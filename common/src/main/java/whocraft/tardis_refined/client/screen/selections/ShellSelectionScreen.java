@@ -29,6 +29,7 @@ import whocraft.tardis_refined.client.overlays.VortexOverlay;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
+import whocraft.tardis_refined.common.network.NetworkManager;
 import whocraft.tardis_refined.common.network.messages.C2SChangeShell;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ModMessages;
@@ -107,7 +108,7 @@ public class ShellSelectionScreen extends SelectionScreen {
     }
 
     public void selectShell(ResourceLocation themeId) {
-        new C2SChangeShell(Minecraft.getInstance().player.level().dimension(), themeId, pattern).send();
+        NetworkManager.get().sendToServer(new C2SChangeShell(Minecraft.getInstance().player.level().dimension(), themeId, pattern));
         Minecraft.getInstance().setScreen(null);
     }
 

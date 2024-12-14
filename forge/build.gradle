@@ -97,7 +97,7 @@ if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
                 curseforge {
                     token = CURSE_API_KEY
                     id = "782697"
-                    gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
+                    gameVersions.addAll "Java 21", "$rootProject.minecraft_version"
                 }
             }
 
@@ -180,7 +180,7 @@ tasks.withType(JavaCompile) {
     // this fixes some edge cases with special characters not displaying correctly // see [http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html](http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html)
     // If Javadoc is generated, this must be specified in that task too.
     options.encoding = "UTF-8"
-    options.release = 17
+    options.release = 21
 }
 publishing {
     publications {

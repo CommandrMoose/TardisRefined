@@ -6,6 +6,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
@@ -45,7 +46,7 @@ public record C2SUnlockUpgrade(Upgrade upgrade) implements CustomPacketPayload, 
                 upgradeHandler.unlockUpgrade(value.upgrade());
 
                 CompoundTag nbt = upgradeHandler.saveData(new CompoundTag());
-                new S2CDisplayUpgradeScreen(nbt).send(context.getPlayer());
+                NetworkManager.get().sendToPlayer((ServerPlayer) context.getPlayer(), new S2CDisplayUpgradeScreen(nbt));
             } else {
                 PlayerUtil.sendMessage(context.getPlayer(), "Not enough points or upgrade already unlocked.", true);
             }

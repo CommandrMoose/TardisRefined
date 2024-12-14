@@ -24,7 +24,7 @@ public class BlockEntityRendererMixin extends BlockEntity implements IBlockEntit
 
     @Override
     public AABB getRenderBoundingBox(BlockEntity blockEntity) {
-        return INFINITE_EXTENT_AABB;
+        return AABB.INFINITE;
     }
 
 }

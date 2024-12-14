@@ -92,7 +92,7 @@ public class NetworkManagerImpl extends NetworkManager {
 
     @Override
     public void sendToAllPlayers(CustomPacketPayload payload, CustomPacketPayload... payloads) {
-        MinecraftServer server = Objects.requireNonNull(Platform.getCurrentServer(), "Cannot send clientbound payloads on the client");
+        MinecraftServer server = Objects.requireNonNull(Platform.getServer(), "Cannot send clientbound payloads on the client");
         server.getPlayerList().broadcastAll(makeClientboundPacket(payload, payloads));
     }
 

@@ -16,14 +16,16 @@ public class TRUpgrades {
     public static final ResourceKey<Registry<Upgrade>> UPGRADE_REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(TardisRefined.MODID, "upgrade"));
 
     /**
+     * Instance of registry containing all Upgrade entries. Addon mod entries will be included in this registry as long as they are use the same ResourceKey<Registry<ObjectType>>.
+     */
+    public static final Registry<Upgrade> UPGRADE_REGISTRY = RegistryBuilder.create(UPGRADE_REGISTRY_KEY).build();
+
+    /**
      * Tardis Refined instance of the Upgrade registry. Addon Mods: DO NOT USE THIS, it is only for Tardis Refined use only
      */
     public static final DeferredRegister<Upgrade> UPGRADE_DEFERRED_REGISTRY = DeferredRegister.create(TardisRefined.MODID, UPGRADE_REGISTRY_KEY);
 
-    /**
-     * Instance of registry containing all Upgrade entries. Addon mod entries will be included in this registry as long as they are use the same ResourceKey<Registry<ObjectType>>.
-     */
-    public static final Registry<Upgrade> UPGRADE_REGISTRY = RegistryBuilder.create(UPGRADE_REGISTRY_KEY).build();
+
 
     // Base Upgrades
     public static final RegistryHolder<Upgrade, Upgrade> TARDIS_XP = UPGRADE_DEFERRED_REGISTRY.register("tardis_xp", () -> new Upgrade(Items.GLASS_BOTTLE::getDefaultInstance, RegistryHelper.makeKey("tardis_xp"), Upgrade.UpgradeType.MAIN_UPGRADE)
