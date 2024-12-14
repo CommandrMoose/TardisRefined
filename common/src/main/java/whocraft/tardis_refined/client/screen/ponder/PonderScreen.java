@@ -33,6 +33,11 @@ public class PonderScreen extends MonitorOS {
     private final int xSize, ySize, zSize;
     private int age = 0;
 
+    // Variables for rotation
+    private float rotationX = -45F;
+    private float rotationY = 45F;
+    private boolean isDragging = false;
+
     public PonderScreen(ManipulatorCraftingRecipe recipe) {
         super(getResultName(recipe), new ResourceLocation(TardisRefined.MODID, "textures/gui/monitor/backdrop.png"));
 
@@ -62,7 +67,6 @@ public class PonderScreen extends MonitorOS {
         xSize = maxX - minX;
         ySize = maxY - minY;
         zSize = maxZ - minZ;
-
     }
 
     public static Component getResultName(ManipulatorCraftingRecipe recipe) {
@@ -117,12 +121,11 @@ public class PonderScreen extends MonitorOS {
 
         PoseStack pose = guiGraphics.pose();
 
-        // Right-aligned 3D rendering of ingredients
         Lighting.setupFor3DItems();
         pose.pushPose();
         pose.translate((float) width / 2 - 50, height / 2f, 500);
-        pose.mulPose(Axis.XP.rotationDegrees(-45F / 2));
-        pose.mulPose(Axis.YP.rotationDegrees(45));
+        pose.mulPose(Axis.XP.rotationDegrees(rotationX / 2));
+        pose.mulPose(Axis.YP.rotationDegrees(rotationY));
         pose.scale(-20, -20, -20);
         pose.translate(-xSize / 2f, -ySize / 2f, -zSize / 2f);
 
@@ -150,5 +153,31 @@ public class PonderScreen extends MonitorOS {
     public void tick() {
         super.tick();
         age++;
+    }
+
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if (isDragging) {
+            rotationY += deltaX * 0.5f;
+            rotationX -= deltaY * 0.5f;
+            rotationX = Math.max(-90, Math.min(90, rotationX));
+        }
+        return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        isDragging = true;
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (button == 0) { // Left mouse button
+            isDragging = false;
+            return true;
+        }
+        return super.mouseReleased(mouseX, mouseY, button);
     }
 }
