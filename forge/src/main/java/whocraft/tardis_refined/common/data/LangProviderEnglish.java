@@ -224,8 +224,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.UI_MONITOR_VORTEX, "VORTEX");
         add(ModMessages.UI_MONITOR_DESTINATION, "Destination");
         add(ModMessages.UI_LIST_SELECTION, "Currently selected: &s");
-        add(ModMessages.UI_EXTERNAL_SHELL, "EXTERNAL SHELL CONFIGURATION");
-        add(ModMessages.UI_SHELL_SELECTION, "EXTERNAL SHELL CONFIGURATION");
+        add(ModMessages.UI_EXTERNAL_SHELL, "SHELL CONFIGURATION");
         add(ModMessages.UI_MONITOR_SHELL_VIEW, "SHELL VIEW");
         add(ModMessages.UI_DESKTOP_CONFIGURATION, "DESKTOP");
         add(ModMessages.UI_DESKTOP_CANCEL_TITLE, "OPERATION IN PROGRESS");

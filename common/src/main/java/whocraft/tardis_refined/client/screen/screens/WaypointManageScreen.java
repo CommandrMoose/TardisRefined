@@ -45,6 +45,13 @@ public class WaypointManageScreen extends MonitorOS {
         this.preExistingWaypoint = waypoint;
         this.tardisNavLocation = waypoint.getLocation();
         this.coordInputType = CoordInputType.WAYPOINT;
+
+        this.setEvents(() -> {
+
+        }, () -> {
+            new C2SRequestWaypoints().send();
+        });
+
     }
 
     @Override
@@ -54,7 +61,7 @@ public class WaypointManageScreen extends MonitorOS {
         int widgetHeight = 20;
         int waypointNameWidth = monitorWidth / 2;
         int waypointNameHeight = this.height / 2;
-        int yPosition = height / 2; // Move yPosition to the top of the screen
+        int yPosition = height / 2;
         int xPosition = this.width / 2 - (waypointNameWidth / 2);
 
         yPosition += 30;
@@ -93,6 +100,10 @@ public class WaypointManageScreen extends MonitorOS {
             });
             // Waypoint Stuff
             this.addWidget(waypointName);
+
+            int vPos = (height - monitorHeight) / 2;
+            addCancelButton(width / 2 - 105, height - vPos - 25);
+
         }
     }
 

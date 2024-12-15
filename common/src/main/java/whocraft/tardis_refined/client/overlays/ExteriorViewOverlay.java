@@ -108,12 +108,14 @@ public class ExteriorViewOverlay {
 
             float journeyProgress = tardisClientData.getJourneyProgress() / 100.0f;
 
-            // Render player coordinates at the top-right corner
-            poseStack.pushPose();
-            poseStack.translate(screenWidth - coordsWidth - 10, 10, 0); // Adjust position
-            guiGraphics.fill(-2, -3, coordsWidth + 2, mc.font.lineHeight + 2, 0x88000000); // Black background
-            guiGraphics.drawString(mc.font, coordsMessage.getString(), 0, 0, 0xFFFFFF, false); // White text
-            poseStack.popPose();
+           if(!tardisClientData.isFlying()) {
+               // Render player coordinates at the top-right corner
+               poseStack.pushPose();
+               poseStack.translate(screenWidth - coordsWidth - 10, 10, 0); // Adjust position
+               guiGraphics.fill(-2, -3, coordsWidth + 2, mc.font.lineHeight + 2, 0x88000000); // Black background
+               guiGraphics.drawString(mc.font, coordsMessage.getString(), 0, 0, 0xFFFFFF, false); // White text
+               poseStack.popPose();
+           }
 
             // Render journey progress bar
             if (tardisClientData.isFlying())

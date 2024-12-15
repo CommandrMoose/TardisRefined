@@ -55,6 +55,8 @@ public class WaypointListScreen extends MonitorOS {
         }, () -> {
             if (waypoint != null)
                 new C2SRemoveWaypointEntry(waypoint.getId()).send();
+            this.switchScreenToLeft(PREVIOUS);
+
         });
 
 
@@ -63,6 +65,8 @@ public class WaypointListScreen extends MonitorOS {
         newWaypointButton.setTooltip(Tooltip.create(Component.translatable(ModMessages.UI_MONITOR_WAYPOINT_CREATE)));
         newWaypointButton.setPosition(width / 2 + 85, (height) / 2 - 60);
 
+        int vPos = (height - monitorHeight) / 2;
+        addCancelButton(width / 2 - 105, height - vPos - 25);
 
         this.loadButton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable("Submit"), (arg) -> {
             if (waypoint != null) {
@@ -97,9 +101,9 @@ public class WaypointListScreen extends MonitorOS {
 
     @Override
     public GenericMonitorSelectionList<SelectionListEntry> createSelectionList() {
-        int leftPos = this.width / 2 - 100;
-        int topPos = (height - monitorHeight) / 2;
-        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 250, 80, leftPos - 70, topPos + 45, topPos + monitorHeight - 45, 12);
+        int vPos = (height - monitorHeight) / 2;
+        int leftPos = this.width / 2 - 75;
+        GenericMonitorSelectionList<SelectionListEntry> selectionList = new GenericMonitorSelectionList<>(this.minecraft, 150, 80, leftPos, vPos + 15, vPos + monitorHeight - 30, 12);
         selectionList.setRenderBackground(false);
 
         Collection<TardisWaypoint> values = WAYPOINTS;
