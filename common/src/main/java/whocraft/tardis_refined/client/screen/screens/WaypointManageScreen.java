@@ -38,6 +38,11 @@ public class WaypointManageScreen extends MonitorOS {
         this.coordInputType = coordInputType;
         this.tardisNavLocation = tardisNavLocation;
         tardisNavLocation.setName("Waypoint");
+        this.setEvents(() -> {
+
+        }, () -> {
+            new C2SRequestWaypoints().send();
+        });
     }
 
     public WaypointManageScreen(TardisWaypoint waypoint) {
@@ -66,7 +71,7 @@ public class WaypointManageScreen extends MonitorOS {
 
         yPosition += 30;
 
-        onSaveWaypoint = this.addRenderableWidget(CommonTRWidgets.imageButton(waypointNameWidth, Component.translatable(ModMessages.SUBMIT), (arg) -> {
+        onSaveWaypoint = this.addRenderableWidget(Button.builder(Component.translatable(ModMessages.SUBMIT), (arg) -> {
 
             if (preExistingWaypoint != null) {
                 tardisNavLocation.setName(this.waypointName.getValue());
@@ -77,9 +82,7 @@ public class WaypointManageScreen extends MonitorOS {
                 new C2SUploadWaypoint(tardisNavLocation, coordInputType).send();
                 new C2SRequestWaypoints().send();
             }
-
-
-        }, false, BUTTON_LOCATION));
+        }).build());
 
         if (coordInputType == CoordInputType.WAYPOINT) {
             this.waypointName = new EditBox(this.font, xPosition, waypointNameHeight, waypointNameWidth, widgetHeight, this.waypointName, Component.translatable(ModMessages.VANILLA_SELECT_WORLD));
@@ -100,11 +103,11 @@ public class WaypointManageScreen extends MonitorOS {
             this.addWidget(waypointName);
 
             onSaveWaypoint.setPosition(xPosition, yPosition);
+            onSaveWaypoint.setWidth(120);
             addWidget(onSaveWaypoint);
 
             int vPos = (height - monitorHeight) / 2;
             addCancelButton(width / 2 - 105, height - vPos - 25);
-
         }
     }
 
@@ -114,8 +117,6 @@ public class WaypointManageScreen extends MonitorOS {
         if (coordInputType == CoordInputType.WAYPOINT)
             this.waypointName.render(guiGraphics, i, j, f);
 
-
-        System.out.println(onSaveWaypoint.visible);
 
         onSaveWaypoint.active = !waypointName.getValue().isEmpty();
         onSaveWaypoint.render(guiGraphics, i, j, f);

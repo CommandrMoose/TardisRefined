@@ -29,11 +29,11 @@ import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.CommonTRWidgets;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
-import whocraft.tardis_refined.client.screen.components.SpriteIconButton;
 import whocraft.tardis_refined.client.screen.screens.VortexSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
+import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
@@ -283,11 +283,13 @@ public class MonitorOS extends Screen {
         this.onCancel = onCancel;
     }
 
-    public void addSubmitButton(int x, int y) {
+    public Button addSubmitButton(int x, int y) {
         if (onSubmit != null) {
-            Button spriteiconbutton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable("Submit"), (arg) -> this.onSubmit.onPress(), true, BUTTON_LOCATION));
+            Button spriteiconbutton = this.addRenderableWidget(CommonTRWidgets.imageButton(20, Component.translatable(ModMessages.SUBMIT), (arg) -> this.onSubmit.onPress(), true, BUTTON_LOCATION));
             spriteiconbutton.setPosition(x, y);
+            return spriteiconbutton;
         }
+        return null;
     }
 
     public void addCancelButton(int x, int y) {
