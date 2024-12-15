@@ -5,12 +5,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
-import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 
-public class FastReturnControl extends Control {
+public class FastReturnControl extends whocraft.tardis_refined.common.tardis.control.Control {
     public FastReturnControl(ResourceLocation id) {
         super(id);
     }

@@ -18,7 +18,7 @@ import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 
 import static whocraft.tardis_refined.client.overlays.VortexOverlay.VORTEX;
-import static whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen.globalShellBlockEntity;
+import static whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen.GLOBALSHELL_BLOCKENTITY;
 
 public class ShellRenderer {
 
@@ -56,17 +56,17 @@ public class ShellRenderer {
             //pose.translate(0, 1.5, 0);
             VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(model.renderType(model.getShellTexture(ShellPatterns.getPatternOrDefault(shellTheme, shellPattern), false)));
             RenderSystem.enableBlend();
-            globalShellBlockEntity.setTardisId(tardisClientData.getLevelKey());
-            model.renderShell(globalShellBlockEntity, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
+            GLOBALSHELL_BLOCKENTITY.setTardisId(tardisClientData.getLevelKey());
+            model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             if (fullPattern.exteriorDoorTexture().emissive()) {
                 VertexConsumer vertexConsumerLighting = guiGraphics.bufferSource().getBuffer(RenderType.entityTranslucentEmissive(model.getShellTexture(ShellPatterns.getPatternOrDefault(shellTheme, shellPattern), true)));
-                model.renderShell(globalShellBlockEntity, false, false, pose, vertexConsumerLighting, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
+                model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumerLighting, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             }
 
 
             VertexConsumer lightning = guiGraphics.bufferSource().getBuffer(RenderType.entityGlint());
             if (VORTEX.lightning_strike > 0.4) {
-                model.renderShell(globalShellBlockEntity, false, false, pose, lightning, 15728880, OverlayTexture.NO_OVERLAY, 1, 1, 1, alpha);
+                model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, lightning, 15728880, OverlayTexture.NO_OVERLAY, 1, 1, 1, alpha);
             }
 
             guiGraphics.flush();

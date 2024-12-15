@@ -27,18 +27,15 @@ import java.util.List;
 public class VortexRenderer {
 
     private static final RandomSource RAND = RandomSource.create();
-
     public VortexRegistry vortexType;
-
     public final RenderHelper.DynamicTimeKeep time = new RenderHelper.DynamicTimeKeep(2);
+    private final List<VortexQuad> vortex_quads = new ArrayList<>();
+    public float opacity = 1;
+    public float lightning_strike = 0;
 
     public VortexRenderer(VortexRegistry type) {
         this.vortexType = type;
     }
-
-    private final List<VortexQuad> vortex_quads = new ArrayList<>();
-    public float opacity = 1;
-    public float lightning_strike = 0;
 
     /**
      * Renders the Time Vortex
@@ -67,11 +64,11 @@ public class VortexRenderer {
             Tesselator tesselator = beginTextureColor(Mode.QUADS);
             for (int i = 0; i < this.vortexType.getRows() / 2f; i++) {
                 if (vortex_quads.size() < i + 1) {
-                    vortex_quads.add(new VortexQuad(this.vortexType, this.time));
+                    vortex_quads.add(new VortexQuad());
                     break;
                 }
                 pose.pushPose();
-                vortex_quads.get(i).renderQuad(pose, i / (this.vortexType.getRows() / 2f), this.opacity);
+                vortex_quads.get(i).renderQuad(pose, time, vortexType, i / (this.vortexType.getRows() / 2f), this.opacity);
                 this.lightning_strike += vortex_quads.get(i).lightning_strike * vortex_quads.get(i).lightning_strike / (this.vortexType.getRows() / 2f);
                 pose.popPose();
             }
@@ -181,20 +178,16 @@ public class VortexRenderer {
         private float u = 0, v = 0;
         private final float uvSize = 0.125f;
         private float lightning_a;
-        private final VortexRegistry vortexType;
-        private final RenderHelper.DynamicTimeKeep time;
         public float lightning_strike = 0;
 
-        public VortexQuad(VortexRegistry type, RenderHelper.DynamicTimeKeep time) {
-            this.vortexType = type;
-            this.time = time;
+        public VortexQuad() {
         }
 
-        private void rndQuad() {
+        private void rndQuad(VortexRegistry vortexType) {
             valid = true;
             prev_tO = 1;
             rndUV();
-            lightning = RAND.nextBoolean() && this.vortexType.hasLightning();
+            lightning = RAND.nextBoolean() && vortexType.hasLightning();
         }
 
         private void rndUV() {
@@ -203,8 +196,8 @@ public class VortexRenderer {
         }
 
 
-        public void renderQuad(PoseStack poseStack, float time_offset, float opacity) {
-            if (!valid) rndQuad();
+        public void renderQuad(PoseStack poseStack, RenderHelper.DynamicTimeKeep time, VortexRegistry vortexType, float time_offset, float opacity) {
+            if (!valid) rndQuad(vortexType);
 
             float tO = -(time.getFloat(time_offset) * 2) - 1;
             if (tO > prev_tO || !valid) {
@@ -236,12 +229,12 @@ public class VortexRenderer {
             alpha = Math.min(alpha, 1);
             alpha *= opacity;
             poseStack.pushPose();
-            RenderHelper.rotateZYX(poseStack, 0, -this.vortexType.getTwist(), 0);
-            RenderHelper.rotateZYX(poseStack, 0, tO * this.vortexType.getRows() * this.vortexType.getTwist(), 0);
-            vertexUVColor(poseStack, x - s, tO, z + s, u0, v1, val, alpha, tO, !lightning);
-            vertexUVColor(poseStack, x + s, tO, z + s, u1, v1, val, alpha, tO, !lightning);
-            vertexUVColor(poseStack, x + s, tO, z - s, u1, v0, val, alpha, tO, !lightning);
-            vertexUVColor(poseStack, x - s, tO, z - s, u0, v0, val, alpha, tO, !lightning);
+            RenderHelper.rotateZYX(poseStack, 0, -vortexType.getTwist(), 0);
+            RenderHelper.rotateZYX(poseStack, 0, tO * vortexType.getRows() * vortexType.getTwist(), 0);
+            vertexUVColor(poseStack, x - s, tO, z + s, u0, v1, val, alpha, tO, !lightning, vortexType);
+            vertexUVColor(poseStack, x + s, tO, z + s, u1, v1, val, alpha, tO, !lightning, vortexType);
+            vertexUVColor(poseStack, x + s, tO, z - s, u1, v0, val, alpha, tO, !lightning, vortexType);
+            vertexUVColor(poseStack, x - s, tO, z - s, u0, v0, val, alpha, tO, !lightning, vortexType);
 
             poseStack.popPose();
             prev_tO = tO;
@@ -250,8 +243,8 @@ public class VortexRenderer {
 
         }
 
-        private void vertexUVColor(@NotNull PoseStack pose, float x, float y, float z, float u, float v, float val, float a, float o, boolean tint) {
-            float[] color = this.vortexType.getGradient().getRGBf(o);
+        private void vertexUVColor(@NotNull PoseStack pose, float x, float y, float z, float u, float v, float val, float a, float o, boolean tint, VortexRegistry vortexType) {
+            float[] color = vortexType.getGradient().getRGBf(o);
             if (tint)
                 RenderHelper.vertexUVColor(pose, x, y, z, u, v, val * color[0], val * color[1], val * color[2], a);
             else

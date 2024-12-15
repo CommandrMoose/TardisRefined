@@ -29,7 +29,7 @@ public class GenericMonitorSelectionList<T extends ObjectSelectionList.Entry<T>>
 
     @Override
     protected int getScrollbarPosition() {
-        return this.x0 + this.width;
+        return this.x1 - 6;
     }
 
     @Override

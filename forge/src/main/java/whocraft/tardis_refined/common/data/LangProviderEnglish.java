@@ -53,7 +53,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(VortexRegistry.LESBIAN_FLAG.get().getTranslationKey(), "Lesbian Flag");
         add(VortexRegistry.NON_BINARY_FLAG.get().getTranslationKey(), "Non-Binary Flag");
         add(VortexRegistry.AGENDER_FLAG.get().getTranslationKey(), "Agender Flag");
-        add(VortexRegistry.GAY_FLAG.get().getTranslationKey(), "Agender Flag");
+        add(VortexRegistry.GAY_FLAG.get().getTranslationKey(), "Gay Flag");
 
 
         /*Sounds*/
@@ -187,6 +187,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.DOOR_LOCKED, "Door locked");
         add(ModMessages.DOOR_UNLOCKED, "Door unlocked");
         add(ModMessages.RECOVERY_PROGRESS, "Recovery Progress: %s");
+        add(ModMessages.SUBMIT, "Submit");
 
 
         /*Command*/
@@ -225,18 +226,15 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.UI_MONITOR_VORTEX, "VORTEX");
         add(ModMessages.UI_MONITOR_DESTINATION, "Destination");
         add(ModMessages.UI_LIST_SELECTION, "Currently selected: &s");
-        add(ModMessages.UI_EXTERNAL_SHELL, "EXTERNAL SHELL CONFIGURATION");
-        add(ModMessages.UI_SHELL_SELECTION, "EXTERNAL SHELL CONFIGURATION");
+        add(ModMessages.UI_EXTERNAL_SHELL, "SHELL CONFIGURATION");
         add(ModMessages.UI_MONITOR_SHELL_VIEW, "SHELL VIEW");
-        add(ModMessages.UI_DESKTOP_SELECTION, "DESKTOP CONFIGURATION");
-        add(ModMessages.UI_DESKTOP_CONFIGURATION, "DESKTOP CONFIGURATION");
+        add(ModMessages.UI_DESKTOP_CONFIGURATION, "DESKTOP");
         add(ModMessages.UI_DESKTOP_CANCEL_TITLE, "OPERATION IN PROGRESS");
         add(ModMessages.UI_DESKTOP_CANCEL_DESCRIPTION, "Systems disabled as a Desktop reconfiguration has been scheduled.");
         add(ModMessages.UI_DESKTOP_CANCEL_DESKTOP, "Would you like to cancel the upcoming reconfiguration?");
         add(ModMessages.UI_DESKTOP_CANCEL, "Cancel Desktop Reconfiguration");
         add(ModMessages.UI_MONITOR_NO_WAYPOINTS, "No Waypoints Saved!");
         add(ModMessages.UI_MONITOR_WAYPOINT_UPLOAD, "Upload");
-        add(ModMessages.UI_MONITOR_WAYPOINT_SUBMIT, "Submit");
         add(ModMessages.UI_MONITOR_ISSUES, "Issues:");
         add(ModMessages.UI_MONITOR_WAYPOINT_ISSUE_NAME, "Invalid waypoint name");
         add(ModMessages.UI_MONITOR_WAYPOINT_ISSUE_X, "Invalid X value");

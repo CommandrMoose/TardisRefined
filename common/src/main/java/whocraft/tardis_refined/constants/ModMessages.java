@@ -14,7 +14,6 @@ public class ModMessages {
     public static final String UI_LIST_SELECTION = ui("monitor.list.selection");
     public static final String UI_DESKTOP_CONFIGURATION = ui("monitor.desktop");
     public static final String UI_SHELL_SELECTION = ui("shell_selection");
-    public static final String UI_DESKTOP_SELECTION = ui("desktop_selection");
     public static final String UI_MONITOR_GPS = ui("monitor.main.gps");
     public static final String UI_MONITOR_VORTEX = ui("monitor.main.vortex");
     public static final String UI_MONITOR_DESTINATION = ui("monitor.main.destination");
@@ -32,7 +31,6 @@ public class ModMessages {
     public static final String UI_MONITOR_WAYPOINT_LOAD = ui("monitor.waypoints.load");
     public static final String UI_MONITOR_WAYPOINT_EDIT = ui("monitor.waypoints.edit");
     public static final String UI_MONITOR_WAYPOINT_DELETE = ui("monitor.waypoints.delete");
-    public static final String UI_MONITOR_WAYPOINT_SUBMIT = ui("monitor.waypoints.submit");
     public static final String VANILLA_SELECT_WORLD = "selectWorld.search";
     public static final String UI_WAYPOINT_NAME_PLACEHOLDER = "monitor.waypoints.name.placeholder";
     public static final String UI_WAYPOINT_NEW_WAYPOINT = "monitor.waypoints.new_waypoint";
@@ -111,6 +109,7 @@ public class ModMessages {
     public static String CANNOT_START_NO_FUEL = message("cannot_start_no_fuel");
     public static String CURRENT = message("current");
     public static String DESTINATION = message("destination");
+    public static String SUBMIT = message("submit");
 
     public static String DIM_NOT_ALLOWED = message("dim_not_allowed");
     public static String DIM_ALREADY_SAVED = message("dim_already_saved");

@@ -31,7 +31,6 @@ import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
-import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.control.ControlSpecification;
 import whocraft.tardis_refined.common.tardis.control.ship.MonitorControl;
 import whocraft.tardis_refined.common.tardis.manager.FlightDanceManager;
@@ -491,7 +490,7 @@ public class ControlEntity extends Entity {
                 return false;
             }
 
-            Control control = this.controlSpecification.control();
+            whocraft.tardis_refined.common.tardis.control.Control control = this.controlSpecification.control();
 
             boolean successfulUse = control.onLeftClick(cap, this.consoleTheme, this, player);
             ConfiguredSound playedSound = successfulUse ? control.getSuccessSound(cap, this.consoleTheme, true) : control.getFailSound(cap, this.consoleTheme, true);

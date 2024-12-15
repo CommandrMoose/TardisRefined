@@ -150,7 +150,7 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
                 }
 
                 if (!exteriorManager.locked()) { //If the Tardis thinks it is not locked, open this shell's door
-                    level.setBlock(blockPos, blockState.cycle(GlobalShellBlock.OPEN), Block.UPDATE_ALL); //Cycle the door to open/closed
+                    level.setBlock(blockPos, blockState.setValue(GlobalShellBlock.OPEN, !exteriorManager.locked()), Block.UPDATE_ALL); //Cycle the door to open/closed
                     tardisLevelOperator.setDoorClosed(blockState.getValue(GlobalShellBlock.OPEN)); //Now update both the internal door and re-update the external shell for good measure too.
                     return true;
                 }

@@ -33,6 +33,11 @@ public class TardisWaypoint {
         return location;
     }
 
+    public String getName() {
+        return location.getName();
+    }
+
+
     public void setLocation(TardisNavLocation location) {
         this.location = location;
     }

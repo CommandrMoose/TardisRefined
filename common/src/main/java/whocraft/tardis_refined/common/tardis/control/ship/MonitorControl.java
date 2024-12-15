@@ -24,6 +24,7 @@ public class MonitorControl extends Control {
         super(id, true);
     }
 
+
     public MonitorControl(ResourceLocation id, String langId) {
         super(id, langId, true);
     }
@@ -56,7 +57,7 @@ public class MonitorControl extends Control {
                     isSyncingKey = true;
             }
             if (!isSyncingKey)
-                new S2COpenMonitor(operator.getInteriorManager().isWaitingToGenerate(), operator.getPilotingManager().getCurrentLocation(), operator.getPilotingManager().getTargetLocation(), operator.getUpgradeHandler()).send((ServerPlayer) player);
+                new S2COpenMonitor(operator.getInteriorManager().isWaitingToGenerate(), operator.getPilotingManager().getCurrentLocation(), operator.getPilotingManager().getTargetLocation(), operator.getUpgradeHandler(), operator.getAestheticHandler().getShellTheme()).send((ServerPlayer) player);
             return true;
         }
         return false;

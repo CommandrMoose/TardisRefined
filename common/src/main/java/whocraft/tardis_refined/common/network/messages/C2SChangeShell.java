@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.api.event.ShellChangeSources;
+import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.network.MessageC2S;
 import whocraft.tardis_refined.common.network.MessageContext;
@@ -19,6 +20,7 @@ import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRUpgrades;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class C2SChangeShell extends MessageC2S {
@@ -54,11 +56,15 @@ public class C2SChangeShell extends MessageC2S {
 
     @Override
     public void handle(MessageContext context) {
-        Optional<ServerLevel> level = Optional.ofNullable(context.getPlayer().getServer().levels.get(resourceKey));
+        Optional<ServerLevel> level = Optional.ofNullable(Objects.requireNonNull(context.getPlayer().getServer()).levels.get(resourceKey));
         level.flatMap(TardisLevelOperator::get).ifPresent(y -> {
             if (TRUpgrades.CHAMELEON_CIRCUIT_SYSTEM.get().isUnlocked(y.getUpgradeHandler()) && y.getExteriorManager().hasEnoughFuelForShellChange()) {
                 y.setShellTheme(this.shellTheme, pattern.id(), ShellChangeSources.GENERIC_UPDATE);
                 y.getPilotingManager().removeFuel(y.getExteriorManager().getFuelForShellChange());
+                TardisClientData clientData = y.tardisClientData();
+                clientData.setShellTheme(this.shellTheme);
+                clientData.setShellPattern(this.pattern.id());
+                clientData.sync();
             } else {
                 PlayerUtil.sendMessage(context.getPlayer(), ModMessages.HARDWARE_OFFLINE, true);
             }

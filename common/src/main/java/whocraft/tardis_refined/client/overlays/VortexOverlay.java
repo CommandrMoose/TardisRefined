@@ -12,12 +12,12 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.renderer.vortex.VortexRenderer;
-import whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen;
+import whocraft.tardis_refined.client.screen.screens.ShellSelectionScreen;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
 import static whocraft.tardis_refined.client.renderer.vortex.ShellRenderer.renderShell;
-import static whocraft.tardis_refined.client.screen.selections.ShellSelectionScreen.globalShellBlockEntity;
+import static whocraft.tardis_refined.client.screen.main.MonitorOS.MonitorOSExtension.GLOBALSHELL_BLOCKENTITY;
 
 public class VortexOverlay {
 
@@ -34,7 +34,7 @@ public class VortexOverlay {
     private static long LAST_TIME = System.currentTimeMillis();
 
     public static void update(GuiGraphics gg) {
-        if (globalShellBlockEntity == null) {
+        if (GLOBALSHELL_BLOCKENTITY == null) {
             ShellSelectionScreen.generateDummyGlobalShell();
             return;
         }

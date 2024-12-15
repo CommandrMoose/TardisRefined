@@ -14,7 +14,7 @@ import whocraft.tardis_refined.common.network.TardisNetwork;
 
 public class S2COpenShellSelection extends MessageS2C {
 
-    private ResourceLocation currentShell;
+    private final ResourceLocation currentShell;
 
     public S2COpenShellSelection(ResourceLocation currentShell) {
         this.currentShell = currentShell;

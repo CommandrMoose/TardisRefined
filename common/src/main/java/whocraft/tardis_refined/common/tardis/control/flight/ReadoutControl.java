@@ -6,12 +6,11 @@ import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
-import whocraft.tardis_refined.common.tardis.control.Control;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 
-public class ReadoutControl extends Control {
+public class ReadoutControl extends whocraft.tardis_refined.common.tardis.control.Control {
     public ReadoutControl(ResourceLocation id) {
         super(id);
     }

@@ -10,6 +10,7 @@ import whocraft.tardis_refined.common.blockentity.door.TardisInternalDoor;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.control.Control;
+import whocraft.tardis_refined.common.tardis.manager.TardisExteriorManager;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
@@ -47,16 +48,20 @@ public class ToggleDoorControl extends Control {
 
     @Override
     public boolean onLeftClick(TardisLevelOperator operator, ConsoleTheme theme, ControlEntity controlEntity, Player player) {
-        if (!operator.getLevel().isClientSide()) {
-            //Update both internal and exterior shell doors with the value from the exterior manager, which is the Tardis' current data
-            if (operator.getExteriorManager() != null)
-                operator.setDoorLocked(!operator.getExteriorManager().locked());
-            operator.getExteriorManager().setLocked(!operator.getExteriorManager().locked());
-            PlayerUtil.sendMessage(player, Component.translatable(operator.getExteriorManager().locked() ? ModMessages.DOOR_LOCKED : ModMessages.DOOR_UNLOCKED), true);
-            operator.setDoorClosed(true);
-            return true;
+        if (operator.getLevel().isClientSide()) {
+            return false;
         }
-        return false;
+        TardisExteriorManager exteriorManager = operator.getExteriorManager();
+        if (exteriorManager != null) {
+            boolean isLocked = !exteriorManager.locked();
+            exteriorManager.setLocked(isLocked);
+            operator.setDoorLocked(isLocked);
+            operator.setDoorClosed(isLocked);
+
+            String messageKey = isLocked ? ModMessages.DOOR_LOCKED : ModMessages.DOOR_UNLOCKED;
+            PlayerUtil.sendMessage(player, Component.translatable(messageKey), true);
+        }
+        return true;
     }
 
     @Override

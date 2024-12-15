@@ -3,16 +3,17 @@
 ![TARDIS Refined](https://wiki.tardisrefined.net/TARDIS-Refined-Wiki/tardis_refined_v2.png)
 
 #### Bug Fixes
-- Bug Fix: Added "Compatibility" with [Diagonal Windows](https://www.curseforge.com/minecraft/mc-mods/diagonal-windows)
-- Bug Fix: Exception Ticking World [#388](https://github.com/WhoCraft/TardisRefined/issues/388)
-- Bug Fix: Nuka Console Duplicate Control Entity Failing Flight Dance Events [#376](https://github.com/WhoCraft/TardisRefined/issues/376)
-- Bug Fix: land pad dont work and crash on server [#377](https://github.com/WhoCraft/TardisRefined/issues/377)
-- Bug Fix: tardis is damaged [#351](https://github.com/WhoCraft/TardisRefined/issues/351)
-- Bug Fix: Diagonal Windows makes it impossible to craft the terraformer [#383](https://github.com/WhoCraft/TardisRefined/issues/383)
-- Bug Fix: relogging causes TARDIS Dance events to not occur [#387](https://github.com/WhoCraft/TardisRefined/issues/387)
-- Bug Fix: [Incompatibility] Tardis refined dimensions fail to load with Dimension Threads  [#374](https://github.com/WhoCraft/TardisRefined/issues/374)
-- Bug Fix: Console cannot be removed/changed with the console configurator outside the TARDIS dimension  [#380](https://github.com/WhoCraft/TardisRefined/issues/380)
-- Bug Fix: Fixed a bug where the overlay keybinds always rendered the default key
+- Bug fix: Added "Compatibility" with [Diagonal Windows](https://www.curseforge.com/minecraft/mc-mods/diagonal-windows)
+- Bug fix: Exception Ticking World [#388](https://github.com/WhoCraft/TardisRefined/issues/388)
+- Bug fix: Nuka Console Duplicate Control Entity Failing Flight Dance Events [#376](https://github.com/WhoCraft/TardisRefined/issues/376)
+- Bug fix: land pad dont work and crash on server [#377](https://github.com/WhoCraft/TardisRefined/issues/377)
+- Bug fix: tardis is damaged [#351](https://github.com/WhoCraft/TardisRefined/issues/351)
+- Bug fix: Diagonal Windows makes it impossible to craft the terraformer [#383](https://github.com/WhoCraft/TardisRefined/issues/383)
+- Bug fix: relogging causes TARDIS Dance events to not occur [#387](https://github.com/WhoCraft/TardisRefined/issues/387)
+- Bug fix: [Incompatibility] Tardis refined dimensions fail to load with Dimension Threads  [#374](https://github.com/WhoCraft/TardisRefined/issues/374)
+- Bug fix: Console cannot be removed/changed with the console configurator outside the TARDIS dimension  [#380](https://github.com/WhoCraft/TardisRefined/issues/380)
+- Bug fix: Fixed a bug where the overlay keybinds always rendered the default key
+- Bug fix: Fixed a bug where a new TARDIS would believe it was at 0,0,0
 
 #### Enhancements
 - Enhancement: Added Adventure Mode

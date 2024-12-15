@@ -13,11 +13,15 @@ import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
+import whocraft.tardis_refined.common.tardis.TardisNavLocation;
+import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 
 import java.util.UUID;
+
+import static whocraft.tardis_refined.common.block.shell.ShellBaseBlock.FACING;
 
 public class RootedShellBlockEntity extends ShellBaseBlockEntity {
     public static boolean setUpOnNextTick = false; // used in fabric MinecraftServer:getAllLevels mixin
@@ -74,6 +78,11 @@ public class RootedShellBlockEntity extends ShellBaseBlockEntity {
                         tardisLevelOperator.setupInitialCave(serverLevel, blockState, blockPos);
                         tardisLevelOperator.getProgressionManager().addDiscoveredLevel(level.dimension());
                     }
+                    TardisPilotingManager pilot = tardisLevelOperator.getPilotingManager();
+
+                    pilot.setTargetLocation(new TardisNavLocation(blockPos, blockState.getValue(FACING), level.dimension()));
+                    pilot.setCurrentLocation(new TardisNavLocation(blockPos, blockState.getValue(FACING), level.dimension()));
+
                     //After we setup the data and desktop, open the doors.
                     tardisLevelOperator.setDoorClosed(false);
                     serverLevel.playSound(null, blockPos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1, 1);
