@@ -80,8 +80,6 @@ public class WaypointManageScreen extends MonitorOS {
 
 
         }, false, BUTTON_LOCATION));
-        onSaveWaypoint.setPosition(xPosition, yPosition);
-        addWidget(onSaveWaypoint);
 
         if (coordInputType == CoordInputType.WAYPOINT) {
             this.waypointName = new EditBox(this.font, xPosition, waypointNameHeight, waypointNameWidth, widgetHeight, this.waypointName, Component.translatable(ModMessages.VANILLA_SELECT_WORLD));
@@ -101,6 +99,9 @@ public class WaypointManageScreen extends MonitorOS {
             // Waypoint Stuff
             this.addWidget(waypointName);
 
+            onSaveWaypoint.setPosition(xPosition, yPosition);
+            addWidget(onSaveWaypoint);
+
             int vPos = (height - monitorHeight) / 2;
             addCancelButton(width / 2 - 105, height - vPos - 25);
 
@@ -113,9 +114,10 @@ public class WaypointManageScreen extends MonitorOS {
         if (coordInputType == CoordInputType.WAYPOINT)
             this.waypointName.render(guiGraphics, i, j, f);
 
-        onSaveWaypoint.active = !waypointName.getValue().isEmpty();
 
-        onSaveWaypoint.visible = true;
+        System.out.println(onSaveWaypoint.visible);
+
+        onSaveWaypoint.active = !waypointName.getValue().isEmpty();
         onSaveWaypoint.render(guiGraphics, i, j, f);
 
         int headerHeight = height / 2 - monitorHeight / 3;
