@@ -19,7 +19,8 @@ accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platfor
 accessible method net/minecraft/client/renderer/LevelRenderer renderEndSky (Lcom/mojang/blaze3d/vertex/PoseStack;)V
 accessible method net/minecraft/world/level/biome/Biome getGrassColorFromTexture ()I
 accessible class net/minecraft/client/renderer/RenderType$CompositeState
-
+accessible class net/minecraft/client/renderer/RenderStateShard$ShaderStateShard
+accessible field net/minecraft/client/renderer/RenderStateShard$ShaderStateShard shader Ljava/util/Optional;
 # Needed for Loading Models from JSON, jesus christ
 accessible field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
 accessible field net/minecraft/client/model/geom/builders/LayerDefinition material Lnet/minecraft/client/model/geom/builders/MaterialDefinition;

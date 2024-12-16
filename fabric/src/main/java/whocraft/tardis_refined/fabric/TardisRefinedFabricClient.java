@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ModelRegistry;
-import whocraft.tardis_refined.client.ParticleGallifrey;
+import whocraft.tardis_refined.client.particle.ParticleGallifrey;
 import whocraft.tardis_refined.client.TRKeybinds;
 import whocraft.tardis_refined.client.TRParticles;
 import whocraft.tardis_refined.client.renderer.blockentity.RootPlantRenderer;

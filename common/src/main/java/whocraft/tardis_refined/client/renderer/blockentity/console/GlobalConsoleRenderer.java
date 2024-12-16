@@ -2,6 +2,8 @@ package whocraft.tardis_refined.client.renderer.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.dragon.DragonHeadModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -21,6 +23,8 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 
+import static net.minecraft.client.renderer.blockentity.SkullBlockRenderer.renderSkull;
+
 public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleBlockEntity>, BlockEntityRendererProvider<GlobalConsoleBlockEntity> {
 
     private static final Vec3 crystalHolo = new Vec3(0.3f, -1.725, 0.655);
@@ -30,8 +34,14 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
     private static final Vec3 initiativeHoloColor = new Vec3(0, 0.8f, 1f);
 
 
+    private static DragonHeadModel dragonHeadModel;
+
     public GlobalConsoleRenderer(BlockEntityRendererProvider.Context context) {
+        dragonHeadModel = new DragonHeadModel(context.bakeLayer(ModelLayers.DRAGON_SKULL));
     }
+
+    ResourceLocation resourceLocation = new ResourceLocation("textures/entity/enderdragon/dragon.png");
+
 
     @Override
     public void render(GlobalConsoleBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
@@ -62,6 +72,12 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
             }
         }
 
+        float rotation = 90;
+
+        poseStack.pushPose();
+        poseStack.translate(-3, 1, 0);
+        renderSkull(null, rotation, blockEntity.getLevel().getGameTime(), poseStack, bufferSource, packedLight, dragonHeadModel, RenderType.entityCutoutNoCullZOffset(resourceLocation));
+        poseStack.popPose();
 
     }
 
