@@ -149,8 +149,8 @@ or other kind of organization that you work for, plus all
 its affiliates.
 
 **Affiliates** means the other organizations than an
-organization has controlEntity over, is under the controlEntity of, or is
-under common controlEntity with.
+organization has control over, is under the control of, or is
+under common control with.
 
 **Control** means ownership of substantially all the assets of
 an entity, or the power to direct its management and policies
