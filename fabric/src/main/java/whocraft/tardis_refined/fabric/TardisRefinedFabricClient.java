@@ -48,6 +48,7 @@ public class TardisRefinedFabricClient implements ClientModInitializer {
         registerEntityRenderers();
 
         KeyBindingHelper.registerKeyBinding(TRKeybinds.EXIT_EXTERIOR_VIEW);
+        KeyBindingHelper.registerKeyBinding(TRKeybinds.TOGGLE_INFO_EXTERIOR_VIEW);
         ItemProperties.register(TRItemRegistry.TEST_TUBE.get(), new ResourceLocation(TardisRefined.MODID, "is_sampled"), (itemStack, clientLevel, livingEntity, i) -> DimensionSamplerItem.hasDimAtAll(itemStack) ? 1 : 0);
 
     }
