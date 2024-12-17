@@ -186,6 +186,9 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.DOOR_UNLOCKED, "Door unlocked");
         add(ModMessages.RECOVERY_PROGRESS, "Recovery Progress: %s");
         add(ModMessages.SUBMIT, "Submit");
+        add(ModMessages.VILLAGER_CAN_FLY, "Pilot?");
+        add(ModMessages.PILOT_TIME, "You've still got %s with your pilot. Make the most of it!");
+        add(ModMessages.DEMANDS_PAYMENT, "Demands payment");
 
 
         /*Command*/

@@ -40,9 +40,6 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
         dragonHeadModel = new DragonHeadModel(context.bakeLayer(ModelLayers.DRAGON_SKULL));
     }
 
-    ResourceLocation resourceLocation = new ResourceLocation("textures/entity/enderdragon/dragon.png");
-
-
     @Override
     public void render(GlobalConsoleBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         poseStack.pushPose();
@@ -71,14 +68,6 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
                 renderHoloShell(initiativeHolo, -30 + 180, blockEntity, poseStack, bufferSource, packedLight, initiativeHoloColor);
             }
         }
-
-        float rotation = 90;
-
-        poseStack.pushPose();
-        poseStack.translate(-3, 1, 0);
-        renderSkull(null, rotation, blockEntity.getLevel().getGameTime(), poseStack, bufferSource, packedLight, dragonHeadModel, RenderType.entityCutoutNoCullZOffset(resourceLocation));
-        poseStack.popPose();
-
     }
 
     private void renderHoloShell(Vec3 offset, int rotation, GlobalConsoleBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Vec3 color) {

@@ -53,6 +53,7 @@ public class ScreenHandler {
         Minecraft.getInstance().setScreen(new WaypointManageScreen(waypoint));
     }
 
+
     @Environment(EnvType.CLIENT)
     public static void openMonitorScreen(boolean desktopGenerating, CompoundTag upgradeHandlerNbt, TardisNavLocation currentLocation, TardisNavLocation targetLocation, ResourceLocation currentShellTheme) {
         if (desktopGenerating) {

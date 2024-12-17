@@ -44,6 +44,49 @@ public class MiscHelper {
         throw new RuntimeException(TardisRefined.PLATFORM_ERROR);
     }
 
+    public static String convertTicksToRealTime(int ticks) {
+        long totalSeconds = ticks / 20;
+
+        long years = totalSeconds / (60L * 60 * 24 * 30 * 12);
+        long remainingAfterYears = totalSeconds % (60L * 60 * 24 * 30 * 12);
+
+        long months = remainingAfterYears / (60L * 60 * 24 * 30);
+        long remainingAfterMonths = remainingAfterYears % (60L * 60 * 24 * 30);
+
+        long days = remainingAfterMonths / (60L * 60 * 24);
+        long remainingAfterDays = remainingAfterMonths % (60L * 60 * 24);
+
+        long hours = remainingAfterDays / (60L * 60);
+        long remainingAfterHours = remainingAfterDays % (60L * 60);
+
+        long minutes = remainingAfterHours / 60;
+        long seconds = remainingAfterHours % 60;
+
+        StringBuilder result = new StringBuilder();
+        if (years > 0) {
+            result.append(years).append(years == 1 ? " year, " : " years, ");
+        }
+        if (months > 0) {
+            result.append(months).append(months == 1 ? " month, " : " months, ");
+        }
+        if (days > 0) {
+            result.append(days).append(days == 1 ? " day, " : " days, ");
+        }
+        if (hours > 0) {
+            result.append(hours).append(hours == 1 ? " hour, " : " hours, ");
+        }
+        if (minutes > 0) {
+            result.append(minutes).append(minutes == 1 ? " minute, " : " minutes, ");
+        }
+        if (seconds > 0 || result.isEmpty()) {
+            result.append(seconds).append(seconds == 1 ? " second" : " seconds");
+        } else {
+            result.setLength(result.length() - 2);
+        }
+
+        return result.toString();
+    }
+
     public static boolean isBlockPosInBox(BlockPos blockPos, AABB aabb) {
         return aabb.contains(blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
