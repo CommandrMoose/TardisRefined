@@ -28,7 +28,7 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
     private Button patternButton;
 
     public ShellSelectionScreen(ResourceLocation currentShellTheme) {
-        super(Component.translatable(ModMessages.UI_SHELL_SELECTION), currentShellTheme);
+        super(Component.translatable(ModMessages.UI_EXTERNAL_SHELL), currentShellTheme);
     }
 
     @Override

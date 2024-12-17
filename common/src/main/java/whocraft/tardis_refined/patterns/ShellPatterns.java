@@ -130,6 +130,7 @@ public class ShellPatterns {
             currentList.addAll(patternList);
             currentList.add(pattern);
             DEFAULT_PATTERNS.replace(themeId, currentList);
+            TardisRefined.LOGGER.info("REPLACING Shell Pattern {} for {}", pattern.id(), themeId);
         } else {
             patternList = List.of(pattern);
             DEFAULT_PATTERNS.put(themeId, patternList);

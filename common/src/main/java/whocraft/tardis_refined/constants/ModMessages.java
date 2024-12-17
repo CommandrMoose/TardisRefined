@@ -13,7 +13,6 @@ public class ModMessages {
     public static final String UI_EXTERNAL_SHELL = ui("monitor.external_shell");
     public static final String UI_LIST_SELECTION = ui("monitor.list.selection");
     public static final String UI_DESKTOP_CONFIGURATION = ui("monitor.desktop");
-    public static final String UI_SHELL_SELECTION = ui("shell_selection");
     public static final String UI_MONITOR_GPS = ui("monitor.main.gps");
     public static final String UI_MONITOR_VORTEX = ui("monitor.main.vortex");
     public static final String UI_MONITOR_DESTINATION = ui("monitor.main.destination");

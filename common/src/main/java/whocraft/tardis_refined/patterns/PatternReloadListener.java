@@ -67,7 +67,7 @@ public class PatternReloadListener<T extends PatternCollection, B extends BasePa
                             .get()
                             .ifLeft(result -> {
                                 raws.add((T) result.getFirst().setThemeId(key));
-                                TardisRefined.LOGGER.info("Adding entry for {}", key);
+                                TardisRefined.LOGGER.info("Adding Pattern {} for {}",fullId, key);
                             })
                             .ifRight(partial -> TardisRefined.LOGGER.error("Error deserializing json {} in folder {} from pack {}: {}", key, this.folderName, resource.sourcePackId(), partial.message()));
                 } catch (Exception e) {
