@@ -14,6 +14,7 @@
 - Bug fix: Console cannot be removed/changed with the console configurator outside the TARDIS dimension  [#380](https://github.com/WhoCraft/TardisRefined/issues/380)
 - Bug fix: Fixed a bug where the overlay keybinds always rendered the default key
 - Bug fix: Fixed a bug where a new TARDIS would believe it was at 0,0,0
+- Bug fix: Fixed a bug where users would be burned alive when using temperature mods
 
 #### Enhancements
 - Enhancement: Added Adventure Mode
@@ -93,3 +94,21 @@ Mod Pack creators can now enable adventure mode in the server config - this will
 This will not lead to any other data loss and your TARDIS will be exactly where you left it, take off once and you will be all sorted. This was a required change to resolve some issues
 
 
+### Special Thanks
+Can't do it all ourselves, can we?
+
+#### Edrax
+- Vortex Rendering
+- User interface rendering
+
+#### MuttDud
+- Fixed Coral Hum sound not looping as intended
+
+#### River Thomas & Govert
+- Valkyrien Skies Compatibility
+
+#### Lucraft
+- Assistance with JSON Model Loader
+
+#### nanuwo
+- Fix blockstates being incorrect when attempting to render Astral Manipulator recipes
