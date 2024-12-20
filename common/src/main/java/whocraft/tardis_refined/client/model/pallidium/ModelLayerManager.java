@@ -18,6 +18,8 @@ import whocraft.tardis_refined.TardisRefined;
 import java.util.HashMap;
 import java.util.Map;
 
+import static whocraft.tardis_refined.client.model.blockentity.shell.ShellModel.addMaterializationPart;
+
 /**
  * <h2>Credits</h2>
  * <ul>
@@ -66,11 +68,15 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         PartDefinition root = meshDefinition.getRoot();
         JsonObject parts = GsonHelper.getAsJsonObject(json, "mesh");
 
+
         for (Map.Entry<String, JsonElement> entry : parts.entrySet()) {
             String key = entry.getKey();
             JsonObject part = entry.getValue().getAsJsonObject();
             parseCubeListBuilder(key, root, part);
         }
+
+        addMaterializationPart(root);
+
 
         return LayerDefinition.create(meshDefinition, GsonHelper.getAsInt(json, "texture_width"), GsonHelper.getAsInt(json, "texture_height"));
     }
@@ -116,6 +122,9 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
         }
 
         PartDefinition partDefinition = parent.addOrReplaceChild(name, builder, partPose);
+
+        addMaterializationPart(partDefinition);
+
 
         if (GsonHelper.isValidNode(json, "children")) {
             JsonObject children = GsonHelper.getAsJsonObject(json, "children");

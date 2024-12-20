@@ -13,6 +13,8 @@ import org.joml.Vector3f;
 
 import java.util.*;
 
+import static whocraft.tardis_refined.client.model.blockentity.shell.ShellModel.addMaterializationPart;
+
 /**
  * <h2>Credits</h2>
  * <ul>
@@ -31,6 +33,9 @@ public class BedrockModelUtil {
 
         MeshDefinition meshDefinition = new MeshDefinition();
         PartDefinition root = meshDefinition.getRoot();
+
+        addMaterializationPart(root);
+
 
         var geo = GsonHelper.convertToJsonObject(geometry.get(0), "minecraft:geometry[].$");
         var description = GsonHelper.getAsJsonObject(geo, "description", new JsonObject());

@@ -91,7 +91,7 @@ public class ShellModelCollection {
 
         growthDoorModel = new GrowthDoorModel(context.bakeLayer((ModelRegistry.GROWTH_DOOR)));
 
-        pagodaDoorModel = new PagodaDoorModel(context.bakeLayer((ModelRegistry.PAGODA_DOOR)));
+        pagodaDoorModel = new SingleInteriorDoorModel(context.bakeLayer((ModelRegistry.PAGODA_DOOR)), -275f);
 
         liftDoorModel = new DualTexInteriorDoorModel(context.bakeLayer((ModelRegistry.LIFT_DOOR)));
 

@@ -68,7 +68,7 @@ public class ModelRegistry {
     public static ModelLayerLocation GROENING_DOOR = interiorDoor("groening_door");
     public static ModelLayerLocation BRIEFCASE_DOOR;
     public static ModelLayerLocation GROWTH_DOOR;
-    public static ModelLayerLocation PAGODA_DOOR;
+    public static ModelLayerLocation PAGODA_DOOR = interiorDoor("pagoda_door");;
     public static ModelLayerLocation HIEROGLYPH_DOOR = interiorDoor("hieroglyph_door");
     public static ModelLayerLocation CASTLE_DOOR = interiorDoor("castle_door");
     public static ModelLayerLocation NUKA_DOOR = interiorDoor("nuka_door");
@@ -134,7 +134,6 @@ public class ModelRegistry {
         ROOT_SHELL_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "root_shell_door"), "root_shell_door"), RootShellDoorModel::createBodyLayer);
         BRIEFCASE_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "briefcase_door"), "briefcase_door"), BriefcaseDoorModel::createBodyLayer);
         GROWTH_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "growth_door"), "growth_door"), GrowthDoorModel::createBodyLayer);
-        PAGODA_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "pagoda_door"), "pagoda_door"), PagodaDoorModel::createBodyLayer);
         HALF_BAKED_DOOR = register(new ModelLayerLocation(new ResourceLocation(MODID, "half_baked_door"), "half_baked_door"), HalfBakedDoorModel::createBodyLayer);
         ARTRON_PILLAR = register(new ModelLayerLocation(new ResourceLocation(MODID, "artron_pillar"), "artron_pillar"), ArtronPillarBlockModel::createBodyLayer);
 
