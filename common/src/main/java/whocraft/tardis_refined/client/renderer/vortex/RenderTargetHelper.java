@@ -84,7 +84,7 @@ public class RenderTargetHelper {
         // Render Door Frame
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
         currentModel.setDoorPosition(isOpen);
-        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityCutout(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         imBuffer.endBatch();
 
         // Enable and configure stencil buffer
@@ -97,7 +97,7 @@ public class RenderTargetHelper {
         // Render portal mask with depth writing enabled
         RenderSystem.depthMask(true);
         stack.pushPose();
-        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
+        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
         imBuffer.endBatch();
         stack.popPose();
         RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering
@@ -113,16 +113,21 @@ public class RenderTargetHelper {
         VORTEX.time.speed = (0.3f + tardisClientData.getThrottleStage() * 0.1f);
         VORTEX.renderVortex(stack, 1, false);
         stack.popPose();
+
         GlStateManager._depthFunc(GL11.GL_LEQUAL); // Restore depth function
         GL11.glColorMask(false, false, false, true);
 
         // Copy render target back to main buffer
-        RENDER_TARGET_HELPER.end();
+
         Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
         copyRenderTarget(RENDER_TARGET_HELPER.renderTarget, Minecraft.getInstance().getMainRenderTarget());
-        GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test
-        GL11.glColorMask(true, true, true, true);
 
+        GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test
+        GL11.glStencilMask(0xFF);
+        GL11.glColorMask(true, true, true, true);
+        RenderSystem.depthMask(true);
+
+        GL11.glGetError();
         stack.popPose();
     }
 
