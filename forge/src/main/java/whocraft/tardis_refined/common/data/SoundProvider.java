@@ -37,6 +37,7 @@ public class SoundProvider extends SoundDefinitionsProvider {
         add(TRSoundRegistry.HUM_CLASSIC.get(), basicSound("hum_classic", new ResourceLocation(TardisRefined.MODID, "tardis/interior_hums/hum_classic")));
         add(TRSoundRegistry.HUM_TOYOTA.get(), basicSound("hum_toyota", new ResourceLocation(TardisRefined.MODID, "tardis/interior_hums/hum_toyota")));
         add(TRSoundRegistry.HUM_AVIATRAX.get(), basicSound("hum_aviatrax", new ResourceLocation(TardisRefined.MODID, "tardis/interior_hums/hum_aviatrax")));
+        add(TRSoundRegistry.HUM_COPPER.get(), basicSound("hum_copper", new ResourceLocation(TardisRefined.MODID, "tardis/interior_hums/hum_copper")));
         add(TRSoundRegistry.INTERIOR_CREAKS.get(), basicSound("interior_creaks", new ResourceLocation(TardisRefined.MODID, "tardis/ambience/interior_creaks_1"), new ResourceLocation(TardisRefined.MODID, "tardis/ambience/interior_creaks_2"), new ResourceLocation(TardisRefined.MODID, "tardis/ambience/interior_creaks_3")));
         add(TRSoundRegistry.FLIGHT_FAIL_START.get(), basicSound("flight_fail_start", new ResourceLocation(TardisRefined.MODID, "tardis/flight_fail_start")));
         add(TRSoundRegistry.CONSOLE_POWER_ON.get(), basicSound("console_power_on", new ResourceLocation(TardisRefined.MODID, "tardis/console_power_on")));

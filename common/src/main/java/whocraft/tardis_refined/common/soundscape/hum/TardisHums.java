@@ -1,14 +1,10 @@
-package whocraft.tardis_refined.common.hum;
+package whocraft.tardis_refined.common.soundscape.hum;
 
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.client.sounds.QuickSimpleSound;
 import whocraft.tardis_refined.common.util.CodecJsonReloadListener;
-import whocraft.tardis_refined.common.util.RegistryHelper;
 import whocraft.tardis_refined.registry.TRSoundRegistry;
 
 import java.util.*;
@@ -54,6 +50,12 @@ public class TardisHums {
             "aviatrax",
             TRSoundRegistry.HUM_AVIATRAX.getId(), new ArrayList<>()
     );
+
+    public static final HumEntry COPPER = new HumEntry(
+            "copper",
+            TRSoundRegistry.HUM_COPPER.getId(), new ArrayList<>()
+    );
+
     private static final CodecJsonReloadListener<HumEntry> RELOAD_LISTENER = createReloadListener();
     private static final Map<ResourceLocation, HumEntry> DEFAULT_HUMS = new HashMap<>();
 

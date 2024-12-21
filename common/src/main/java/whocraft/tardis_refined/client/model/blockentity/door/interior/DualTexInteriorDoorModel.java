@@ -3,7 +3,7 @@ package whocraft.tardis_refined.client.model.blockentity.door.interior;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
+import dev.jeryn.frame.tardis.Frame;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
@@ -20,10 +20,10 @@ public class DualTexInteriorDoorModel extends ShellDoorModel {
 
     public DualTexInteriorDoorModel(ModelPart root) {
         this.root = root;
-        this.open_door = JsonToAnimationDefinition.findPart(this, "door_open");
-        this.closed_door = JsonToAnimationDefinition.findPart(this, "door_closed");
-        this.frame = JsonToAnimationDefinition.findPart(this, "frame");
-        this.portal = JsonToAnimationDefinition.findPart(this, "portal");
+        this.open_door = Frame.findPart(this, "door_open");
+        this.closed_door = Frame.findPart(this, "door_closed");
+        this.frame = Frame.findPart(this, "frame");
+        this.portal = Frame.findPart(this, "portal");
     }
 
 

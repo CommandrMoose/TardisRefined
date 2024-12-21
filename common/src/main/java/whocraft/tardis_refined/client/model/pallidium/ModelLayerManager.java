@@ -12,6 +12,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 
@@ -30,6 +32,9 @@ import static whocraft.tardis_refined.client.model.blockentity.shell.ShellModel.
 public class ModelLayerManager extends SimpleJsonResourceReloadListener {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ModelLayerManager");
+
 
     public ModelLayerManager() {
         super(GSON, "tardis_refined/model_layers");
@@ -50,7 +55,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
                     jsonRoots.put(layerLocation, layerDefinition);
                 jsonRoots.put(new ModelLayerLocation(id, "main"), layerDefinition);
             } catch (Exception e) {
-                TardisRefined.LOGGER.error("Error parsing entity model json " + id, e);
+                LOGGER.error("Error parsing entity model json {}", id, e);
             }
         });
 
@@ -139,7 +144,7 @@ public class ModelLayerManager extends SimpleJsonResourceReloadListener {
     }
 
     private static ModelLayerLocation mapPathToModelLayerLoc(ResourceLocation path) {
-        TardisRefined.LOGGER.info("Loading model: " + path.toString());
+        LOGGER.info("Loading model: {}", path.toString());
         int idx = path.getPath().indexOf('/');
         if (idx == -1) {
             return null;

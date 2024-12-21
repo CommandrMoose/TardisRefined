@@ -1,4 +1,4 @@
-# Version 2.1.0
+# Version 2.1.0 (UPCOMING)
 
 ![TARDIS Refined](https://wiki.tardisrefined.net/TARDIS-Refined-Wiki/tardis_refined_v2.png)
 
@@ -31,9 +31,9 @@
 - Enhancement: Fixed Coral Hum sound not looping as intended
 
 #### Additions
-- Added Item: Mallet 
+- Added Item: Mallet
 - Added Villager: Pilot  (POI: Console)
-- Added Interior: Useable Terraformed 
+- Added Interior: Useable Terraformed
 - "Added" Shell: Half Baked
 - Added Vortex: Clouds
 - Added Vortex: Flow
@@ -57,6 +57,9 @@
 - Added Vortex: Non-Binary Flag
 - Added Vortex: Agender Flag
 - Added Vortex: Gay Flag
+- Added Shell Pattern (Police Box): Barbie
+- Added Shell Pattern (Police Box): Fourteen
+- Added Interior Hum: Copper
 
 #### Textures, Models & Animations
 - Texture: Updated all Factory Console Variants
@@ -90,9 +93,8 @@ Mod Pack creators can now enable adventure mode in the server config - this will
 - Some models for Consoles are now loaded from JSON
 
 #### NOTE
-- Upon updating to this version, your previous: ``Return Location``, ``Current Location`` and ``Target Location`` will be reset 
-This will not lead to any other data loss and your TARDIS will be exactly where you left it, take off once and you will be all sorted. This was a required change to resolve some issues
-
+- Upon updating to this version, your previous: ``Return Location``, ``Current Location`` and ``Target Location`` will be reset
+  This will not lead to any other data loss and your TARDIS will be exactly where you left it, take off once and you will be all sorted. This was a required change to resolve some issues
 
 ### Special Thanks
 Can't do it all ourselves, can we?
@@ -105,10 +107,13 @@ Can't do it all ourselves, can we?
 - Fixed Coral Hum sound not looping as intended
 
 #### River Thomas & Govert
-- Valkyrien Skies Compatibility
+- [Valkyrien Skies Compatibility](https://wiki.tardisrefined.net/valkyrienskies.html)
 
 #### Lucraft
 - Assistance with JSON Model Loader
 
 #### nanuwo
 - Fix blockstates being incorrect when attempting to render Astral Manipulator recipes
+
+
+

@@ -22,7 +22,7 @@ import whocraft.tardis_refined.client.sounds.TRSoundInstances;
 import whocraft.tardis_refined.common.GravityUtil;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.hum.HumEntry;
+import whocraft.tardis_refined.common.soundscape.hum.HumEntry;
 import whocraft.tardis_refined.common.util.ClientHelper;
 import whocraft.tardis_refined.common.util.TardisHelper;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
@@ -221,7 +221,7 @@ public class TardisClientLogic {
             //Play hums, and use the dedicated HumSoundManager to stop and start sounds
             HumEntry humEntry = clientData.getHumEntry();
             if (isThisTardis && humEntry != null && !humEntry.getSoundEventId().toString().equals(HumSoundManager.getCurrentRawSound().getLocation().toString()) || !soundManager.isActive(HumSoundManager.getCurrentHumSound())) {
-                HumSoundManager.playHum(SoundEvent.createVariableRangeEvent(humEntry.getSoundEventId()), player, targetLevel);
+                HumSoundManager.playHum(SoundEvent.createFixedRangeEvent(humEntry.getSoundEventId(), 1F), player, targetLevel);
             }
 
             //Hum ambient sounds

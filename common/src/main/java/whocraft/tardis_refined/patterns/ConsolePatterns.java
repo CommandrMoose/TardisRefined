@@ -1,6 +1,8 @@
 package whocraft.tardis_refined.patterns;
 
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
@@ -17,8 +19,9 @@ import java.util.*;
 public class ConsolePatterns {
 
     public static final ConsolePattern DEFAULT = (ConsolePattern) new ConsolePattern(ResourceConstants.DEFAULT_PATTERN_ID, new PatternTexture(createConsolePatternTextureLocation(ConsoleTheme.FACTORY.getId(), ConsoleTheme.FACTORY.getId().getPath() + "_console"), true), Optional.of(TRConsoleSoundProfiles.DEFAULT_SOUND_PROFILE)).setThemeId(ConsoleTheme.FACTORY.getId());
-    private static PatternReloadListener<ConsolePatternCollection, ConsolePattern> PATTERNS = PatternReloadListener.createListener(TardisRefined.MODID + "/patterns/console", ConsolePatternCollection.CODEC, patternCollections -> PatternReloadListener.processPatternCollections(patternCollections));
-    private static Map<ResourceLocation, List<ConsolePattern>> DEFAULT_PATTERNS = new HashMap();
+    private static final PatternReloadListener<ConsolePatternCollection, ConsolePattern> PATTERNS = PatternReloadListener.createListener(TardisRefined.MODID + "/patterns/console", ConsolePatternCollection.CODEC, patternCollections -> PatternReloadListener.processPatternCollections(patternCollections));
+    private static final Map<ResourceLocation, List<ConsolePattern>> DEFAULT_PATTERNS = new HashMap<>();
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ConsolePatterns");
 
     public static PatternReloadListener<ConsolePatternCollection, ConsolePattern> getReloadListener() {
         return PATTERNS;
@@ -112,8 +115,8 @@ public class ConsolePatterns {
         return patterns.get(prevIndex + 1);
     }
 
-    private static ConsolePattern addDefaultPattern(ResourceLocation themeId, String patternId, String textureName, boolean hasEmissiveTexture) {
-        return addDefaultPattern(themeId, patternId, textureName, hasEmissiveTexture, Optional.of(TRConsoleSoundProfiles.DEFAULT_SOUND_PROFILE));
+    private static void addDefaultPattern(ResourceLocation themeId, String patternId, String textureName, boolean hasEmissiveTexture) {
+        addDefaultPattern(themeId, patternId, textureName, hasEmissiveTexture, Optional.of(TRConsoleSoundProfiles.DEFAULT_SOUND_PROFILE));
     }
 
 
@@ -124,14 +127,13 @@ public class ConsolePatterns {
      *
      * @implSpec INTERNAL USE ONLY
      */
-    private static ConsolePattern addDefaultPattern(ResourceLocation themeId, String patternId, String textureName, boolean hasEmissiveTexture, Optional<ConsoleSoundProfile> soundProfile) {
+    private static void addDefaultPattern(ResourceLocation themeId, String patternId, String textureName, boolean hasEmissiveTexture, Optional<ConsoleSoundProfile> soundProfile) {
         List<ConsolePattern> consolePatternList;
         ConsolePattern pattern = (ConsolePattern) new ConsolePattern(patternId, new PatternTexture(createConsolePatternTextureLocation(themeId, textureName), hasEmissiveTexture), soundProfile).setThemeId(themeId);
 
         if (DEFAULT_PATTERNS.containsKey(themeId)) {
             consolePatternList = DEFAULT_PATTERNS.get(themeId);
-            List<ConsolePattern> currentList = new ArrayList<>();
-            currentList.addAll(consolePatternList);
+            List<ConsolePattern> currentList = new ArrayList<>(consolePatternList);
             currentList.add(pattern);
             DEFAULT_PATTERNS.replace(themeId, currentList);
         } else {
@@ -139,17 +141,14 @@ public class ConsolePatterns {
             DEFAULT_PATTERNS.put(themeId, consolePatternList);
         }
         if (!Platform.isProduction()) //Enable Logging in development environment
-            TardisRefined.LOGGER.info("Adding ConsolePattern {} for {}", pattern.id(), themeId);
-        return pattern;
+            LOGGER.info("Adding ConsolePattern {} for {}", pattern.id(), themeId);
     }
 
     /**
      * @implSpec INTERNAL USE ONLY
      */
     private static ResourceLocation createConsolePatternTextureLocation(ResourceLocation themeId, String textureName) {
-        ResourceLocation texture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/" + themeId.getPath().toLowerCase(Locale.ENGLISH) + "/" + textureName + ".png");
-
-        return texture;
+        return new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/" + themeId.getPath().toLowerCase(Locale.ENGLISH) + "/" + textureName + ".png");
     }
 
     /**
@@ -164,7 +163,7 @@ public class ConsolePatterns {
 
     public static Map<ResourceLocation, ConsolePatternCollection> getDefaultPatternsDatagen() {
         Map<ResourceLocation, ConsolePatternCollection> defaults = new HashMap<>();
-        DEFAULT_PATTERNS.entrySet().forEach(entry -> defaults.put(entry.getKey(), (ConsolePatternCollection) new ConsolePatternCollection(entry.getValue()).setThemeId(entry.getKey())));
+        DEFAULT_PATTERNS.forEach((key, value) -> defaults.put(key, (ConsolePatternCollection) new ConsolePatternCollection(value).setThemeId(key)));
         return defaults;
     }
 

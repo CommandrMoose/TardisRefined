@@ -35,14 +35,13 @@ public class TRSoundRegistry {
     public static final RegistrySupplier<SoundEvent> VORTEX = setUpSound("vortex");
 
     // Hums
-
     public static final RegistrySupplier<SoundEvent> HUM_CORAL = setUpSound("hum_coral");
     public static final RegistrySupplier<SoundEvent> HUM_CAVE = setUpSound("hum_cave");
     public static final RegistrySupplier<SoundEvent> HUM_TOYOTA = setUpSound("hum_toyota");
     public static final RegistrySupplier<SoundEvent> HUM_CLASSIC = setUpSound("hum_classic");
     public static final RegistrySupplier<SoundEvent> HUM_VICTORIAN = setUpSound("hum_victorian");
     public static final RegistrySupplier<SoundEvent> HUM_AVIATRAX = setUpSound("hum_aviatrax");
-
+    public static final RegistrySupplier<SoundEvent> HUM_COPPER = setUpSound("hum_copper");
 
     // Screwdriver
     public static final RegistrySupplier<SoundEvent> SCREWDRIVER_SHORT = setUpSound("screwdriver_short");

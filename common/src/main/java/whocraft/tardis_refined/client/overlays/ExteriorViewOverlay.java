@@ -65,19 +65,9 @@ public class ExteriorViewOverlay {
 
             // Get player coordinates
             BlockPos pos = mc.player.blockPosition();
-            BlockPos targetPos = pos.east(120);
-
-            Vec3 currentPos = new Vec3(pos.getX(), pos.getY(), pos.getZ());
-
-            double progress = tardisClientData.getJourneyProgress();
-            int xV = (int) (currentPos.x + ((targetPos.getX() - currentPos.x) * progress));
-            int yV = (int) (currentPos.y + ((targetPos.getY() - currentPos.y) * progress));
-            int zV = (int) (currentPos.z + ((targetPos.getZ() - currentPos.z) * progress));
-
-            BlockPos landingLocation = new BlockPos(xV, yV, zV);
 
             MutableComponent coordsMessage = Component.literal(
-                    String.format("Coordinates: X: %d Y: %d Z: %d", landingLocation.getX(), landingLocation.getY(), landingLocation.getZ())
+                    String.format("Coordinates: X: %d Y: %d Z: %d", pos.getX(), pos.getY(), pos.getZ())
             ).withStyle(ChatFormatting.WHITE);
 
             int coordsWidth = mc.font.width(coordsMessage);
@@ -108,14 +98,13 @@ public class ExteriorViewOverlay {
 
             float journeyProgress = tardisClientData.getJourneyProgress() / 100.0f;
 
-           if(!tardisClientData.isFlying()) {
-               // Render player coordinates at the top-right corner
-               poseStack.pushPose();
-               poseStack.translate(screenWidth - coordsWidth - 10, 10, 0); // Adjust position
-               guiGraphics.fill(-2, -3, coordsWidth + 2, mc.font.lineHeight + 2, 0x88000000); // Black background
-               guiGraphics.drawString(mc.font, coordsMessage.getString(), 0, 0, 0xFFFFFF, false); // White text
-               poseStack.popPose();
-           }
+            if (!tardisClientData.isFlying()) {
+                poseStack.pushPose();
+                poseStack.translate(screenWidth - coordsWidth - 10, 20, 0);
+                guiGraphics.fill(-2, -3, coordsWidth + 2, mc.font.lineHeight + 2, 0x88000000);
+                guiGraphics.drawString(mc.font, coordsMessage.getString(), 0, 0, 0xFFFFFF, false);
+                poseStack.popPose();
+            }
 
             // Render journey progress bar
             if (tardisClientData.isFlying())
@@ -125,17 +114,6 @@ public class ExteriorViewOverlay {
         });
     }
 
-
-    private static void renderPlayerHeads(PlayerInfo player, GuiGraphics guiGraphics, Minecraft mc, int x, int y) {
-        // Render player's face and name
-        if (player == null) return;
-
-        // Render the player's face
-        int faceSize = 10;
-        RenderHelper.renderPlayerFace(guiGraphics, x, y, faceSize, player.getProfile().getId());
-        // Render the player's name
-        guiGraphics.drawString(mc.font, player.getProfile().getName(), x + faceSize + 5, y + 1, 0xFFFFFF, false); // White text
-    }
 
     public static void renderJourneyProgressBar(GuiGraphics guiGraphics, float journeyProgress) {
         Minecraft mc = Minecraft.getInstance();

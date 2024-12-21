@@ -1,4 +1,4 @@
-package whocraft.tardis_refined.common.hum;
+package whocraft.tardis_refined.common.soundscape.hum;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
