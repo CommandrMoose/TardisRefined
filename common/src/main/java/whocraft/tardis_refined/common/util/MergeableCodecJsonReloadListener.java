@@ -12,6 +12,8 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.network.MessageS2C;
 import whocraft.tardis_refined.common.network.NetworkManager;
@@ -34,6 +36,8 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
     protected final String folderName;
     protected final String EXTENSION_NAME = ".json";
     protected final int EXTENSION_LENGTH = EXTENSION_NAME.length();
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/MergeableCodecJsonReloadListener");
 
     protected final Function<List<RAW>, PROCESSED> merger;
 
@@ -84,14 +88,14 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
     @Override
     protected Map<ResourceLocation, PROCESSED> prepare(ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         //No need to define special syncing packet logic because the setSyncPacket method already subscribes us to the datapack sync events on the appropriate platform and defines the sync packet.
-        TardisRefined.LOGGER.info("Beginning loading of data for data loader: {}", this.folderName);
+        LOGGER.info("Beginning loading of data for data loader: {}", this.folderName);
         Map<ResourceLocation, PROCESSED> map = new HashMap<>();
 
         Map<ResourceLocation, List<Resource>> resourceStacks = resourceManager.listResourceStacks(this.folderName, id -> id.getPath().endsWith(EXTENSION_NAME));
 
         map = this.mapValues(resourceStacks);
 
-        TardisRefined.LOGGER.info("Data loader for {} loaded {} jsons", this.folderName, this.data.size());
+        LOGGER.info("Data loader for {} loaded {} jsons", this.folderName, this.data.size());
         return Map.copyOf(map);
     }
 
@@ -130,11 +134,11 @@ public class MergeableCodecJsonReloadListener<RAW, PROCESSED> extends SimplePrep
                             .get()
                             .ifLeft(result -> {
                                 raws.add(result.getFirst());
-                                TardisRefined.LOGGER.info("Adding entry for {}", key);
+                                LOGGER.info("Adding entry for {}", key);
                             })
-                            .ifRight(partial -> TardisRefined.LOGGER.error("Error deserializing json {} in folder {} from pack {}: {}", key, this.folderName, resource.sourcePackId(), partial.message()));
+                            .ifRight(partial -> LOGGER.error("Error deserializing json {} in folder {} from pack {}: {}", key, this.folderName, resource.sourcePackId(), partial.message()));
                 } catch (Exception e) {
-                    TardisRefined.LOGGER.error(String.format(Locale.ENGLISH, "Error reading resource %s in folder %s from pack %s: ", key, this.folderName, resource.sourcePackId()), e);
+                    LOGGER.error(String.format(Locale.ENGLISH, "Error reading resource %s in folder %s from pack %s: ", key, this.folderName, resource.sourcePackId()), e);
                 }
             }
             //Apply merging function on all raw files

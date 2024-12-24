@@ -1,7 +1,9 @@
 package whocraft.tardis_refined.neoforge;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -40,6 +42,7 @@ import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 import whocraft.tardis_refined.registry.TREntityRegistry;
 import whocraft.tardis_refined.registry.TRItemRegistry;
 
+import java.io.IOException;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TardisRefined.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -49,6 +52,12 @@ public class ClientModBus {
     public static void onItemColors(RegisterColorHandlersEvent.Item item) {
         item.register(TRItemColouring.SCREWDRIVER_COLORS, TRItemRegistry.SCREWDRIVER.get());
         item.register(TRItemColouring.SAMPLE_COLORS, TRItemRegistry.TEST_TUBE.get());
+    }
+
+    @SubscribeEvent
+    public static void onItemColors(RegisterShadersEvent registerShadersEvent) throws IOException {
+        registerShadersEvent.registerShader(new ShaderInstance(registerShadersEvent.getResourceProvider(), new ResourceLocation(TardisRefined.MODID, "nivis"), DefaultVertexFormat.NEW_ENTITY), (e) -> TRShaders.SNOW_SHADER = e);
+        registerShadersEvent.registerShader(new ShaderInstance(registerShadersEvent.getResourceProvider(), new ResourceLocation(TardisRefined.MODID, "glow_shader"), DefaultVertexFormat.NEW_ENTITY), (e) -> TRShaders.GLOW_SHADER = e);
     }
 
 

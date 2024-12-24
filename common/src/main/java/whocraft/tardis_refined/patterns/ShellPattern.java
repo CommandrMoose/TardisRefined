@@ -15,8 +15,8 @@ public class ShellPattern extends BasePattern {
         return instance.group(
                 ResourceLocation.CODEC.fieldOf("id").forGetter(ShellPattern::id),
                 Codec.STRING.orElse("Placeholder").fieldOf("name_component").forGetter(ShellPattern::name),
-                PatternTexture.getCodec().fieldOf("exterior").forGetter(ShellPattern::exteriorDoorTexture),
-                PatternTexture.getCodec().fieldOf("interior").forGetter(ShellPattern::interiorDoorTexture),
+                PatternTexture.getCodec().fieldOf("exterior").forGetter(ShellPattern::shellTexture),
+                PatternTexture.getCodec().fieldOf("interior").forGetter(ShellPattern::doorTexture),
                 ShellSoundProfile.CODEC.optionalFieldOf("sound_profile").orElse(Optional.of(TRShellSoundProfiles.DEFAULT_SOUND_PROFILE)).forGetter(ShellPattern::soundProfile)
         ).apply(instance, ShellPattern::new);
     });
@@ -44,11 +44,11 @@ public class ShellPattern extends BasePattern {
         this.shellSoundProfile = shellSoundProfile;
     }
 
-    public PatternTexture exteriorDoorTexture() {
+    public PatternTexture shellTexture() {
         return this.exteriorDoorTexture;
     }
 
-    public PatternTexture interiorDoorTexture() {
+    public PatternTexture doorTexture() {
         return this.interiorDoorTexture;
     }
 

@@ -1,25 +1,35 @@
 package whocraft.tardis_refined.common.tardis;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.phys.AABB;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.block.door.BulkHeadDoorBlock;
 import whocraft.tardis_refined.common.blockentity.door.TardisInternalDoor;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
+import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.constants.TardisDimensionConstants;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 
 import java.util.*;
 
+import static whocraft.tardis_refined.common.tardis.manager.TardisInteriorManager.STATIC_CORRIDOR_POSITION;
+
 // Responsible for all the tedious generation of the desktop;
 public class TardisArchitectureHandler {
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/TardisArchitectureHandler");
 
     public static final BlockPos DESKTOP_CENTER_POS = new BlockPos(0, 100, 0);
     public static final BlockPos EYE_OF_HARMONY_PLACEMENT = new BlockPos(991, 41, 31);
@@ -27,7 +37,7 @@ public class TardisArchitectureHandler {
     public static String currentArsStage = "one";
 
     public static void generateDesktop(ServerLevel operator, DesktopTheme theme) {
-        TardisRefined.LOGGER.debug("Attempting to generate desktop theme: {} for TARDIS.", theme.getIdentifier());
+        LOGGER.debug("Attempting to generate desktop theme: {} for TARDIS.", theme.getIdentifier());
 
         // Fill the area out.
         BlockPos corner = new BlockPos(TardisDimensionConstants.TARDIS_CENTER_POS.getX() - TardisDimensionConstants.DESKTOP_RADIUS, TardisDimensionConstants.TARDIS_ROOT_GENERATION_MIN_HEIGHT, TardisDimensionConstants.TARDIS_CENTER_POS.getZ() - TardisDimensionConstants.DESKTOP_RADIUS);
@@ -43,8 +53,11 @@ public class TardisArchitectureHandler {
             }
         }
 
-        List<Entity> desktopEntities = operator.getLevel().getEntitiesOfClass(Entity.class, new AABB(corner, farCorner));
-        desktopEntities.forEach(Entity::discard); //Don't teleport entities to a hard coded coordinate, that causes hanging entity out of world issues. In other cases, if another mod defines that coordinate as a safe area (possible) that will mean the entities never get killed.
+        List<ItemEntity> itemEntities = operator.getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(corner, farCorner));
+        List<ControlEntity> controlEntities = operator.getLevel().getEntitiesOfClass(ControlEntity.class, new AABB(corner, farCorner));
+        List<Entity> entitiesForDeath = new ArrayList<>(itemEntities);
+        entitiesForDeath.addAll(controlEntities);
+        entitiesForDeath.forEach(Entity::discard); //Don't teleport entities to a hard coded coordinate, that causes hanging entity out of world issues. In other cases, if another mod defines that coordinate as a safe area (possible) that will mean the entities never get killed.
 
         Optional<StructureTemplate> structureNBT = operator.getLevel().getStructureManager().get(theme.getStructureLocation());
 
@@ -56,8 +69,6 @@ public class TardisArchitectureHandler {
             setInteriorDoorFromStructure(structure, operator);
             buildAirlockEntranceFromStructure(structure, operator);
         });
-
-
     }
 
     public static void buildAirlockEntranceFromStructure(StructureTemplate template, ServerLevel level) {

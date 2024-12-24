@@ -2,7 +2,10 @@ package whocraft.tardis_refined.common.util;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.game.*;
+import net.minecraft.network.protocol.game.ClientboundChangeDifficultyPacket;
+import net.minecraft.network.protocol.game.ClientboundPlayerAbilitiesPacket;
+import net.minecraft.network.protocol.game.ClientboundSetExperiencePacket;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,17 +22,21 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import qouteall.imm_ptl.core.IPGlobal;
-import qouteall.imm_ptl.core.api.PortalAPI;
-import whocraft.tardis_refined.TardisRefined;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.registry.TRTagKeys;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TRTeleporter {
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/TRTeleporter");
 
     /**
      * Variant of teleport method where there is no need to track teleported entities
@@ -547,19 +554,19 @@ public class TRTeleporter {
         if (teleportedEntities != null) {
             if (!teleportedEntities.isEmpty()) {
                 if (teleportedEntities.contains(pEntity)) { //If we are calling this method by itself such as teleporting passengers, check if we have already teleported the entity
-                    TardisRefined.LOGGER.warn("Failed to teleport entity type as it has already been teleported: {}", pEntity.getType());
+                    LOGGER.warn("Failed to teleport entity type as it has already been teleported: {}", pEntity.getType());
                     return false;
                 }
             }
         }
 
         if (pEntity.getType().is(TRTagKeys.TARDIS_TELEPORT_BLACKLIST)) { //Stop teleporting if the entity being teleported is blacklisted
-            TardisRefined.LOGGER.warn("Failed to teleport entity type due to it being blacklisted: {}", pEntity.getType());
+            LOGGER.warn("Failed to teleport entity type due to it being blacklisted: {}", pEntity.getType());
             return false;
         }
         if (safeBlockCheck) {
             if (!canTeleportTo(blockpos, destination, pEntity)) {
-                TardisRefined.LOGGER.warn("Failed to teleport entity type due to destination location being unsafe: {}", pEntity.getType());
+                LOGGER.warn("Failed to teleport entity type due to destination location being unsafe: {}", pEntity.getType());
                 return false;
             }
         }

@@ -7,6 +7,8 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatternCollection;
@@ -25,6 +27,7 @@ public class ShellPatternProvider implements DataProvider {
     private final boolean addDefaults;
     private final String modid;
     protected Map<ResourceLocation, ShellPatternCollection> data = new HashMap<>();
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ShellPatternProvider");
 
     public ShellPatternProvider(DataGenerator generator, String modid) {
         this(generator, modid, true);
@@ -61,12 +64,12 @@ public class ShellPatternProvider implements DataProvider {
                 try {
                     JsonObject currentPatternCollection = ShellPatternCollection.CODEC.encodeStart(JsonOps.INSTANCE, patternCollection).get()
                             .ifRight(right -> {
-                                TardisRefined.LOGGER.error(right.message());
+                                LOGGER.error(right.message());
                             }).orThrow().getAsJsonObject();
                     Path output = getPath(patternCollection.themeId());
                     futures.add(DataProvider.saveStable(arg, currentPatternCollection, output));
                 } catch (Exception exception) {
-                    TardisRefined.LOGGER.error("Issue writing ShellPatternCollection {}! Error: {}", patternCollection.themeId(), exception.getMessage());
+                    LOGGER.error("Issue writing ShellPatternCollection {}! Error: {}", patternCollection.themeId(), exception.getMessage());
                 }
             });
         }
@@ -86,7 +89,7 @@ public class ShellPatternProvider implements DataProvider {
             collection = (ShellPatternCollection) new ShellPatternCollection(List.of(pattern)).setThemeId(themeId);
             this.data.put(themeId, collection);
         }
-        TardisRefined.LOGGER.info("Adding ShellPattern {} for {}", pattern.id(), themeId);
+        LOGGER.info("Adding ShellPattern {} for {}", pattern.id(), themeId);
         return pattern;
     }
 

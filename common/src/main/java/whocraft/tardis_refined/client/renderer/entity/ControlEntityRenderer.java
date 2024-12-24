@@ -25,11 +25,11 @@ import whocraft.tardis_refined.compat.CuriosTrinketsUtil;
 
 public class ControlEntityRenderer extends NoopRenderer<ControlEntity> {
 
-    private static ResourceLocation ICON_GOOD = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_good.png");
-    private static ResourceLocation ICON_SLIPPING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_slipping.png");
-    private static ResourceLocation ICON_WARNING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_warning.png");
-    private static ResourceLocation ICON_ALERT = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_alert.png");
-    private static ResourceLocation ICON_DANGER = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_danger.png");
+    private static final ResourceLocation ICON_GOOD = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_good.png");
+    private static final ResourceLocation ICON_SLIPPING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_slipping.png");
+    private static final ResourceLocation ICON_WARNING = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_warning.png");
+    private static final ResourceLocation ICON_ALERT = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_alert.png");
+    private static final ResourceLocation ICON_DANGER = new ResourceLocation(TardisRefined.MODID, "textures/gui/sprites/control/control_danger.png");
 
     public ControlEntityRenderer(EntityRendererProvider.Context context) {
         super(context);

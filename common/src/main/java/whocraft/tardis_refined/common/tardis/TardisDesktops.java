@@ -1,10 +1,11 @@
 package whocraft.tardis_refined.common.tardis;
 
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.common.util.CodecJsonReloadListener;
-import whocraft.tardis_refined.common.util.Platform;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,9 @@ import java.util.Map;
  * Data manager for all DesktopTheme(s)
  */
 public class TardisDesktops {
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/TardisDesktops");
+
 
     /**
      * Static reference to the overgrown cave theme. <br> DO NOT REGISTER THIS, we don't want it to show in the selection screen. <br> It is only intended to be used once for the root shell.
@@ -86,8 +90,7 @@ public class TardisDesktops {
     }
 
     private static void addDefaultDesktop(DesktopTheme theme) {
-        if (!Platform.isProduction()) //Enable Logging in development environment
-            TardisRefined.LOGGER.info("Adding default Desktop {}", theme.getIdentifier());
+        LOGGER.info("Adding default Desktop {}", theme.getIdentifier());
         DEFAULT_DESKTOPS.put(theme.getIdentifier(), theme);
     }
 

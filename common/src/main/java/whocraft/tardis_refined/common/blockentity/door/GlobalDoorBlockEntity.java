@@ -9,15 +9,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Wolf;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
@@ -26,8 +22,6 @@ import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
-
-import java.util.List;
 
 public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements BlockEntityTicker<InternalDoorBlockEntity> {
 
@@ -178,7 +172,7 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements Bl
 
     @Override
     public void tick(Level level, BlockPos blockPos, BlockState blockState, InternalDoorBlockEntity blockEntity) {
-        if (level instanceof ServerLevel serverLevel) {
+  /*      if (level instanceof ServerLevel serverLevel) {
             TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
                 if (blockEntity.isOpen() && tardisLevelOperator.getPilotingManager().isInFlight()) {
                     int throttleStage = tardisLevelOperator.getPilotingManager().getThrottleStage();
@@ -209,7 +203,7 @@ public class GlobalDoorBlockEntity extends InternalDoorBlockEntity implements Bl
                     }
                 }
             });
-        }
+        }*/
     }
 
 }

@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
-import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.constants.ResourceConstants;
 import whocraft.tardis_refined.patterns.sound.ShellSoundProfile;
 import whocraft.tardis_refined.patterns.sound.TRShellSoundProfiles;
@@ -221,7 +220,7 @@ public class ShellPatterns {
 
         addDefaultPattern(ShellTheme.MYSTIC.getId(), "dwarven", false);
 
-        addDefaultPattern(ShellTheme.BIG_BEN.getId(), "gothic", false);
+        addDefaultPattern(ShellTheme.BIG_BEN.getId(), "gothic", true);
 
         return new HashMap<>(DEFAULT_PATTERNS);
     }

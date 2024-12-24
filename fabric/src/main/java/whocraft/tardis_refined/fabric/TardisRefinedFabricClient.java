@@ -12,9 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ModelRegistry;
-import whocraft.tardis_refined.client.particle.ParticleGallifrey;
 import whocraft.tardis_refined.client.TRKeybinds;
 import whocraft.tardis_refined.client.TRParticles;
+import whocraft.tardis_refined.client.particle.ParticleGallifrey;
 import whocraft.tardis_refined.client.renderer.blockentity.RootPlantRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.console.GlobalConsoleRenderer;
 import whocraft.tardis_refined.client.renderer.blockentity.device.ArtronPillarRenderer;
@@ -40,7 +40,6 @@ import whocraft.tardis_refined.registry.TRItemRegistry;
 public class TardisRefinedFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-
         establishBlockEntityRenderers();
         ModelRegistry.init();
         ModEvents.addClientEvents();

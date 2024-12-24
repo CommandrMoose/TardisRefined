@@ -58,7 +58,8 @@ public class ShellRenderer {
             RenderSystem.enableBlend();
             GLOBALSHELL_BLOCKENTITY.setTardisId(tardisClientData.getLevelKey());
             model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
-            if (fullPattern.exteriorDoorTexture().emissive()) {
+
+            if (fullPattern.shellTexture().emissive()) {
                 VertexConsumer vertexConsumerLighting = guiGraphics.bufferSource().getBuffer(RenderType.entityTranslucentEmissive(model.getShellTexture(ShellPatterns.getPatternOrDefault(shellTheme, shellPattern), true)));
                 model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumerLighting, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             }

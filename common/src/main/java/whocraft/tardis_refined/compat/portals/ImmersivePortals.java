@@ -17,12 +17,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import qouteall.imm_ptl.core.api.PortalAPI;
 import qouteall.imm_ptl.core.portal.PortalManipulation;
 import qouteall.q_misc_util.MiscHelper;
 import qouteall.q_misc_util.api.DimensionAPI;
 import qouteall.q_misc_util.my_util.DQuaternion;
-import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.api.event.EventResult;
 import whocraft.tardis_refined.api.event.TardisCommonEvents;
 import whocraft.tardis_refined.common.blockentity.door.TardisInternalDoor;
@@ -53,6 +54,7 @@ public class ImmersivePortals {
     // First 4 is exterior, last 4 is door offsets, in order of East, South, West, North
     private static final Map<ResourceLocation, PortalOffets> THEME_OFFSETS = new HashMap<>();
     public static RegistrySupplier<EntityType<BotiPortalEntity>> BOTI_PORTAL = null;
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ImmersivePortals");
 
     public static void clearPortalCache() {
         EXISTING_PORTALS.clear();
@@ -85,7 +87,7 @@ public class ImmersivePortals {
     public static void init() {
         if (!ModCompatChecker.immersivePortals()) return; // If the mod isn't detected, we shouldn't do anything
 
-        TardisRefined.LOGGER.info("Immersive Portals Detected - Setting up Compatibility");
+        LOGGER.info("Immersive Portals Detected - Setting up Compatibility");
 
         // Register BOTI Portal here, as doing it in main code would make it a hard dependency
         BOTI_PORTAL = ENTITY_TYPES.register("boti_portal", () -> registerStatic(BotiPortalEntity::new, MobCategory.MISC, 1, 1, 96, 20, "boti_portal"));
@@ -229,7 +231,7 @@ public class ImmersivePortals {
     private static void detectMissingSetup() {
         for (ResourceLocation value : ShellTheme.SHELL_THEME_REGISTRY.keySet()) {
             if (!isShellThemeSupported(value) && !value.equals(ShellTheme.getKey(ShellTheme.BRIEFCASE.get()))) {
-                TardisRefined.LOGGER.info("{} shell has not been setup for ImmersivePortals", value);
+                LOGGER.info("{} shell has not been setup for ImmersivePortals", value);
             }
         }
     }

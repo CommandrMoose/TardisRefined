@@ -110,6 +110,7 @@ public class RenderTargetHelper {
         GL11.glColorMask(true, true, true, false);
         stack.pushPose();
         stack.scale(10, 10, 10);
+
         VORTEX.time.speed = (0.3f + tardisClientData.getThrottleStage() * 0.1f);
         VORTEX.renderVortex(stack, 1, false);
         stack.popPose();

@@ -3,7 +3,8 @@ package whocraft.tardis_refined.client.model.blockentity.shell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
-import whocraft.tardis_refined.TardisRefined;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.api.event.TardisClientEvents;
 import whocraft.tardis_refined.client.ModelRegistry;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.*;
@@ -124,10 +125,13 @@ public class ShellModelCollection {
         validateModels();
     }
 
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ShellPatternProvider");
+
+
     private void validateModels() {
         for (ResourceLocation resourceLocation : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.keySet()) {
             if(!SHELL_MODELS.containsKey(resourceLocation)){
-                TardisRefined.LOGGER.info("There was no model setup for shell theme {}", resourceLocation);
+                LOGGER.info("There was no model setup for shell theme {}", resourceLocation);
             }
         }
     }

@@ -19,6 +19,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.AABB;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
@@ -35,6 +37,9 @@ import java.nio.file.Path;
 
 public class DatapackHelper {
 
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/DatapackHelper");
+
+
     public static boolean writeDesktopToFile(ServerLevel level, BlockPos bottomCorner, BlockPos topCorner, boolean includeEntities, ResourceLocation structure, DesktopTheme desktop, String datapackName) {
         MinecraftServerStorageAccessor accessor = (MinecraftServerStorageAccessor) level.getServer();
         Path rootDir = accessor.getStorageSource().getLevelPath(LevelResource.DATAPACK_DIR).normalize();
@@ -43,7 +48,7 @@ public class DatapackHelper {
         String fileExtension = ".json";
         JsonObject currentDesktop = DesktopTheme.getCodec().encodeStart(JsonOps.INSTANCE, desktop).get()
                 .ifRight(right -> {
-                    TardisRefined.LOGGER.error(right.message());
+                    LOGGER.error(right.message());
                 }).orThrow().getAsJsonObject();
         Path output = createAndValidatePathToDatapackObject(datapackDataFolder, desktop.getIdentifier(), TardisDesktops.getReloadListener(), fileExtension);
         createPackDefinition(datapackRoot);
@@ -62,7 +67,7 @@ public class DatapackHelper {
             }
             return true;
         } catch (IOException e) {
-            TardisRefined.LOGGER.error(e.getMessage().toString());
+            LOGGER.error(e.getMessage().toString());
             return false;
         }
     }
@@ -83,7 +88,7 @@ public class DatapackHelper {
                     writer.write(TardisRefined.GSON.toJson(root));
                 }
             } catch (IOException e) {
-                TardisRefined.LOGGER.error(e.getMessage().toString());
+                LOGGER.error(e.getMessage().toString());
             }
         }
     }
@@ -95,7 +100,7 @@ public class DatapackHelper {
         try {
             structureTemplate = structureTemplateManager.getOrCreate(structure);
         } catch (ResourceLocationException e) {
-            TardisRefined.LOGGER.error(e.getMessage().toString());
+            LOGGER.error(e.getMessage().toString());
             return false;
         }
 
@@ -127,7 +132,7 @@ public class DatapackHelper {
             try {
                 Files.createDirectories(Files.exists(pathParent, new LinkOption[0]) ? pathParent.toRealPath() : pathParent);
             } catch (IOException var13) {
-                TardisRefined.LOGGER.error("Failed to create parent directory: {}", pathParent);
+                LOGGER.error("Failed to create parent directory: {}", pathParent);
                 return false;
             }
 

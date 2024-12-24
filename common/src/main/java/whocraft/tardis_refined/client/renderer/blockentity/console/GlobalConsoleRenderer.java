@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleModelCollection;
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleUnit;
@@ -23,8 +24,6 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 
-import static net.minecraft.client.renderer.blockentity.SkullBlockRenderer.renderSkull;
-
 public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleBlockEntity>, BlockEntityRendererProvider<GlobalConsoleBlockEntity> {
 
     private static final Vec3 crystalHolo = new Vec3(0.3f, -1.725, 0.655);
@@ -34,10 +33,8 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
     private static final Vec3 initiativeHoloColor = new Vec3(0, 0.8f, 1f);
 
 
-    private static DragonHeadModel dragonHeadModel;
 
     public GlobalConsoleRenderer(BlockEntityRendererProvider.Context context) {
-        dragonHeadModel = new DragonHeadModel(context.bakeLayer(ModelLayers.DRAGON_SKULL));
     }
 
     @Override
@@ -49,11 +46,11 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
         ResourceLocation theme = blockEntity.theme();
 
         ConsoleUnit consoleModel = ConsoleModelCollection.getInstance().getConsoleModel(theme);
-        consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityCutout(consoleModel.getTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
 
         if (blockEntity != null && blockEntity.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {
             if (blockEntity.pattern() != null && blockEntity.pattern().patternTexture().emissive()) {
-                consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(consoleModel.getTexture(blockEntity, true))), 15728640, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+                consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(TRShaders.glow(consoleModel.getTexture(blockEntity, true), 0.5F)), 15728640, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
             }
         }
 
@@ -142,7 +139,7 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
                     false,
                     true,
                     poseStack,
-                    bufferSource.getBuffer(RenderType.entityTranslucent(pattern.exteriorDoorTexture().texture())),
+                    bufferSource.getBuffer(RenderType.entityTranslucent(pattern.shellTexture().texture())),
                     packedLight,
                     OverlayTexture.NO_OVERLAY,
                     red,

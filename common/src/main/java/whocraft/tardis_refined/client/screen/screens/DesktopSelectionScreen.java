@@ -3,13 +3,14 @@ package whocraft.tardis_refined.client.screen.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
@@ -26,6 +27,8 @@ import java.util.Collection;
 import java.util.Comparator;
 
 public class DesktopSelectionScreen extends MonitorOS {
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/DesktopSelectionScreen");
 
     public static ResourceLocation previousImage = TardisDesktops.FACTORY_THEME.getPreviewTexture();
     private DesktopTheme currentDesktopTheme;
@@ -114,7 +117,7 @@ public class DesktopSelectionScreen extends MonitorOS {
             try {
                 name = Component.Serializer.fromJson(new StringReader(desktop.getName()));
             } catch (Exception ex) {
-                TardisRefined.LOGGER.error("Could not process Name for datapack desktop {}", desktop.getIdentifier().toString());
+                LOGGER.error("Could not process Name for datapack desktop {}", desktop.getIdentifier().toString());
             }
 
             selectionList.children().add(new SelectionListEntry(name, (entry) -> {

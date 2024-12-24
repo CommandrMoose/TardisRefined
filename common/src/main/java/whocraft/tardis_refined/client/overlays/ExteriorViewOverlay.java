@@ -5,13 +5,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TRKeybinds;
 import whocraft.tardis_refined.client.TardisClientData;
@@ -100,7 +98,7 @@ public class ExteriorViewOverlay {
 
             if (!tardisClientData.isFlying()) {
                 poseStack.pushPose();
-                poseStack.translate(screenWidth - coordsWidth - 10, 20, 0);
+                poseStack.translate(screenWidth - coordsWidth - 10, 22, 0);
                 guiGraphics.fill(-2, -3, coordsWidth + 2, mc.font.lineHeight + 2, 0x88000000);
                 guiGraphics.drawString(mc.font, coordsMessage.getString(), 0, 0, 0xFFFFFF, false);
                 poseStack.popPose();
