@@ -27,8 +27,8 @@ public class RefurbishedConsoleModel extends HierarchicalModel implements Consol
     private final ModelPart throttle;
     private final ModelPart handbrake;
 
-    public static final AnimationDefinition IDLE = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/console/refurbished/idle.json"));
-    public static final AnimationDefinition FLIGHT = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/console/refurbished/flight.json"));
+    public static final AnimationDefinition IDLE = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/refurbished/idle.json"));
+    public static final AnimationDefinition FLIGHT = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/refurbished/flight.json"));
 
 
     public RefurbishedConsoleModel(ModelPart root) {

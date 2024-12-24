@@ -18,7 +18,7 @@ import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class MysticShellModel extends ShellModel {
 
-    public static final AnimationDefinition IDLE = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/shell/myst/idle.json"));
+    public static final AnimationDefinition IDLE = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/shell/myst/idle.json"));
 
     private final ModelPart right_door;
     private final ModelPart left_door;

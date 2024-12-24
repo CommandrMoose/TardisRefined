@@ -57,7 +57,7 @@ public class SingleTexInteriorDoorModel extends ShellDoorModel {
         setDoorPosition(open);
         this.root().getAllParts().forEach(modelPart -> modelPart.visible = false);
         this.portal.visible = true;
-        portal.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        portal.render(poseStack, vertexConsumer, packedLight, packedOverlay, 0, 0, 0, alpha);
     }
 
     @Override

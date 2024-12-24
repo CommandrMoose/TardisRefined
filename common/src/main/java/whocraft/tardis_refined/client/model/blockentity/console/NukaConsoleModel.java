@@ -23,7 +23,7 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
 
 
-    public static final AnimationDefinition FLIGHT = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/console/nuka/flight.json"));
+    public static final AnimationDefinition FLIGHT = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/nuka/flight.json"));
 
 
     private static final ResourceLocation NUKA_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/nuka/nuka_console.png");

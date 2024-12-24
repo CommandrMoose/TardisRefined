@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.opengl.GL11;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.ShellDoorModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
@@ -67,6 +68,8 @@ public class RenderTargetHelper {
         GlStateManager._glBlitFrameBuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
     }
 
+    private static ResourceLocation BLACK = new ResourceLocation(TardisRefined.MODID, "textures/black_portal.png");
+
     private static void renderDoorOpen(GlobalDoorBlockEntity blockEntity, PoseStack stack, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen, TardisClientData tardisClientData) {
         stack.pushPose();
 
@@ -97,7 +100,7 @@ public class RenderTargetHelper {
         // Render portal mask with depth writing enabled
         RenderSystem.depthMask(true);
         stack.pushPose();
-        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
+        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(BLACK)), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
         imBuffer.endBatch();
         stack.popPose();
         RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering

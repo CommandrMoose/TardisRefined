@@ -43,6 +43,7 @@ public class Frame {
     }
 
     public static AnimationDefinition loadAnimation(ResourceManager resourceManager, ResourceLocation resourceLocation) {
+        if(resourceManager == null) return null;
         JsonObject animationJson = loadJsonFromResource(resourceManager, resourceLocation);
 
         validateAnimationJson(animationJson, resourceLocation);

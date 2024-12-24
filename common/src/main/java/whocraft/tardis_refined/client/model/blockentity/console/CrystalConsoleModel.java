@@ -27,8 +27,8 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    public static final AnimationDefinition IDLE = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/console/crystal/idle.json"));
-    public static final AnimationDefinition FLIGHT = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/console/crystal/flight.json"));
+    public static final AnimationDefinition IDLE = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/crystal/idle.json"));
+    public static final AnimationDefinition FLIGHT = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/crystal/flight.json"));
 
 
     private static final ResourceLocation CRYSTAL_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/crystal/crystal_console.png");

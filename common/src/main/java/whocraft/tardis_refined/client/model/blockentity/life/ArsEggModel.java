@@ -17,8 +17,8 @@ import whocraft.tardis_refined.common.blockentity.life.ArsEggBlockEntity;
 
 public class ArsEggModel extends HierarchicalModel {
 
-    public static final AnimationDefinition CRASHING = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/living/ars_egg/crashing.json"));
-    public static final AnimationDefinition SWINGING = Frame.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "frame/living/ars_egg/swinging.json"));
+    public static final AnimationDefinition CRASHING = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/living/ars_egg/crashing.json"));
+    public static final AnimationDefinition SWINGING = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/living/ars_egg/swinging.json"));
 
     private final ModelPart Lamp;
     private final ModelPart root;
