@@ -19,7 +19,7 @@ void main() {
     gl_Position = ProjMat * vec4(Position, 1.0);
     vertexColor = Color;
     texCoord0 = UV0;
-    lightMapColor = texture(Sampler2, ivec2(UV0 * 16.0), 0);
+    lightMapColor = texture(Sampler2, ivec2(UV0 * 16.0));
     normal = vec4(Normal * inverse(IViewRotMat), 0.0);
     snowDir = vec4(0.0, 1.0, 0.0, 0.0);
 }
