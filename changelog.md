@@ -1,6 +1,6 @@
-# Version 2.1.0 (UPCOMING)
+# Version 2.1.0 
 
-![TARDIS Refined](https://wiki.tardisrefined.net/TARDIS-Refined-Wiki/tardis_refined_v2.png)
+![TARDIS Refined](https://wiki.tardisrefined.net/TARDIS-Refined-Wiki/tardis_refined_v2_1.png)
 
 #### Bug Fixes
 - Bug fix: Added "Compatibility" with [Diagonal Windows](https://www.curseforge.com/minecraft/mc-mods/diagonal-windows)

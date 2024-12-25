@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.opengl.GL11;
@@ -164,7 +165,7 @@ public class RenderTargetHelper {
         int height = window.getHeight();
 
         if (renderTarget == null || renderTarget.width != width || renderTarget.height != height)
-            renderTarget = new TextureTarget(width, height, true, false);
+            renderTarget = new TextureTarget(width, height, true, Minecraft.ON_OSX);
 
         renderTarget.bindWrite(false);
         renderTarget.checkStatus();
@@ -181,14 +182,17 @@ public class RenderTargetHelper {
     @Environment(value = EnvType.CLIENT)
     public static class StencilBufferStorage extends RenderBuffers {
 
-        private final SortedMap<RenderType, BufferBuilder> typeBufferBuilder = Util.make(new Object2ObjectLinkedOpenHashMap(), map -> {
+        private static final TextureStateShard BLOCK_SHEET_MIPPED_BUTMINE = new TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, true);
+
+
+        private final Object2ObjectLinkedOpenHashMap typeBufferBuilder = Util.make(new Object2ObjectLinkedOpenHashMap(), map -> {
             put(map, getConsumer());
         });
         private final MultiBufferSource.BufferSource consumer = MultiBufferSource.immediateWithBuffers(typeBufferBuilder, new BufferBuilder(256));
 
         public static RenderType getConsumer() {
             RenderType.CompositeState parameters = RenderType.CompositeState.builder()
-                    .setTextureState(BLOCK_SHEET_MIPPED)
+                    .setTextureState(BLOCK_SHEET_MIPPED_BUTMINE)
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setLayeringState(NO_LAYERING).createCompositeState(false);
             return RenderType.create("vortex", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,

@@ -21,13 +21,6 @@ sourceSets {
 }
 
 
-//remapJar {
-//    atAccessWideners.add('tardis_refined.accesswidener')
-//}
-remapJar {
-    atAccessWideners.add('tardis_refined.accesswidener')
-}
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 
@@ -177,6 +170,7 @@ shadowJar {
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
+    archiveClassifier = 'forge'
 }
 
 sourcesJar {

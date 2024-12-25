@@ -45,3 +45,7 @@ extendable	method	net/minecraft/world/entity/Entity	getBoundingBox	()Lnet/minecr
 transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
 accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
 accessible method net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard <init> (Lcom/google/common/collect/ImmutableList;)V
+accessible field net/minecraft/client/renderer/RenderStateShard TRANSLUCENT_TRANSPARENCY Lnet/minecraft/client/renderer/RenderStateShard$TransparencyStateShard;
+accessible field net/minecraft/client/renderer/RenderStateShard NO_LAYERING Lnet/minecraft/client/renderer/RenderStateShard$LayeringStateShard;
+accessible class net/minecraft/client/model/geom/ModelPart$Vertex
+accessible class net/minecraft/client/model/geom/ModelPart$Polygon
