@@ -4,4 +4,5 @@
 
 #### Bug Fixes
 - Fixed Fuel Alarm going off when the TARDIS isn't fully grown yet
+- Fixed Vortex Overlay not being called on Forge
 - 
