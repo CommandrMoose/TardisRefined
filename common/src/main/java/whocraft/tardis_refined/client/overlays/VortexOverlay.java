@@ -168,7 +168,7 @@ public class VortexOverlay {
             pose.mulPose(Axis.YP.rotationDegrees(YROT * mulinv));
             //Vortex
             pose.pushPose();
-            pose.scale(100, 100, 100);
+            pose.scale(1000, 1000, 1000);
             pose.mulPose(Axis.YP.rotationDegrees(VYR * mulinv));
             VORTEX.renderVortex(gg, 1 - demat_transparency);
             pose.popPose();

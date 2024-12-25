@@ -11,6 +11,7 @@ import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientLogic;
 import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
 import whocraft.tardis_refined.client.overlays.GravityOverlay;
+import whocraft.tardis_refined.client.overlays.VortexOverlay;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
 
 @Mod.EventBusSubscriber(modid = TardisRefined.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -39,5 +40,6 @@ public class ClientForgeBus {
     public static void onRenderOverlay(RenderGuiOverlayEvent.Post guiOverlayEvent) {
         GravityOverlay.renderOverlay(guiOverlayEvent.getGuiGraphics());
         ExteriorViewOverlay.renderOverlay(guiOverlayEvent.getGuiGraphics());
+        VortexOverlay.renderOverlay(guiOverlayEvent.getGuiGraphics());
     }
 }
