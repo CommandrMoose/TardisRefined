@@ -100,9 +100,13 @@ Mod Pack creators can now enable adventure mode in the server config - this will
 - Vigorous Logging is now implemented Mod wide to help pinpoint issues
 - Manipulator Crafting can now use tags (still slightly WIP but useable)
 
-#### NOTE
+#### NOTES
+##### Data Loss
 - Upon updating to this version, your previous: ``Return Location``, ``Current Location`` and ``Target Location`` will be reset
   This will not lead to any other data loss and your TARDIS will be exactly where you left it, take off once and you will be all sorted. This was a required change to resolve some issues
+##### Rendering
+- Within this version, we introduce some rendering that some Apple Devices cannot support, as we use similar technology to Iris Shaders you can find what we support here: https://github.com/IrisShaders/Iris/blob/1.19.4/docs/usage/drivers.md
+- Ensure all drivers are up to date in this case, if they are and you still have issues, enable disable_fancy_rendering in the config
 
 ### Special Thanks
 Can't do it all ourselves, can we?
