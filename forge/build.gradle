@@ -20,40 +20,6 @@ sourceSets {
     }
 }
 
-//if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
-    unifiedPublishing {
-        project {
-            displayName = "[Forge] - Tardis Refined - $project.version"
-            releaseType = "release"
-            changelog = new File("${rootProject.projectDir}/changelog.md").text
-            gameVersions = ["$rootProject.minecraft_version"]
-            mainPublication tasks.remapJar
-            gameLoaders = ["neoforge"]
-            relations {
-
-            }
-
-            var CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge") ?: ""
-            if (CURSE_API_KEY != "") {
-                curseforge {
-                    token = CURSE_API_KEY
-                    id = "782697"
-                    gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
-                }
-            }
-
-            var MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth") ?: ""
-            if (MODRINTH_TOKEN != "") {
-                modrinth {
-                    token = MODRINTH_TOKEN
-                    id = "nqVt6aES"
-                    version = "forge-$project.version"
-                }
-            }
-        }
-    }
-//}
-
 
 //remapJar {
 //    atAccessWideners.add('tardis_refined.accesswidener')
@@ -117,7 +83,6 @@ dependencies {
 
 }
 
-if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
     unifiedPublishing {
         project {
             displayName = "[Forge] Tardis Refined - $project.version"
@@ -125,9 +90,16 @@ if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
             changelog = new File("${rootProject.projectDir}/changelog.md").text
             gameVersions = ["$rootProject.minecraft_version"]
             mainPublication tasks.remapJar
-            gameLoaders = ["neoforge"]
+            gameLoaders = ["neoforge", "forge"]
             relations {
-
+                optional {
+                    curseforge = "immersive-portals-mod"
+                    modrinth = "immersiveportals"
+                }
+                optional {
+                    curseforge = "curios"
+                    modrinth = "curios"
+                }
             }
 
             var CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge") ?: ""
@@ -149,7 +121,7 @@ if (System.getenv("curseforge") != null && System.getenv("modrinth") != null) {
             }
         }
     }
-}
+
 
 def resourceTargets = ["META-INF/mods.toml", "pack.mcmeta"]
 def intoTargets = ["$rootDir/out/production/resources/", "$rootDir/out/production/${project.name}.main/", "$rootDir/bin/main/"]

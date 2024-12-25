@@ -97,6 +97,12 @@ allprojects {
     }
 }
 
+task publishMeEverywhere(){
+    dependsOn ':forge:publishUnified'
+    dependsOn ':fabric:publishUnified'
+}
+
+
 def generatedResources = project(":forge").file("src/generated/resources")
 
 sourceSets {
