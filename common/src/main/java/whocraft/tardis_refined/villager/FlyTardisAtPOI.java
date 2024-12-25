@@ -18,6 +18,8 @@ import java.util.Optional;
 
 public class FlyTardisAtPOI extends WorkAtPoi {
 
+    public static final int EMERALD_FLIGHT_TIME = 5 * 20 * 60; // 5 minutes in ticks
+
     private Direction direction = Direction.NORTH;
 
     public void rotateDirection() {
@@ -30,52 +32,35 @@ public class FlyTardisAtPOI extends WorkAtPoi {
         }
     }
 
-
     @Override
     protected boolean checkExtraStartConditions(ServerLevel serverLevel, Villager villager) {
-        GlobalPos globalPos = villager.getBrain().getMemory(MemoryModuleType.JOB_SITE).get();
+        GlobalPos globalPos = villager.getBrain().getMemory(MemoryModuleType.JOB_SITE).orElse(null);
         TardisLevelOperator tardisLevelOperator = TardisLevelOperator.get(serverLevel).orElse(null);
 
-        return tardisLevelOperator.getPilotingManager().isInFlight() && globalPos.dimension() == serverLevel.dimension();
+        if (globalPos == null || tardisLevelOperator == null) {
+            return false;
+        }
+        VillagerDuck villagerDuck = (VillagerDuck) villager;
+
+        return villagerDuck.tardisRefined$getPilotingTicks() > 0 && tardisLevelOperator.getPilotingManager().isInFlight() && !tardisLevelOperator.getPilotingManager().isCrashing() && globalPos.dimension() == serverLevel.dimension();
     }
 
     @Override
     protected void useWorkstation(ServerLevel serverLevel, Villager villager) {
-
         TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> {
             TardisPilotingManager pilotManager = tardisLevelOperator.getPilotingManager();
             GlobalConsoleBlockEntity console = pilotManager.getCurrentConsole();
-            Brain<Villager> brain = villager.getBrain();
             if (console == null) return;
 
             if (pilotManager.isInFlight()) {
-
-                if(pilotManager.isCrashing()){
-                    BlockPos runAwayPosition = villager.blockPosition().relative(direction, 10);
-                    villager.getNavigation().moveTo(runAwayPosition.getX(), runAwayPosition.getY(), runAwayPosition.getZ(), 2);
-                    return;
-                }
-
-            /*    if(pilotManager.canEndFlight()){
-                    pilotManager.setThrottleStage(0);
-                    pilotManager.setHandbrakeOn(true);
-                } else {
-                    if(pilotManager.getTargetLocation().getPosition().getX() != 45){
-                        pilotManager.getTargetLocation().setPosition(new BlockPos(45,45,45));
-                        pilotManager.setThrottleStage(4);
-                        pilotManager.setHandbrakeOn(false);
-                    }
-                }*/
-
                 for (ControlEntity controlEntity : console.getControlEntityList()) {
                     if (controlEntity.isTickingDown()) {
                         rotateDirection();
-                        // Adjust bounding box check to ensure proximity, but without intersecting
                         if (controlEntity.level().random.nextBoolean()) {
                             for (int i = 0; i < 5; i++) {
                                 controlEntity.realignControl();
                             }
-                            villager.setUnhappyCounter(40);
+                            villager.playCelebrateSound();
                             return;
                         }
                     }
@@ -85,7 +70,6 @@ public class FlyTardisAtPOI extends WorkAtPoi {
 
         super.useWorkstation(serverLevel, villager);
     }
-
 
     @Override
     protected void start(ServerLevel serverLevel, Villager villager, long l) {
@@ -110,11 +94,12 @@ public class FlyTardisAtPOI extends WorkAtPoi {
     protected boolean canStillUse(ServerLevel serverLevel, Villager villager, long l) {
         Optional<GlobalPos> optional = villager.getBrain().getMemory(MemoryModuleType.JOB_SITE);
         TardisLevelOperator tardisLevelOperator = TardisLevelOperator.get(serverLevel).orElse(null);
+        VillagerDuck villagerDuck = (VillagerDuck) villager;
         if (optional.isEmpty()) {
             return false;
         } else {
             GlobalPos globalPos = optional.get();
-            return tardisLevelOperator.getPilotingManager().isInFlight() && globalPos.dimension() == serverLevel.dimension() && globalPos.pos().closerToCenterThan(villager.position(), 1.73);
+            return villagerDuck.tardisRefined$getPilotingTicks() > 0 && tardisLevelOperator.getPilotingManager().isInFlight() && tardisLevelOperator.getPilotingManager().isCrashing() && globalPos.dimension() == serverLevel.dimension() && globalPos.pos().closerToCenterThan(villager.position(), 1.73);
         }
     }
 }

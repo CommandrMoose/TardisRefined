@@ -2,13 +2,14 @@ package whocraft.tardis_refined;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.LowerCaseEnumTypeAdapterFactory;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.client.TRParticles;
 import whocraft.tardis_refined.common.VortexRegistry;
+import whocraft.tardis_refined.common.soundscape.hum.TardisHums;
 import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncConsolePatterns;
@@ -28,8 +29,7 @@ public class TardisRefined {
 
     public static final String MODID = "tardis_refined";
     public static final String NAME = "Tardis Refined";
-    public static final String PLATFORM_ERROR = "Something has gone critically wrong with platform definitions. Please contact the mod author.";
-    public static final Logger LOGGER = LogUtils.getLogger();
+    public static Logger LOGGER = LogManager.getLogger(NAME);
 
     public static Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
@@ -72,6 +72,7 @@ public class TardisRefined {
         TardisHums.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncHums::new);
 
         TRARSStructurePieceRegistry.register();
+        registerFallbackEntries();
     }
 
     /**

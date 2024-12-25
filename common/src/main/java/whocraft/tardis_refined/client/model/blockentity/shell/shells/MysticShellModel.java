@@ -2,12 +2,9 @@ package whocraft.tardis_refined.client.model.blockentity.shell.shells;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
+import dev.jeryn.frame.tardis.Frame;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -21,7 +18,7 @@ import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 
 public class MysticShellModel extends ShellModel {
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/shell/myst/idle.json"));
+    public static final AnimationDefinition IDLE = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/shell/myst/idle.json"));
 
     private final ModelPart right_door;
     private final ModelPart left_door;

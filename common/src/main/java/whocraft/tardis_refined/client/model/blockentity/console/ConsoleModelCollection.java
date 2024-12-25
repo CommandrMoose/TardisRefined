@@ -3,7 +3,8 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
-import whocraft.tardis_refined.TardisRefined;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.client.ModelRegistry;
 
 import java.util.ArrayList;
@@ -57,6 +58,9 @@ public class ConsoleModelCollection {
 
     }
 
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ConsoleModelCollection");
+
+
     /**
      * Get the associated console model from a console theme.
      *
@@ -69,7 +73,7 @@ public class ConsoleModelCollection {
                 return consoleModel;
             }
         }
-        TardisRefined.LOGGER.warn("Could not find model for {}, did you bind it?", themeId);
+        LOGGER.warn("Could not find model for {}, did you bind it?", themeId);
         return null;
     }
 }

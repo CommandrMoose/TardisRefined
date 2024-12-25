@@ -5,13 +5,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
-import whocraft.tardis_refined.common.hum.HumEntry;
-import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.messages.hums.C2SChangeHum;
+import whocraft.tardis_refined.common.soundscape.hum.HumEntry;
+import whocraft.tardis_refined.common.soundscape.hum.TardisHums;
 import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.constants.ModMessages;
 
@@ -19,6 +21,9 @@ import java.util.Collection;
 import java.util.Comparator;
 
 public class HumSelectionScreen extends MonitorOS {
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/HumSelectionScreen");
+
 
     private HumEntry currentHumEntry;
 
@@ -69,7 +74,7 @@ public class HumSelectionScreen extends MonitorOS {
             try {
                 name = Component.Serializer.fromJson(new StringReader(humEntry.getNameComponent()));
             } catch (Exception ex) {
-                TardisRefined.LOGGER.error("Could not process Name for hum {}", humEntry.getIdentifier().toString());
+                LOGGER.error("Could not process Name for hum {}", humEntry.getIdentifier().toString());
             }
 
             selectionList.children().add(new SelectionListEntry(name, (entry) -> {

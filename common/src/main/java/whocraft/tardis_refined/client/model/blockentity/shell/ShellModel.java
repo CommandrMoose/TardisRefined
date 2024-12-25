@@ -94,7 +94,7 @@ public abstract class ShellModel extends HierarchicalModel {
     }
 
     private ResourceLocation texture(ShellPattern pattern, boolean isEmmissive) {
-        return isEmmissive ? pattern.exteriorDoorTexture().emissiveTexture() : pattern.exteriorDoorTexture().texture();
+        return isEmmissive ? pattern.shellTexture().emissiveTexture() : pattern.shellTexture().texture();
     }
 
     public boolean isIgnoreAnmationAlpha() {

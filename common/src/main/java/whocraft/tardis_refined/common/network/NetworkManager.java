@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.common.util.PlatformWarning;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class NetworkManager {
 
     @ExpectPlatform
     public static NetworkManager create(ResourceLocation channelName) {
-        throw new AssertionError();
+        throw new RuntimeException(PlatformWarning.addWarning(NetworkManager.class));
     }
 
     public MessageType registerS2C(String id, MessageDecoder<MessageS2C> decoder) {

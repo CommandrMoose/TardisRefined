@@ -10,6 +10,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.network.MessageS2C;
 import whocraft.tardis_refined.common.network.NetworkManager;
@@ -26,6 +28,9 @@ import java.util.function.Function;
  * @param <T>
  */
 public class CodecJsonReloadListener<T> extends SimpleJsonResourceReloadListener {
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/CodecJsonReloadListener");
+
 
     protected final Codec<T> codec; // Make the codec protected access because some implementations may require extra logic to be added when we are decoding entries
     protected final String folderName;
@@ -75,9 +80,9 @@ public class CodecJsonReloadListener<T> extends SimpleJsonResourceReloadListener
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> jsons, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         //No need to define special syncing packet logic because the setSyncPacket method already subscribes us to the datapack sync events on the appropriate platform and defines the sync packet.
-        TardisRefined.LOGGER.info("Beginning loading of data for data loader: {}", this.folderName);
+        LOGGER.info("Beginning loading of data for data loader: {}", this.folderName);
         this.data = this.mapValues(jsons);
-        TardisRefined.LOGGER.info("Data loader for {} loaded {} entries", this.folderName, this.data.size());
+        LOGGER.info("Data loader for {} loaded {} entries", this.folderName, this.data.size());
     }
 
     /**
@@ -98,9 +103,9 @@ public class CodecJsonReloadListener<T> extends SimpleJsonResourceReloadListener
                     .get()
                     .ifLeft(result -> {
                         entries.put(key, result.getFirst());
-                        TardisRefined.LOGGER.info("Adding entry {}", key);
+                        LOGGER.info("Adding entry {}", key);
                     })
-                    .ifRight(partial -> TardisRefined.LOGGER.error("Failed to parse data json for {} due to: {}", key, partial.message()));
+                    .ifRight(partial -> LOGGER.error("Failed to parse data json for {} due to: {}", key, partial.message()));
         }
         return entries;
     }

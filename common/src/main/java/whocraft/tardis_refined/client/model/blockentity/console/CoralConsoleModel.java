@@ -2,16 +2,11 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
+import dev.jeryn.frame.tardis.Frame;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.Keyframe;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -26,9 +21,8 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 public class CoralConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/coral/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/coral/flight.json"));
-
+    public static final AnimationDefinition IDLE = Frame.loadAnimation(new ResourceLocation(TardisRefined.MODID, "frame/console/coral/idle.json"));
+    public static final AnimationDefinition FLIGHT = Frame.loadAnimation(new ResourceLocation(TardisRefined.MODID, "frame/console/coral/flight.json"));
 
     private static final ResourceLocation CORAL_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/coral/coral_console.png");
     private final ModelPart throttle;
@@ -42,7 +36,7 @@ public class CoralConsoleModel extends HierarchicalModel implements ConsoleUnit 
         this.base_console = root.getChild("base_console");
         this.throttle = base_console.getChild("controls").getChild("borders").getChild("bone23").getChild("bone17").getChild("throttle");
         this.anim_parts = root.getChild("anim_parts");
-        this.handbrake = JsonToAnimationDefinition.findPart(this, "handbrake");
+        this.handbrake = Frame.findPart(this, "handbrake");
     }
 
 

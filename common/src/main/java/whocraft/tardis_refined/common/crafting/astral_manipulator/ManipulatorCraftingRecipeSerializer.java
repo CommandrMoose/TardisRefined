@@ -10,6 +10,8 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 
 import java.util.List;
@@ -21,6 +23,9 @@ import java.util.List;
 public class ManipulatorCraftingRecipeSerializer implements RecipeSerializer<ManipulatorCraftingRecipe> {
 
     public static ResourceLocation SERIALIZER_ID = new ResourceLocation(TardisRefined.MODID, "astral_manipulator");
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefined/ManipulatorCraftingRecipeSerializer");
+
 
     public ManipulatorCraftingRecipeSerializer() {
 
@@ -42,6 +47,7 @@ public class ManipulatorCraftingRecipeSerializer implements RecipeSerializer<Man
 
         return new ManipulatorCraftingRecipe(ingredients, result).setRegistryId(resourceLocation);
     }
+
 
     @Override
     public void toNetwork(FriendlyByteBuf friendlyByteBuf, ManipulatorCraftingRecipe recipe) {

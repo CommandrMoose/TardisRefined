@@ -2,6 +2,8 @@ package whocraft.tardis_refined.client.renderer.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.model.dragon.DragonHeadModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -9,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
+import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleModelCollection;
 import whocraft.tardis_refined.client.model.blockentity.console.ConsoleUnit;
@@ -30,6 +33,7 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
     private static final Vec3 initiativeHoloColor = new Vec3(0, 0.8f, 1f);
 
 
+
     public GlobalConsoleRenderer(BlockEntityRendererProvider.Context context) {
     }
 
@@ -46,7 +50,7 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
 
         if (blockEntity != null && blockEntity.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {
             if (blockEntity.pattern() != null && blockEntity.pattern().patternTexture().emissive()) {
-                consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(consoleModel.getTexture(blockEntity, true))), 15728640, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+                consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(TRShaders.glow(consoleModel.getTexture(blockEntity, true), 0.5F)), 15728640, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
             }
         }
 
@@ -61,8 +65,6 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
                 renderHoloShell(initiativeHolo, -30 + 180, blockEntity, poseStack, bufferSource, packedLight, initiativeHoloColor);
             }
         }
-
-
     }
 
     private void renderHoloShell(Vec3 offset, int rotation, GlobalConsoleBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Vec3 color) {
@@ -137,7 +139,7 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
                     false,
                     true,
                     poseStack,
-                    bufferSource.getBuffer(RenderType.entityTranslucent(pattern.exteriorDoorTexture().texture())),
+                    bufferSource.getBuffer(RenderType.entityTranslucent(pattern.shellTexture().texture())),
                     packedLight,
                     OverlayTexture.NO_OVERLAY,
                     red,

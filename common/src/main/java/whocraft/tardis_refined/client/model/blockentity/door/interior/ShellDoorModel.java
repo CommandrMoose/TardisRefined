@@ -29,6 +29,6 @@ public abstract class ShellDoorModel extends HierarchicalModel {
 
     public ResourceLocation getInteriorDoorTexture(GlobalDoorBlockEntity globalDoorBlockEntity) {
         ShellPattern pattern = globalDoorBlockEntity.pattern();
-        return pattern.interiorDoorTexture().texture();
+        return pattern.doorTexture().texture();
     }
 }

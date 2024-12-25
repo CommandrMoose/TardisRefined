@@ -7,7 +7,7 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.jeryn.anim.tardis.JsonToAnimationDefinition;
+import dev.jeryn.frame.tardis.Frame;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.HierarchicalModel;
@@ -27,8 +27,8 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
-    public static final AnimationDefinition IDLE = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/crystal/idle.json"));
-    public static final AnimationDefinition FLIGHT = JsonToAnimationDefinition.loadAnimation(Minecraft.getInstance().getResourceManager(), new ResourceLocation(TardisRefined.MODID, "animated/console/crystal/flight.json"));
+    public static final AnimationDefinition IDLE = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/crystal/idle.json"));
+    public static final AnimationDefinition FLIGHT = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/crystal/flight.json"));
 
 
     private static final ResourceLocation CRYSTAL_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/crystal/crystal_console.png");
@@ -50,8 +50,8 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
         this.controls = root.getChild("controls");
         this.spinninglight = root.getChild("spinninglight");
         this.bb_main = root.getChild("bb_main");
-        this.throttle = JsonToAnimationDefinition.findPart(this, "large_lever_control_throttle");
-        this.handbrake = JsonToAnimationDefinition.findPart(this, "large_lever3_control");
+        this.throttle = Frame.findPart(this, "large_lever_control_throttle");
+        this.handbrake = Frame.findPart(this, "large_lever3_control");
     }
 
     public static LayerDefinition createBodyLayer() {

@@ -1,6 +1,5 @@
 package whocraft.tardis_refined.client.screen.ponder;
 
-import com.mojang.brigadier.StringReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
@@ -10,12 +9,7 @@ import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionL
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
-import whocraft.tardis_refined.common.hum.HumEntry;
-import whocraft.tardis_refined.common.hum.TardisHums;
-import whocraft.tardis_refined.common.util.MiscHelper;
 
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 public class PonderListScreen extends MonitorOS {

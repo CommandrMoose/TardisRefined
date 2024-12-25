@@ -1,7 +1,9 @@
 package whocraft.tardis_refined.fabric.events;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
@@ -18,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.client.TRItemColouring;
+import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.TardisClientLogic;
 import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
 import whocraft.tardis_refined.client.overlays.GravityOverlay;
@@ -29,6 +32,7 @@ import whocraft.tardis_refined.common.dimension.DimensionHandler;
 import whocraft.tardis_refined.common.dimension.TardisTeleportData;
 import whocraft.tardis_refined.common.dimension.fabric.DimensionHandlerImpl;
 import whocraft.tardis_refined.common.util.MiscHelper;
+import whocraft.tardis_refined.common.util.RegistryHelper;
 import whocraft.tardis_refined.common.util.TardisHelper;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
@@ -113,6 +117,11 @@ public class ModEvents {
             AtomicBoolean stopBreak = new AtomicBoolean(false);
             TardisPlayerInfo.get(player).ifPresent(tardisPlayerInfo -> stopBreak.set(tardisPlayerInfo.isViewingTardis()));
             return stopBreak.get() ? InteractionResult.FAIL : InteractionResult.PASS;
+        });
+
+        CoreShaderRegistrationCallback.EVENT.register(context -> {
+            context.register(RegistryHelper.makeKey("glow_shader"), DefaultVertexFormat.NEW_ENTITY, shaderInstance -> TRShaders.GLOW_SHADER = shaderInstance);
+            context.register(RegistryHelper.makeKey("nivis"), DefaultVertexFormat.NEW_ENTITY, shaderInstance -> TRShaders.SNOW_SHADER = shaderInstance);
         });
 
         Supplier<GuiGraphics> guiGraphics = () -> new GuiGraphics(Minecraft.getInstance(), Minecraft.getInstance().renderBuffers().bufferSource());

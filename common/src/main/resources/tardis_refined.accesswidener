@@ -1,44 +1,47 @@
 accessWidener   v2  named
-accessible field net/minecraft/server/MinecraftServer progressListenerFactory Lnet/minecraft/server/level/progress/ChunkProgressListenerFactory;
-accessible field net/minecraft/server/MinecraftServer executor Ljava/util/concurrent/Executor;
-accessible field net/minecraft/server/MinecraftServer storageSource Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;
-accessible field net/minecraft/server/MinecraftServer levels Ljava/util/Map;
-transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
-extendable	method	net/minecraft/world/entity/Entity	getBoundingBox	()Lnet/minecraft/world/phys/AABB;
+accessible class net/minecraft/client/renderer/RenderStateShard$ShaderStateShard
+accessible class net/minecraft/client/renderer/RenderStateShard$TextureStateShard
+accessible class net/minecraft/client/renderer/RenderType$CompositeState
 accessible class net/minecraft/core/particles/SimpleParticleType
 accessible class net/minecraft/core/particles/SimpleParticleType$1
-accessible method net/minecraft/server/MinecraftServer wrapRunnable (Ljava/lang/Runnable;)Lnet/minecraft/server/TickTask;
-accessible field net/minecraft/server/level/ServerLevel dragonFight Lnet/minecraft/world/level/dimension/end/EndDragonFight;
-accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/particle/SpriteSet;DDDDDD)V
-accessible field net/minecraft/client/particle/Particle gravity F
-accessible field net/minecraft/commands/synchronization/ArgumentTypeInfos BY_CLASS Ljava/util/Map;
-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (Lnet/minecraft/core/Registry;Lnet/minecraft/resources/ResourceKey;Ljava/util/Set;II)Lnet/minecraft/world/entity/ai/village/poi/PoiType;
-accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;Ljava/util/Set;)V
-accessible method net/minecraft/world/entity/ai/behavior/VillagerGoalPackages getMinimalLookBehavior ()Lcom/mojang/datafixers/util/Pair;
 accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
-accessible method net/minecraft/client/renderer/LevelRenderer renderEndSky (Lcom/mojang/blaze3d/vertex/PoseStack;)V
-accessible method net/minecraft/world/level/biome/Biome getGrassColorFromTexture ()I
-accessible class net/minecraft/client/renderer/RenderType$CompositeState
-
-# Needed for Loading Models from JSON, jesus christ
 accessible field net/minecraft/client/model/geom/EntityModelSet roots Ljava/util/Map;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition dimensions Lorg/joml/Vector3f;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition grow Lnet/minecraft/client/model/geom/builders/CubeDeformation;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition mirror Z
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition origin Lorg/joml/Vector3f;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition texCoord Lnet/minecraft/client/model/geom/builders/UVPair;
+accessible field net/minecraft/client/model/geom/builders/CubeDefinition texScale Lnet/minecraft/client/model/geom/builders/UVPair;
+accessible field net/minecraft/client/model/geom/builders/CubeDeformation growX F
+accessible field net/minecraft/client/model/geom/builders/CubeDeformation growY F
+accessible field net/minecraft/client/model/geom/builders/CubeDeformation growZ F
+accessible field net/minecraft/client/model/geom/builders/CubeListBuilder cubes Ljava/util/List;
 accessible field net/minecraft/client/model/geom/builders/LayerDefinition material Lnet/minecraft/client/model/geom/builders/MaterialDefinition;
 accessible field net/minecraft/client/model/geom/builders/LayerDefinition mesh Lnet/minecraft/client/model/geom/builders/MeshDefinition;
 accessible field net/minecraft/client/model/geom/builders/MaterialDefinition xTexSize I
 accessible field net/minecraft/client/model/geom/builders/MaterialDefinition yTexSize I
 accessible field net/minecraft/client/model/geom/builders/PartDefinition children Ljava/util/Map;
 accessible field net/minecraft/client/model/geom/builders/PartDefinition cubes Ljava/util/List;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition origin Lorg/joml/Vector3f;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition dimensions Lorg/joml/Vector3f;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition grow Lnet/minecraft/client/model/geom/builders/CubeDeformation;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition texCoord Lnet/minecraft/client/model/geom/builders/UVPair;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition mirror Z
 accessible field net/minecraft/client/model/geom/builders/PartDefinition partPose Lnet/minecraft/client/model/geom/PartPose;
-accessible field net/minecraft/client/model/geom/builders/CubeDeformation growX F
-accessible field net/minecraft/client/model/geom/builders/CubeDeformation growY F
-accessible field net/minecraft/client/model/geom/builders/CubeDeformation growZ F
-accessible field net/minecraft/client/model/geom/builders/CubeListBuilder cubes Ljava/util/List;
-extendable class net/minecraft/client/model/geom/builders/CubeDefinition
-extendable class com/mojang/blaze3d/pipeline/MainTarget
 accessible field net/minecraft/client/model/geom/ModelPart$Cube polygons [Lnet/minecraft/client/model/geom/ModelPart$Polygon;
-accessible field net/minecraft/client/model/geom/builders/CubeDefinition texScale Lnet/minecraft/client/model/geom/builders/UVPair;
+accessible field net/minecraft/client/particle/Particle gravity F
+accessible field net/minecraft/commands/synchronization/ArgumentTypeInfos BY_CLASS Ljava/util/Map;
+accessible field net/minecraft/server/MinecraftServer executor Ljava/util/concurrent/Executor;
+accessible field net/minecraft/server/MinecraftServer levels Ljava/util/Map;
+accessible field net/minecraft/server/MinecraftServer progressListenerFactory Lnet/minecraft/server/level/progress/ChunkProgressListenerFactory;
+accessible field net/minecraft/server/MinecraftServer storageSource Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;
+accessible field net/minecraft/server/level/ServerLevel dragonFight Lnet/minecraft/world/level/dimension/end/EndDragonFight;
+accessible method net/minecraft/client/particle/SuspendedParticle <init> (Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/particle/SpriteSet;DDDDDD)V
+accessible method net/minecraft/client/renderer/LevelRenderer renderEndSky (Lcom/mojang/blaze3d/vertex/PoseStack;)V
+accessible method net/minecraft/server/MinecraftServer wrapRunnable (Ljava/lang/Runnable;)Lnet/minecraft/server/TickTask;
+accessible method net/minecraft/world/entity/ai/behavior/VillagerGoalPackages getMinimalLookBehavior ()Lcom/mojang/datafixers/util/Pair;
+accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes register (Lnet/minecraft/core/Registry;Lnet/minecraft/resources/ResourceKey;Ljava/util/Set;II)Lnet/minecraft/world/entity/ai/village/poi/PoiType;
+accessible method net/minecraft/world/entity/ai/village/poi/PoiTypes registerBlockStates (Lnet/minecraft/core/Holder;Ljava/util/Set;)V
+accessible method net/minecraft/world/entity/npc/Villager setUnhappy ()V
+accessible method net/minecraft/world/level/biome/Biome getGrassColorFromTexture ()I
+extendable class com/mojang/blaze3d/pipeline/MainTarget
+extendable class net/minecraft/client/model/geom/builders/CubeDefinition
+extendable	method	net/minecraft/world/entity/Entity	getBoundingBox	()Lnet/minecraft/world/phys/AABB;
+transitive-accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
+accessible class net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard
+accessible method net/minecraft/client/renderer/RenderStateShard$MultiTextureStateShard <init> (Lcom/google/common/collect/ImmutableList;)V

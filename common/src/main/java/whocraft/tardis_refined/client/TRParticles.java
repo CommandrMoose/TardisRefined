@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.common.util.PlatformWarning;
 import whocraft.tardis_refined.registry.DeferredRegistry;
 import whocraft.tardis_refined.registry.RegistrySupplier;
 
@@ -18,7 +19,7 @@ public class TRParticles {
 
     @ExpectPlatform
     public static SimpleParticleType getParticleType() {
-        throw new RuntimeException(TardisRefined.PLATFORM_ERROR);
+        throw new RuntimeException(PlatformWarning.addWarning(TRParticles.class));
     }
 
 }

@@ -5,6 +5,8 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
@@ -44,6 +46,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, TRItemRegistry.ZEITON_INGOT.get()).pattern("ZZZ").pattern("ZZZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer, new ResourceLocation(TardisRefined.MODID, "zeiton_ingot_from_nugget"));
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, TRBlockRegistry.ZEITON_LANTERN.get()).pattern("ZZZ").pattern("ZTZ").pattern("ZZZ").define('Z', TRItemRegistry.ZEITON_NUGGET.get()).define('T', Items.TORCH).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_NUGGET.get())).save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, TRItemRegistry.MALLET.get()).pattern("ZZZ").pattern("ZZZ").pattern(" S ").define('Z', Blocks.STONE).define('S', Items.STICK).unlockedBy("has_crafting_table", has(Blocks.STONE)).save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, TRItemRegistry.TEST_TUBE.get(), 1).requires(Blocks.GLASS_PANE).requires(Items.SLIME_BALL).unlockedBy("has_crafting_table", has(TRItemRegistry.ZEITON_INGOT.get())).save(consumer);
 
 
         // Smelting

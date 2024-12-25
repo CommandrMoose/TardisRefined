@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.opengl.GL11;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.ShellDoorModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
@@ -67,6 +68,8 @@ public class RenderTargetHelper {
         GlStateManager._glBlitFrameBuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
     }
 
+    private static ResourceLocation BLACK = new ResourceLocation(TardisRefined.MODID, "textures/black_portal.png");
+
     private static void renderDoorOpen(GlobalDoorBlockEntity blockEntity, PoseStack stack, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen, TardisClientData tardisClientData) {
         stack.pushPose();
 
@@ -84,7 +87,7 @@ public class RenderTargetHelper {
         // Render Door Frame
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
         currentModel.setDoorPosition(isOpen);
-        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityCutout(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         imBuffer.endBatch();
 
         // Enable and configure stencil buffer
@@ -97,7 +100,7 @@ public class RenderTargetHelper {
         // Render portal mask with depth writing enabled
         RenderSystem.depthMask(true);
         stack.pushPose();
-        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
+        currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(BLACK)), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
         imBuffer.endBatch();
         stack.popPose();
         RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering
@@ -110,19 +113,25 @@ public class RenderTargetHelper {
         GL11.glColorMask(true, true, true, false);
         stack.pushPose();
         stack.scale(10, 10, 10);
+
         VORTEX.time.speed = (0.3f + tardisClientData.getThrottleStage() * 0.1f);
         VORTEX.renderVortex(stack, 1, false);
         stack.popPose();
+
         GlStateManager._depthFunc(GL11.GL_LEQUAL); // Restore depth function
         GL11.glColorMask(false, false, false, true);
 
         // Copy render target back to main buffer
-        RENDER_TARGET_HELPER.end();
+
         Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
         copyRenderTarget(RENDER_TARGET_HELPER.renderTarget, Minecraft.getInstance().getMainRenderTarget());
-        GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test
-        GL11.glColorMask(true, true, true, true);
 
+        GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test
+        GL11.glStencilMask(0xFF);
+        GL11.glColorMask(true, true, true, true);
+        RenderSystem.depthMask(true);
+
+        GL11.glGetError();
         stack.popPose();
     }
 
