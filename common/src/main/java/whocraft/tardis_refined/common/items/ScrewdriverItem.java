@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.common.blockentity.device.AstralManipulatorBlockEntity;
 import whocraft.tardis_refined.common.util.PlayerUtil;
@@ -95,7 +96,11 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
             // Save manipulator position for DRAWING mode
             itemTag.put(LINKED_MANIPULATOR_POS, NbtUtils.writeBlockPos(sourceChange));
         }
-        PlayerUtil.sendMessage(player, mode.toString(), true);
+
+        Block sourceBlock = player.level().getBlockState(sourceChange).getBlock();
+        if(sourceBlock != null && sourceBlock != TRBlockRegistry.ASTRAL_MANIPULATOR_BLOCK.get()) {
+            PlayerUtil.sendMessage(player, mode.toString(), true);
+        }
         stack.setTag(itemTag);
     }
 

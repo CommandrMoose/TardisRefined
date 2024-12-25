@@ -54,6 +54,10 @@ public class TRShaders {
 
     public static RenderType glow(ResourceLocation texture, float intensity) {
 
+        if(true){ // For now, we will stick to Mojangs implementation until we get it right
+            return RenderType.entityTranslucentEmissive(texture);
+        }
+
         RenderType.CompositeState state = RenderType.CompositeState.builder()
                 .setShaderState(new RenderStateShard.ShaderStateShard(() -> {
                     ShaderInstance glowShader = TRShaders.GLOW_SHADER;

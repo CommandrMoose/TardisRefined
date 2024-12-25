@@ -123,6 +123,7 @@ public class VortexOverlay {
                 DEMAT -= (System.currentTimeMillis() - LAST_TIME) / 12000.0f;
             }
 
+
             if (!tardisPlayerInfo.isViewingTardis()) return;
             if (!tardisPlayerInfo.isRenderVortex()) return;
 

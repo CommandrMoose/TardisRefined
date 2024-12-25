@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.client.TRParticles;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.soundscape.hum.TardisHums;
-import whocraft.tardis_refined.common.hum.TardisHums;
 import whocraft.tardis_refined.common.network.TardisNetwork;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncConsolePatterns;
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncDesktops;
@@ -72,7 +71,7 @@ public class TardisRefined {
         TardisHums.getReloadListener().setSyncPacket(TardisNetwork.NETWORK, S2CSyncHums::new);
 
         TRARSStructurePieceRegistry.register();
-        registerFallbackEntries();
+        //registerFallbackEntries();
     }
 
     /**

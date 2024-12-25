@@ -78,9 +78,9 @@ public class AstralManipulatorRenderer implements BlockEntityRenderer<AstralMani
 
             if (Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof ScrewdriverItem screwdriverItem) {
                 Color color = new Color(screwdriverItem.getColor(Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.MAINHAND)));
-                RenderHelper.drawGlowingBox(poseStack, vertexBuilder, length + 1.25f, height + 1.25f, width + 1.25f, (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, 0 + sine, 0);
+                RenderHelper.drawGlowingBox(poseStack, vertexBuilder, length + 1.25f, height + 1.25f, width + 1.25f, (float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255, 0.2F, 0);
             } else {
-                RenderHelper.drawGlowingBox(poseStack, vertexBuilder, length + 1.25f, height + 1.25f, width + 1.25f, 0.635f, 0.392f, 0.878f, 0 + sine, 0);
+                RenderHelper.drawGlowingBox(poseStack, vertexBuilder, length + 1.25f, height + 1.25f, width + 1.25f, 0.635f, 0.392f, 0.878f, 0.2F, 0);
             }
 
             poseStack.popPose();

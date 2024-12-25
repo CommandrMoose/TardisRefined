@@ -55,7 +55,7 @@ public class RenderHelper {
         renderFilledBox(poseStack, consumer, box, 1F, 1F, 1F, alpha, combinedLightIn);
 
         for (int i = 0; i < 3; i++) {
-            renderFilledBox(poseStack, consumer, box.inflate(i * 0.5F * 0.0625F), red, green, blue, (1F / i / 2) * alpha, combinedLightIn);
+            renderFilledBox(poseStack, consumer, box.inflate(i * 0.5F * 0.0625F), red, green, blue, alpha, combinedLightIn);
         }
     }
 

@@ -200,8 +200,9 @@ public class ConsolePatterns {
         addDefaultPattern(ConsoleTheme.MYST.getId(), "molten", "myst_console_molten", false);
 
         /*Victorian*/
-        addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "smissmass", "victorian_console_smissmass", false);
+      /*  addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "smissmass", "victorian_console_smissmass", false);
         addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "grant", "victorian_console_grant", false);
+     */
         addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "bronze_age", "victorian_console_bronze_age", false);
 
         /*Initiative*/

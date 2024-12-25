@@ -46,16 +46,14 @@ public class RenderTargetHelper {
 
         BlockState blockstate = blockEntity.getBlockState();
         ResourceLocation theme = blockEntity.theme();
-
         float rotation = blockstate.getValue(InternalDoorBlock.FACING).toYRot();
         boolean isOpen = blockstate.getValue(InternalDoorBlock.OPEN);
         ShellDoorModel currentModel = ShellModelCollection.getInstance().getShellEntry(theme).getShellDoorModel(blockEntity.pattern());
         TardisClientData tardisClientData = TardisClientData.getInstance(blockEntity.getLevel().dimension());
 
-
         VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
 
-        if (tardisClientData.isFlying() && isOpen) {
+        if (tardisClientData.isFlying()) {
             renderDoorOpen(blockEntity, stack, packedLight, rotation, currentModel, isOpen, tardisClientData);
         } else {
             renderNoVortex(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen);
@@ -130,7 +128,6 @@ public class RenderTargetHelper {
         GL11.glStencilMask(0xFF);
         GL11.glColorMask(true, true, true, true);
         RenderSystem.depthMask(true);
-
         GL11.glGetError();
         stack.popPose();
     }
@@ -144,7 +141,7 @@ public class RenderTargetHelper {
             stack.mulPose(Axis.YP.rotationDegrees(rotation));
             stack.translate(0, 0, -0.01);
         }
-
+        currentModel.setDoorPosition(isOpen);
         currentModel.renderFrame(blockEntity, isOpen, true, stack, bufferSource.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         currentModel.renderPortalMask(blockEntity, isOpen, true, stack, bufferSource.getBuffer(RenderType.entityTranslucent(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
         stack.popPose();
@@ -174,8 +171,9 @@ public class RenderTargetHelper {
             setIsStencilEnabled(renderTarget, true);
     }
 
-    public void end() {
-        renderTarget.clear(Minecraft.ON_OSX);
+
+    public void end(boolean clear) {
+        renderTarget.clear(clear);
         renderTarget.unbindWrite();
     }
 
