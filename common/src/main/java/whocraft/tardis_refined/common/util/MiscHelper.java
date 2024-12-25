@@ -31,6 +31,7 @@ import whocraft.tardis_refined.common.block.life.EyeBlock;
 import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.protection.ProtectedZone;
+import whocraft.tardis_refined.registry.DeferredRegistry;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
@@ -41,7 +42,7 @@ public class MiscHelper {
 
     @ExpectPlatform
     public static Packet<ClientGamePacketListener> spawnPacket(Entity entity) {
-        throw new RuntimeException(TardisRefined.PLATFORM_ERROR);
+        throw new RuntimeException(PlatformWarning.addWarning(MiscHelper.class));
     }
 
     public static String convertTicksToRealTime(int ticks) {

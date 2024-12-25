@@ -6,6 +6,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.client.ModelRegistry;
+import whocraft.tardis_refined.common.util.PlatformWarning;
 
 import java.util.Map;
 import java.util.Set;
@@ -84,7 +86,7 @@ public abstract class DeferredRegistry<T> {
      */
     @ExpectPlatform
     public static <T> DeferredRegistry<T> create(String modid, ResourceKey<? extends Registry<T>> resourceKey) {
-        throw new RuntimeException(TardisRefined.PLATFORM_ERROR);
+        throw new RuntimeException(PlatformWarning.addWarning(DeferredRegistry.class));
     }
 
     /**

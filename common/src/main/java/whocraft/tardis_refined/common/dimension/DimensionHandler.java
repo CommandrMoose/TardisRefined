@@ -16,11 +16,13 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.common.util.PlatformWarning;
 import whocraft.tardis_refined.common.world.ChunkGenerators;
 import whocraft.tardis_refined.common.world.chunk.TardisChunkGenerator;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.mixin.MinecraftServerStorageAccessor;
+import whocraft.tardis_refined.registry.DeferredRegistry;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
 import javax.annotation.Nullable;
@@ -134,7 +136,7 @@ public class DimensionHandler {
 
     @ExpectPlatform
     public static ServerLevel createDimension(Level level, ResourceKey<Level> id) {
-        throw new AssertionError(TardisRefined.PLATFORM_ERROR);
+        throw new RuntimeException(PlatformWarning.addWarning(DimensionHandler.class));
     }
 
     public static LevelStem formLevelStem(MinecraftServer server, ResourceKey<LevelStem> stem) {

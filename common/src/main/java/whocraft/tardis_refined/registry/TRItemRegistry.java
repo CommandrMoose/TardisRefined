@@ -6,6 +6,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.items.*;
+import whocraft.tardis_refined.common.util.PlatformWarning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class TRItemRegistry {
 
     @ExpectPlatform
     public static CreativeModeTab getCreativeTab() {
-        throw new RuntimeException(TardisRefined.PLATFORM_ERROR);
+        throw new RuntimeException(PlatformWarning.addWarning(TRItemRegistry.class));
     }
 
 
