@@ -59,47 +59,9 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
 
-        Minecraft.getInstance().getEntityModels().roots.forEach((location, definition) -> {
-            TardisRefined.LOGGER.info("EXPORT: " + location);
-            JsonObject model = BedrockModelUtil.toJsonModel(definition, location.getModel().getPath());
-
-            // Define the absolute export folder path
-            Path exportFolder = Paths.get("export_models", location.getLayer());
-
-            // Ensure the parent folder exists, including any missing directories
-            try {
-                Files.createDirectories(exportFolder.getParent()); // Create parent directories if they don't exist
-            } catch (IOException e) {
-                TardisRefined.LOGGER.error("Failed to create directories for: " + exportFolder.getParent(), e);
-                return; // Return early if we can't create the directory
-            }
-
-            // Define the file path for the model
-            Path modelFile = exportFolder.resolve(location.getModel().getPath().replaceAll("_ext", "").replaceAll("int", "door") + ".json");
-
-            // Ensure the model file's parent directory exists
-            try {
-                Files.createDirectories(modelFile.getParent()); // Create parent directories for model file
-            } catch (IOException e) {
-                TardisRefined.LOGGER.error("Failed to create parent directories for file: " + modelFile, e);
-                return; // Return early if we can't create the parent directories
-            }
-
-            // Write the model to the file
-            try (BufferedWriter writer = Files.newBufferedWriter(modelFile)) {
-                writer.write(model.toString());
-            } catch (IOException e) {
-                TardisRefined.LOGGER.error("Failed to write model to file: " + modelFile, e);
-                throw new RuntimeException("Failed to write model to file", e);
-            }
-        });
-
         if (!(context.getLevel() instanceof ServerLevel serverLevel)) {
             return super.useOn(context);
         }
-
-
-
 
         var player = context.getPlayer();
         var itemInHand = context.getItemInHand();
