@@ -143,30 +143,9 @@ dependencies {
 
     // Immersive Portals Start
 
-    modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${rootProject.immersive_portals_version}")
-    modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:${rootProject.immersive_portals_version}")
-    modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:build:${rootProject.immersive_portals_version}")
-
-    /*  // If working on Immersive Portals, change modCompileOnlyApi to modImplementation for the following two entries, this will enable Immersive Portals in Dev
-      modCompileOnlyApi("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${rootProject.immersive_portals_version}") {
-          exclude(group: "net.fabricmc.fabric-api")
-          transitive(false)
-      }
-      modCompileOnlyApi("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:${rootProject.immersive_portals_version}") {
-          exclude(group: "net.fabricmc.fabric-api")
-          transitive(false)
-      }
-      //Immersive Portals Dependency, not listed on their repo but required for 1.19+ versions
-      modCompileOnlyApi("com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}") {
-          exclude(group: "net.fabricmc.fabric-api")
-          transitive(false)
-      }
-      //Immersive Portals Dependency, not listed on their repo but required for 1.19+ versions
-      modCompileOnlyApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_config_fabric_version}") {
-          exclude(group: "net.fabricmc.fabric-api")
-      }*/
-
-    // Immersive Portals End
+    modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${rootProject.immersive_portals_version}")
+    modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:q_misc_util:${rootProject.immersive_portals_version}")
+    modImplementation ("com.github.iPortalTeam.ImmersivePortalsMod:build:${rootProject.immersive_portals_version}")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }

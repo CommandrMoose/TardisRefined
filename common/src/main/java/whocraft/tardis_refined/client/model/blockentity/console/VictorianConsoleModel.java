@@ -927,7 +927,8 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 
-        Boolean powered = globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
+        Boolean powered = globalConsoleBlock.getBlockState() == null ? true : globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
+
         if (powered) {
             if (!globalConsoleBlock.powerOn.isStarted()) {
                 globalConsoleBlock.powerOff.stop();

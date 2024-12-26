@@ -53,7 +53,7 @@ public class FactoryConsoleModel extends HierarchicalModel implements ConsoleUni
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
         if (globalConsoleBlock == null) return;
 
-        Boolean powered = globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
+        Boolean powered = globalConsoleBlock.getBlockState() == null ? true : globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
 
 
         if (powered) {
