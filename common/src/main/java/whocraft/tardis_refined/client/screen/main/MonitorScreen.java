@@ -10,20 +10,15 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.screen.ScreenHelper;
 import whocraft.tardis_refined.client.screen.components.BackgroundlessButton;
 import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionList;
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
-import whocraft.tardis_refined.client.screen.ponder.PonderListScreen;
-import whocraft.tardis_refined.client.screen.ponder.PonderScreen;
 import whocraft.tardis_refined.client.screen.screens.DesktopSelectionScreen;
 import whocraft.tardis_refined.client.screen.screens.HumSelectionScreen;
 import whocraft.tardis_refined.client.screen.screens.VortexSelectionScreen;
-import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
-import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRecipes;
 import whocraft.tardis_refined.common.network.messages.C2SEjectPlayer;
 import whocraft.tardis_refined.common.network.messages.player.C2SBeginShellView;
 import whocraft.tardis_refined.common.network.messages.screens.C2SRequestShellSelection;
@@ -31,6 +26,7 @@ import whocraft.tardis_refined.common.network.messages.waypoints.C2SRequestWaypo
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.constants.ModMessages;
+import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRUpgrades;
 
 import java.awt.*;
@@ -139,6 +135,13 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
         ScreenHelper.renderWidthScaledText(targetLocation.getDirection().getName().toUpperCase() + " @ " + targetLocation.getPosition().toShortString(), guiGraphics, Minecraft.getInstance().font, 0, 10, Color.LIGHT_GRAY.getRGB(), textScale * 2, 0.75F, false);
         ScreenHelper.renderWidthScaledText(MiscHelper.getCleanDimensionName(targetLocation.getDimensionKey()), guiGraphics, Minecraft.getInstance().font, 0, 20, Color.LIGHT_GRAY.getRGB(), textScale - 3, 1.5F, false);
         poseStack.popPose();
+    }
+
+    @Override
+    public ResourceLocation getPatternForRender() {
+        TardisClientData tardisClientData = TardisClientData.getInstance(Minecraft.getInstance().level.dimension());
+        if(tardisClientData == null) return ShellPatterns.DEFAULT.id();
+        return tardisClientData.getShellPattern();
     }
 
     @Override

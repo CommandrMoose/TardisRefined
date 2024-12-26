@@ -56,6 +56,7 @@ public class ModelRegistry {
     public static ModelLayerLocation CASTLE_SHELL = shell("castle_shell");
     public static ModelLayerLocation PATHFINDER_SHELL = shell("pathfinder_shell");
     public static ModelLayerLocation HALF_BAKED_SHELL = shell("half_baked_shell");
+    public static ModelLayerLocation SHULKER_SHELL = shell("shulker_shell");
 
     public static ModelLayerLocation ROOT_SHELL_DOOR = interiorDoor("root_shell_door");
     public static ModelLayerLocation FACTORY_DOOR = interiorDoor("factory_door");
@@ -77,6 +78,7 @@ public class ModelRegistry {
     public static ModelLayerLocation PATHFINDER_DOOR = interiorDoor("pathfinder_door");
     public static ModelLayerLocation BIG_BEN_DOOR = interiorDoor("big_ben_door");
     public static ModelLayerLocation HALF_BAKED_DOOR = interiorDoor("half_baked_door");
+    public static ModelLayerLocation SHULKER_DOOR = interiorDoor("shulker_door");
 
     public static ModelLayerLocation ARS_EGG = createLocation("ars_egg", "living");
     public static ModelLayerLocation BULK_HEAD_DOOR = interiorDoor("bulk_head_door");

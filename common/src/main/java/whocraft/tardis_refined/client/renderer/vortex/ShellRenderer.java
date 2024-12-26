@@ -14,6 +14,7 @@ import whocraft.tardis_refined.client.model.blockentity.shell.ShellModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
 import whocraft.tardis_refined.client.renderer.RenderHelper;
 import whocraft.tardis_refined.common.capability.player.TardisPlayerInfo;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 
@@ -33,7 +34,7 @@ public class ShellRenderer {
             ShellModel model = ShellModelCollection.getInstance().getShellEntry(shellTheme).getShellModel(fullPattern);
             model.setDoorPosition(false);
 
-            Lighting.setupFor3DItems();
+            Lighting.setupForEntityInInventory();
 
             PoseStack pose = guiGraphics.pose();
             pose.pushPose();
@@ -57,6 +58,12 @@ public class ShellRenderer {
             VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(model.renderType(model.getShellTexture(ShellPatterns.getPatternOrDefault(shellTheme, shellPattern), false)));
             RenderSystem.enableBlend();
             GLOBALSHELL_BLOCKENTITY.setTardisId(tardisClientData.getLevelKey());
+
+            if(Platform.isForge()) {
+                float scale = 2.5F;
+                pose.scale(scale, scale, scale);
+            }
+
             model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
 
             if (fullPattern.shellTexture().emissive()) {

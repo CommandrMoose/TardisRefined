@@ -43,6 +43,7 @@ public class ShellTheme implements Theme {
     public static final RegistrySupplier<ShellTheme> HIEROGLYPH = registerShellTheme("hieroglyph");
     public static final RegistrySupplier<ShellTheme> CASTLE = registerShellTheme("castle");
     public static final RegistrySupplier<ShellTheme> PATHFINDER = registerShellTheme("pathfinder");
+    public static final RegistrySupplier<ShellTheme> SHULKER = registerShellTheme("shulker");
 
     public static ShellTheme getShellTheme(ResourceLocation resourceLocation) {
         ShellTheme potentialTheme = SHELL_THEME_DEFERRED_REGISTRY.get(resourceLocation);

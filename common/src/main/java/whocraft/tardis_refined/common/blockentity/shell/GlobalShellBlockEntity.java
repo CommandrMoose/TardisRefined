@@ -22,13 +22,13 @@ import whocraft.tardis_refined.common.items.KeyItem;
 import whocraft.tardis_refined.common.tardis.manager.AestheticHandler;
 import whocraft.tardis_refined.common.tardis.manager.TardisExteriorManager;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
-import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.constants.NbtConstants;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
+import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.patterns.sound.TRShellSoundProfiles;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 
@@ -141,16 +141,21 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
                 }
 
                 boolean validKey = KeyItem.keychainContains(stack, TARDIS_ID);
+                boolean locked = exteriorManager.locked();
                 if (validKey) {
-                    boolean locked = !exteriorManager.locked();
-                    tardisLevelOperator.setDoorLocked(locked);
-                    tardisLevelOperator.setDoorClosed(locked);
-                    PlayerUtil.sendMessage(player, Component.translatable(locked ? ModMessages.DOOR_LOCKED : ModMessages.DOOR_UNLOCKED), true);
+                    tardisLevelOperator.setDoorLocked(!locked);
+                    tardisLevelOperator.setDoorClosed(!locked);
+                    PlayerUtil.sendMessage(player, Component.translatable(exteriorManager.locked() ? ModMessages.DOOR_LOCKED : ModMessages.DOOR_UNLOCKED), true);
                     return true;
+                } else {
+                    if(locked) {
+                        PlayerUtil.sendMessage(player, Component.translatable(ModMessages.DOOR_LOCKED), true);
+                        return true;
+                    }
                 }
 
                 if (!exteriorManager.locked()) { //If the Tardis thinks it is not locked, open this shell's door
-                    level.setBlock(blockPos, blockState.setValue(GlobalShellBlock.OPEN, !exteriorManager.locked()), Block.UPDATE_ALL); //Cycle the door to open/closed
+                    level.setBlock(blockPos, blockState.cycle(GlobalShellBlock.OPEN), Block.UPDATE_ALL); //Cycle the door to open/closed
                     tardisLevelOperator.setDoorClosed(blockState.getValue(GlobalShellBlock.OPEN)); //Now update both the internal door and re-update the external shell for good measure too.
                     return true;
                 }

@@ -23,7 +23,6 @@ import java.util.List;
  *
  * @author Edrax
  **/
-@Environment(EnvType.CLIENT)
 public class VortexRenderer {
 
     private static final RandomSource RAND = RandomSource.create();
@@ -46,6 +45,7 @@ public class VortexRenderer {
         this.time.update();
         pose.pushPose();
         RenderHelper.rotateZYX(pose, 90.0f, 180, 0.0f);
+        pose.translate(0, 1, 0);
         pose.scale(1, this.vortexType.getRows(), 1);
 
         for (int row = half ? 0 : -this.vortexType.getRows(); row < this.vortexType.getRows(); row++) {

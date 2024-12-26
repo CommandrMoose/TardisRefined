@@ -34,6 +34,7 @@ import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ModMessages;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
@@ -76,6 +77,15 @@ public class MonitorOS extends Screen {
         if (list != null) this.addRenderableWidget(list);
     }
 
+    @Override
+    public void renderBackground(GuiGraphics guiGraphics) {
+
+    }
+
+    public ResourceLocation getPatternForRender(){
+        return null;
+    }
+
     public void render2Background(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         int hPos = (width - monitorWidth) / 2;
         int vPos = (height - monitorHeight) / 2;
@@ -105,8 +115,8 @@ public class MonitorOS extends Screen {
         RenderSystem.backupProjectionMatrix();
         assert minecraft != null;
         Matrix4f perspective = new Matrix4f();
-        perspective.perspective((float) Math.toRadians(minecraft.options.fov().get()), (float) width / (float) height, 0.01f, 9999, false, perspective);
-        perspective.translate(0, 0, 11000f);
+        perspective.perspective((float) Math.toRadians(minecraft.options.fov().get()), (float) width / (float) height, 0, 9999, false, perspective);
+        perspective.translate(0, 0, Platform.isForge() ? 10000f : 11000f);
         RenderSystem.setProjectionMatrix(perspective, VertexSorting.DISTANCE_TO_ORIGIN);
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(20));
@@ -326,17 +336,16 @@ public class MonitorOS extends Screen {
         protected void init() {
             super.init();
             if (CURRENTSHELLTHEME == null) CURRENTSHELLTHEME = THEMELIST.get(0);
-            if (PATTERN == null) PATTERN = PATTERNCOLLECTION.get(0);
         }
 
         public static GlobalShellBlockEntity GLOBALSHELL_BLOCKENTITY;
         public static ResourceLocation CURRENTSHELLTHEME;
-        public static ShellPattern PATTERN;
         public static List<ResourceLocation> THEMELIST;
         public static List<ShellPattern> PATTERNCOLLECTION;
 
         public void renderShell(GuiGraphics guiGraphics, int x, int y, float scale) {
-            ShellModel model = ShellModelCollection.getInstance().getShellEntry(CURRENTSHELLTHEME).getShellModel(PATTERN);
+            ShellPattern pattern = ShellPatterns.getPatternOrDefault(CURRENTSHELLTHEME, getPatternForRender());
+            ShellModel model = ShellModelCollection.getInstance().getShellEntry(CURRENTSHELLTHEME).getShellModel(pattern);
             model.setDoorPosition(false);
             Lighting.setupForEntityInInventory();
             PoseStack pose = guiGraphics.pose();
@@ -346,7 +355,7 @@ public class MonitorOS extends Screen {
             pose.mulPose(Axis.XP.rotationDegrees(-15F));
             pose.mulPose(Axis.YP.rotationDegrees((float) (System.currentTimeMillis() % 5400L) / 15L));
 
-            VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(model.renderType(model.getShellTexture(PATTERN, false)));
+            VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(model.renderType(model.getShellTexture(pattern, false)));
             model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             guiGraphics.flush();
             pose.popPose();

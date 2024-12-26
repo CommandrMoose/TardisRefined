@@ -1,5 +1,7 @@
 package whocraft.tardis_refined.common.items;
 
+import com.google.gson.JsonObject;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -14,12 +16,19 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
+import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.client.model.pallidium.BedrockModelUtil;
 import whocraft.tardis_refined.common.blockentity.device.AstralManipulatorBlockEntity;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRSoundRegistry;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +58,48 @@ public class ScrewdriverItem extends Item implements DyeableLeatherItem {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
+
+        Minecraft.getInstance().getEntityModels().roots.forEach((location, definition) -> {
+            TardisRefined.LOGGER.info("EXPORT: " + location);
+            JsonObject model = BedrockModelUtil.toJsonModel(definition, location.getModel().getPath());
+
+            // Define the absolute export folder path
+            Path exportFolder = Paths.get("export_models", location.getLayer());
+
+            // Ensure the parent folder exists, including any missing directories
+            try {
+                Files.createDirectories(exportFolder.getParent()); // Create parent directories if they don't exist
+            } catch (IOException e) {
+                TardisRefined.LOGGER.error("Failed to create directories for: " + exportFolder.getParent(), e);
+                return; // Return early if we can't create the directory
+            }
+
+            // Define the file path for the model
+            Path modelFile = exportFolder.resolve(location.getModel().getPath().replaceAll("_ext", "").replaceAll("int", "door") + ".json");
+
+            // Ensure the model file's parent directory exists
+            try {
+                Files.createDirectories(modelFile.getParent()); // Create parent directories for model file
+            } catch (IOException e) {
+                TardisRefined.LOGGER.error("Failed to create parent directories for file: " + modelFile, e);
+                return; // Return early if we can't create the parent directories
+            }
+
+            // Write the model to the file
+            try (BufferedWriter writer = Files.newBufferedWriter(modelFile)) {
+                writer.write(model.toString());
+            } catch (IOException e) {
+                TardisRefined.LOGGER.error("Failed to write model to file: " + modelFile, e);
+                throw new RuntimeException("Failed to write model to file", e);
+            }
+        });
+
         if (!(context.getLevel() instanceof ServerLevel serverLevel)) {
             return super.useOn(context);
         }
+
+
+
 
         var player = context.getPlayer();
         var itemInHand = context.getItemInHand();

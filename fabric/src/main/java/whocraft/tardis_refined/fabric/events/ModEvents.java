@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.fabric.events;
 
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -19,9 +20,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.Level;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TRItemColouring;
 import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.TardisClientLogic;
+import whocraft.tardis_refined.client.model.pallidium.BedrockModelUtil;
 import whocraft.tardis_refined.client.overlays.ExteriorViewOverlay;
 import whocraft.tardis_refined.client.overlays.GravityOverlay;
 import whocraft.tardis_refined.client.overlays.VortexOverlay;
@@ -40,6 +43,11 @@ import whocraft.tardis_refined.registry.TRDimensionTypes;
 import whocraft.tardis_refined.registry.TRItemRegistry;
 import whocraft.tardis_refined.registry.TRPointOfInterestTypes;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 

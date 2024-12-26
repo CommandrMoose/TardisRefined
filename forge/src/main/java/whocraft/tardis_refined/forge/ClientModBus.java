@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -37,6 +38,7 @@ import whocraft.tardis_refined.client.renderer.blockentity.shell.RootShellRender
 import whocraft.tardis_refined.client.renderer.entity.ControlEntityRenderer;
 import whocraft.tardis_refined.common.items.DimensionSamplerItem;
 import whocraft.tardis_refined.mixin.forge.ReloadableResourceManagerMixin;
+import whocraft.tardis_refined.overlays.TardisRefinedOverlay;
 import whocraft.tardis_refined.registry.RegistrySupplier;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 import whocraft.tardis_refined.registry.TREntityRegistry;
@@ -121,5 +123,9 @@ public class ClientModBus {
 
     }
 
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onRenderOverlay(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("tr_overlay", new TardisRefinedOverlay());
+    }
 
 }

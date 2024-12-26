@@ -74,8 +74,8 @@ public class RenderTargetHelper {
     private static ResourceLocation BLACK = new ResourceLocation(TardisRefined.MODID, "textures/black_portal.png");
 
     private static void renderDoorOpen(GlobalDoorBlockEntity blockEntity, PoseStack stack, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen, TardisClientData tardisClientData) {
-        if(ModCompatChecker.immersivePortals()){
-            if(ImmersivePortalsClient.shouldStopRenderingInPortal()){
+        if (ModCompatChecker.immersivePortals()) {
+            if (ImmersivePortalsClient.shouldStopRenderingInPortal()) {
                 return;
             }
         }
@@ -87,11 +87,14 @@ public class RenderTargetHelper {
         stack.mulPose(Axis.YP.rotationDegrees(rotation));
         stack.translate(0, 0, -0.01);
 
+        RenderSystem.depthMask(true);
+
         // Unbind RenderTarget
         Minecraft.getInstance().getMainRenderTarget().unbindWrite();
         RENDER_TARGET_HELPER.start();
-        if (!getIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget))
+        if (!getIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget)) {
             setIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget, true);
+        }
 
         copyRenderTarget(Minecraft.getInstance().getMainRenderTarget(), RENDER_TARGET_HELPER.renderTarget);
 
@@ -133,22 +136,24 @@ public class RenderTargetHelper {
         GL11.glColorMask(false, false, false, true);
 
         // Copy render target back to main buffer
-
         Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
         copyRenderTarget(RENDER_TARGET_HELPER.renderTarget, Minecraft.getInstance().getMainRenderTarget());
 
-        if (getIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget))
+        if (getIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget)) {
             setIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget, false);
+        }
 
         Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
 
-        GL11.glDisable(GL11.GL_STENCIL_TEST); // Disable stencil test
+        // Disable stencil test and restore state
+        GL11.glDisable(GL11.GL_STENCIL_TEST);
         GL11.glStencilMask(0xFF);
         GL11.glColorMask(true, true, true, true);
         RenderSystem.depthMask(true);
-        GL11.glGetError();
+
         stack.popPose();
     }
+
 
 
     private static void renderNoVortex(GlobalDoorBlockEntity blockEntity, PoseStack stack, MultiBufferSource bufferSource, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen) {

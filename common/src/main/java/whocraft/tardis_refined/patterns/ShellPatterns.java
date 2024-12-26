@@ -1,12 +1,15 @@
 package whocraft.tardis_refined.patterns;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
 import whocraft.tardis_refined.constants.ResourceConstants;
+import whocraft.tardis_refined.patterns.sound.ConfiguredSound;
 import whocraft.tardis_refined.patterns.sound.ShellSoundProfile;
 import whocraft.tardis_refined.patterns.sound.TRShellSoundProfiles;
 
@@ -192,6 +195,9 @@ public class ShellPatterns {
         DEFAULT_PATTERNS.clear();
         /*Add Base Textures*/
         for (ResourceLocation shellTheme : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.keySet()) {
+            if(shellTheme == ShellTheme.SHULKER.getId()){
+                continue;
+            }
             boolean hasDefaultEmission = shellTheme == ShellTheme.MYSTIC.getId() || shellTheme == ShellTheme.NUKA.getId() || shellTheme == ShellTheme.PAGODA.getId() || shellTheme == ShellTheme.PHONE_BOOTH.getId() || shellTheme == ShellTheme.POLICE_BOX.getId() || shellTheme == ShellTheme.VENDING.getId();
             String textureName = shellTheme.getPath();
             ShellSoundProfile soundProfile = TRShellSoundProfiles.defaultSoundProfilesByTheme().getOrDefault(shellTheme, TRShellSoundProfiles.DEFAULT_SOUND_PROFILE);
@@ -221,6 +227,23 @@ public class ShellPatterns {
         addDefaultPattern(ShellTheme.MYSTIC.getId(), "dwarven", false);
 
         addDefaultPattern(ShellTheme.BIG_BEN.getId(), "gothic", true);
+
+
+
+        ShellSoundProfile soundProfile = new ShellSoundProfile();
+        soundProfile.setDoorOpen(new ConfiguredSound(SoundEvents.SHULKER_BOX_OPEN));
+        soundProfile.setDoorClose(new ConfiguredSound(SoundEvents.SHULKER_BOX_CLOSE));
+
+        String[] shulkerColors = {
+                "black", "blue", "brown", "cyan", "gray", "green", "light_blue", "light_gray",
+                "lime", "magenta", "orange", "pink", "purple", "red", "white", "yellow"
+        };
+
+        for (String color : shulkerColors) {
+            addDefaultPattern(ShellTheme.SHULKER.getId(), "shulker_" + color, false, Optional.of(soundProfile));
+        }
+        addDefaultPattern(ShellTheme.SHULKER.getId(), "shulker", false, Optional.of(soundProfile));
+
 
         return new HashMap<>(DEFAULT_PATTERNS);
     }
