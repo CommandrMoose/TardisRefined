@@ -4,17 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import qouteall.imm_ptl.core.portal.Portal;
-import whocraft.tardis_refined.TardisRefined;
-import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
-import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
-import whocraft.tardis_refined.common.util.MiscHelper;
 import whocraft.tardis_refined.constants.NbtConstants;
 
 import java.util.Optional;
@@ -73,31 +67,15 @@ public class BotiPortalEntity extends Portal {
     public boolean isPortalValid() {
         UUID tardisId = getTardisId();
 
+
         if (level() instanceof ServerLevel serverLevel && tickCount > (20 * 40)) {
-            // Fetch portal entry for the TARDIS
             PortalEntry portalEntry = ImmersivePortals.getPortalsForTardis(tardisId);
 
-            // Get the TARDIS dimension level
-            ResourceKey<Level> tardisDimIdLocation = MiscHelper.idToKey(new ResourceLocation(TardisRefined.MODID, tardisId.toString()));
-            ServerLevel tardisLevel = serverLevel.getServer().getLevel(tardisDimIdLocation);
 
-            if (tardisLevel != null) {
-                Optional<TardisLevelOperator> tardisLevelOperatorOpt = TardisLevelOperator.get(tardisLevel);
-
-                if (tardisLevelOperatorOpt.isPresent()) {
-                    TardisPilotingManager pilotManager = tardisLevelOperatorOpt.get().getPilotingManager();
-                    if (pilotManager.isInFlight()) {
-                        return false;
-                    }
-                }
-            }
-
-            // Check for portal entry and client-side conditions
-            if (portalEntry == null && tickCount > (2 * 20) && !level().isClientSide()) {
+            if (portalEntry == null && this.tickCount > (2 * 20) && !this.getOriginWorld().isClientSide()) {
                 return false;
             }
 
-            // Additional validity check
             if (!isValid) {
                 return false;
             }
@@ -105,7 +83,6 @@ public class BotiPortalEntity extends Portal {
 
         return super.isPortalValid();
     }
-
 
     @Override
     protected void defineSynchedData() {

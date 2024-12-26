@@ -261,6 +261,11 @@ public class ImmersivePortals {
 
     public static void createPortals(TardisLevelOperator operator) {
 
+        if(operator.getPilotingManager().isInFlight()){
+            destroyPortals(operator);
+            return;
+        }
+
         // Just for debugging editing values
         if (!Platform.isProduction()) {
             setupPortalsForShellThemes();
