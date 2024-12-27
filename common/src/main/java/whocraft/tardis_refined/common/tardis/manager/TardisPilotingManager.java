@@ -117,8 +117,8 @@ public class TardisPilotingManager extends TickableHandler {
 
         this.isPassivelyRefuelling = tag.getBoolean(NbtConstants.IS_PASSIVELY_REFUELING);
 
-        this.currentLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.CURRENT_LOCATION);
-        this.targetLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.TARGET_LOCATION);
+        setCurrentLocation(NbtConstants.getTardisNavLocation(tag, NbtConstants.CURRENT_LOCATION));
+        setTargetLocation(NbtConstants.getTardisNavLocation(tag, NbtConstants.TARGET_LOCATION));
         this.fastReturnLocation = NbtConstants.getTardisNavLocation(tag, NbtConstants.RETURN_LOCATION);
 
         this.currentConsoleBlockPos = NbtUtils.readBlockPos(tag.getCompound(CURRENT_CONSOLE_POS));
@@ -182,12 +182,8 @@ public class TardisPilotingManager extends TickableHandler {
     @Override
     public void tick(ServerLevel level) {
 
-        if (targetLocation == null) {
-            if (this.currentLocation != null) { //If the target location is somehow null and the current location isn't null, set target location to the current location
-                this.targetLocation = currentLocation;
-            } else {
-                this.targetLocation = TardisNavLocation.ORIGIN;
-            }
+        if (getTargetLocation() == null) {
+            setTargetLocation(getCurrentLocation() != null ? getCurrentLocation().copy() : TardisNavLocation.ORIGIN);
         }
 
         if (isInFlight) {
@@ -329,10 +325,10 @@ public class TardisPilotingManager extends TickableHandler {
     public boolean preloadFastReturn() {
         if (this.fastReturnLocation == null) {
             return false;
-        } else {
-            this.targetLocation = this.fastReturnLocation;
-            return true;
         }
+        setTargetLocation(this.fastReturnLocation.copy());
+        return true;
+
     }
 
     public TardisNavLocation findClosestValidPosition(TardisNavLocation location) {
@@ -552,9 +548,9 @@ public class TardisPilotingManager extends TickableHandler {
             return false;
         }
 
-        if (this.targetLocation.getLevel().dimension() == Level.END) {
+        if (this.getTargetLocation().getLevel().dimension() == Level.END) {
 
-            if (!TardisHelper.hasTheEndBeenCompleted(this.targetLocation.getLevel())) {
+            if (!TardisHelper.hasTheEndBeenCompleted(this.getTargetLocation().getLevel())) {
 
                 failTakeoff();
 
@@ -575,14 +571,13 @@ public class TardisPilotingManager extends TickableHandler {
             this.distanceCovered = 0;
             this.speedModifier = this.getLatestSpeedModifier();
 
-            this.fastReturnLocation = new TardisNavLocation(this.getCurrentLocation().getPosition(), this.getCurrentLocation().getDirection(), this.getCurrentLocation().getLevel());
+            TardisNavLocation currentLocationPreTakeoff = getCurrentLocation();
 
+            this.fastReturnLocation = currentLocationPreTakeoff.copy();
 
             TardisNavLocation targetPosition = this.getTargetLocation();
-            TardisNavLocation lastKnownLocation = new TardisNavLocation(this.getCurrentLocation().getPosition(), this.getCurrentLocation().getDirection(), this.getCurrentLocation().getLevel());
 
-
-            this.flightDistance = calculateFlightDistance(lastKnownLocation, targetPosition);
+            this.flightDistance = calculateFlightDistance(currentLocationPreTakeoff, targetPosition);
 
             if (!autoLand) {
                 this.operator.getFlightDanceManager().startFlightDance(this.currentConsole);
@@ -631,7 +626,7 @@ public class TardisPilotingManager extends TickableHandler {
 
     public void recalculateFlightDistance() {
         TardisNavLocation targetPosition = this.operator.getPilotingManager().getTargetLocation();
-        TardisNavLocation lastKnownLocation = new TardisNavLocation(this.getCurrentLocation().getPosition(), this.getCurrentLocation().getDirection(), this.getCurrentLocation().getLevel());
+        TardisNavLocation lastKnownLocation = getCurrentLocation().copy();
 
         this.flightDistance = calculateFlightDistance(lastKnownLocation, targetPosition);
         this.operator.getFlightDanceManager().startFlightDance(this.currentConsole);
@@ -671,10 +666,11 @@ public class TardisPilotingManager extends TickableHandler {
 
             Level level = operator.getLevel();
 
-            TardisNavLocation landingLocation = this.targetLocation;
+            TardisNavLocation landingLocation = this.getTargetLocation();
             TardisNavLocation location = findClosestValidPosition(landingLocation);
 
             // Added so it updates for everything else
+            // TODO: Does this cause https://github.com/WhoCraft/TardisRefined/issues/427 ?
             setTargetLocation(location);
             setCurrentLocation(location);
 
@@ -712,15 +708,15 @@ public class TardisPilotingManager extends TickableHandler {
      */
     private void endFlightEarly(boolean dramatic) {
 
-        BlockPos targetPosition = this.targetLocation.getPosition();
+        BlockPos targetPosition = this.getTargetLocation().getPosition();
         BlockPos startingPosition = this.getCurrentLocation().getPosition();
         float percentage = this.getFlightPercentageCovered();
         float percentageX = startingPosition.getX() + (targetPosition.getX() - startingPosition.getX()) * percentage;
         float percentageY = startingPosition.getY() + (targetPosition.getY() - startingPosition.getY()) * percentage;
         float percentageZ = startingPosition.getZ() + (targetPosition.getZ() - startingPosition.getZ()) * percentage;
 
-        TardisNavLocation newLocation = new TardisNavLocation(new BlockPos((int) percentageX, (int) percentageY, (int) percentageZ), this.targetLocation.getDirection(), percentage > 0.49f ? this.targetLocation.getLevel() : this.getCurrentLocation().getLevel());
-        this.targetLocation = newLocation;
+        TardisNavLocation newLocation = new TardisNavLocation(new BlockPos((int) percentageX, (int) percentageY, (int) percentageZ), this.getTargetLocation().getDirection(), percentage > 0.49f ? this.getTargetLocation().getLevel() : this.getCurrentLocation().getLevel());
+        setTargetLocation(newLocation);
 
         if (dramatic) {
             for (Player player : this.operator.getLevel().players()) {
@@ -789,13 +785,13 @@ public class TardisPilotingManager extends TickableHandler {
 
         // Calculate the random position from what we've gotten.
 
-        if (this.targetLocation.getLevel().dimension() == Level.END) {
-            this.targetLocation.setLevel(this.operator.getLevel().getServer().overworld());
+        if (this.getTargetLocation().getLevel().dimension() == Level.END) {
+            this.getTargetLocation().setLevel(this.operator.getLevel().getServer().overworld());
         }
 
         float progress = getFlightPercentageCovered();
 
-        Vec3 targetPos = new Vec3(this.targetLocation.getPosition().getX(), this.targetLocation.getPosition().getY(), this.targetLocation.getPosition().getZ());
+        Vec3 targetPos = this.getTargetLocation().getPosition().getCenter();
         BlockPos currentLoc = this.getCurrentLocation().getPosition();
         Vec3 currentPos = new Vec3(currentLoc.getX(), currentLoc.getY(), currentLoc.getZ());
 
@@ -805,7 +801,7 @@ public class TardisPilotingManager extends TickableHandler {
 
         BlockPos landingLocation = new BlockPos(x, y, z);
         this.setTargetPosition(landingLocation);
-        TardisNavLocation weWantToGoHere = this.targetLocation;
+        TardisNavLocation weWantToGoHere = this.getTargetLocation().copy();
         TardisNavLocation safeLocation = findClosestValidPosition(weWantToGoHere);
         setTargetLocation(safeLocation);
         setCurrentLocation(safeLocation);
@@ -823,28 +819,26 @@ public class TardisPilotingManager extends TickableHandler {
         this.ticksinCrashRecovery = 1;
 
         onFlightEnd();
-        TardisCommonEvents.TARDIS_CRASH_EVENT.invoker().onTardisCrash(this.operator, this.targetLocation);
+        TardisCommonEvents.TARDIS_CRASH_EVENT.invoker().onTardisCrash(this.operator, this.getTargetLocation());
     }
 
     public float getFlightPercentageCovered() {
-
         if (this.flightDistance == 0) {
             return 0;
         }
-
         return (float) this.distanceCovered / this.flightDistance;
     }
 
     public void offsetTargetPositionX(int x) {
-        this.targetLocation.setPosition(this.targetLocation.getPosition().offset(x, 0, 0));
+        this.getTargetLocation().setPosition(this.getTargetLocation().getPosition().offset(x, 0, 0));
     }
 
     public void offsetTargetPositionY(int y) {
-        this.targetLocation.setPosition(this.targetLocation.getPosition().offset(0, y, 0));
+        this.getTargetLocation().setPosition(this.getTargetLocation().getPosition().offset(0, y, 0));
     }
 
     public void offsetTargetPositionZ(int z) {
-        this.targetLocation.setPosition(this.targetLocation.getPosition().offset(0, 0, z));
+        this.getTargetLocation().setPosition(this.getTargetLocation().getPosition().offset(0, 0, z));
     }
 
     public TardisNavLocation getTargetLocation() {
@@ -852,7 +846,7 @@ public class TardisPilotingManager extends TickableHandler {
     }
 
     public void setTargetLocation(TardisNavLocation targetLocation) {
-        this.targetLocation = targetLocation;
+        this.targetLocation = targetLocation.copy();
     }
 
     /**
@@ -867,7 +861,7 @@ public class TardisPilotingManager extends TickableHandler {
     }
 
     public void setCurrentLocation(TardisNavLocation currentLocation) {
-        this.currentLocation = currentLocation;
+        this.currentLocation = currentLocation.copy();
     }
 
     public void setTargetPosition(BlockPos pos) {
