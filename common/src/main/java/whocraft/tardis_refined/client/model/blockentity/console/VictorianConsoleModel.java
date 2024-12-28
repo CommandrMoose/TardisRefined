@@ -927,25 +927,29 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
 
-        Boolean powered = globalConsoleBlock.getBlockState() == null ? true : globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
+        boolean powered = globalConsoleBlock != null
+                && globalConsoleBlock.getBlockState() != null
+                && globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
 
         if (powered) {
-            if (!globalConsoleBlock.powerOn.isStarted()) {
-                globalConsoleBlock.powerOff.stop();
-                globalConsoleBlock.powerOn.start(Minecraft.getInstance().player.tickCount);
-            }
-            this.animate(globalConsoleBlock.powerOn, POWER_ON, Minecraft.getInstance().player.tickCount);
+            if (globalConsoleBlock != null) {
+                if (!globalConsoleBlock.powerOn.isStarted()) {
+                    globalConsoleBlock.powerOff.stop();
+                    globalConsoleBlock.powerOn.start(Minecraft.getInstance().player.tickCount);
+                }
+                this.animate(globalConsoleBlock.powerOn, POWER_ON, Minecraft.getInstance().player.tickCount);
 
-            if (reactions.isCrashing()) {
-                // Handle crashing animation
-                this.animate(reactions.CRASHING_ANIMATION, CRASH, Minecraft.getInstance().player.tickCount);
-            } else if (reactions.isFlying()) {
-                // Handle flying animation
-                this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
-            } else {
-                // Handle idle animation
-                if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get() && globalConsoleBlock != null) {
-                    this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
+                if (reactions.isCrashing()) {
+                    // Handle crashing animation
+                    this.animate(reactions.CRASHING_ANIMATION, CRASH, Minecraft.getInstance().player.tickCount);
+                } else if (reactions.isFlying()) {
+                    // Handle flying animation
+                    this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
+                } else {
+                    // Handle idle animation
+                    if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get()) {
+                        this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
+                    }
                 }
             }
         } else {
@@ -963,6 +967,7 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
 
         root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
+
 
     @Override
     public ResourceLocation getDefaultTexture() {
