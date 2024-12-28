@@ -66,9 +66,9 @@ public class DimensionalControl extends Control {
                 return false;
             }
 
-            var dimensions = getAllowedDimensions(operator);
-            var currentIndex = dimensions.indexOf(pilotManager.getTargetLocation().getLevel());
-            var nextIndex = forward ? ((currentIndex >= dimensions.size() - 1) ? 0 : currentIndex + 1) : ((currentIndex <= 0) ? dimensions.size() - 1 : currentIndex - 1);
+            List<ServerLevel> dimensions = getAllowedDimensions(operator);
+            int currentIndex = dimensions.indexOf(pilotManager.getTargetLocation().getLevel());
+            int nextIndex = forward ? ((currentIndex >= dimensions.size() - 1) ? 0 : currentIndex + 1) : ((currentIndex <= 0) ? dimensions.size() - 1 : currentIndex - 1);
 
             if(dimensions.isEmpty()){
                 return false;
@@ -84,7 +84,7 @@ public class DimensionalControl extends Control {
                 }
             }
 
-            pilotManager.getTargetLocation().setLevel(dimensions.get(nextIndex));
+            pilotManager.setTargetDimension(dimensions.get(nextIndex));
 
             PlayerUtil.sendMessage(player, Component.translatable(ModMessages.CONTROL_DIMENSION_SELECTED, MiscHelper.getCleanDimensionName(pilotManager.getTargetLocation().getDimensionKey())), true);
 

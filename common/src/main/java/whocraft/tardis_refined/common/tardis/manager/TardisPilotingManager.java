@@ -29,7 +29,6 @@ import whocraft.tardis_refined.common.capability.tardis.upgrades.SpeedUpgrade;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.tardis.TardisArchitectureHandler;
-import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.util.LevelHelper;
 import whocraft.tardis_refined.common.util.PlayerUtil;
@@ -845,6 +844,7 @@ public class TardisPilotingManager extends TickableHandler {
         return this.targetLocation;
     }
 
+
     public void setTargetLocation(TardisNavLocation targetLocation) {
         this.targetLocation = targetLocation.copy();
     }
@@ -866,6 +866,10 @@ public class TardisPilotingManager extends TickableHandler {
 
     public void setTargetPosition(BlockPos pos) {
         this.targetLocation.setPosition(pos);
+    }
+
+    public void setTargetDimension(ServerLevel serverLevel) {
+        this.targetLocation.setLevel(serverLevel);
     }
 
     public int getCordIncrement() {

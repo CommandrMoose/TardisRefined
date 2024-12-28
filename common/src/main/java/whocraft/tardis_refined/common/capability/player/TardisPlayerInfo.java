@@ -5,10 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
@@ -19,7 +17,7 @@ import whocraft.tardis_refined.common.network.messages.sync.S2CSyncTardisPlayerV
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
 import whocraft.tardis_refined.common.util.Platform;
-import whocraft.tardis_refined.common.util.TardisHelper;
+import whocraft.tardis_refined.common.util.TRTeleporter;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -105,10 +103,10 @@ public class TardisPlayerInfo implements TardisPilot {
 
         if (spectateTarget != null) {
 
-            TardisNavLocation sourceLocation = tardisLevelOperator.getPilotingManager().getCurrentLocation();
+            BlockPos spectatePos = spectateTarget.getPosition();
 
             if (spectateTarget.getPosition().distManhattan(new Vec3i((int) player.position().x, (int) player.position().y, (int) player.position().z)) > 3 || !player.level().dimension().location().toString().equals(spectateTarget.getDimensionKey().location().toString())) {
-                TardisHelper.teleportEntityTardis(tardisLevelOperator, player, sourceLocation, spectateTarget, false);
+                TRTeleporter.simpleTeleport(player, spectateTarget.getLevel(), spectatePos.getX(), spectatePos.getY(), spectatePos.getZ(), playerPreviousRot, playerPreviousYaw);
             }
             updatePlayerAbilities(serverPlayer, serverPlayer.getAbilities(), true);
             setRenderVortex(timeVortex);
@@ -203,7 +201,7 @@ public class TardisPlayerInfo implements TardisPilot {
         if (!isViewingTardis()) return;
         BlockPos targetPosition = getPlayerPreviousPos().getPosition();
 
-        TardisTeleportData.scheduleEntityTeleport(serverPlayer, getPlayerPreviousPos().getDimensionKey(), targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), playerPreviousYaw, playerPreviousRot);
+        TRTeleporter.simpleTeleport(serverPlayer, getPlayerPreviousPos().getLevel(), targetPosition.getX(), targetPosition.getY(), targetPosition.getZ(), playerPreviousYaw, playerPreviousRot);
         updatePlayerAbilities(serverPlayer, serverPlayer.getAbilities(), false);
         serverPlayer.onUpdateAbilities();
         new S2CResetPostShellView().send(serverPlayer);
