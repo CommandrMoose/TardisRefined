@@ -15,6 +15,7 @@ plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.5+" apply false
     id "me.shedaniel.unified-publishing" version "0.1.+"
+    id "com.github.breadmoirai.github-release" version "2.4.1"
 }
 
 architectury {
@@ -37,6 +38,36 @@ subprojects {
         }
         implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     }
+}
+
+
+def forgeDir = new File(project.projectDir, 'forge/build/libs/')
+def fabricDir = new File(project.projectDir, 'fabric/build/libs/')
+def commonDir = new File(project.projectDir, 'common/build/libs/')
+
+def filter = { File file -> file.getName().contains(mod_version) } as FileFilter
+
+def forgeFiles = forgeDir.listFiles(filter)
+def fabricFiles = fabricDir.listFiles(filter)
+def commonFiles = commonDir.listFiles(filter)
+
+githubRelease {
+    token project.findProperty("github") ?: System.getenv("github") ?: ""
+    owner "WhoCraft"
+    repo "TardisRefined"
+    tagName "v$rootProject.minecraft_version-$project.mod_version"
+    targetCommitish "mc/1.20.1"
+    releaseName "[$rootProject.minecraft_version] Tardis Refined - v$project.mod_version"
+    generateReleaseNotes true
+    body new File("${rootProject.projectDir}/changelog.md").text
+    draft false
+    prerelease false
+    releaseAssets(forgeFiles + fabricFiles + commonFiles)
+    allowUploadToExisting.set false
+    overwrite true
+    dryRun false
+    apiEndpoint "https://api.github.com"
+    client
 }
 
 
@@ -100,6 +131,7 @@ allprojects {
 task publishMeEverywhere(){
     dependsOn ':forge:publishUnified'
     dependsOn ':fabric:publishUnified'
+    dependsOn ':githubRelease'
 }
 
 

@@ -69,6 +69,22 @@ body:
     attributes:
       label: Other relevant versions
       description: If this issue is related to any other mods that have been installed alongside Tardis Refined, list the mod's name and version here.
+  - type: textarea
+    attributes:
+      label: Mod List
+      description: In order to check for compatibility issues, we require your mods list
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Please confirm that you have searched existing issues in the repo.
+      options:
+        - label: 'Yes, I have checked all open issues and am aware my issue will be closed if it is a duplicate of another'
+  - type: checkboxes
+    id: rendering
+    attributes:
+      label: Please confirm that if your issue is related to rendering, that you have tested without the following before testing; (Shaders, Optifine, Rubidium, embeddium, Sodium)
+      options:
+        - label: 'Yes, I have done testing without these mods before reported a rendering issue or my issue does not relate to rendering'
   - type: input
     attributes:
       label: "Attach the relevant crash report file or log file: (Don't know how to find a crash report file? See the [Minecraft Wiki Tutorial](https://minecraft.fandom.com/wiki/Tutorials/How_to_get_a_crash_report)"
