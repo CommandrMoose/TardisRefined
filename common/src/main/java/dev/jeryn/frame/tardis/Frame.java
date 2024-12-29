@@ -74,6 +74,7 @@ public class Frame {
             );
         }
 
+
         return animationDefinition.build();
     }
 

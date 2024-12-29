@@ -22,6 +22,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
@@ -46,6 +48,8 @@ public class RenderTargetHelper {
     private static final RenderTargetHelper RENDER_TARGET_HELPER = new RenderTargetHelper();
     public static StencilBufferStorage stencilBufferStorage = new StencilBufferStorage();
     public RenderTarget renderTarget;
+
+    public static Logger LOGGER = LogManager.getLogger("TardisRefinbed/StencilRendering");
 
     public static void renderVortex(GlobalDoorBlockEntity blockEntity, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
@@ -106,6 +110,8 @@ public class RenderTargetHelper {
 
         // Enable and configure stencil buffer
         GL11.glEnable(GL11.GL_STENCIL_TEST);
+        checkGLError("Enabling stencil test");
+
         GL11.glStencilMask(0xFF); // Ensure stencil mask is set before clearing
         GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT); // Clear stencil buffer
         GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 0xFF);
@@ -154,7 +160,13 @@ public class RenderTargetHelper {
         stack.popPose();
     }
 
+    public static void checkGLError(String msg) {
+        int error;
+        while ((error = GL11.glGetError()) != GL11.GL_NO_ERROR) {
+            LOGGER.debug("{}: {}", msg, error);
+        }
 
+    }
 
     private static void renderNoVortex(GlobalDoorBlockEntity blockEntity, PoseStack stack, MultiBufferSource bufferSource, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen) {
         stack.pushPose();

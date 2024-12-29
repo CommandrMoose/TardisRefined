@@ -51,16 +51,11 @@ public class FactoryConsoleModel extends HierarchicalModel implements ConsoleUni
     public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
+        if (globalConsoleBlock == null) return;
+        if (globalConsoleBlock.getBlockState() == null) return;
 
-        // Exit early if globalConsoleBlock is null
-        if (globalConsoleBlock == null) {
-            root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-            return;
-        }
+        Boolean powered = globalConsoleBlock.getBlockState() == null ? true : globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
 
-        // Safely determine if the console is powered
-        boolean powered = globalConsoleBlock.getBlockState() != null
-                && globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
 
         if (powered) {
             if (!globalConsoleBlock.powerOn.isStarted()) {
@@ -77,25 +72,25 @@ public class FactoryConsoleModel extends HierarchicalModel implements ConsoleUni
                 this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
             } else {
                 // Handle idle animation
-                if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get()) {
+                if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get() && globalConsoleBlock != null) {
                     this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
                 }
             }
+
         } else {
-            if (!globalConsoleBlock.powerOff.isStarted()) {
-                globalConsoleBlock.powerOn.stop();
-                globalConsoleBlock.powerOff.start(Minecraft.getInstance().player.tickCount);
+            if (globalConsoleBlock != null) {
+                if (!globalConsoleBlock.powerOff.isStarted()) {
+                    globalConsoleBlock.powerOn.stop();
+                    globalConsoleBlock.powerOff.start(Minecraft.getInstance().player.tickCount);
+                }
+                this.animate(globalConsoleBlock.powerOff, POWER_OFF, Minecraft.getInstance().player.tickCount);
             }
-            this.animate(globalConsoleBlock.powerOff, POWER_OFF, Minecraft.getInstance().player.tickCount);
         }
 
-        // Update throttle lever and handbrake animations
-        float throttleRotation = -125 - (30 * ((float) reactions.getThrottleStage() / TardisPilotingManager.MAX_THROTTLE_STAGE));
-        this.throttleLever.xRot = throttleRotation;
+        float rot = -125 - (30 * ((float) reactions.getThrottleStage() / TardisPilotingManager.MAX_THROTTLE_STAGE));
+        this.throttleLever.xRot = rot;
 
         this.handbrake.xRot = reactions.isHandbrakeEngaged() ? -155f : -125f;
-
-        // Render the model
         root().render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 

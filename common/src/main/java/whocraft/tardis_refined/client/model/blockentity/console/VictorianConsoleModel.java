@@ -926,32 +926,32 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
     public void renderConsole(GlobalConsoleBlockEntity globalConsoleBlock, Level level, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root().getAllParts().forEach(ModelPart::resetPose);
         TardisClientData reactions = TardisClientData.getInstance(level.dimension());
+        if (globalConsoleBlock == null) return;
+        if (globalConsoleBlock.getBlockState() == null) return;
 
-        boolean powered = globalConsoleBlock != null
-                && globalConsoleBlock.getBlockState() != null
-                && globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
+        Boolean powered = globalConsoleBlock.getBlockState() == null ? true : globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
+
 
         if (powered) {
-            if (globalConsoleBlock != null) {
-                if (!globalConsoleBlock.powerOn.isStarted()) {
-                    globalConsoleBlock.powerOff.stop();
-                    globalConsoleBlock.powerOn.start(Minecraft.getInstance().player.tickCount);
-                }
-                this.animate(globalConsoleBlock.powerOn, POWER_ON, Minecraft.getInstance().player.tickCount);
+            if (!globalConsoleBlock.powerOn.isStarted()) {
+                globalConsoleBlock.powerOff.stop();
+                globalConsoleBlock.powerOn.start(Minecraft.getInstance().player.tickCount);
+            }
+            this.animate(globalConsoleBlock.powerOn, POWER_ON, Minecraft.getInstance().player.tickCount);
 
-                if (reactions.isCrashing()) {
-                    // Handle crashing animation
-                    this.animate(reactions.CRASHING_ANIMATION, CRASH, Minecraft.getInstance().player.tickCount);
-                } else if (reactions.isFlying()) {
-                    // Handle flying animation
-                    this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
-                } else {
-                    // Handle idle animation
-                    if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get()) {
-                        this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
-                    }
+            if (reactions.isCrashing()) {
+                // Handle crashing animation
+                this.animate(reactions.CRASHING_ANIMATION, CRASH, Minecraft.getInstance().player.tickCount);
+            } else if (reactions.isFlying()) {
+                // Handle flying animation
+                this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
+            } else {
+                // Handle idle animation
+                if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get() && globalConsoleBlock != null) {
+                    this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
                 }
             }
+
         } else {
             if (globalConsoleBlock != null) {
                 if (!globalConsoleBlock.powerOff.isStarted()) {
@@ -961,6 +961,7 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
                 this.animate(globalConsoleBlock.powerOff, POWER_OFF, Minecraft.getInstance().player.tickCount);
             }
         }
+
 
         float rot = 1f + (2 * ((float) reactions.getThrottleStage() / TardisPilotingManager.MAX_THROTTLE_STAGE));
         throttle_control.yRot = rot;

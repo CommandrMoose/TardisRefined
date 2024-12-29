@@ -37,7 +37,7 @@ public class C2SBeginShellView extends MessageC2S {
         Level level = context.getPlayer().level();
         if (level instanceof ServerLevel serverLevel) {
             TardisLevelOperator.get(serverLevel).ifPresent(tardisLevelOperator -> TardisPlayerInfo.get(context.getPlayer()).ifPresent(tardisInfo ->
-                    tardisInfo.setupPlayerForInspection(player, tardisLevelOperator, tardisLevelOperator.getPilotingManager().isTakingOff() ? tardisLevelOperator.getPilotingManager().getCurrentLocation() : tardisLevelOperator.getPilotingManager().getTargetLocation(), !tardisLevelOperator.getPilotingManager().isTakingOff())
+                    tardisInfo.startShellView(player, tardisLevelOperator, tardisLevelOperator.getPilotingManager().isTakingOff() ? tardisLevelOperator.getPilotingManager().getCurrentLocation() : tardisLevelOperator.getPilotingManager().getTargetLocation(), tardisLevelOperator.getPilotingManager().isInFlight())
             ));
         }
     }

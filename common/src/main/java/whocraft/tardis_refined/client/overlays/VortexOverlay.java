@@ -181,6 +181,7 @@ public class VortexOverlay {
             pose.mulPose(Axis.ZP.rotationDegrees(mul * VORTEX.lightning_strike * 90 * Mth.sin(VORTEX.lightning_strike)));
 
             pose.pushPose();
+            pose.translate(0.5,0,0);
             renderShell(gg, IMMERSION, 1 - demat_transparency, tardisClientData.getThrottleStage());
             pose.popPose();
 

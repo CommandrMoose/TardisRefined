@@ -66,7 +66,10 @@ public class MonitorScreen extends MonitorOS.MonitorOSExtension {
                         .size(70, 20).build());
         vortxSelectButton.active = true;
 */
-        BackgroundlessButton extView = addRenderableWidget(BackgroundlessButton.backgroundlessBuilder(Component.literal(""), button -> new C2SBeginShellView().send()).pos(hPos + 20, -30 + height / 2).size(40, 60).build());
+        BackgroundlessButton extView = addRenderableWidget(BackgroundlessButton.backgroundlessBuilder(Component.literal(""), button -> {
+            new C2SBeginShellView().send();
+            Minecraft.getInstance().setScreen(null);
+        }).pos(hPos + 20, -30 + height / 2).size(40, 60).build());
         extView.setTooltip(Tooltip.create(Component.translatable(ModMessages.UI_MONITOR_SHELL_VIEW)));
         extView.active = true;
 

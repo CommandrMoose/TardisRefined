@@ -60,9 +60,11 @@ public class ShellRenderer {
             GLOBALSHELL_BLOCKENTITY.setTardisId(tardisClientData.getLevelKey());
 
             if(Platform.isForge()) {
+
                 float scale = 2.5F;
                 pose.scale(scale, scale, scale);
             }
+
 
             model.renderShell(GLOBALSHELL_BLOCKENTITY, false, false, pose, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
 

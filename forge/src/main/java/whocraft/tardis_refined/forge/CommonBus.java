@@ -57,7 +57,7 @@ public class CommonBus {
         Player player = playerLoggedOutEvent.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
             TardisPlayerInfo.get(player).ifPresent(tardisPlayerInfo -> {
-                tardisPlayerInfo.endPlayerForInspection(serverPlayer);
+                tardisPlayerInfo.endShellView(serverPlayer);
             });
         }
     }

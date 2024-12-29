@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import whocraft.tardis_refined.TRConfig;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.registry.TRDimensionTypes;
 
 import java.util.Set;
@@ -13,10 +14,11 @@ import java.util.Set;
 public class DimensionUtil {
 
     public static boolean isAllowedDimension(ResourceKey<Level> level) {
+        String namespace = level.location().getNamespace();
+        String location = level.location().toString();
         var bannedDimensions = TRConfig.SERVER.BANNED_DIMENSIONS.get();
-        return !level.location().getNamespace().toString().contains("tardis") && !bannedDimensions.contains(level.location().toString());
+        return !namespace.contains("immersive_portals") && !namespace.contains(TardisRefined.MODID) && !bannedDimensions.contains(location);
     }
-
     public static Set<ResourceKey<Level>> getTardisLevels(MinecraftServer server) {
         Set<ResourceKey<Level>> set = Sets.newHashSet();
         for (ServerLevel level : server.getAllLevels()) {

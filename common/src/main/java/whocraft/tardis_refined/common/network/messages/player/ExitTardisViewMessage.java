@@ -46,7 +46,7 @@ public class ExitTardisViewMessage extends MessageC2S {
                 ServerLevel tardisLevel = Platform.getServer().getLevel(key);
                 if (tardisLevel != null) {
                     TardisLevelOperator.get(tardisLevel).ifPresent(tardisLevelOperator -> {
-                        tardisInfo.endPlayerForInspection(player);
+                        tardisInfo.endShellView(player);
                     });
                 }
             }

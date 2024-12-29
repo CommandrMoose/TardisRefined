@@ -34,6 +34,11 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
     }
 
     @Override
+    public ResourceLocation getPatternForRender() {
+        return PATTERN.id();
+    }
+
+    @Override
     protected void init() {
         super.init();
         this.setEvents(
