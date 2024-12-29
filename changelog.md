@@ -12,3 +12,4 @@
 - Bug Fix: Tardis can travel to it's own dimension [#435](https://github.com/WhoCraft/TardisRefined/issues/435)
 - Bug Fix: Enter TARDIS with door closed [#422](https://github.com/WhoCraft/TardisRefined/issues/422)
 - Bug Fix: Tardis Shell Viewer not in correct position [#434](https://github.com/WhoCraft/TardisRefined/issues/434)
+- Bug Fix: tardis concole can be pushed with a piston. [#437](https://github.com/WhoCraft/TardisRefined/issues/437)

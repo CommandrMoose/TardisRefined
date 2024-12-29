@@ -52,6 +52,9 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(POWERED, false));
     }
 
+
+
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -225,6 +228,7 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
 
         return InteractionResult.sidedSuccess(true); //Use InteractionResult.sidedSuccess(true) for client side. Stops hand swinging twice. We don't want to use InteractionResult.SUCCESS because the client calls SUCCESS, so the server side calling it too sends the hand swinging packet twice.
     }
+
 
     @Override
     public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
