@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ModelRegistry;
-import whocraft.tardis_refined.client.model.blockentity.shell.rootplant.*;
+import whocraft.tardis_refined.client.model.GenericModel;
 import whocraft.tardis_refined.common.block.RootPlantBlock;
 import whocraft.tardis_refined.common.blockentity.shell.RootPlantBlockEntity;
 
@@ -22,18 +22,18 @@ public class RootPlantRenderer implements BlockEntityRenderer<RootPlantBlockEnti
     private static final ResourceLocation rootPlantThreeTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_three.png");
     private static final ResourceLocation rootPlantFourTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_four.png");
     private static final ResourceLocation rootPlantFiveTexture = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/root/root_plant/stage_five.png");
-    private static RootPlantStateOneModel rootPlantStateOneModel;
-    private static RootPlantStateTwoModel rootPlantStateTwoModel;
-    private static RootPlantStateThreeModel rootPlantStateThreeModel;
-    private static RootPlantStateFourModel rootPlantStateFourModel;
-    private static RootPlantStateFiveModel rootPlantStateFiveModel;
+    private static GenericModel rootPlantStateOneModel;
+    private static GenericModel rootPlantStateTwoModel;
+    private static GenericModel rootPlantStateThreeModel;
+    private static GenericModel rootPlantStateFourModel;
+    private static GenericModel rootPlantStateFiveModel;
 
     public RootPlantRenderer(BlockEntityRendererProvider.Context context) {
-        rootPlantStateOneModel = new RootPlantStateOneModel(context.bakeLayer((ModelRegistry.ROOT_PLANT_STATE_ONE)));
-        rootPlantStateTwoModel = new RootPlantStateTwoModel(context.bakeLayer((ModelRegistry.ROOT_PLANT_STATE_TWO)));
-        rootPlantStateThreeModel = new RootPlantStateThreeModel(context.bakeLayer((ModelRegistry.ROOT_PLANT_STATE_THREE)));
-        rootPlantStateFourModel = new RootPlantStateFourModel(context.bakeLayer((ModelRegistry.ROOT_PLANT_STATE_FOUR)));
-        rootPlantStateFiveModel = new RootPlantStateFiveModel(context.bakeLayer((ModelRegistry.ROOT_PLANT_STATE_FIVE)));
+        rootPlantStateOneModel = new GenericModel(context.bakeLayer(ModelRegistry.ROOT_PLANT_STATE_ONE));
+        rootPlantStateTwoModel = new GenericModel(context.bakeLayer(ModelRegistry.ROOT_PLANT_STATE_TWO));
+        rootPlantStateThreeModel = new GenericModel(context.bakeLayer(ModelRegistry.ROOT_PLANT_STATE_THREE));
+        rootPlantStateFourModel = new GenericModel(context.bakeLayer(ModelRegistry.ROOT_PLANT_STATE_FOUR));
+        rootPlantStateFiveModel = new GenericModel(context.bakeLayer(ModelRegistry.ROOT_PLANT_STATE_FIVE));
     }
 
     @Override

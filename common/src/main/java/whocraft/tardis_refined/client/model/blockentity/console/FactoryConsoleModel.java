@@ -20,14 +20,16 @@ import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 public class FactoryConsoleModel extends HierarchicalModel implements ConsoleUnit {
 
+    // Load Animations in
     public static final AnimationDefinition IDLE = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/factory/idle.json"));
     public static final AnimationDefinition FLIGHT = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/factory/flight.json"));
     public static final AnimationDefinition CRASH = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/factory/crash.json"));
     public static final AnimationDefinition POWER_ON = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/factory/power_on.json"));
     public static final AnimationDefinition POWER_OFF = Frame.loadAnimation( new ResourceLocation(TardisRefined.MODID, "frame/console/factory/power_off.json"));
-
-
+    
     private static final ResourceLocation FACTORY_TEXTURE = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/console/factory/factory_console.png");
+  
+  
     private final ModelPart root;
     private final ModelPart throttleLever;
     private final ModelPart handbrake;
@@ -36,7 +38,7 @@ public class FactoryConsoleModel extends HierarchicalModel implements ConsoleUni
     public FactoryConsoleModel(ModelPart root) {
         this.root = root;
         this.throttleLever = Frame.findPart(this, "lever2");
-        this.handbrake = (ModelPart) getAnyDescendantWithName("lever3").get();
+        this.handbrake = Frame.findPart(this, "lever3");
     }
 
 

@@ -24,24 +24,6 @@ public class BriefcaseDoorModel extends ShellDoorModel {
         this.bb_main = root.getChild("bb_main");
     }
 
-    public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-
-        PartDefinition door_open = partdefinition.addOrReplaceChild("door_open", CubeListBuilder.create().texOffs(51, 17).addBox(-10.0F, -46.9F, -6.0F, 20.0F, 1.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        PartDefinition door_closed = partdefinition.addOrReplaceChild("door_closed", CubeListBuilder.create().texOffs(0, 17).addBox(-10.0F, -46.9F, -6.0F, 20.0F, 1.0F, 14.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 33).addBox(-10.0F, -47.0F, -6.0F, 20.0F, 1.0F, 14.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(-10.0F, -47.75F, -6.0F, 20.0F, 2.0F, 14.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 24.0F, 0.0F));
-
-        PartDefinition cube_r1 = bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 49).addBox(-7.0F, 1.0F, -2.25F, 14.0F, 48.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -48.0F, 9.25F, -0.1309F, 0.0F, 0.0F));
-
-        ShellModel.addMaterializationPart(partdefinition);
-
-        return LayerDefinition.create(meshdefinition, 128, 128);
-    }
-
     @Override
     public void setDoorPosition(boolean open) {
         this.isDoorOpen = open;

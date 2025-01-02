@@ -14,19 +14,19 @@ import org.joml.Matrix4f;
 import org.joml.Random;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.ModelRegistry;
-import whocraft.tardis_refined.client.model.blockentity.device.ArtronPillarBlockModel;
+import whocraft.tardis_refined.client.model.GenericModel;
 import whocraft.tardis_refined.common.block.device.ArtronPillarBlock;
 import whocraft.tardis_refined.common.blockentity.device.ArtronPillarBlockEntity;
 
 public class ArtronPillarRenderer implements BlockEntityRenderer<ArtronPillarBlockEntity>, BlockEntityRendererProvider<ArtronPillarBlockEntity> {
 
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
-    private final ArtronPillarBlockModel artronPillarBlockModel;
+    private final GenericModel artronPillarBlockModel;
     private final ResourceLocation POWER_ON = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/artron_pillar.png");
     private final ResourceLocation POWER_OFF = new ResourceLocation(TardisRefined.MODID, "textures/blockentity/artron_pillar_off.png");
 
     public ArtronPillarRenderer(Context context) {
-        artronPillarBlockModel = new ArtronPillarBlockModel(context.bakeLayer((ModelRegistry.ARTRON_PILLAR)));
+        artronPillarBlockModel = new GenericModel(context.bakeLayer((ModelRegistry.ARTRON_PILLAR)));
     }
 
     private static void vertex01(VertexConsumer iVertexBuilder, Matrix4f matrix4f, int p_229061_2_) {

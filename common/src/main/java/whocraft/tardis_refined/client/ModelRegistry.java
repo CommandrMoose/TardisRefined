@@ -4,12 +4,6 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.resources.ResourceLocation;
-import whocraft.tardis_refined.client.model.blockentity.console.*;
-import whocraft.tardis_refined.client.model.blockentity.device.ArtronPillarBlockModel;
-import whocraft.tardis_refined.client.model.blockentity.door.interior.*;
-import whocraft.tardis_refined.client.model.blockentity.shell.internal.door.RootShellDoorModel;
-import whocraft.tardis_refined.client.model.blockentity.shell.rootplant.*;
-import whocraft.tardis_refined.client.model.blockentity.shell.shells.*;
 import whocraft.tardis_refined.common.util.PlatformWarning;
 
 import java.util.function.Supplier;
