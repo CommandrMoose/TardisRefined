@@ -65,7 +65,7 @@ public class ProgressionManager extends BaseHandler {
             return true;
         }
 
-        return ALLOWED_LEVELS.contains(level);
+        return getDiscoveredLevels().contains(level);
     }
 
 

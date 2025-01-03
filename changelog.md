@@ -4,3 +4,4 @@
 
 #### Bug Fixes
 - Bug Fix: Placing and entering TARDIS door in the overworld crashes the game with Immersive Portals [#444](https://github.com/WhoCraft/TardisRefined/issues/444)
+- Bug Fix: Players can land TARDIs within TARDIS with Landing Pad [#447](https://github.com/WhoCraft/TardisRefined/issues/447)
