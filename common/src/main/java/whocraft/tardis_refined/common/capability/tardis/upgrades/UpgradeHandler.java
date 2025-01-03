@@ -24,7 +24,7 @@ public class UpgradeHandler {
     public static final int XP_PER_UPGRADE_POINT = 50;
 
     @NotNull
-    private final TardisLevelOperator tardisLevelOperator;
+    private TardisLevelOperator tardisLevelOperator;
     private final List<Upgrade> unlockedUpgrades = new ArrayList<>();
     private int upgradeXP = 0;
     private int upgradePoints = 0;
@@ -33,6 +33,8 @@ public class UpgradeHandler {
     public UpgradeHandler(@NotNull TardisLevelOperator tardisLevelOperator) {
         this.tardisLevelOperator = tardisLevelOperator;
     }
+
+    public UpgradeHandler() {}
 
     public double calculateProgress() {
         int totalUpgrades = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.entrySet().size();
