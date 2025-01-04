@@ -111,8 +111,4 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
         return VICTORIAN_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.VICTORIAN.getId();
-    }
 }

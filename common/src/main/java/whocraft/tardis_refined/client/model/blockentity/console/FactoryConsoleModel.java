@@ -112,9 +112,4 @@ public class FactoryConsoleModel extends HierarchicalModel implements ConsoleUni
     public ResourceLocation getDefaultTexture() {
         return FACTORY_TEXTURE;
     }
-
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.FACTORY.getId();
-    }
 }

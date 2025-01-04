@@ -25,6 +25,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL30C;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
@@ -34,13 +36,11 @@ import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.block.door.InternalDoorBlock;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
-import whocraft.tardis_refined.compat.portals.ImmersivePortals;
 import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
-
-import java.util.SortedMap;
 
 import static com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS;
 import static net.minecraft.client.renderer.RenderStateShard.*;
+import static org.lwjgl.opengl.GL11.*;
 import static whocraft.tardis_refined.client.overlays.VortexOverlay.VORTEX;
 
 public class RenderTargetHelper {
@@ -48,6 +48,8 @@ public class RenderTargetHelper {
     private static final RenderTargetHelper RENDER_TARGET_HELPER = new RenderTargetHelper();
     public static StencilBufferStorage stencilBufferStorage = new StencilBufferStorage();
     public RenderTarget renderTarget;
+
+    private static boolean useCompatibilityMode = false;
 
     public static Logger LOGGER = LogManager.getLogger("TardisRefinbed/StencilRendering");
 
@@ -69,7 +71,55 @@ public class RenderTargetHelper {
         }
     }
 
+    public static void copyDepthStencil(
+            RenderTarget from, RenderTarget to,
+            boolean copyDepth, boolean copyStencil
+    ) {
+        from.unbindWrite();
+
+        int mask = 0;
+
+        if (copyDepth) {
+            if (copyStencil) {
+                mask = GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
+            } else {
+                mask = GL_DEPTH_BUFFER_BIT;
+            }
+        } else {
+            if (copyStencil) {
+                mask = GL_STENCIL_BUFFER_BIT;
+            } else {
+                throw new RuntimeException();
+            }
+        }
+
+        GlStateManager._glBindFramebuffer(GL30C.GL_READ_FRAMEBUFFER, from.frameBufferId);
+        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, to.frameBufferId);
+
+        GL30.glBlitFramebuffer(
+                0, 0, from.width, from.height,
+                0, 0, to.width, to.height,
+                mask, GL_NEAREST
+        );
+
+        from.unbindWrite();
+    }
+
+
     public static void copyRenderTarget(RenderTarget src, RenderTarget dest) {
+
+        if (useCompatibilityMode) {
+            AMDRenderTargetHelper.newCopyDepthStencil(
+                    src,
+                    dest
+            );
+            AMDRenderTargetHelper.copyColor(
+                    src,
+                    dest
+            );
+            return;
+        }
+
         GlStateManager._glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, src.frameBufferId);
         GlStateManager._glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, dest.frameBufferId);
         GlStateManager._glBlitFrameBuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
@@ -163,6 +213,7 @@ public class RenderTargetHelper {
     public static void checkGLError(String msg) {
         int error;
         while ((error = GL11.glGetError()) != GL11.GL_NO_ERROR) {
+            useCompatibilityMode = true;
             LOGGER.debug("{}: {}", msg, error);
         }
 

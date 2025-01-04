@@ -108,10 +108,6 @@ public class CrystalConsoleModel extends HierarchicalModel implements ConsoleUni
         return CRYSTAL_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.CRYSTAL.getId();
-    }
 
     @Override
     public void setupAnim(Entity entity, float f, float g, float h, float i, float j) {

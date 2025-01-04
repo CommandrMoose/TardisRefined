@@ -82,8 +82,4 @@ public class InitiativeConsoleModel extends HierarchicalModel implements Console
         return INITIATIVE_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.INITIATIVE.getId();
-    }
 }

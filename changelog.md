@@ -7,9 +7,16 @@
 - Bug Fix: Players can land TARDIS within TARDIS with Landing Pad [#447](https://github.com/WhoCraft/TardisRefined/issues/447)
 - Bug Fix: Fixed TARDIS not storing Adventure Mode Dimensions correctly
 - Bug Fix: Fixed Dedicated Servers on Fabric having issues loading data from disk (Caused dupe TARDIS and loss of Upgrades etc)
+- Bug Fix: Fixed Diagonal Windows Support
 
 #### Textures and Models
 - Altered: Factory Console Emission Texture 
 - Altered: Factory Console (Mint) Emission Texture 
 - Altered: Factory Console (Vintage) Emission Texture 
 - Altered: Factory Console (Wood) Emission Texture 
+- Added: Victorian Console (Default) Emission Texture 
+- Added: Victorian Console (Bronze Age) Emission Texture 
+
+#### API Changes
+- Addon mods can now freely register console models 
+- Addon Mod consoles can now have per variant models

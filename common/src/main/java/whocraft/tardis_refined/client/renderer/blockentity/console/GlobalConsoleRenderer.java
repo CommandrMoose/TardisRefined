@@ -2,8 +2,6 @@ package whocraft.tardis_refined.client.renderer.blockentity.console;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.model.dragon.DragonHeadModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -45,7 +43,7 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
 
         ResourceLocation theme = blockEntity.theme();
 
-        ConsoleUnit consoleModel = ConsoleModelCollection.getInstance().getConsoleModel(theme);
+        ConsoleUnit consoleModel = ConsoleModelCollection.getInstance().getConsoleEntry(theme).getConsoleModel(blockEntity.pattern());
         consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
 
         if (blockEntity != null && blockEntity.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {

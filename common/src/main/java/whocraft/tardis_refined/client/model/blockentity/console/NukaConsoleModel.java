@@ -102,8 +102,4 @@ public class NukaConsoleModel extends HierarchicalModel implements ConsoleUnit {
         return NUKA_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.NUKA.getId();
-    }
 }

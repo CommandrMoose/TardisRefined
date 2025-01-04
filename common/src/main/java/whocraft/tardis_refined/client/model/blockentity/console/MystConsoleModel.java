@@ -91,8 +91,4 @@ public class MystConsoleModel extends HierarchicalModel implements ConsoleUnit {
         return MYST_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.MYST.getId();
-    }
 }

@@ -20,11 +20,6 @@ public interface ConsoleUnit {
         return getTexture(entity, false);
     }
 
-
-
     ResourceLocation getDefaultTexture();
-
-    ResourceLocation getConsoleTheme();
-
 
 }

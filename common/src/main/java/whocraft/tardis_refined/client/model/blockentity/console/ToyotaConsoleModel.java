@@ -80,8 +80,4 @@ public class ToyotaConsoleModel extends HierarchicalModel implements ConsoleUnit
         return TOYOTA_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.TOYOTA.getId();
-    }
 }

@@ -77,11 +77,6 @@ public class RefurbishedConsoleModel extends HierarchicalModel implements Consol
     }
 
     @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.REFURBISHED.getId();
-    }
-
-    @Override
     public void setupAnim(Entity entity, float f, float g, float h, float i, float j) {
 
     }

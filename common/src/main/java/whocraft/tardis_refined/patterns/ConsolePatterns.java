@@ -175,7 +175,7 @@ public class ConsolePatterns {
         DEFAULT_PATTERNS.clear();
         /*Add Base Textures*/
         for (ResourceLocation consoleTheme : ConsoleTheme.CONSOLE_THEME_DEFERRED_REGISTRY.keySet()) {
-            boolean hasDefaultEmission = consoleTheme == ConsoleTheme.COPPER.getId() || consoleTheme == ConsoleTheme.CRYSTAL.getId() || consoleTheme == ConsoleTheme.CORAL.getId() || consoleTheme == ConsoleTheme.FACTORY.getId() || consoleTheme == ConsoleTheme.INITIATIVE.getId() || consoleTheme == ConsoleTheme.TOYOTA.getId();
+            boolean hasDefaultEmission = consoleTheme == ConsoleTheme.VICTORIAN.getId() || consoleTheme == ConsoleTheme.COPPER.getId() || consoleTheme == ConsoleTheme.CRYSTAL.getId() || consoleTheme == ConsoleTheme.CORAL.getId() || consoleTheme == ConsoleTheme.FACTORY.getId() || consoleTheme == ConsoleTheme.INITIATIVE.getId() || consoleTheme == ConsoleTheme.TOYOTA.getId();
             addDefaultPattern(consoleTheme, ResourceConstants.DEFAULT_PATTERN_ID.getPath(), consoleTheme.getPath() + "_console", hasDefaultEmission);
         }
 
@@ -199,11 +199,7 @@ public class ConsolePatterns {
         /*Myst*/
         addDefaultPattern(ConsoleTheme.MYST.getId(), "molten", "myst_console_molten", false);
 
-        /*Victorian*/
-      /*  addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "smissmass", "victorian_console_smissmass", false);
-        addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "grant", "victorian_console_grant", false);
-     */
-        addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "bronze_age", "victorian_console_bronze_age", false);
+        addDefaultPattern(ConsoleTheme.VICTORIAN.getId(), "bronze_age", "victorian_console_bronze_age", true);
 
         /*Initiative*/
         addDefaultPattern(ConsoleTheme.INITIATIVE.getId(), "aperture", "initiative_console_aperture", true);

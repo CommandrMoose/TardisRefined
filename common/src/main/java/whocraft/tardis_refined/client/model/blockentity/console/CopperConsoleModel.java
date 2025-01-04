@@ -117,8 +117,4 @@ public class CopperConsoleModel extends HierarchicalModel implements ConsoleUnit
         return COPPER_TEXTURE;
     }
 
-    @Override
-    public ResourceLocation getConsoleTheme() {
-        return ConsoleTheme.COPPER.getId();
-    }
 }
