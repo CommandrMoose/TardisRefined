@@ -45,20 +45,40 @@ public class ConsoleModelCollection {
         initiativeConsoleModel = new InitiativeConsoleModel(context.bakeLayer((ModelRegistry.INITIATIVE_CONSOLE)));
         refurbishedConsoleModel = new RefurbishedConsoleModel(context.bakeLayer((ModelRegistry.REFURBISHED_CONSOLE)));
 
-        CONSOLE_MODELS.add(factoryConsoleModel);
-        CONSOLE_MODELS.add(nukaConsoleModel);
-        CONSOLE_MODELS.add(copperConsoleModel);
-        CONSOLE_MODELS.add(coralConsoleModel);
-        CONSOLE_MODELS.add(toyotaConsoleModel);
-        CONSOLE_MODELS.add(crystalConsoleModel);
-        CONSOLE_MODELS.add(victorianConsoleModel);
-        CONSOLE_MODELS.add(mystConsoleModel);
-        CONSOLE_MODELS.add(initiativeConsoleModel);
-        CONSOLE_MODELS.add(refurbishedConsoleModel);
+        registerModel(factoryConsoleModel);
+        registerModel(nukaConsoleModel);
+        registerModel(copperConsoleModel);
+        registerModel(coralConsoleModel);
+        registerModel(toyotaConsoleModel);
+        registerModel(crystalConsoleModel);
+        registerModel(victorianConsoleModel);
+        registerModel(mystConsoleModel);
+        registerModel(initiativeConsoleModel);
+        registerModel(refurbishedConsoleModel);
 
     }
 
     public static Logger LOGGER = LogManager.getLogger("TardisRefined/ConsoleModelCollection");
+
+    /**
+     * Register a new console model.
+     *
+     * @param consoleModel The ConsoleUnit to register.
+     */
+    public void registerModel(ConsoleUnit consoleModel) {
+        if (consoleModel == null) {
+            LOGGER.warn("Attempted to register a null console model.");
+            return;
+        }
+
+        if (CONSOLE_MODELS.contains(consoleModel)) {
+            LOGGER.warn("Attempted to register a console model that is already registered: {}", consoleModel.getConsoleTheme());
+            return;
+        }
+
+        CONSOLE_MODELS.add(consoleModel);
+        LOGGER.info("Registered console model: {}", consoleModel.getConsoleTheme());
+    }
 
 
     /**
