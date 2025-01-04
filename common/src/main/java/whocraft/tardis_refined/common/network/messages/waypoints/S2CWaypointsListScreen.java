@@ -29,7 +29,6 @@ public class S2CWaypointsListScreen extends MessageS2C {
         for (int i = 0; i < size; i++) {
             CompoundTag tardisWay = friendlyByteBuf.readNbt();
             TardisWaypoint waypoint = TardisWaypoint.deserialise(tardisWay);
-
             waypoints.add(waypoint);
         }
     }

@@ -48,6 +48,7 @@ public class PlatformImpl {
     }
 
     public static void init() {
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> MINECRAFT_SERVER = server);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> MINECRAFT_SERVER = server);
     }
 

@@ -45,6 +45,10 @@ def forgeDir = new File(project.projectDir, 'forge/build/libs/')
 def fabricDir = new File(project.projectDir, 'fabric/build/libs/')
 def commonDir = new File(project.projectDir, 'common/build/libs/')
 
+forgeDir.mkdirs()
+fabricDir.mkdirs()
+commonDir.mkdirs()
+
 def filter = { File file -> file.getName().contains(mod_version) } as FileFilter
 
 def forgeFiles = forgeDir.listFiles(filter)

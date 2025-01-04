@@ -78,6 +78,11 @@ public class TardisNavLocation {
     }
 
     public ServerLevel getLevel() {
+
+        if(Platform.getServer() == null){
+            throw new RuntimeException("Called TardisNavLocation::getLevel before server was created! Please adjust your code!");
+        }
+
         if (this.level != null) {
             this.dimensionKey = this.level.dimension();
             return Platform.getServer().getLevel(dimensionKey);
