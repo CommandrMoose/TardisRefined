@@ -82,7 +82,7 @@ public class DimensionalControl extends Control {
             // We want to filter out the end if the end hasn't been completed whilst the player is in flight. We can keep it pre-flight because we do some fancy sounds to tell the player
             // it's not an option.
             if (nextDimension.dimension() == Level.END && pilotManager.isInFlight()) {
-                if (!TardisHelper.hasTheEndBeenCompleted(pilotManager.getTargetLocation().getLevel())) {
+                if (!TardisHelper.hasTheEndBeenCompleted(nextDimension)) {
                     nextIndex += forward ? 1 : -1;
                 }
             }
