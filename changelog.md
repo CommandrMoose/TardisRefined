@@ -9,7 +9,8 @@
 - Bug Fix: Fixed Dedicated Servers on Fabric having issues loading data from disk (Caused dupe TARDIS and loss of Upgrades etc)
 - Bug Fix: Fixed Diagonal Windows Support
 - Bug fix: Fixed duplication happening on logging out mid-flight (and other occasions)
-
+- Bug fix: Fixed issue where End Dragon fight would not be checked correctly
+- 
 #### Textures and Models
 - Altered: Factory Console Emission Texture 
 - Altered: Factory Console (Mint) Emission Texture 
