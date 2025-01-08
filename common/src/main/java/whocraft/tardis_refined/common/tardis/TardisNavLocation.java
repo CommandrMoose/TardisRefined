@@ -8,7 +8,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.common.util.PlayerUtil;
 
 /**
  * TardisNavLocation
@@ -85,7 +87,7 @@ public class TardisNavLocation {
 
         if (this.level != null) {
             this.dimensionKey = this.level.dimension();
-            return Platform.getServer().getLevel(dimensionKey);
+            return DimensionUtil.getLevel(dimensionKey);
         }
 
         return Platform.getServer().getLevel(Level.OVERWORLD);

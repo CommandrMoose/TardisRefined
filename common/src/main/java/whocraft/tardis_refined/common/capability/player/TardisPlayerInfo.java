@@ -15,6 +15,7 @@ import whocraft.tardis_refined.common.network.messages.player.S2CResetPostShellV
 import whocraft.tardis_refined.common.network.messages.sync.S2CSyncTardisPlayerView;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.common.util.TRTeleporter;
 
@@ -200,7 +201,7 @@ public class TardisPlayerInfo implements TardisPilot {
         if (!isViewingTardis()) return;
         BlockPos targetPosition = getPlayerPreviousPos().getPosition();
 
-        TRTeleporter.simpleTeleport(serverPlayer, Platform.getServer().getLevel(getPlayerPreviousPos().getDimensionKey()), targetPosition.getX() + 0.5, targetPosition.getY(), targetPosition.getZ() + 0.5, playerPreviousYaw, playerPreviousRot);
+        TRTeleporter.simpleTeleport(serverPlayer, DimensionUtil.getLevel(getPlayerPreviousPos().getDimensionKey()), targetPosition.getX() + 0.5, targetPosition.getY(), targetPosition.getZ() + 0.5, playerPreviousYaw, playerPreviousRot);
         updatePlayerAbilities(serverPlayer, serverPlayer.getAbilities(), false);
         serverPlayer.onUpdateAbilities();
         new S2CResetPostShellView().send(serverPlayer);

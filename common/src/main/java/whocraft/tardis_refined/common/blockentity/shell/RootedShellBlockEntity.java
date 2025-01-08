@@ -12,11 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
-import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
-import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
-import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.registry.TRBlockEntityRegistry;
 
 import java.util.UUID;
@@ -28,11 +26,6 @@ public class RootedShellBlockEntity extends ShellBaseBlockEntity {
     private boolean runSetUpOnNextTick = false;
     public RootedShellBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TRBlockEntityRegistry.ROOT_SHELL.get(), blockPos, blockState);
-    }
-
-    @Override
-    public DesktopTheme getAssociatedTheme() {
-        return TardisDesktops.DEFAULT_OVERGROWN_THEME;
     }
 
     @Override
@@ -88,7 +81,7 @@ public class RootedShellBlockEntity extends ShellBaseBlockEntity {
                     serverLevel.playSound(null, blockPos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1, 1);
                 });
             } else {
-                ServerLevel tardisLevel = Platform.getServer().getLevel(getTardisId());
+                ServerLevel tardisLevel = DimensionUtil.getLevel(getTardisId());
                 TardisLevelOperator.get(tardisLevel).ifPresent(tardisLevelOperator -> {
                     //Always open the root shell doors when this method is called to ensure that the player isn't softlocked by the early return of InteractionResult that occurs if the player isn't using shears.
                     tardisLevelOperator.setDoorClosed(false);

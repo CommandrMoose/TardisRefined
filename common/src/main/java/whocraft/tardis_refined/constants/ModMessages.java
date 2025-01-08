@@ -79,6 +79,8 @@ public class ModMessages {
     public static String ITEM_GROUP = "itemGroup." + TardisRefined.MODID;
 
     /*Messages*/
+
+
     public static String MSG_EXTERIOR_COOLDOWN = message("exterior_cooldown");
     public static String MSG_KEY_BOUND = message("key_bound");
     public static String MSG_KEY_CYCLED = message("key_cycled");
@@ -98,6 +100,7 @@ public class ModMessages {
     public static String TARDIS_IS_ON_THE_WAY = message("tardis_on_the_way");
     public static String LANDING_PAD_NOT_UNLOCKED = message("landing_pad_unlocked");
     public static String LANDING_PAD_TRANSIENT = message("landing_pad_transient");
+    public static String LANDING_PAD_BANNED_DIM = message("landing_pad_banned_dim");
     public static String RECOVERY_PROGRESS = message("recovery_progress");
     public static String FUEL = message("fuel");
     public static String REFUEL = message("refuel_engaged");

@@ -38,4 +38,12 @@ public class DimensionUtil {
         }
         return set;
     }
+
+    public static ServerLevel getLevel(ResourceKey<Level> levelResourceKey) {
+        if(Platform.getServer() == null) {
+            TardisRefined.LOGGER.error("Null Server when looking for {} - Can be ignored if logging out", levelResourceKey);
+            return null;
+        }
+        return Platform.getServer().getLevel(levelResourceKey);
+    }
 }

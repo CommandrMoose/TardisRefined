@@ -15,6 +15,7 @@ import whocraft.tardis_refined.common.network.MessageC2S;
 import whocraft.tardis_refined.common.network.MessageContext;
 import whocraft.tardis_refined.common.network.MessageType;
 import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.Platform;
 
 public class ExitTardisViewMessage extends MessageC2S {
@@ -43,7 +44,7 @@ public class ExitTardisViewMessage extends MessageC2S {
             if (tardisInfo.isViewingTardis()) {
                 ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION,
                         new ResourceLocation(TardisRefined.MODID, tardisInfo.getViewedTardis().toString()));
-                ServerLevel tardisLevel = Platform.getServer().getLevel(key);
+                ServerLevel tardisLevel = DimensionUtil.getLevel(key);
                 if (tardisLevel != null) {
                     TardisLevelOperator.get(tardisLevel).ifPresent(tardisLevelOperator -> {
                         tardisInfo.endShellView(player);

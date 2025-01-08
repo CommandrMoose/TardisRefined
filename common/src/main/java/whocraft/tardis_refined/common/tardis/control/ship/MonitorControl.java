@@ -34,7 +34,7 @@ public class MonitorControl extends Control {
         if (!player.level().isClientSide()) {
 
             if (operator.getTardisState() != TardisLevelOperator.STATE_EYE_OF_HARMONY || operator.getPilotingManager().isOutOfFuel()) {
-                PlayerUtil.sendMessage(player, ModMessages.HARDWARE_OFFLINE, true);
+                PlayerUtil.sendMessage(player, ModMessages.FUEL_OFFLINE, true);
                 return false;
             }
 

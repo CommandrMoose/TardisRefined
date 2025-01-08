@@ -34,6 +34,8 @@ public class ShellRenderer {
             ShellModel model = ShellModelCollection.getInstance().getShellEntry(shellTheme).getShellModel(fullPattern);
             model.setDoorPosition(false);
 
+            if(!tardisClientData.isFlying()) return;
+
             Lighting.setupForEntityInInventory();
 
             PoseStack pose = guiGraphics.pose();

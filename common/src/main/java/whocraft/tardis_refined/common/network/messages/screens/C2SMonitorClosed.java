@@ -10,6 +10,7 @@ import whocraft.tardis_refined.common.network.MessageC2S;
 import whocraft.tardis_refined.common.network.MessageContext;
 import whocraft.tardis_refined.common.network.MessageType;
 import whocraft.tardis_refined.common.network.TardisNetwork;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.Platform;
 
 public class C2SMonitorClosed extends MessageC2S {
@@ -36,7 +37,7 @@ public class C2SMonitorClosed extends MessageC2S {
 
     @Override
     public void handle(MessageContext context) {
-        TardisLevelOperator.get(Platform.getServer().getLevel(level)).ifPresent(operator -> {
+        TardisLevelOperator.get(DimensionUtil.getLevel(level)).ifPresent(operator -> {
             operator.updatingMonitors.remove(context.getPlayer());
         });
     }

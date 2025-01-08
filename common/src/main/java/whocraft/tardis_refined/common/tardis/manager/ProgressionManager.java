@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 public class ProgressionManager extends BaseHandler {
 
-    private ArrayList<ResourceKey<Level>> ALLOWED_LEVELS = new ArrayList<>();
+    private ArrayList<ResourceKey<Level>> DISCOVERED_LEVELS = new ArrayList<>();
 
     public ProgressionManager() {
-        this.ALLOWED_LEVELS = new ArrayList<>();
+        this.DISCOVERED_LEVELS = new ArrayList<>();
     }
 
     public ArrayList<ResourceKey<Level>> getDiscoveredLevels() {
@@ -34,7 +34,7 @@ public class ProgressionManager extends BaseHandler {
             addDiscoveredLevel(level);
         }
 
-        return ALLOWED_LEVELS.stream()
+        return DISCOVERED_LEVELS.stream()
                 .filter(DimensionUtil::isAllowedDimension)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -42,27 +42,27 @@ public class ProgressionManager extends BaseHandler {
 
     public void setDiscoveredLevels(ArrayList<ResourceKey<Level>> allowedLevels) {
         if (allowedLevels != null) {
-            this.ALLOWED_LEVELS = new ArrayList<>(allowedLevels);
+            this.DISCOVERED_LEVELS = new ArrayList<>(allowedLevels);
         } else {
-            this.ALLOWED_LEVELS.clear();
+            this.DISCOVERED_LEVELS.clear();
         }
     }
 
     public boolean addDiscoveredLevel(ResourceKey<Level> level) {
-        if (level != null && !ALLOWED_LEVELS.contains(level) && DimensionUtil.isAllowedDimension(level)) {
-            return ALLOWED_LEVELS.add(level);
+        if (level != null && !DISCOVERED_LEVELS.contains(level) && DimensionUtil.isAllowedDimension(level)) {
+            return DISCOVERED_LEVELS.add(level);
         }
         return false;
     }
 
     public boolean undiscoverLevel(ResourceKey<Level> level) {
-        return ALLOWED_LEVELS.remove(level);
+        return DISCOVERED_LEVELS.remove(level);
     }
 
     public boolean isLevelDiscovered(ResourceKey<Level> level) {
 
         if(!TRConfig.SERVER.ADVENTURE_MODE.get()){
-            return true;
+            return DimensionUtil.isAllowedDimension(level);
         }
 
         return getDiscoveredLevels().contains(level);
@@ -72,7 +72,7 @@ public class ProgressionManager extends BaseHandler {
     @Override
     public CompoundTag saveData(CompoundTag tag) {
         ListTag levelsList = new ListTag();
-        for (ResourceKey<Level> level : ALLOWED_LEVELS) {
+        for (ResourceKey<Level> level : DISCOVERED_LEVELS) {
             levelsList.add(StringTag.valueOf(level.location().toString()));
         }
         tag.put("DiscoveredLevels", levelsList);
@@ -83,11 +83,11 @@ public class ProgressionManager extends BaseHandler {
     public void loadData(CompoundTag tag) {
         if (tag.contains("DiscoveredLevels")) {
             ListTag levelsList = tag.getList("DiscoveredLevels", Tag.TAG_STRING);
-            ALLOWED_LEVELS.clear();
+            DISCOVERED_LEVELS.clear();
             for (Tag levelTag : levelsList) {
                 String levelKey = levelTag.getAsString();
                 ResourceKey<Level> level = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(levelKey));
-                ALLOWED_LEVELS.add(level);
+                DISCOVERED_LEVELS.add(level);
             }
         }
     }

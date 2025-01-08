@@ -29,6 +29,7 @@ import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
 import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.constants.ModMessages;
@@ -129,16 +130,17 @@ public class KeyItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
-        // Whistle Easter Egg: https://youtu.be/IqQsL79UpMs?t=526
-        if (player.getOffhandItem().is(Items.GOAT_HORN) && !level.isClientSide) {
+        // Whistle Easter Egg for InDev: https://youtu.be/IqQsL79UpMs?t=526
+        boolean canUseWhistle = "96511168-1bb3-4ff0-a894-271e42606a39".equals(player.getStringUUID()) || Platform.isProduction();
+        if (player.getOffhandItem().is(Items.GOAT_HORN) && !level.isClientSide && canUseWhistle) {
             ArrayList<ResourceKey<Level>> keychain = KeyItem.getKeychain(player.getMainHandItem());
             if (!keychain.isEmpty()) {
-                var tardisLevel = Platform.getServer().getLevel(keychain.get(0));
+                var tardisLevel = DimensionUtil.getLevel(keychain.get(0));
                 var operatorOptional = TardisLevelOperator.get(tardisLevel);
                 var pilotManager = operatorOptional.get().getPilotingManager();
                 if (!operatorOptional.get().getPilotingManager().isInRecovery()) {
                     pilotManager.setTargetLocation(new TardisNavLocation(player.blockPosition(), player.getDirection().getOpposite(), (ServerLevel) player.level()));
-                    pilotManager.beginFlight(true, null);
+                    pilotManager.beginFlight(true);
                 }
             }
         }

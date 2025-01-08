@@ -158,26 +158,30 @@ public class LangProviderEnglish extends LanguageProvider {
         addControl(TRControlRegistry.READOUT.get(), "GPS");
         addControl(TRControlRegistry.EXTERIOR_DISPLAY.get(), "Exterior Display");
 
+
+        String errorPrefix =  ChatFormatting.BOLD +  ChatFormatting.RED.toString() + "[ERROR] " + ChatFormatting.RESET;
+
         /*Messages*/
         add(ModMessages.MSG_EXTERIOR_COOLDOWN, "You must wait %s seconds");
         add(ModMessages.MSG_KEY_BOUND, "Key Bound to %s");
         add(ModMessages.MSG_KEY_CYCLED, "Main: %s");
-        add(ModMessages.CONSOLE_CONFIGURATION_NOT_IN_FLIGHT, "Cannot update console block whilst in flight");
-        add(ModMessages.HARDWARE_OFFLINE, "Hardware offline");
+        add(ModMessages.CONSOLE_CONFIGURATION_NOT_IN_FLIGHT, errorPrefix + "Cannot update console block whilst in flight");
+        add(ModMessages.HARDWARE_OFFLINE, errorPrefix + "Insufficient Power!");
         add(ModMessages.NO_FLIGHT_TRANSITIVE, "Cannot change handbrake state whilst in transitive flight");
         add(ModMessages.HANDBRAKE_WARNING, "Ship is in flight. Left click the handbrake to engage");
         add(ModMessages.CONSOLE_NOT_IN_FLIGHT, "Cannot change consoles whilst in flight");
         add(ModMessages.NO_END_DRAGON_PREVENTS, "A dragon prevents you from progressing to The End");
         add(ModMessages.TARDIS_IS_ON_THE_WAY, "TARDIS has been summoned and is on the way");
-        add(ModMessages.LANDING_PAD_NOT_UNLOCKED, "Specified TARDIS rejected landing pad signal");
-        add(ModMessages.LANDING_PAD_TRANSIENT, "Cannot summon TARDIS at this time.");
+        add(ModMessages.LANDING_PAD_NOT_UNLOCKED, errorPrefix +"Specified TARDIS rejected landing pad signal");
+        add(ModMessages.LANDING_PAD_TRANSIENT, errorPrefix +"Cannot summon TARDIS at this time!");
+        add(ModMessages.LANDING_PAD_BANNED_DIM, errorPrefix +"You cannot summon the TARDIS to this Dimension!");
         add(ModMessages.REFUEL, "Enabled refuelling");
         add(ModMessages.STOP_REFUEL, "Stopped refuelling");
-        add(ModMessages.NO_DESKTOP_NO_FUEL, "Not enough fuel to start the reconfiguration process");
+        add(ModMessages.NO_DESKTOP_NO_FUEL, errorPrefix +"Not enough fuel to start the reconfiguration process");
         add(ModMessages.ASTRAL_MANIPULATOR_ENGAGED, "Please make your selection. Right click again to confirm");
         add(ModMessages.ROOT_PLANT_CUT_OPEN, "Roots cover the entrance");
         add(ModMessages.FUEL, "Fuel: %s");
-        add(ModMessages.FUEL_OFFLINE, "Fuel offline");
+        add(ModMessages.FUEL_OFFLINE, errorPrefix + "Fuel offline");
         add(ModMessages.WAYPOINT_LOADED, "Preloaded waypoint: %s");
         add(ModMessages.HANDBRAKE_ENGAGED, "Handbrake engaged");
         add(ModMessages.HANDBRAKE_DISENGAGED, "Handbrake disengaged");

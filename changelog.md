@@ -8,6 +8,7 @@
 - Bug Fix: Fixed TARDIS not storing Adventure Mode Dimensions correctly
 - Bug Fix: Fixed Dedicated Servers on Fabric having issues loading data from disk (Caused dupe TARDIS and loss of Upgrades etc)
 - Bug Fix: Fixed Diagonal Windows Support
+- Bug fix: Fixed duplication happening on logging out mid-flight (and other occasions)
 
 #### Textures and Models
 - Altered: Factory Console Emission Texture 
@@ -19,4 +20,4 @@
 
 #### API Changes
 - Addon mods can now freely register console models 
-- Addon Mod consoles can now have per variant models
+- Addon mods consoles can now have per variant models

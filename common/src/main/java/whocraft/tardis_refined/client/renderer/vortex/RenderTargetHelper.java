@@ -146,9 +146,6 @@ public class RenderTargetHelper {
         // Unbind RenderTarget
         Minecraft.getInstance().getMainRenderTarget().unbindWrite();
         RENDER_TARGET_HELPER.start();
-        if (!getIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget)) {
-            setIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget, true);
-        }
 
         copyRenderTarget(Minecraft.getInstance().getMainRenderTarget(), RENDER_TARGET_HELPER.renderTarget);
 

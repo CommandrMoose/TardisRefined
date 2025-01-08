@@ -27,12 +27,9 @@ import whocraft.tardis_refined.common.block.shell.ShellBaseBlock;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
 import whocraft.tardis_refined.common.dimension.DimensionHandler;
-import whocraft.tardis_refined.common.tardis.TardisDesktops;
-import whocraft.tardis_refined.common.tardis.TardisNavLocation;
 import whocraft.tardis_refined.common.tardis.manager.AestheticHandler;
 import whocraft.tardis_refined.common.tardis.manager.TardisPilotingManager;
-import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
-import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.common.util.DimensionUtil;
 import whocraft.tardis_refined.common.util.PlayerUtil;
 import whocraft.tardis_refined.compat.ModCompatChecker;
 import whocraft.tardis_refined.compat.portals.ImmersivePortals;
@@ -44,18 +41,9 @@ import java.util.UUID;
 
 public abstract class ShellBaseBlockEntity extends BlockEntity implements ExteriorShell, BlockEntityTicker<ShellBaseBlockEntity> {
 
-    private final int DUPLICATION_CHECK_TIME = 1200; // A minute
     public AnimationState liveliness = new AnimationState();
     protected ResourceKey<Level> TARDIS_ID;
-    /*
-        Because we assume it is possible for the tardis to change location without flying there,
-        the 'if (!myCurrentPosition.equals(currentLocation) && !myCurrentPosition.equals(wantedDestination))' block
-        in the duplication check that runs once every so often would mistakenly remove this tardis if it just loaded
-        in the same tick at a different location (if we are unlocky with tick order),
-        because the operator's currentPosition will be set in the tick after.
-        We therefore need a way to skip the duplication check for a single tick when loading in this blockentity.
-     */
-    private boolean doNotRemoveNextTick = false;
+    private boolean hasPotentialToBeRemoved = false;
 
     public ShellBaseBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -92,7 +80,7 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
             ServerLevel interior = serverLevel.getServer().getLevel(this.TARDIS_ID);
             TardisLevelOperator.get(interior).ifPresent(cap -> {
                 cap.getPilotingManager().setCurrentLocationOnNextTick(this);
-                this.doNotRemoveNextTick = true;
+                hasPotentialToBeRemoved = true;
             });
         }
     }
@@ -165,36 +153,19 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
     }
 
     @Override
-    public DesktopTheme getAssociatedTheme() {
-        return TardisDesktops.FACTORY_THEME;
-    }
-
-    @Override
     public void tick(Level level, BlockPos blockPos, BlockState blockState, ShellBaseBlockEntity blockEntity) {
-        if (level.getGameTime() % DUPLICATION_CHECK_TIME == 0 && !level.isClientSide && !this.doNotRemoveNextTick) {
+        if (!level.isClientSide) {
             ResourceKey<Level> tardisId = getTardisId();
             if (tardisId == null) return;
-            ServerLevel tardisLevel = Platform.getServer().getLevel(tardisId);
-            BlockPos myCurrentPosition = getBlockPos();
-
+            ServerLevel tardisLevel = DimensionUtil.getLevel(tardisId);
+            
             TardisLevelOperator.get(tardisLevel).ifPresent(tardisLevelOperator -> {
-
-                TardisPilotingManager pilotingManager = tardisLevelOperator.getPilotingManager();
-
-                BlockPos currentLocation = pilotingManager.getCurrentLocation().getPosition();
-                BlockPos wantedDestination = pilotingManager.getTargetLocation().getPosition();
-
-
-                if (currentLocation == null) {
-                    Direction direction = blockState.getValue(ShellBaseBlock.FACING);
-                    ServerLevel serverLevel = Platform.getServer().getLevel(level.dimension());
-                    pilotingManager.setCurrentLocation(new TardisNavLocation(getBlockPos(), direction != null ? direction : Direction.NORTH, serverLevel));
+                if(!tardisLevelOperator.getPilotingManager().isInFlight()) {
+                    if (isInvalidTardis(tardisLevelOperator)) {
+                        BlockPos myCurrentPosition = getBlockPos();
+                        level.removeBlock(myCurrentPosition, false);
+                    }
                 }
-
-                if (!myCurrentPosition.equals(currentLocation) && !myCurrentPosition.equals(wantedDestination)) {
-                    level.removeBlock(myCurrentPosition, false);
-                }
-
             });
         }
     }
@@ -265,5 +236,16 @@ public abstract class ShellBaseBlockEntity extends BlockEntity implements Exteri
     public void playDoorLockedSound(boolean lockDoor) {
         Level currentLevel = getLevel();
         currentLevel.playSound(null, this.getBlockPos(), lockDoor ? BlockSetType.IRON.doorClose() : BlockSetType.IRON.doorOpen(), SoundSource.BLOCKS, 1, lockDoor ? 1.4F : 1F);
+    }
+
+    @Override
+    public boolean isInvalidTardis(TardisLevelOperator tardisLevelOperator) {
+        BlockPos myPosition = getBlockPos();
+        TardisPilotingManager pilotingManager = tardisLevelOperator.getPilotingManager();
+
+        BlockPos currentLocation = pilotingManager.getCurrentLocation().getPosition();
+        BlockPos wantedDestination = pilotingManager.getTargetLocation().getPosition();
+
+        return hasPotentialToBeRemoved && !myPosition.equals(currentLocation) && !myPosition.equals(wantedDestination);
     }
 }

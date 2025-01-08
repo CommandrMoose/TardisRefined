@@ -39,7 +39,6 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
     private ResourceLocation shellTheme;
     private ShellPattern basePattern;
 
-
     public GlobalShellBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TRBlockEntityRegistry.GLOBAL_SHELL_BLOCK.get(), blockPos, blockState);
         this.shellTheme = ShellTheme.HALF_BAKED.getId();
@@ -99,6 +98,7 @@ public class GlobalShellBlockEntity extends ShellBaseBlockEntity {
         if (this.basePattern == null) {
             this.basePattern = pattern();
         }
+
     }
 
     @Override
