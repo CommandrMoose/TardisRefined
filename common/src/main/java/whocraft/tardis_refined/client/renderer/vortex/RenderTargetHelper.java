@@ -24,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL30C;
@@ -65,7 +66,7 @@ public class RenderTargetHelper {
         VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
 
         if (tardisClientData.isFlying() && !TRConfig.CLIENT.SKIP_FANCY_RENDERING.get()) {
-            renderDoorOpen(blockEntity, stack, packedLight, rotation, currentModel, isOpen, tardisClientData);
+            renderDoorOpen(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen, tardisClientData);
         } else {
             renderNoVortex(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen);
         }
@@ -127,7 +128,7 @@ public class RenderTargetHelper {
 
     private static ResourceLocation BLACK = new ResourceLocation(TardisRefined.MODID, "textures/black_portal.png");
 
-    private static void renderDoorOpen(GlobalDoorBlockEntity blockEntity, PoseStack stack, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen, TardisClientData tardisClientData) {
+    private static void renderDoorOpen(GlobalDoorBlockEntity blockEntity, PoseStack stack, MultiBufferSource bufferSource, int packedLight, float rotation, ShellDoorModel currentModel, boolean isOpen, TardisClientData tardisClientData) {
         if (ModCompatChecker.immersivePortals()) {
             if (ImmersivePortalsClient.shouldStopRenderingInPortal()) {
                 return;
@@ -153,6 +154,8 @@ public class RenderTargetHelper {
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
         currentModel.setDoorPosition(isOpen);
         currentModel.renderFrame(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityCutout(currentModel.getInteriorDoorTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+
+        // Finalize the current batch before changing rendering state
         imBuffer.endBatch();
 
         // Enable and configure stencil buffer
@@ -207,6 +210,7 @@ public class RenderTargetHelper {
         stack.popPose();
     }
 
+
     public static void checkGLError(String msg) {
         int error;
         while ((error = GL11.glGetError()) != GL11.GL_NO_ERROR) {
@@ -242,17 +246,24 @@ public class RenderTargetHelper {
     }
 
     public void start() {
+
+        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_DEBUG, GLFW.GLFW_TRUE);
+
         Window window = Minecraft.getInstance().getWindow();
         int width = window.getWidth();
         int height = window.getHeight();
 
-        if (renderTarget == null || renderTarget.width != width || renderTarget.height != height)
+        // Check if renderTarget needs to be reinitialized
+        if (renderTarget == null || renderTarget.width != width || renderTarget.height != height) {
             renderTarget = new TextureTarget(width, height, true, Minecraft.ON_OSX);
+        }
 
         renderTarget.bindWrite(false);
         renderTarget.checkStatus();
-        if (!getIsStencilEnabled(renderTarget))
+
+        if (!getIsStencilEnabled(renderTarget)) {
             setIsStencilEnabled(renderTarget, true);
+        }
     }
 
 

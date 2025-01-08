@@ -85,6 +85,7 @@ public class TardisDesktops {
         addDefaultDesktop(new DesktopTheme("watchface", "desktop/watchface"));
         addDefaultDesktop(new DesktopTheme("classic", "desktop/classic"));
         addDefaultDesktop(new DesktopTheme("terraformed", "desktop/terraformed_useable"));
+        addDefaultDesktop(new DesktopTheme("panamax", "desktop/panamax"));
 
         return DEFAULT_DESKTOPS;
     }
