@@ -94,7 +94,7 @@ public class RenderTargetHelper {
             }
         }
 
-        GlStateManager._glBindFramebuffer(GL30C.GL_READ_FRAMEBUFFER, from.frameBufferId);
+        GL30.glBindFramebuffer(GL30C.GL_READ_FRAMEBUFFER, from.frameBufferId);
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, to.frameBufferId);
 
         GL30.glBlitFramebuffer(
@@ -108,22 +108,9 @@ public class RenderTargetHelper {
 
 
     public static void copyRenderTarget(RenderTarget src, RenderTarget dest) {
-
-        if (useCompatibilityMode) {
-            AMDRenderTargetHelper.newCopyDepthStencil(
-                    src,
-                    dest
-            );
-            AMDRenderTargetHelper.copyColor(
-                    src,
-                    dest
-            );
-            return;
-        }
-
-        GlStateManager._glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, src.frameBufferId);
-        GlStateManager._glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, dest.frameBufferId);
-        GlStateManager._glBlitFrameBuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
+        GL30.glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, src.frameBufferId);
+        GL30.glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, dest.frameBufferId);
+        GL30.glBlitFramebuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
     }
 
     private static ResourceLocation BLACK = new ResourceLocation(TardisRefined.MODID, "textures/black_portal.png");
@@ -208,7 +195,7 @@ public class RenderTargetHelper {
         RenderSystem.depthMask(true);
 
         stack.popPose();
-    }
+    }/**/
 
 
     public static void checkGLError(String msg) {

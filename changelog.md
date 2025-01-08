@@ -10,7 +10,11 @@
 - Bug Fix: Fixed Diagonal Windows Support
 - Bug fix: Fixed duplication happening on logging out mid-flight (and other occasions)
 - Bug fix: Fixed issue where End Dragon fight would not be checked correctly
-- 
+- Bug fix: Potentially fixed interior door messing up on AMD cards!
+
+#### Interiors
+- Added Panamax Interior
+
 #### Textures and Models
 - Altered: Factory Console Emission Texture 
 - Altered: Factory Console (Mint) Emission Texture 

@@ -17,6 +17,7 @@
     "MultiplayerGameModeMixin",
     "render.FogRendererMixin",
     "render.PlayerRenderMixin",
+    "render.buffer.MixinMainTarget",
     "render.buffer.MixinRenderTarget",
     "render.ui.GuiMixin",
     "render.ui.SpectatorGuiMixin"
