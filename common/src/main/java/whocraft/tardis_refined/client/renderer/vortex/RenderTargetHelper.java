@@ -27,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL30C;
 import whocraft.tardis_refined.TRConfig;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.client.TardisClientData;
@@ -41,7 +40,6 @@ import whocraft.tardis_refined.compat.portals.ImmersivePortalsClient;
 
 import static com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS;
 import static net.minecraft.client.renderer.RenderStateShard.*;
-import static org.lwjgl.opengl.GL11.*;
 import static whocraft.tardis_refined.client.overlays.VortexOverlay.VORTEX;
 
 public class RenderTargetHelper {
@@ -50,12 +48,10 @@ public class RenderTargetHelper {
     public static StencilBufferStorage stencilBufferStorage = new StencilBufferStorage();
     public RenderTarget renderTarget;
 
-    private static boolean useCompatibilityMode = false;
 
     public static Logger LOGGER = LogManager.getLogger("TardisRefinbed/StencilRendering");
 
     public static void renderVortex(GlobalDoorBlockEntity blockEntity, float partialTick, PoseStack stack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-
         BlockState blockstate = blockEntity.getBlockState();
         ResourceLocation theme = blockEntity.theme();
         float rotation = blockstate.getValue(InternalDoorBlock.FACING).toYRot();
@@ -65,47 +61,13 @@ public class RenderTargetHelper {
 
         VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
 
-        if (tardisClientData.isFlying() && !TRConfig.CLIENT.SKIP_FANCY_RENDERING.get()) {
+        if (tardisClientData.isFlying() && TRConfig.CLIENT.RENDER_VORTEX_IN_DOOR.get()) {
             renderDoorOpen(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen, tardisClientData);
         } else {
             renderNoVortex(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen);
         }
+
     }
-
-    public static void copyDepthStencil(
-            RenderTarget from, RenderTarget to,
-            boolean copyDepth, boolean copyStencil
-    ) {
-        from.unbindWrite();
-
-        int mask = 0;
-
-        if (copyDepth) {
-            if (copyStencil) {
-                mask = GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
-            } else {
-                mask = GL_DEPTH_BUFFER_BIT;
-            }
-        } else {
-            if (copyStencil) {
-                mask = GL_STENCIL_BUFFER_BIT;
-            } else {
-                throw new RuntimeException();
-            }
-        }
-
-        GL30.glBindFramebuffer(GL30C.GL_READ_FRAMEBUFFER, from.frameBufferId);
-        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, to.frameBufferId);
-
-        GL30.glBlitFramebuffer(
-                0, 0, from.width, from.height,
-                0, 0, to.width, to.height,
-                mask, GL_NEAREST
-        );
-
-        from.unbindWrite();
-    }
-
 
     public static void copyRenderTarget(RenderTarget src, RenderTarget dest) {
         GL30.glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, src.frameBufferId);
@@ -121,6 +83,12 @@ public class RenderTargetHelper {
                 return;
             }
         }
+
+
+        if(!getIsStencilEnabled(Minecraft.getInstance().getMainRenderTarget())){
+            setIsStencilEnabled(Minecraft.getInstance().getMainRenderTarget(), true);
+        }
+
         stack.pushPose();
 
         // Fix transform
@@ -130,12 +98,6 @@ public class RenderTargetHelper {
         stack.translate(0, 0, -0.01);
 
         RenderSystem.depthMask(true);
-
-        // Unbind RenderTarget
-        Minecraft.getInstance().getMainRenderTarget().unbindWrite();
-        RENDER_TARGET_HELPER.start();
-
-        copyRenderTarget(Minecraft.getInstance().getMainRenderTarget(), RENDER_TARGET_HELPER.renderTarget);
 
         // Render Door Frame
         MultiBufferSource.BufferSource imBuffer = stencilBufferStorage.getVertexConsumer();
@@ -147,10 +109,8 @@ public class RenderTargetHelper {
 
         // Enable and configure stencil buffer
         GL11.glEnable(GL11.GL_STENCIL_TEST);
-        checkGLError("Enabling stencil test");
-
-        GL11.glStencilMask(0xFF); // Ensure stencil mask is set before clearing
-        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT); // Clear stencil buffer
+        GL11.glStencilMask(0xFF);
+        GL11.glClear(GL11.GL_STENCIL_BUFFER_BIT);
         GL11.glStencilFunc(GL11.GL_ALWAYS, 1, 0xFF);
         GL11.glStencilOp(GL11.GL_KEEP, GL11.GL_KEEP, GL11.GL_REPLACE);
 
@@ -160,12 +120,12 @@ public class RenderTargetHelper {
         currentModel.renderPortalMask(blockEntity, isOpen, true, stack, imBuffer.getBuffer(RenderType.entityTranslucentCull(BLACK)), packedLight, OverlayTexture.NO_OVERLAY, 0f, 0f, 0f, 1f);
         imBuffer.endBatch();
         stack.popPose();
-        RenderSystem.depthMask(false); // Disable depth writing for subsequent rendering
+        RenderSystem.depthMask(false);
 
-        // Render vortex based on stencil buffer
+        // Render vortex using stencil buffer
         GL11.glStencilMask(0x00);
         GL11.glStencilFunc(GL11.GL_EQUAL, 1, 0xFF);
-        GlStateManager._depthFunc(GL11.GL_ALWAYS); // Ignore depth buffer
+        GlStateManager._depthFunc(GL11.GL_ALWAYS);
 
         GL11.glColorMask(true, true, true, false);
         stack.pushPose();
@@ -175,33 +135,23 @@ public class RenderTargetHelper {
         VORTEX.renderVortex(stack, 1, false);
         stack.popPose();
 
-        GlStateManager._depthFunc(GL11.GL_LEQUAL); // Restore depth function
-        GL11.glColorMask(false, false, false, true);
-
-        // Copy render target back to main buffer
-        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
-        copyRenderTarget(RENDER_TARGET_HELPER.renderTarget, Minecraft.getInstance().getMainRenderTarget());
-
-        if (getIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget)) {
-            setIsStencilEnabled(RENDER_TARGET_HELPER.renderTarget, false);
-        }
-
-        Minecraft.getInstance().getMainRenderTarget().bindWrite(true);
+        GlStateManager._depthFunc(GL11.GL_LEQUAL);
+        GL11.glColorMask(true, true, true, true);
 
         // Disable stencil test and restore state
         GL11.glDisable(GL11.GL_STENCIL_TEST);
         GL11.glStencilMask(0xFF);
-        GL11.glColorMask(true, true, true, true);
         RenderSystem.depthMask(true);
 
+
         stack.popPose();
-    }/**/
+    }
+
 
 
     public static void checkGLError(String msg) {
         int error;
         while ((error = GL11.glGetError()) != GL11.GL_NO_ERROR) {
-            useCompatibilityMode = true;
             LOGGER.debug("{}: {}", msg, error);
         }
 
@@ -235,6 +185,7 @@ public class RenderTargetHelper {
     public void start() {
 
         GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_DEBUG, GLFW.GLFW_TRUE);
+
 
         Window window = Minecraft.getInstance().getWindow();
         int width = window.getWidth();

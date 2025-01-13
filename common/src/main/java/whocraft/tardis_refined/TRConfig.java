@@ -37,16 +37,17 @@ public class TRConfig {
     public static class Client {
         public final ForgeConfigSpec.BooleanValue CONTROL_NAMES;
         public final ForgeConfigSpec.BooleanValue PLAY_CONSOLE_IDLE_ANIMATIONS;
-        public final ForgeConfigSpec.BooleanValue SKIP_FANCY_RENDERING;
+        public final ForgeConfigSpec.BooleanValue RENDER_VORTEX_IN_DOOR;
+        public final ForgeConfigSpec.BooleanValue USE_INTERNAL_SHADERS;
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.push("rendering");
             CONTROL_NAMES = builder.comment("Toggle control name rendering").translation(ModMessages.CONFIG_CONTROL_NAMES).define("control_name_rendering", true);
             PLAY_CONSOLE_IDLE_ANIMATIONS = builder.comment("Play idle console animations").translation(ModMessages.CONFIG_IDLE_CONSOLE_ANIMS).define("console_idle_animations", true);
-            SKIP_FANCY_RENDERING = builder.comment("Skip fancy rendering (Use on Macs with horrible OpenGL support)").translation(ModMessages.DISABLE_FANCY_RENDERING).define("disable_fancy_rendering", false);
+            RENDER_VORTEX_IN_DOOR = builder.comment("Skip Vortex rendering").translation(ModMessages.CONFIG_RENDER_VORTEX_IN_DOOR).define("render_vortex_in_door", true);
+            USE_INTERNAL_SHADERS = builder.comment("Use Custom Internal Shaders").translation(ModMessages.CONFIG_CUSTOM_SHADERS).define("use_internal_shaders", true);
             builder.pop();
         }
-
     }
 
     public static class Common {
@@ -54,7 +55,7 @@ public class TRConfig {
 
         public Common(ForgeConfigSpec.Builder builder) {
             builder.push("compatibility");
-            COMPATIBILITY_IP = builder.comment("Toggle Immersive Portals compatibility (TR 2.0+). 2.0 has limited support and does not recommend enabling this.").translation(ModMessages.CONFIG_IP_COMPAT).define("immersive_portals_support", true);
+            COMPATIBILITY_IP = builder.comment("Toggle Immersive Portals compatibility (TR 2.0+). 2.0 has limited support").translation(ModMessages.CONFIG_IP_COMPAT).define("immersive_portals_support", true);
             builder.pop();
         }
 

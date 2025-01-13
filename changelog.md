@@ -12,6 +12,10 @@
 - Bug fix: Fixed issue where End Dragon fight would not be checked correctly
 - Bug fix: Potentially fixed interior door messing up on AMD cards!
 
+#### Config
+- Added use_internal_shaders client config
+- Added render_vortex_in_door client config
+
 #### Interiors
 - Added Panamax Interior
 

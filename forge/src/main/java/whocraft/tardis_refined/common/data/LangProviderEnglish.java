@@ -318,6 +318,8 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.CONFIG_CONTROL_NAMES, "Render control names?");
         add(ModMessages.CONFIG_BANNED_DIMENSIONS, "Banned Dimensions");
         add(ModMessages.CONFIG_IDLE_CONSOLE_ANIMS, "Play idle console animations");
+        add(ModMessages.CONFIG_RENDER_VORTEX_IN_DOOR, "Render Vortex within interior door");
+        add(ModMessages.CONFIG_CUSTOM_SHADERS, "Use Custom Shaders");
 
         /*Overlay Messages*/
         add(ModMessages.ASCEND_KEY, "Ascend: %s");

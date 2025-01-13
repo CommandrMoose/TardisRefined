@@ -68,34 +68,38 @@ public class VictorianConsoleModel extends HierarchicalModel implements ConsoleU
         Boolean powered = globalConsoleBlock.getBlockState() == null ? true : globalConsoleBlock.getBlockState().getValue(GlobalConsoleBlock.POWERED);
 
 
-        if (powered) {
-            if (!globalConsoleBlock.powerOn.isStarted()) {
-                globalConsoleBlock.powerOff.stop();
-                globalConsoleBlock.powerOn.start(Minecraft.getInstance().player.tickCount);
-            }
-            this.animate(globalConsoleBlock.powerOn, POWER_ON, Minecraft.getInstance().player.tickCount);
+        // Store tick count for later use
+        int tickCount = Minecraft.getInstance().player.tickCount;
 
-            if (reactions.isCrashing()) {
-                // Handle crashing animation
-                this.animate(reactions.CRASHING_ANIMATION, CRASH, Minecraft.getInstance().player.tickCount);
-            } else if (reactions.isFlying()) {
-                // Handle flying animation
-                this.animate(reactions.ROTOR_ANIMATION, FLIGHT, Minecraft.getInstance().player.tickCount);
+        // Booting logic
+        if (powered) {
+
+            if(globalConsoleBlock.getTicksBooting() > 0) {
+                if (!globalConsoleBlock.powerOn.isStarted()) {
+                    globalConsoleBlock.powerOff.stop();
+                    globalConsoleBlock.powerOn.start(tickCount);
+                }
+                this.animate(globalConsoleBlock.powerOn, POWER_ON, tickCount);
+            }
+
+            // Handle animations based on the current state (with flying first)
+            if (reactions.isFlying()) {
+                this.animate(reactions.ROTOR_ANIMATION, FLIGHT, tickCount);
+            } else if (reactions.isCrashing()) {
+                this.animate(reactions.CRASHING_ANIMATION, CRASH, tickCount);
             } else {
-                // Handle idle animation
-                if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get() && globalConsoleBlock != null) {
-                    this.animate(globalConsoleBlock.liveliness, IDLE, Minecraft.getInstance().player.tickCount);
+                if (TRConfig.CLIENT.PLAY_CONSOLE_IDLE_ANIMATIONS.get()) {
+                    this.animate(globalConsoleBlock.liveliness, IDLE, tickCount);
                 }
             }
 
         } else {
-            if (globalConsoleBlock != null) {
-                if (!globalConsoleBlock.powerOff.isStarted()) {
-                    globalConsoleBlock.powerOn.stop();
-                    globalConsoleBlock.powerOff.start(Minecraft.getInstance().player.tickCount);
-                }
-                this.animate(globalConsoleBlock.powerOff, POWER_OFF, Minecraft.getInstance().player.tickCount);
+            // Power off animation if not booting
+            if (!globalConsoleBlock.powerOff.isStarted()) {
+                globalConsoleBlock.powerOn.stop();
+                globalConsoleBlock.powerOff.start(tickCount);
             }
+            this.animate(globalConsoleBlock.powerOff, POWER_OFF, tickCount);
         }
 
 

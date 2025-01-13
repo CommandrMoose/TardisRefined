@@ -44,8 +44,17 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
     public AnimationState powerOn = new AnimationState();
     private boolean shouldSpawnControls = true;
     private ResourceLocation consoleTheme;
+    private int ticksBooting = 0;
 
     private ConsolePattern basePattern;
+
+    public int getTicksBooting() {
+        return ticksBooting;
+    }
+
+    public void setTicksBooting(int ticksBooting) {
+        this.ticksBooting = ticksBooting;
+    }
 
     public GlobalConsoleBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(TRBlockEntityRegistry.GLOBAL_CONSOLE_BLOCK.get(), blockPos, blockState);
@@ -92,6 +101,8 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
         if (this.basePattern != null) {
             compoundTag.putString(NbtConstants.PATTERN, basePattern.id().toString());
         }
+
+        compoundTag.putInt("ticks_booting", ticksBooting);
     }
 
     @Override
@@ -100,6 +111,10 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
         if (tag.contains(NbtConstants.THEME)) {
             ResourceLocation themeId = new ResourceLocation(tag.getString(NbtConstants.THEME));
             this.consoleTheme = themeId;
+        }
+
+        if (tag.contains("ticks_booting")) {
+            this.ticksBooting = tag.getInt("ticks_booting");
         }
 
         if (tag.contains(NbtConstants.PATTERN)) {
@@ -200,6 +215,14 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
 
         if (!liveliness.isStarted()) {
             liveliness.start(12);
+        }
+
+        if(ticksBooting >= 1){
+            ticksBooting++;
+        }
+
+        if(ticksBooting == 20 * 2){
+            ticksBooting = 0;
         }
 
 

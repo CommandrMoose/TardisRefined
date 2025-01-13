@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL30C;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.renderer.vortex.RenderTargetStencil;
 
 import java.nio.IntBuffer;
@@ -16,6 +17,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL30.GL_DEPTH32F_STENCIL8;
 import static org.lwjgl.opengl.GL30.GL_FLOAT_32_UNSIGNED_INT_24_8_REV;
+import static org.lwjgl.opengl.GL30C.GL_DEPTH24_STENCIL8;
 
 @Mixin(MainTarget.class)
 public abstract class MixinMainTarget extends RenderTarget {
@@ -30,8 +32,8 @@ public abstract class MixinMainTarget extends RenderTarget {
         boolean isStencilBufferEnabled = ((RenderTargetStencil) this).tr$getisStencilEnabled();
 
         if (internalFormat == GL_DEPTH_COMPONENT && isStencilBufferEnabled) {
-            GlStateManager._texImage2D(target, level, GL_DEPTH32F_STENCIL8,
-                    width, height, border, ARBFramebufferObject.GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV,
+            GlStateManager._texImage2D(target, level, TRShaders.shouldUseCompatMode() ? GL_DEPTH32F_STENCIL8 : GL_DEPTH24_STENCIL8,
+                    width, height, border, ARBFramebufferObject.GL_DEPTH_STENCIL, TRShaders.shouldUseCompatMode() ? GL_FLOAT_32_UNSIGNED_INT_24_8_REV : GL30C.GL_UNSIGNED_INT_24_8,
                     pixels);
         } else {
             GlStateManager._texImage2D(target, level, internalFormat, width, height, border, format, type, pixels);

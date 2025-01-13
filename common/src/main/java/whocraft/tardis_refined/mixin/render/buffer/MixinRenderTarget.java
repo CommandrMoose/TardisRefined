@@ -13,10 +13,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.renderer.vortex.RenderTargetStencil;
 
 import java.nio.IntBuffer;
 
+import static org.lwjgl.opengl.ARBDepthBufferFloat.GL_DEPTH32F_STENCIL8;
+import static org.lwjgl.opengl.ARBDepthBufferFloat.GL_FLOAT_32_UNSIGNED_INT_24_8_REV;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL30.GL_DEPTH24_STENCIL8;
 
@@ -62,12 +65,12 @@ public abstract class MixinRenderTarget implements RenderTargetStencil {
             GlStateManager._texImage2D(
                     target,
                     level,
-                    GL_DEPTH24_STENCIL8,
+                    TRShaders.shouldUseCompatMode() ? GL_DEPTH32F_STENCIL8 : GL_DEPTH24_STENCIL8,
                     width,
                     height,
                     border,
                     ARBFramebufferObject.GL_DEPTH_STENCIL,
-                    GL30.GL_UNSIGNED_INT_24_8,
+                    TRShaders.shouldUseCompatMode() ? GL_FLOAT_32_UNSIGNED_INT_24_8_REV : GL30.GL_UNSIGNED_INT_24_8,
                     pixels
             );
         } else {

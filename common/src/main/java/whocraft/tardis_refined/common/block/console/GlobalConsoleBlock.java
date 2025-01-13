@@ -182,6 +182,7 @@ public class GlobalConsoleBlock extends BaseEntityBlock {
                             if (pilotingManager.getCurrentConsole() != consoleBlockEntity) {
                                 if (!pilotingManager.isInFlight()) {
                                     pilotingManager.setCurrentConsole(consoleBlockEntity);
+                                    consoleBlockEntity.setTicksBooting(1);
                                 } else {
                                     PlayerUtil.sendMessage(player, ModMessages.CONSOLE_NOT_IN_FLIGHT, true);
                                 }
