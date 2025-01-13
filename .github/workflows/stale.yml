@@ -21,7 +21,7 @@ jobs:
     - uses: actions/stale@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        stale-issue-message: 'This issue has not recieved activity in a while - is it still a issue?'
-        stale-pr-message: 'This PR has not recieved activity for a while - please provide activity'
+        stale-issue-message: 'This issue has not received activity in a while - is it still a issue?'
+        stale-pr-message: 'This PR has not received activity for a while - please provide activity'
         stale-issue-label: 'stale'
         stale-pr-label: 'stale'

@@ -56,6 +56,9 @@ repositories {
     }
 }
 
+sourceSets.main.resources {
+    srcDir project(":common").file("src/resources").absolutePath
+}
 
 def generatedResources = project(":forge").file("src/generated/resources")
 
@@ -158,42 +161,48 @@ remapJar {
     dependsOn shadowJar
 }
 
-unifiedPublishing {
-    project {
-        displayName = "[Fabric] Tardis Refined - $project.version"
-        releaseType = "release"
-        changelog = new File("${rootProject.projectDir}/changelog.md").text
-        gameVersions = ["$rootProject.minecraft_version"]
-        mainPublication tasks.remapJar
-        gameLoaders = ["fabric"]
-        relations {
-            depends {
-                curseforge = "fabric-api"
-                modrinth = "fabric-api"
+def CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge");
+def MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth");
+
+if (true) {
+    unifiedPublishing {
+        project {
+            displayName = "[Fabric] Tardis Refined - $project.version"
+            releaseType = "release"
+            changelog = new File("${rootProject.projectDir}/changelog.md").text
+            gameVersions = ["$rootProject.minecraft_version"]
+            mainPublication tasks.remapJar
+            gameLoaders = ["fabric"]
+
+            relations {
+                depends {
+                    curseforge = "fabric-api"
+                    modrinth = "fabric-api"
+                }
+                optional {
+                    curseforge = "immersive-portals-mod"
+                    modrinth = "immersiveportals"
+                }
+                optional {
+                    curseforge = "trinkets"
+                    modrinth = "trinkets"
+                }
             }
-            optional {
-                curseforge = "immersive-portals-mod"
-                modrinth = "immersiveportals"
+
+            if (CURSE_API_KEY != "") {
+                curseforge {
+                    token = CURSE_API_KEY
+                    id = "782697"
+                    gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
+                }
             }
-            optional {
-                curseforge = "trinkets"
-                modrinth = "trinkets"
-            }
-        }
-        var CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge") ?: ""
-        if (CURSE_API_KEY != "") {
-            curseforge {
-                token = CURSE_API_KEY
-                id = "782697"
-                gameVersions.addAll "Java 17", "$rootProject.minecraft_version"
-            }
-        }
-        var MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth") ?: ""
-        if (MODRINTH_TOKEN != "") {
-            modrinth {
-                token = MODRINTH_TOKEN
-                id = "nqVt6aES"
-                version = "fabric-$project.version"
+
+            if (MODRINTH_TOKEN != "") {
+                modrinth {
+                    token = MODRINTH_TOKEN
+                    id = "nqVt6aES"
+                    version = "fabric-$project.version"
+                }
             }
         }
     }
@@ -221,7 +230,7 @@ publishing {
 
     repositories {
         maven {
-            url = "https://maven.craig.software/snapshots/"
+            url = "https://mvn.jeryn.dev/snapshots/"
             credentials {
                 username = project.findProperty("MAVEN_REPO_USERNAME") ?: System.getenv("MAVEN_REPO_USERNAME") ?: ""
                 password = project.findProperty("MAVEN_REPO_PASSWORD") ?: System.getenv("MAVEN_REPO_PASSWORD") ?: ""

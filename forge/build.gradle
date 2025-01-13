@@ -35,6 +35,12 @@ loom {
             mod "tardis_refined"
         }
 
+        runs {
+            data {
+                programArgs "--existing", project(":common").file("src/main/resources/").absolutePath
+            }
+        }
+
     }
 }
 
@@ -76,6 +82,11 @@ dependencies {
 
 }
 
+
+def CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge");
+def MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth");
+
+if (true) {
     unifiedPublishing {
         project {
             displayName = "[Forge] Tardis Refined - $project.version"
@@ -84,9 +95,10 @@ dependencies {
             gameVersions = ["$rootProject.minecraft_version"]
             mainPublication tasks.remapJar
             gameLoaders = ["neoforge", "forge"]
+
             relations {
                 optional {
-                    curseforge = "immersive-portals-mod"
+                    curseforge = "immersive-portals-for-forge"
                     modrinth = "immersiveportals"
                 }
                 optional {
@@ -95,7 +107,6 @@ dependencies {
                 }
             }
 
-            var CURSE_API_KEY = project.findProperty("curseforge") ?: System.getenv("curseforge") ?: ""
             if (CURSE_API_KEY != "") {
                 curseforge {
                     token = CURSE_API_KEY
@@ -104,7 +115,6 @@ dependencies {
                 }
             }
 
-            var MODRINTH_TOKEN = project.findProperty("modrinth") ?: System.getenv("modrinth") ?: ""
             if (MODRINTH_TOKEN != "") {
                 modrinth {
                     token = MODRINTH_TOKEN
@@ -114,6 +124,12 @@ dependencies {
             }
         }
     }
+}
+
+sourceSets.main.resources {
+    srcDir project(":common").file("src/resources").absolutePath
+}
+
 
 
 def resourceTargets = ["META-INF/mods.toml", "pack.mcmeta"]
@@ -202,7 +218,7 @@ publishing {
 
     repositories {
         maven {
-            url = "https://maven.craig.software/snapshots/"
+            url = "https://mvn.jeryn.dev/snapshots"
             credentials {
                 username = project.findProperty("MAVEN_REPO_USERNAME") ?: System.getenv("MAVEN_REPO_USERNAME") ?: ""
                 password = project.findProperty("MAVEN_REPO_PASSWORD") ?: System.getenv("MAVEN_REPO_PASSWORD") ?: ""
