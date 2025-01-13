@@ -1,6 +1,5 @@
 package whocraft.tardis_refined.common.data;
 
-import com.simibubi.create.content.decoration.palettes.GlassPaneBlock;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -97,7 +96,7 @@ public class ProviderBlockTags extends BlockTagsProvider {
         Set<Block> glassBlocks = new HashSet<>();
         ManipulatorRecipes.MANIPULATOR_CRAFTING_RECIPES.forEach((resourceLocation, manipulatorCraftingRecipe) -> {
             for (ManipulatorCraftingIngredient ingredient : manipulatorCraftingRecipe.ingredients()) {
-                if(ingredient.inputBlockState().getBlock() instanceof GlassBlock || ingredient.inputBlockState().getBlock() instanceof GlassPaneBlock || ingredient.inputBlockState().getBlock() instanceof GlassPaneBlock) {
+                if (ingredient.inputBlockState().getBlock() instanceof GlassBlock || ingredient.inputBlockState().getBlock() instanceof AbstractGlassBlock || ingredient.inputBlockState().getBlock() instanceof StainedGlassBlock) {
                     glassBlocks.add(ingredient.inputBlockState().getBlock());
                 }
             }
