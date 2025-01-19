@@ -60,4 +60,11 @@ public class PlatformImpl {
     public static boolean isForge() {
         return false;
     }
+
+    public static String getModName(String namespace) {
+        return FabricLoader.getInstance().getModContainer(namespace)
+                .map(modContainer -> modContainer.getMetadata().getName())
+                .orElse(namespace);
+    }
+
 }

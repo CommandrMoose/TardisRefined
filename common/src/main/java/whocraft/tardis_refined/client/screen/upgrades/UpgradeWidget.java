@@ -17,6 +17,8 @@ import net.minecraft.util.Mth;
 import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.registry.TRUpgrades;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -53,6 +55,8 @@ public class UpgradeWidget {
                 .getVisualOrder(
                         this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
                 );
+
+
 
         for (FormattedCharSequence formattedCharSequence : this.description) {
             l = Math.max(l, minecraft.font.width(formattedCharSequence));
@@ -200,7 +204,7 @@ public class UpgradeWidget {
             m = x + this.x;
         }
 
-        int n = 32 + this.description.size() * 9;
+        int n = 32 + this.description.size() * 17;
         if (!this.description.isEmpty()) {
             if (bl2) {
                 guiGraphics.blitNineSliced(UpgradesScreen.WIDGETS, m + 2, l + 26 - n, this.width, n, 10, 200, 26, 0, 52);
@@ -209,15 +213,10 @@ public class UpgradeWidget {
             }
         }
 
-        //blit(ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int width, int height, int textureWidth, int textureHeight)
-
-        //  guiGraphics.blit(UpgradesScreen.getBox(upgradeEntry.isUnlocked(upgradeHandler)), i + this.x + 3, j + this.y, 0,0, 200, 26,200, 26);
-
         guiGraphics.blit(UpgradesScreen.WIDGETS, m, l, 0, advancementWidgetType.getIndex() * 26, j, 26);
         guiGraphics.blit(UpgradesScreen.WIDGETS, m + j, l, 200 - k, advancementWidgetType2.getIndex() * 26, k, 26);
 
         guiGraphics.blit(UpgradesScreen.getFrame(upgradeEntry.getUpgradeType(), upgradeEntry.isUnlocked(upgradeHandler)), x + this.x + 3, y + this.y, 0, 0, 26, 26, 26, 26);
-
 
         if (bl) {
             guiGraphics.drawString(this.minecraft.font, this.title, m + 5, y + this.y + 9, -1);
@@ -235,14 +234,21 @@ public class UpgradeWidget {
             for (int o = 0; o < this.description.size(); ++o) {
                 guiGraphics.drawString(this.minecraft.font, this.description.get(o), m + 5, l + 26 - n + 7 + o * 9, -5592406);
             }
+            ResourceLocation key = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.getKey(upgradeEntry);
+            String owner = Platform.getModName(key.getNamespace());
+            guiGraphics.drawString(this.minecraft.font, ChatFormatting.BLUE + owner, m + 5, l + 26 + 9, -1);
         } else {
             for (int o = 0; o < this.description.size(); ++o) {
                 guiGraphics.drawString(this.minecraft.font, this.description.get(o), m + 5, y + this.y + 9 + 17 + o * 9, -5592406);
             }
+            ResourceLocation key = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.getKey(upgradeEntry);
+            String owner = Platform.getModName(key.getNamespace());
+            guiGraphics.drawString(this.minecraft.font, ChatFormatting.BLUE +owner, m + 5, y + this.y + 9 + 17 + this.description.size() * 9 + 5, -1);
         }
 
         this.drawDisplayIcon(this.minecraft, guiGraphics, x + this.x + 8, y + this.y + 5);
     }
+
 
     public boolean isMouseOver(int x, int y, int mouseX, int mouseY) {
         int i = x + this.x;

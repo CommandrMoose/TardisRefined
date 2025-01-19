@@ -1,5 +1,6 @@
 package whocraft.tardis_refined.client.screen.ponder;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
@@ -9,6 +10,7 @@ import whocraft.tardis_refined.client.screen.components.GenericMonitorSelectionL
 import whocraft.tardis_refined.client.screen.components.SelectionListEntry;
 import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorCraftingRecipe;
+import whocraft.tardis_refined.common.util.Platform;
 
 import java.util.List;
 
@@ -34,10 +36,17 @@ public class PonderListScreen extends MonitorOS {
         for (ManipulatorCraftingRecipe recipe : recipes) {
             Component name = PonderScreen.getResultName(recipe);
 
-            selectionList.children().add(new SelectionListEntry(name, (entry) -> {
+            String owner = Platform.getModName(recipe.getId().getNamespace());
+            Component tooltip = Component.literal(ChatFormatting.BLUE + owner);
+
+            SelectionListEntry entry = new SelectionListEntry(name, (selectedEntry) -> {
                 Minecraft.getInstance().setScreen(new PonderScreen(recipe));
-            }, leftPos));
+            }, leftPos);
+
+            entry.setTooltip(tooltip);
+            selectionList.children().add(entry);
         }
+
 
         return selectionList;
     }

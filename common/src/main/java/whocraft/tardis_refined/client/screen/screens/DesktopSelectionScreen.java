@@ -3,6 +3,7 @@ package whocraft.tardis_refined.client.screen.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
@@ -20,6 +21,7 @@ import whocraft.tardis_refined.common.network.messages.C2SChangeDesktop;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.common.util.MiscHelper;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.registry.TRSoundRegistry;
 
@@ -111,16 +113,17 @@ public class DesktopSelectionScreen extends MonitorOS {
         values = values.stream().sorted(Comparator.comparing(DesktopTheme::getName)).toList();
 
         for (DesktopTheme desktop : values) {
-
             Component name = Component.literal(MiscHelper.getCleanName(desktop.getIdentifier().getPath()));
-            // Check for if the tellraw name is incomplete, or fails to pass.
+            // Attempt to parse the name from JSON
             try {
                 name = Component.Serializer.fromJson(new StringReader(desktop.getName()));
             } catch (Exception ex) {
                 LOGGER.error("Could not process Name for datapack desktop {}", desktop.getIdentifier().toString());
             }
 
-            selectionList.children().add(new SelectionListEntry(name, (entry) -> {
+            Component tooltip = Component.literal(ChatFormatting.BLUE + Platform.getModName(desktop.getIdentifier().getNamespace()));
+
+            SelectionListEntry entry = new SelectionListEntry(name, (selectedEntry) -> {
                 previousImage = currentDesktopTheme.getPreviewTexture();
                 this.currentDesktopTheme = desktop;
 
@@ -129,13 +132,19 @@ public class DesktopSelectionScreen extends MonitorOS {
                         current.setChecked(false);
                     }
                 }
-                entry.setChecked(true);
+                selectedEntry.setChecked(true);
                 age = 0;
+
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(TRSoundRegistry.STATIC.get(), (float) Math.random()));
-            }, leftPos));
+            }, leftPos);
+
+            entry.setTooltip(tooltip);
+
+            selectionList.children().add(entry);
         }
 
         return selectionList;
     }
+
 
 }

@@ -3,6 +3,7 @@ package whocraft.tardis_refined.client.screen.screens;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.brigadier.StringReader;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -18,6 +19,7 @@ import whocraft.tardis_refined.common.network.messages.C2SChangeShell;
 import whocraft.tardis_refined.common.tardis.TardisDesktops;
 import whocraft.tardis_refined.common.tardis.themes.DesktopTheme;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.constants.ModMessages;
 import whocraft.tardis_refined.patterns.ShellPattern;
 import whocraft.tardis_refined.patterns.ShellPatterns;
@@ -109,6 +111,9 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
         for (Map.Entry<ResourceKey<ShellTheme>, ShellTheme> shellTheme : values) {
             ResourceLocation shellThemeId = ShellTheme.getKey(shellTheme.getValue());
 
+            String owner = Platform.getModName(shellTheme.getKey().location().getNamespace());
+            Component tooltip = Component.literal(ChatFormatting.BLUE + owner);
+
             SelectionListEntry selectionListEntry = new SelectionListEntry(shellTheme.getValue().getDisplayName(), (entry) -> {
                 CURRENTSHELLTHEME = shellThemeId;
 
@@ -122,14 +127,16 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
 
                 boolean themeHasPatterns = PATTERNCOLLECTION.size() > 1;
 
-                //Hide the pattern button if there is only one pattern available for the shell, else show it. (i.e. The default)
                 patternButton.visible = themeHasPatterns;
 
-                if (themeHasPatterns) //Update the button name now that we have confirmed that there is more than one pattern in the shell
+                if (themeHasPatterns) {
                     this.patternButton.setMessage(Component.Serializer.fromJson(new StringReader(PATTERN.name())));
+                }
 
                 entry.setChecked(true);
             }, leftPos);
+
+            selectionListEntry.setTooltip(tooltip);
 
             if (CURRENTSHELLTHEME.toString().equals(shellThemeId.toString())) {
                 selectionListEntry.setChecked(true);

@@ -2,6 +2,7 @@ package whocraft.tardis_refined.client.screen.screens;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Holder;
@@ -16,6 +17,7 @@ import whocraft.tardis_refined.client.screen.main.MonitorOS;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.network.messages.C2SChangeVortex;
 import whocraft.tardis_refined.common.tardis.themes.ShellTheme;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.constants.ModMessages;
 
 import java.util.Collection;
@@ -91,6 +93,8 @@ public class VortexSelectionScreen extends MonitorOS {
 
         for (Map.Entry<ResourceKey<VortexRegistry>, VortexRegistry> vort : values) {
             ResourceLocation vortId = VortexRegistry.VORTEX_DEFERRED_REGISTRY.getKey(vort.getValue());
+            String owner = Platform.getModName(vort.getKey().location().getNamespace());
+            Component tooltip = Component.literal(ChatFormatting.BLUE + owner);
 
             SelectionListEntry selectionListEntry = new SelectionListEntry(vort.getValue().getDisplayName(), (entry) -> {
                 currentVortex = vortId;
@@ -104,6 +108,7 @@ public class VortexSelectionScreen extends MonitorOS {
                 entry.setChecked(true);
             }, leftPos);
 
+            selectionListEntry.setTooltip(tooltip);
 
             if (currentVortex.toString().equals(vortId.toString())) {
                 selectionListEntry.setChecked(true);
@@ -114,4 +119,5 @@ public class VortexSelectionScreen extends MonitorOS {
 
         return selectionList;
     }
+
 }

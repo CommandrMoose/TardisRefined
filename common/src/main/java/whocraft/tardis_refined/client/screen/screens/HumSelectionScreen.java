@@ -1,6 +1,7 @@
 package whocraft.tardis_refined.client.screen.screens;
 
 import com.mojang.brigadier.StringReader;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.network.chat.Component;
@@ -15,6 +16,7 @@ import whocraft.tardis_refined.common.network.messages.hums.C2SChangeHum;
 import whocraft.tardis_refined.common.soundscape.hum.HumEntry;
 import whocraft.tardis_refined.common.soundscape.hum.TardisHums;
 import whocraft.tardis_refined.common.util.MiscHelper;
+import whocraft.tardis_refined.common.util.Platform;
 import whocraft.tardis_refined.constants.ModMessages;
 
 import java.util.Collection;
@@ -69,16 +71,17 @@ public class HumSelectionScreen extends MonitorOS {
 
         for (HumEntry humEntry : knownHums) {
             Component name = Component.literal(MiscHelper.getCleanName(humEntry.getIdentifier().getPath()));
+            Component tooltip;
 
-            // Check for if the tellraw name is incomplete, or fails to pass.
             try {
                 name = Component.Serializer.fromJson(new StringReader(humEntry.getNameComponent()));
+                tooltip = Component.literal(ChatFormatting.BLUE + Platform.getModName(humEntry.getIdentifier().getNamespace()));
             } catch (Exception ex) {
-                LOGGER.error("Could not process Name for hum {}", humEntry.getIdentifier().toString());
+                LOGGER.error("Could not process Name for hum {}", humEntry.getIdentifier());
+                tooltip = Component.literal("Unknown");
             }
 
-            selectionList.children().add(new SelectionListEntry(name, (entry) -> {
-                // previousImage = humEntry.getPreviewTexture();
+            SelectionListEntry entry = new SelectionListEntry(name, selectedEntry -> {
                 this.currentHumEntry = humEntry;
 
                 for (Object child : selectionList.children()) {
@@ -86,11 +89,16 @@ public class HumSelectionScreen extends MonitorOS {
                         current.setChecked(false);
                     }
                 }
-                entry.setChecked(true);
-            }, leftPos));
+
+                selectedEntry.setChecked(true);
+            }, leftPos);
+
+            entry.setTooltip(tooltip);
+            selectionList.children().add(entry);
         }
 
         return selectionList;
     }
+
 
 }
