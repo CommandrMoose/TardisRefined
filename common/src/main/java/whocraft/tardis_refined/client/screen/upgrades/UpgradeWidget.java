@@ -17,6 +17,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.Upgrade;
 import whocraft.tardis_refined.common.capability.tardis.upgrades.UpgradeHandler;
+import whocraft.tardis_refined.common.util.Platform;
+import whocraft.tardis_refined.registry.TRUpgrades;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -54,6 +56,8 @@ public class UpgradeWidget {
                 .getVisualOrder(
                         this.findOptimalLines(ComponentUtils.mergeStyles(description != null ? description.copy() : Component.empty(), Style.EMPTY.withColor(ChatFormatting.WHITE)), l)
                 );
+
+
 
         for (FormattedCharSequence formattedCharSequence : this.description) {
             l = Math.max(l, minecraft.font.width(formattedCharSequence));
@@ -169,29 +173,6 @@ public class UpgradeWidget {
         boolean bl2 = var10000 <= 6 + var10002 * 9;
         float g = this.upgradeHandler.isUpgradeUnlocked(upgradeEntry) ? 1 : 0;
         int n = Mth.floor(g * (float) this.width);
-        AdvancementWidgetType advancementWidgetType;
-        AdvancementWidgetType advancementWidgetType2;
-        AdvancementWidgetType advancementWidgetType3;
-        if (g >= 1.0F) {
-            n = this.width / 2;
-            advancementWidgetType = AdvancementWidgetType.OBTAINED;
-            advancementWidgetType2 = AdvancementWidgetType.OBTAINED;
-            advancementWidgetType3 = AdvancementWidgetType.OBTAINED;
-        } else if (n < 2) {
-            n = this.width / 2;
-            advancementWidgetType = AdvancementWidgetType.UNOBTAINED;
-            advancementWidgetType2 = AdvancementWidgetType.UNOBTAINED;
-            advancementWidgetType3 = AdvancementWidgetType.UNOBTAINED;
-        } else if (n > this.width - 2) {
-            n = this.width / 2;
-            advancementWidgetType = AdvancementWidgetType.OBTAINED;
-            advancementWidgetType2 = AdvancementWidgetType.OBTAINED;
-            advancementWidgetType3 = AdvancementWidgetType.UNOBTAINED;
-        } else {
-            advancementWidgetType = AdvancementWidgetType.OBTAINED;
-            advancementWidgetType2 = AdvancementWidgetType.UNOBTAINED;
-            advancementWidgetType3 = AdvancementWidgetType.UNOBTAINED;
-        }
 
         int o = this.width - n;
         RenderSystem.enableBlend();
@@ -206,6 +187,7 @@ public class UpgradeWidget {
         int var10001 = this.description.size();
         Objects.requireNonNull(this.minecraft.font);
         int r = 32 + var10001 * 9;
+        int n = 32 + this.description.size() * 17;
         if (!this.description.isEmpty()) {
             if (bl2) {
                 guiGraphics.blitSprite(TITLE_BOX_SPRITE, q, p + 26 - r, this.width, r);
@@ -243,6 +225,9 @@ public class UpgradeWidget {
                 Objects.requireNonNull(this.minecraft.font);
                 guiGraphics.drawString(var21, var22, var10003, var10004 + s * 9, -5592406, false);
             }
+            ResourceLocation key = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.getKey(upgradeEntry);
+            String owner = Platform.getModName(key.getNamespace());
+            guiGraphics.drawString(this.minecraft.font, ChatFormatting.BLUE + owner, m + 5, l + 26 + 9, -1);
         } else {
             for (s = 0; s < this.description.size(); ++s) {
                 var21 = this.minecraft.font;
@@ -252,10 +237,14 @@ public class UpgradeWidget {
                 Objects.requireNonNull(this.minecraft.font);
                 guiGraphics.drawString(var21, var22, var10003, var10004 + s * 9, -5592406, false);
             }
+            ResourceLocation key = TRUpgrades.UPGRADE_DEFERRED_REGISTRY.getKey(upgradeEntry);
+            String owner = Platform.getModName(key.getNamespace());
+            guiGraphics.drawString(this.minecraft.font, ChatFormatting.BLUE +owner, m + 5, y + this.y + 9 + 17 + this.description.size() * 9 + 5, -1);
         }
 
         this.drawDisplayIcon(this.minecraft, guiGraphics, i + this.x + 8, j + this.y + 5);
     }
+
 
     public boolean isMouseOver(int x, int y, int mouseX, int mouseY) {
         int i = x + this.x;

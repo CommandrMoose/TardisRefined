@@ -39,4 +39,11 @@ public class PlatformImpl {
     public static boolean isForge() {
         return true;
     }
+
+    public static String getModName(String namespace) {
+        return ModList.get().getModContainerById(namespace)
+                .map(modContainer -> modContainer.getModInfo().getDisplayName())
+                .orElse(namespace);
+    }
+
 }

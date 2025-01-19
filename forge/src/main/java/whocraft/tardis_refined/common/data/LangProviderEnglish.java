@@ -302,6 +302,7 @@ public class LangProviderEnglish extends LanguageProvider {
         addShell(ShellTheme.CASTLE.getId(), "Castle");
         addShell(ShellTheme.PATHFINDER.getId(), "Pathfinder");
         addShell(ShellTheme.HALF_BAKED.getId(), "Half Baked");
+        addShell(ShellTheme.SHULKER.getId(), "Half Baked");
 
         /*Tool Tips*/
         add(ModMessages.TOOLTIP_TARDIS_LIST_TITLE, ChatFormatting.YELLOW + "< "

@@ -80,7 +80,6 @@ public class UpgradesScreen extends Screen {
         UpgradeTab upgradeTab = UpgradeTab.create(this.minecraft, this, 0, upgradeHandler);
         this.tabs.add(upgradeTab);
 
-
         if (this.tabs.size() > UpgradeTabType.MAX_TABS) {
             int guiLeft = (this.width - WINDOW_WIDTH) / 2;
             int guiTop = (this.height - WINDOW_HEIGHT) / 2;

@@ -46,4 +46,10 @@ public class Platform {
         throw new AssertionError();
     }
 
+
+    @ExpectPlatform
+    public static String getModName(String namespace) {
+        throw new AssertionError();
+    }
+
 }
