@@ -59,7 +59,6 @@ public class TardisDesktops {
      * Creates and adds the Tardis Refined default list of DesktopThemes to a standalone map.
      * Can be used for datagenerators or as a fallback registry
      *
-     * @return
      */
     public static Map<ResourceLocation, DesktopTheme> registerDefaultDesktops() {
         DEFAULT_DESKTOPS.clear();
@@ -86,6 +85,8 @@ public class TardisDesktops {
         addDefaultDesktop(new DesktopTheme("classic", "desktop/classic"));
         addDefaultDesktop(new DesktopTheme("terraformed", "desktop/terraformed_useable"));
         addDefaultDesktop(new DesktopTheme("panamax", "desktop/panamax"));
+        addDefaultDesktop(new DesktopTheme("hartnell", "desktop/hartnell"));
+        addDefaultDesktop(new DesktopTheme("pertwee", "desktop/pertwee"));
 
         return DEFAULT_DESKTOPS;
     }
