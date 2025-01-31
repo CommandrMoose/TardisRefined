@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,7 @@ import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.client.model.blockentity.door.interior.ShellDoorModel;
 import whocraft.tardis_refined.client.model.blockentity.shell.ShellModelCollection;
 import whocraft.tardis_refined.common.VortexRegistry;
+import whocraft.tardis_refined.common.block.door.GlobalDoorBlock;
 import whocraft.tardis_refined.common.block.door.InternalDoorBlock;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.compat.ModCompatChecker;
@@ -61,19 +63,28 @@ public class RenderTargetHelper {
 
         VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
 
+        if (blockstate.hasProperty(GlobalDoorBlock.OFFSET) && blockstate.getValue(GlobalDoorBlock.OFFSET)) {
+            Direction facing = blockstate.getValue(InternalDoorBlock.FACING);
+            double xOffset = 0.0;
+            double zOffset = 0.0;
+
+            switch (facing) {
+                case NORTH -> xOffset = -0.5;
+                case SOUTH -> xOffset = 0.5;
+                case EAST -> zOffset = -0.5;
+                case WEST -> zOffset = 0.5;
+            }
+
+            stack.translate(xOffset, 0, zOffset);
+        }
+
         if (tardisClientData.isFlying() && TRConfig.CLIENT.RENDER_VORTEX_IN_DOOR.get()) {
             renderDoorOpen(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen, tardisClientData);
         } else {
             renderNoVortex(blockEntity, stack, bufferSource, packedLight, rotation, currentModel, isOpen);
         }
-
     }
 
-    public static void copyRenderTarget(RenderTarget src, RenderTarget dest) {
-        GL30.glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, src.frameBufferId);
-        GL30.glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, dest.frameBufferId);
-        GL30.glBlitFramebuffer(0, 0, src.width, src.height, 0, 0, dest.width, dest.height, GlConst.GL_DEPTH_BUFFER_BIT | GlConst.GL_COLOR_BUFFER_BIT, GlConst.GL_NEAREST);
-    }
 
     private static ResourceLocation BLACK = new ResourceLocation(TardisRefined.MODID, "textures/black_portal.png");
 

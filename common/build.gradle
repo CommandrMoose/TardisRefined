@@ -19,6 +19,8 @@ dependencies {
         because "Ensure the dependency is resolved from the specified repository."
     }
 
+    // Sodium
+    modImplementation "maven.modrinth:sodium:${rootProject.sodium_version}"
 
     modCompileOnlyApi ("com.github.iPortalTeam.ImmersivePortalsMod:imm_ptl_core:${rootProject.immersive_portals_version}"){
         exclude(group: "net.fabricmc.fabric-api")

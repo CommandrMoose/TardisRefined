@@ -57,12 +57,23 @@ public class InternalDoorBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-
         if (blockState.getValue(OFFSET)) {
-            return COLLISION.move(0, 0, -0.5);
+            Direction facing = blockState.getValue(FACING);
+            double xOffset = 0.0;
+            double zOffset = 0.0;
+
+            switch (facing) {
+                case NORTH -> xOffset = -0.5;
+                case SOUTH -> xOffset = 0.5;
+                case EAST -> zOffset = -0.5;
+                case WEST -> zOffset = 0.5;
+            }
+
+            return COLLISION.move(xOffset, 0, zOffset);
         }
         return COLLISION;
     }
+
 
     @Override
     public VoxelShape getCollisionShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {

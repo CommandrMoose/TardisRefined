@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "whocraft.tardis_refined.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "whocraft.tardis_refined.TRMixinPlugin",
   "mixins": [
     "EndDragonFightAccessor",
     "MappedRegistryAccessor",
@@ -14,9 +15,11 @@
     "VillagerMixin"
   ],
   "client": [
+    "render.SodiumFixMixin",
     "LocalPlayerMixin",
     "MultiplayerGameModeMixin",
     "render.FogRendererMixin",
+    "render.ModelPartInvoker",
     "render.PlayerRenderMixin",
     "render.buffer.MixinMainTarget",
     "render.buffer.MixinRenderTarget",
