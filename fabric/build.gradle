@@ -86,6 +86,9 @@ dependencies {
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${rootProject.cardinal_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${rootProject.cardinal_version}"
 
+    // Sodium
+    modImplementation "maven.modrinth:sodium:${rootProject.sodium_version}"
+
     modImplementation "com.terraformersmc:modmenu:${rootProject.mod_menu_version}"
     modImplementation "curse.maven:jei-238222:${rootProject.jei_fabric_version}"
     modImplementation "curse.maven:huge-structure-blocks-474114:4803539"

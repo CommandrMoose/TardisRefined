@@ -3,12 +3,29 @@ package whocraft.tardis_refined;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import whocraft.tardis_refined.compat.ModCompatChecker;
+import org.spongepowered.asm.service.MixinService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
 public class TRMixinPlugin implements IMixinConfigPlugin {
+
+    public static final boolean HAS_SODIUM;
+
+    static {
+        HAS_SODIUM = hasClass("net.caffeinemc.mods.sodium.client.render.immediate.model.EntityRenderer");
+    }
+
+    private static boolean hasClass(String name) {
+        try {
+            // This does *not* load the class!
+            MixinService.getService().getBytecodeProvider().getClassNode(name);
+            return true;
+        } catch (ClassNotFoundException | IOException e) {
+            return false;
+        }
+    }
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -22,11 +39,12 @@ public class TRMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (ModCompatChecker.immersivePortals() && mixinClassName.contains("whocraft.tardis_refined.mixin.render.buffer")) {
-            TardisRefined.LOGGER.info("Immersive Portals Detected, we will NOT be activating our Mixin: {}", mixinClassName);
-            return false;
+
+        if (mixinClassName.contains("whocraft.tardis_refined.mixin.render.SodiumFixMixin")) {
+            return HAS_SODIUM;
         }
-        return false;
+
+        return true;
     }
 
     @Override

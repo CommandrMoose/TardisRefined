@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +18,9 @@ public class ServerPlayerMixin {
     @Inject(method = "stopSleepInBed(ZZ)V", at = @At("HEAD"))
     private void stopSleepInBed(boolean bl, boolean bl2, CallbackInfo ci) {
         ServerPlayer serverPlayer = (ServerPlayer) (Object) this;
-        PlayerUtil.sendMessage(serverPlayer, ModMessages.TARDIS_SLEEP_END, true);
+        if (serverPlayer.level().dimensionTypeId() == TRDimensionTypes.TARDIS) {
+            PlayerUtil.sendMessage(serverPlayer, ModMessages.TARDIS_SLEEP_END, true);
+        }
     }
 
     @Inject(method = "setRespawnPosition(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/BlockPos;FZZ)V", at = @At("HEAD"), cancellable = true)

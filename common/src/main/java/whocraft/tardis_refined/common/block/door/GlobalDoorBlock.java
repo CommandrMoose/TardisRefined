@@ -90,17 +90,13 @@ public class GlobalDoorBlock extends InternalDoorBlock {
 
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        switch (blockState.getValue(FACING)) {
-            case EAST:
-                return EAST_AABB;
-            case SOUTH:
-                return SOUTH_AABB;
-            case WEST:
-                return WEST_AABB;
-            case NORTH:
-                return NORTH_AABB;
-        }
-        return SOUTH_AABB;
+        return switch (blockState.getValue(FACING)) {
+            case EAST -> blockState.getValue(OFFSET) ? EAST_AABB.move(0, 0, -0.5) : EAST_AABB;
+            case SOUTH -> blockState.getValue(OFFSET) ? SOUTH_AABB.move(0.5, 0, 0) : SOUTH_AABB;
+            case WEST -> blockState.getValue(OFFSET) ? WEST_AABB.move(0, 0, 0.5) : WEST_AABB;
+            case NORTH -> blockState.getValue(OFFSET) ? NORTH_AABB.move(-0.5, 0, 0) : NORTH_AABB;
+            default -> SOUTH_AABB;
+        };
     }
 
     @Override
