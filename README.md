@@ -1,72 +1,73 @@
 ![image](https://i.imgur.com/eIfAaYJ.png)
 
-<img src="https://discordapp.com/api/guilds/1054629302152478730/widget.png?style=shield" alt="Discord Shield"/>[![Crowdin](https://badges.crowdin.net/tardis-refined/localized.svg)](https://crowdin.com/project/tardis-refined)
-[![CurseForge](https://cf.way2muchnoise.eu/782697.svg?badge_style=flat)](https://www.curseforge.com/minecraft/mc-mods/tardis-refined)
-[![ModRinth](https://modrinth-utils.vercel.app/api/badge/downloads?id=nqVt6aES&logo=true)](https://modrinth.com/mod/tardis-refined)
 
 
+<p align="center">
+    <a href="https://crowdin.com/project/tardis-refined">
+        <img src="https://badges.crowdin.net/tardis-refined/localized.svg" alt="Crowdin">
+    </a>
+    <a href="https://www.curseforge.com/minecraft/mc-mods/tardis-refined">
+        <img src="https://cf.way2muchnoise.eu/782697.svg?badge_style=flat" alt="CurseForge">
+    </a>
+    <a href="https://modrinth.com/mod/tardis-refined">
+        <img src="https://modrinth-utils.vercel.app/api/badge/downloads?id=nqVt6aES&logo=true" alt="ModRinth">
+    </a>
+    <a href="https://discord.gg/your-discord-invite">
+        <img src="https://discordapp.com/api/guilds/1054629302152478730/widget.png?style=shield" alt="Discord Shield">
+    </a>
+</p>
 
 
- TARDIS Refined is a Minecraft mod for Forge and Fabric which brings the TARDIS from Doctor Who to Minecraft.
- 
- 
- <a href="https://wiki.tardisrefined.net">View the wiki.</a>
+# TARDIS Refined
+
+TARDIS Refined is a Minecraft mod for Forge and Fabric that brings the TARDIS from *Doctor Who* to Minecraft.
+
+🔗 **[View the Wiki](https://wiki.tardisrefined.net)**
+
+---
 
 ## Workspace
-TARDIS Refined implements the <a href="https://github.com/architectury/architectury-plugin">Architectuary Gradle plugin</a>, allowing easy multi-modloader development via a common module. This functionality does not require any additional installation of plugins or files. It is recommended you familiarise yourself with Achitectury first before proceeding with PR submissions. 
 
-This repository has been set up to utilise Forge's data generation for most common data gen items. The repository does not include these generated files, so it is recommended to run the Forge Data task when you clone the repository. It is also recommended to run this task regularly to stay concurrent with your branch's data.
+TARDIS Refined implements the [Architectury Gradle plugin](https://github.com/architectury/architectury-plugin), enabling seamless multi-modloader development through a common module. No additional plugins or files are required. It is recommended to familiarise yourself with Architectury before submitting pull requests.
 
+This repository is configured to utilise Forge's data generation for common data-driven content. However, generated files are not included in the repository. Running the Forge Data task after cloning the repository—and periodically thereafter—is highly recommended to keep your data up to date.
+
+---
 
 ## Contributions
 
-We welcome contributions to TARDIS Refined. If you have an idea for a new feature or have found a bug, please open an issue. If you would like to contribute code, please submit a pull request. Please understand that the associated development team have set tasks and goals for the project, and PRs that include large additions/changes will be closely examined to determine if they meet the project's design.
+We welcome contributions to TARDIS Refined! If you have an idea for a new feature or have found a bug, please open an issue. If you’d like to contribute code, submit a pull request. Please note that the development team follows a set roadmap, and substantial additions or changes will be reviewed to ensure they align with the project’s vision.
 
-<table>
-   <thead>
-      <tr>
-         <th>Credit</th>
-         <th>Contribution</th>
-      </tr>
-   </thead>
-   <tbody>
-<tr><td><a href="https://twitter.com/CommandrMoose">CommandrMoose</a></td>
-         <td>Project lead and Developer</td> </tr>
-      <tr>
-         <td><a href="https://github.com/Jeryn99">Jeryn</a></td>
-         <td>Developer</td>
-      </tr>
-            <tr>
-         <td><a href="https://twitter.com/50ap5ud5">50ap5ud5</a></td>
-         <td>Developer</td>
-      </tr>
-    <tr>
-         <td><a href="https://github.com/Duzos">duzo</a></td>
-         <td>Developer</td>
-      </tr>
-<tr><td><a href="https://twitter.com/MagicMrmann">MagicMan</a></td>
-         <td>Art Lead</td> </tr>
-<tr><td><a href="https://twitter.com/ILikePandas18">ILikePandas</a></td>
-         <td>Console Builds</td> </tr>
-         <tr><td><a href="https://twitter.com/JacobKauffman11">Jacob.K</a></td>
-         <td>Console Builds</td> </tr>
-   </tbody>
-</table>
+### 🏆 Contributors
 
-With special thanks to Commoble, Lucraft, starray1000000, The Judge, Monsterwaill and Sea Pickle<br/><hr/>
+| **Credit** | **Contribution** |
+|------------|-----------------|
+| [CommandrMoose](https://twitter.com/CommandrMoose) | Project Lead & Developer |
+| [Jeryn](https://github.com/Jeryn99) | Developer |
+| [50ap5ud5](https://twitter.com/50ap5ud5) | Developer |
+| [duzo](https://github.com/Duzos) | Developer |
+| [MagicMan](https://twitter.com/MagicMrmann) | Art Lead |
+| [ILikePandas](https://twitter.com/ILikePandas18) | Console Builds |
+| [Jacob.K](https://twitter.com/JacobKauffman11) | Console Builds |
 
-Additionally, thanks to the additional builders who contributed desktops:
-"Radiance" by Getsuga Tenno
-"Watchface" by t___cup
-"Vapor" by Tank
-"Newwave" by Muffled
+Special thanks to: **Commoble, Lucraft, starray1000000, The Judge, Monsterwaill, and Sea Pickle**.
 
-Other builds made by members of the team. 
+### 🏗 Additional Builders
+- **"Radiance"** – *Getsuga Tenno*
+- **"Watchface"** – *t___cup*
+- **"Vapor"** – *Tank*
+- **"Newwave"** – *Muffled*
 
-![image](https://user-images.githubusercontent.com/34910888/209611682-abeaedc6-cf9a-465f-a693-9ba85f38cca6.png)
+Other builds were contributed by members of the team.
+
+---
 
 ## Immersive Portals Support (Developer Note)
-This mod has dedicated support for being compatible and integrating with Immersive Portals when Immersive Portals is present.
-By default, Immersive Portals is not enabled in dev and fabrics build.gradle file must be edited to allow for this.
-Instructions on how to do this can be found in the relevant build.gradle
-If you are a user, the above is not relevant to you. All you should need to do is install Fabric TR and Fabric IP and you will be all ready to go.
+
+This mod includes dedicated compatibility and integration with **Immersive Portals** when it is installed.
+
+- By default, Immersive Portals is *not* enabled in development.
+- Fabric's `build.gradle` must be modified to allow support.
+- Instructions on enabling this can be found within `build.gradle`.
+
+🚀 **For users:** No additional steps are required. Simply install **Fabric TR** and **Fabric IP**, and you’re good to go!
