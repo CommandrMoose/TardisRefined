@@ -104,8 +104,6 @@ dependencies {
     //   modCompileOnly "curse.maven:worldedit-225608:${world_edit_version}"
 //    modCompileOnly "curse.maven:structure-expansion-398430:${structure_expansion_version}"
 
-//    modCompileOnly "curse.maven:configured-457570:${configured_version}"
-    //   modCompileOnly "curse.maven:jei-238222:${jei_version}"
 
     compileOnly "curse.maven:immersive-portals-355440:${immersive_portals_forge_version}"
     modImplementation "curse.maven:curios-309927:4921744"

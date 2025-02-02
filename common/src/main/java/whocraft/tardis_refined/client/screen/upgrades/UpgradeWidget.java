@@ -187,7 +187,7 @@ public class UpgradeWidget {
         int var10001 = this.description.size();
         Objects.requireNonNull(this.minecraft.font);
         int r = 32 + var10001 * 9;
-        int n = 32 + this.description.size() * 17;
+
         if (!this.description.isEmpty()) {
             if (bl2) {
                 guiGraphics.blitSprite(TITLE_BOX_SPRITE, q, p + 26 - r, this.width, r);

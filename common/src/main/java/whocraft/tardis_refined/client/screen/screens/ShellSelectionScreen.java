@@ -111,10 +111,10 @@ public class ShellSelectionScreen extends MonitorOS.MonitorOSExtension {
         for (ShellTheme shellTheme : values) {
             ResourceLocation shellThemeId = ShellTheme.getKey(shellTheme);
 
-            String owner = Platform.getModName(shellTheme.getKey().location().getNamespace());
+            String owner = Platform.getModName(shellThemeId.getNamespace());
             Component tooltip = Component.literal(ChatFormatting.BLUE + owner);
 
-            SelectionListEntry selectionListEntry = new SelectionListEntry(shellTheme.getValue().getDisplayName(), (entry) -> {
+            SelectionListEntry selectionListEntry = new SelectionListEntry(shellTheme.getDisplayName(), (entry) -> {
                 CURRENTSHELLTHEME = shellThemeId;
 
                 for (Object child : selectionList.children()) {

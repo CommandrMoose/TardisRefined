@@ -91,7 +91,7 @@ public class VortexSelectionScreen extends MonitorOS {
 
         for (VortexRegistry vort : values) {
             ResourceLocation vortId = VortexRegistry.VORTEX_REGISTRY.getKey(vort);
-            String owner = Platform.getModName(vort.getKey().location().getNamespace());
+            String owner = Platform.getModName(vortId.getNamespace());
             Component tooltip = Component.literal(ChatFormatting.BLUE + owner);
 
             SelectionListEntry selectionListEntry = new SelectionListEntry(vort.getDisplayName(), (entry) -> {
