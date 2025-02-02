@@ -15,6 +15,10 @@ import whocraft.tardis_refined.common.block.device.ConsoleConfigurationBlock;
 import whocraft.tardis_refined.common.block.door.GlobalDoorBlock;
 import whocraft.tardis_refined.common.blockentity.console.GlobalConsoleBlockEntity;
 import whocraft.tardis_refined.common.blockentity.device.ConsoleConfigurationBlockEntity;
+import whocraft.tardis_refined.patterns.ConsolePattern;
+import whocraft.tardis_refined.patterns.ConsolePatterns;
+
+import java.util.List;
 
 public class ConsoleConfigurationRenderer implements BlockEntityRenderer<ConsoleConfigurationBlockEntity>, BlockEntityRendererProvider<ConsoleConfigurationBlockEntity> {
 
@@ -43,18 +47,35 @@ public class ConsoleConfigurationRenderer implements BlockEntityRenderer<Console
         float rotation = blockstate.getValue(GlobalDoorBlock.FACING).getOpposite().toYRot();
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
 
-        if (blockEntity.getLevel().random.nextInt(20) != 0) {
+        if (blockEntity != null && blockEntity.getLevel() != null && blockEntity.getLevel().random.nextInt(20) != 0) {
             poseStack.scale(0.25f, 0.25f, 0.25f);
             poseStack.translate(0, 1.5f + blockEntity.getLevel().random.nextFloat() * 0.01, 0);
             poseStack.mulPose(Axis.YP.rotationDegrees(blockEntity.getLevel().getGameTime() % 360));
 
             ResourceLocation theme = blockEntity.theme();
+            if (theme != null) {
+                List<ConsolePattern> patterns = ConsolePatterns.getPatternsForTheme(theme);
+                if (patterns != null && !patterns.isEmpty()) {
+                    ConsolePattern themePattern = patterns.get(0);
+                    ConsoleUnit consoleModel = ConsoleModelCollection.getInstance()
+                            .getConsoleEntry(theme)
+                            .getConsoleModel(themePattern);
 
-            ConsoleUnit consoleModel = ConsoleModelCollection.getInstance().getConsoleEntry(theme).getConsoleModel(null);
-            if (consoleModel != null) {
-                consoleModel.renderConsole(null, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getDefaultTexture())), packedLight, OverlayTexture.NO_OVERLAY, 0.635f, 0.392f, 0.878f, 0.5f);
+                    if (consoleModel != null) {
+                        consoleModel.renderConsole(
+                                null,
+                                blockEntity.getLevel(),
+                                poseStack,
+                                bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getDefaultTexture())),
+                                packedLight,
+                                OverlayTexture.NO_OVERLAY,
+                                0.635f, 0.392f, 0.878f, 0.5f
+                        );
+                    }
+                }
             }
         }
+
 
         poseStack.popPose();
     }
