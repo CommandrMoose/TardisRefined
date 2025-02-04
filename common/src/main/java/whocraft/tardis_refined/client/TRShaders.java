@@ -50,6 +50,8 @@ public class TRShaders {
                 .setTextureState(new RenderStateShard.MultiTextureStateShard(textureList))
                 .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
                 .setCullState(NO_CULL)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
                 .setLightmapState(LIGHTMAP)
                 .createCompositeState(false);
 

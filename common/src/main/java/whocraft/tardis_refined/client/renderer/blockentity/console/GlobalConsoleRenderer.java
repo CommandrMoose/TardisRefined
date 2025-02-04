@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import whocraft.tardis_refined.client.TRShaders;
 import whocraft.tardis_refined.client.TardisClientData;
@@ -42,19 +44,21 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
         poseStack.mulPose(Axis.ZP.rotationDegrees(180F));
 
         ResourceLocation theme = blockEntity.theme();
+        BlockState blockState = blockEntity.getBlockState();
+        Level level = blockEntity.getLevel();
 
         ConsoleUnit consoleModel = ConsoleModelCollection.getInstance().getConsoleEntry(theme).getConsoleModel(blockEntity.pattern());
-        consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+        consoleModel.renderConsole(blockEntity, level, poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(consoleModel.getTexture(blockEntity))), packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
 
-        if (blockEntity != null && blockEntity.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {
+        if (blockEntity != null && blockState.getValue(GlobalConsoleBlock.POWERED)) {
             if (blockEntity.pattern() != null && blockEntity.pattern().patternTexture().emissive()) {
-                consoleModel.renderConsole(blockEntity, blockEntity.getLevel(), poseStack, bufferSource.getBuffer(TRShaders.glow(consoleModel.getTexture(blockEntity, true), 0.5F)), 15728640, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+                consoleModel.renderConsole(blockEntity, level, poseStack, bufferSource.getBuffer(TRShaders.glow(consoleModel.getTexture(blockEntity, true), 0.5F)), 15728640, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
             }
         }
 
         poseStack.popPose();
 
-        if (blockEntity != null && blockEntity.getBlockState().getValue(GlobalConsoleBlock.POWERED)) {
+        if (blockEntity != null && blockState.getValue(GlobalConsoleBlock.POWERED)) {
             if (theme.toString().equals(ConsoleTheme.CRYSTAL.getId().toString())) {
                 renderHoloShell(crystalHolo, 270, blockEntity, poseStack, bufferSource, packedLight, crystalHoloColor);
             }
@@ -66,11 +70,13 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
     }
 
     private void renderHoloShell(Vec3 offset, int rotation, GlobalConsoleBlockEntity blockEntity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Vec3 color) {
-        if (blockEntity.getLevel().random.nextInt(20) != 0) {
+        Level level = blockEntity.getLevel();
+
+        if (level.random.nextInt(20) != 0) {
             poseStack.pushPose();
 
             // Fetch shell data
-            TardisClientData reactions = TardisClientData.getInstance(blockEntity.getLevel().dimension());
+            TardisClientData reactions = TardisClientData.getInstance(level.dimension());
             ResourceLocation shellTheme = reactions.getShellTheme();
             ResourceLocation shellPattern = reactions.getShellPattern();
             ShellPattern pattern = ShellPatterns.getPatternOrDefault(shellTheme, shellPattern);
@@ -84,18 +90,18 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
 
             // Add subtle floating animation
             if (reactions.isFlying()) {
-                float floatingOffset = (float) Math.sin(blockEntity.getLevel().getGameTime() / 15.0) * 0.05f;
+                float floatingOffset = (float) Math.sin(level.getGameTime() / 15.0) * 0.05f;
                 poseStack.translate(0, floatingOffset, 0);
             }
 
             // Random subtle jitter
             poseStack.translate(
-                    blockEntity.getLevel().random.nextFloat() * 0.005f - 0.0025f,
-                    blockEntity.getLevel().random.nextFloat() * 0.005f - 0.0025f,
-                    blockEntity.getLevel().random.nextFloat() * 0.005f - 0.0025f
+                    level.random.nextFloat() * 0.005f - 0.0025f,
+                    level.random.nextFloat() * 0.005f - 0.0025f,
+                    level.random.nextFloat() * 0.005f - 0.0025f
             );
 
-            float scaleModifier = 0.1f + (float) Math.sin(blockEntity.getLevel().getGameTime() / 20.0) * 0.005f;
+            float scaleModifier = 0.1f + (float) Math.sin(level.getGameTime() / 20.0) * 0.005f;
             poseStack.scale(scaleModifier, scaleModifier, scaleModifier);
 
             // Add rotation effect
@@ -122,11 +128,11 @@ public class GlobalConsoleRenderer implements BlockEntityRenderer<GlobalConsoleB
             ShellSelectionScreen.GLOBALSHELL_BLOCKENTITY.setTardisId(reactions.getLevelKey());
 
             // Dynamic flickering alpha for a hologram effect
-            float flickerAlpha = 0.2f + blockEntity.getLevel().random.nextFloat() * 0.1f;
+            float flickerAlpha = 0.2f + level.random.nextFloat() * 0.1f;
 
             boolean recoveryOrCrashing = reactions.isCrashing() || reactions.isInRecovery();
 
-            float time = blockEntity.getLevel().getGameTime() / 100.0f;
+            float time = level.getGameTime() / 100.0f;
             float red = recoveryOrCrashing ? 0.5f + (float) Math.sin(time) * 0.5f : (float) color.x;
             float green = recoveryOrCrashing ? 0.5f + (float) Math.sin(time + Math.PI / 2) * 0.5f : (float) color.y;
             float blue = recoveryOrCrashing ? 0.5f + (float) Math.sin(time + Math.PI) * 0.5f : (float) color.z;

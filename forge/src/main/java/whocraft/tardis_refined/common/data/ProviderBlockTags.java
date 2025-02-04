@@ -2,8 +2,10 @@ package whocraft.tardis_refined.common.data;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +15,9 @@ import whocraft.tardis_refined.common.crafting.astral_manipulator.ManipulatorRec
 import whocraft.tardis_refined.registry.TRBlockRegistry;
 import whocraft.tardis_refined.registry.TRTagKeys;
 
+
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -27,25 +31,27 @@ public class ProviderBlockTags extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
 
         for (Block blocksEntry : TRBlockRegistry.BLOCKS.getRegistry().get().stream().toList()) {
-            Block block = blocksEntry;
 
-            if (TRBlockRegistry.BLOCKS.getKey(block).getNamespace().equals(TardisRefined.MODID)) {
+            if (TRBlockRegistry.BLOCKS.getKey(blocksEntry).getNamespace().equals(TardisRefined.MODID)) {
                 /*Fences*/
-                if (block instanceof FenceBlock fenceBlock) {
+                if (blocksEntry instanceof FenceBlock fenceBlock) {
                     tag(BlockTags.FENCES).add(fenceBlock);
                 }
 
                 /*Leaves*/
-                if (block instanceof LeavesBlock leavesBlock) {
+                if (blocksEntry instanceof LeavesBlock leavesBlock) {
                     tag(BlockTags.LEAVES).add(leavesBlock);
                 }
 
                 /*Slabs*/
-                if (block instanceof SlabBlock slabBlock) {
+                if (blocksEntry instanceof SlabBlock slabBlock) {
                     tag(BlockTags.SLABS).add(slabBlock);
                 }
             }
         }
+
+        tag(Tags.Blocks.ORES).add(TRBlockRegistry.ZEITON_ORE.get()).add(TRBlockRegistry.ZEITON_ORE_DEEPSLATE.get()).add(TRBlockRegistry.ZEITON_BLOCK.get());
+
 
         tag(BlockTags.DRAGON_IMMUNE).add(TRBlockRegistry.ROOT_SHELL_BLOCK.get()).add(TRBlockRegistry.GLOBAL_SHELL_BLOCK.get()).add(TRBlockRegistry.GLOBAL_CONSOLE_BLOCK.get());
         tag(BlockTags.WITHER_IMMUNE).add(TRBlockRegistry.ROOT_SHELL_BLOCK.get()).add(TRBlockRegistry.GLOBAL_SHELL_BLOCK.get()).add(TRBlockRegistry.GLOBAL_CONSOLE_BLOCK.get());
