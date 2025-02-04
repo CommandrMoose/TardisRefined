@@ -15,5 +15,5 @@
 - Added Sub-Command: Summon
 
 #### Bug Fix
-
 - Bug fix: Export Desktop command no longer errors when a user uses upper case characters 
+- Bug fix: Fixed Console Configurator not rendering consoles when they have boot up animations
