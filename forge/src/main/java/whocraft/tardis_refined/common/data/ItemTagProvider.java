@@ -5,6 +5,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 import whocraft.tardis_refined.TardisRefined;
@@ -28,5 +29,6 @@ public class ItemTagProvider extends ItemTagsProvider {
         tag(TRTagKeys.CURIOS_HEAD).add(TRItemRegistry.GLASSES.get());
         tag(TRTagKeys.TRINKETS_HEAD).add(TRItemRegistry.GLASSES.get());
         tag(TRTagKeys.TRINKETS_FACE).add(TRItemRegistry.GLASSES.get());
+        tag(Tags.Items.INGOTS).add(TRItemRegistry.ZEITON_INGOT.get());
     }
 }

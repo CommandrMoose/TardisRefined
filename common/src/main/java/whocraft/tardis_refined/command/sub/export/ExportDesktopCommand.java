@@ -38,9 +38,9 @@ public class ExportDesktopCommand implements Command<CommandSourceStack> {
                                                                         .executes(context -> exportDesktop(context, BlockPosArgument.getSpawnablePos(context, "pos1"),
                                                                                 BlockPosArgument.getSpawnablePos(context, "pos2"),
                                                                                 BoolArgumentType.getBool(context, "include_entities"),
-                                                                                StringArgumentType.getString(context, "namespace"),
-                                                                                StringArgumentType.getString(context, "desktop_id"),
-                                                                                StringArgumentType.getString(context, "datapack_name"),
+                                                                                StringArgumentType.getString(context, "namespace").toLowerCase(),
+                                                                                StringArgumentType.getString(context, "desktop_id").toLowerCase(),
+                                                                                StringArgumentType.getString(context, "datapack_name").toLowerCase(),
                                                                                 ComponentArgument.getComponent(context, "desktop_display_name")
                                                                         )))))))));
 
