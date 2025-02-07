@@ -2,7 +2,9 @@ package whocraft.tardis_refined.client.model.blockentity.console;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.api.event.TardisClientEvents;
@@ -10,6 +12,7 @@ import whocraft.tardis_refined.client.ModelRegistry;
 import whocraft.tardis_refined.common.tardis.themes.ConsoleTheme;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /***
  * A collection of models for rendering the console unit.
@@ -59,8 +62,19 @@ public class ConsoleModelCollection {
 
         TardisClientEvents.CONSOLE_MODELS_SETUP.invoker().setupConsoleModels(this, context);
 
-
+        validateConsoleModels();
     }
+
+    private static void validateConsoleModels() {
+        for (Map.Entry<ResourceKey<ConsoleTheme>, ConsoleTheme> entry : ConsoleTheme.CONSOLE_THEME_DEFERRED_REGISTRY.entrySet()) {
+            ResourceKey<ConsoleTheme> key = entry.getKey();
+            Validate.isTrue(
+                    CONSOLE_MODELS.containsKey(key.location()),
+                    String.format("Missing registered model for console theme: %s", key)
+            );
+        }
+    }
+
 
     public static Logger LOGGER = LogManager.getLogger("TardisRefined/ConsoleModelCollection");
 

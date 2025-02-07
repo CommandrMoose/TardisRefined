@@ -3,6 +3,7 @@ package whocraft.tardis_refined.client.model.blockentity.shell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import whocraft.tardis_refined.api.event.TardisClientEvents;
@@ -126,19 +127,22 @@ public class ShellModelCollection {
         registerShellEntry(ShellTheme.PATHFINDER.get(), pathfinderShellModel, pathfinderDoorModel);
         registerShellEntry(ShellTheme.HALF_BAKED.get(), halfBakedShellModel, halfBakedDoorModel);
         registerShellEntry(ShellTheme.SHULKER.get(), shulkerShellModel, shulkerDoorModel);
-        validateModels();
+        validateShellModels();
     }
 
     public static Logger LOGGER = LogManager.getLogger("TardisRefined/ShellPatternProvider");
 
 
-    private void validateModels() {
+    private void validateShellModels() {
         for (ResourceLocation resourceLocation : ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.keySet()) {
-            if(!SHELL_MODELS.containsKey(resourceLocation)){
-                LOGGER.info("There was no model setup for shell theme {}", resourceLocation);
-            }
+            Validate.isTrue(
+                    SHELL_MODELS.containsKey(resourceLocation),
+                    String.format("Missing registered model for shell theme: %s", resourceLocation)
+            );
         }
     }
+
+
 
     /**
      * Get the associated shell model from a shell theme.
