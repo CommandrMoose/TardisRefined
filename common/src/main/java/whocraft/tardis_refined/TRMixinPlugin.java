@@ -14,7 +14,8 @@ public class TRMixinPlugin implements IMixinConfigPlugin {
     public static final boolean HAS_SODIUM;
 
     static {
-        HAS_SODIUM = hasClass("net.caffeinemc.mods.sodium.client.render.immediate.model.EntityRenderer");
+        HAS_SODIUM = hasClass("net.caffeinemc.mods.sodium.client.render.immediate.model.EntityRenderer")
+                || hasClass("me.jellysquid.mods.sodium.client.render.immediate.model.EntityRenderer");
     }
 
     private static boolean hasClass(String name) {
@@ -41,6 +42,12 @@ public class TRMixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 
         if (mixinClassName.contains("whocraft.tardis_refined.mixin.render.SodiumFixMixin")) {
+            TardisRefined.LOGGER.info("Checking for Sodium, found: {}", HAS_SODIUM);
+
+            if(HAS_SODIUM){
+                TardisRefined.LOGGER.info("Sodium Detected, enabling {}", mixinClassName);
+            }
+
             return HAS_SODIUM;
         }
 

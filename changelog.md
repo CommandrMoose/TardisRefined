@@ -24,3 +24,4 @@
 - Bug fix: Fixed Console Configurator not rendering consoles when they have boot up animations
 - Bug fix: Fixed Console Configurator looking for null patterns when sourcing a model
 - Bug fix: Fixed Game crashing when removing mods that add consoles or shells, they will not default to Factory Console / Factory Shell when removed
+- Bug fix: Sodium compatibility on Fabric
