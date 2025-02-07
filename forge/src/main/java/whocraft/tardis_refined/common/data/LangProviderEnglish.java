@@ -194,7 +194,7 @@ public class LangProviderEnglish extends LanguageProvider {
         add(ModMessages.VILLAGER_CAN_FLY, "Pilot?");
         add(ModMessages.PILOT_TIME, "You've still got %s with your pilot. Make the most of it!");
         add(ModMessages.DEMANDS_PAYMENT, "Demands payment");
-        add(ModMessages.TARDIS_SLEEP_END, "The hums of the ship make you toss and turn. Your spawnpoint was not set here.");
+        add(ModMessages.TARDIS_SLEEP_END, "The hums of the ship make you toss and turn. Your spawnpoint could not be set here.");
 
 
         /*Command*/
