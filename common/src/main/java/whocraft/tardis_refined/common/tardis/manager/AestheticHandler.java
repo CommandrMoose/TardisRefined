@@ -1,11 +1,12 @@
 package whocraft.tardis_refined.common.tardis.manager;
 
-import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import whocraft.tardis_refined.TardisRefined;
+import whocraft.tardis_refined.client.TardisClientData;
 import whocraft.tardis_refined.common.VortexRegistry;
 import whocraft.tardis_refined.common.blockentity.door.GlobalDoorBlockEntity;
 import whocraft.tardis_refined.common.blockentity.shell.GlobalShellBlockEntity;
@@ -127,26 +128,56 @@ public class AestheticHandler extends BaseHandler {
 
     @Override
     public void loadData(CompoundTag tag) {
-        if (tag.contains("aesthetic", NbtType.COMPOUND)) {
+        boolean needsDataFixed = false;
+
+        if (tag.contains("aesthetic")) {
             CompoundTag aestheticTag = tag.getCompound("aesthetic");
 
             if (aestheticTag.contains("vortex")) {
-                ResourceLocation vortexLoc = new ResourceLocation(aestheticTag.getString("vortex"));
-                this.vortex = vortexLoc;
+                this.vortex = new ResourceLocation(aestheticTag.getString("vortex"));
             }
 
             // Shell
-            if (aestheticTag.contains("shell", NbtType.COMPOUND)) {
+            if (aestheticTag.contains("shell")) {
                 CompoundTag shellInfo = aestheticTag.getCompound("shell");
 
-                if (shellInfo.contains(NbtConstants.TARDIS_EXT_CURRENT_THEME, NbtType.STRING) && shellInfo.contains(NbtConstants.TARDIS_EXT_CURRENT_PATTERN, NbtType.STRING)) {
-                    ResourceLocation themeID = new ResourceLocation(shellInfo.getString(NbtConstants.TARDIS_EXT_CURRENT_THEME));
-                    this.shellTheme = themeID;
-                    String patternId = shellInfo.getString(NbtConstants.TARDIS_EXT_CURRENT_PATTERN);
-                    this.shellPattern = ShellPatterns.getPatternOrDefault(themeID, new ResourceLocation(patternId));
+                if (shellInfo.contains(NbtConstants.TARDIS_EXT_CURRENT_THEME)) {
+                    ResourceLocation themeId = new ResourceLocation(shellInfo.getString(NbtConstants.TARDIS_EXT_CURRENT_THEME));
+                    ShellTheme theme = ShellTheme.SHELL_THEME_DEFERRED_REGISTRY.get(themeId);
+
+                    if (theme == null) {
+                        TardisRefined.LOGGER.info("The shell theme: {} does not exist! Resetting Shell Theme & Pattern for {}", themeId, tardisOperator.getLevel().dimension());
+                        needsDataFixed = true;
+                        this.shellTheme = ShellTheme.FACTORY.getId();
+                        TardisClientData clientData = tardisOperator.tardisClientData();
+                        clientData.setShellTheme(shellTheme);
+                        clientData.sync();
+                    } else {
+                        this.shellTheme = themeId;
+                    }
+                }
+
+                if (shellInfo.contains(NbtConstants.TARDIS_EXT_CURRENT_PATTERN) && !needsDataFixed) {
+                    ResourceLocation currentPattern = new ResourceLocation(shellInfo.getString(NbtConstants.TARDIS_EXT_CURRENT_PATTERN));
+
+                    if (ShellPatterns.doesPatternExist(shellTheme, currentPattern)) {
+                        this.shellPattern = ShellPatterns.getPatternOrDefault(shellTheme, currentPattern);
+                        TardisClientData clientData = tardisOperator.tardisClientData();
+                        clientData.setShellPattern(shellPattern.id());
+                        clientData.sync();
+                    }
                 }
             }
         }
+
+        if (this.shellTheme == null) {
+            this.shellTheme = ShellTheme.FACTORY.getId();
+        }
+
+        if (this.shellPattern == null || needsDataFixed) {
+            this.shellPattern = ShellPatterns.DEFAULT;
+        }
     }
+
 
 }

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import whocraft.tardis_refined.TardisRefined;
 import whocraft.tardis_refined.common.block.console.GlobalConsoleBlock;
 import whocraft.tardis_refined.common.capability.tardis.TardisLevelOperator;
 import whocraft.tardis_refined.common.entity.ControlEntity;
@@ -108,16 +109,28 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
     @Override
     public void load(CompoundTag tag) {
 
-        if (tag.contains(NbtConstants.THEME)) {
-            ResourceLocation themeId = new ResourceLocation(tag.getString(NbtConstants.THEME));
-            this.consoleTheme = themeId;
-        }
+        boolean needsDataFixed = false;
 
         if (tag.contains("ticks_booting")) {
             this.ticksBooting = tag.getInt("ticks_booting");
         }
 
-        if (tag.contains(NbtConstants.PATTERN)) {
+        if (tag.contains(NbtConstants.THEME)) {
+            ResourceLocation themeId = new ResourceLocation(tag.getString(NbtConstants.THEME));
+
+            ConsoleTheme theme = ConsoleTheme.CONSOLE_THEME_DEFERRED_REGISTRY.get(themeId);
+
+            if (theme == null) {
+                TardisRefined.LOGGER.info("The console theme: {} does not exist! Resetting Console Theme & Pattern at {}", themeId, getBlockPos());
+                needsDataFixed = true;
+                consoleTheme = theme();
+            } else {
+                this.consoleTheme = themeId;
+            }
+        }
+
+
+        if (tag.contains(NbtConstants.PATTERN) && !needsDataFixed) {
             ResourceLocation currentPattern = new ResourceLocation(tag.getString(NbtConstants.PATTERN));
             ResourceLocation theme = this.theme();
             if (ConsolePatterns.doesPatternExist(theme, currentPattern)) {
@@ -125,11 +138,13 @@ public class GlobalConsoleBlockEntity extends BlockEntity implements BlockEntity
             }
         }
 
+
+
         if (this.consoleTheme == null) {
             this.consoleTheme = this.theme();
         }
 
-        if (this.basePattern == null) {
+        if (this.basePattern == null || needsDataFixed) {
             this.basePattern = this.pattern();
         }
 
