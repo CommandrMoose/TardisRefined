@@ -34,7 +34,7 @@ public class GlobalDoorBlock extends InternalDoorBlock {
 
     public GlobalDoorBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, true).setValue(LOCKED, false));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OFFSET, false).setValue(OPEN, true).setValue(LOCKED, false));
     }
 
     @Nullable
