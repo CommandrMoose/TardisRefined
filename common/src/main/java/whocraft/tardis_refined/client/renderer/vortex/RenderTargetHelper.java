@@ -59,6 +59,9 @@ public class RenderTargetHelper {
         float rotation = blockstate.getValue(InternalDoorBlock.FACING).toYRot();
         boolean isOpen = blockstate.getValue(InternalDoorBlock.OPEN);
         ShellDoorModel currentModel = ShellModelCollection.getInstance().getShellEntry(theme).getShellDoorModel(blockEntity.pattern());
+
+        if(currentModel == null) return;
+
         TardisClientData tardisClientData = TardisClientData.getInstance(blockEntity.getLevel().dimension());
 
         VORTEX.vortexType = VortexRegistry.VORTEX_DEFERRED_REGISTRY.get(tardisClientData.getVortex());
