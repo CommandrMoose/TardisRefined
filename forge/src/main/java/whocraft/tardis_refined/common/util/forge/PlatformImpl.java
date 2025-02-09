@@ -6,6 +6,7 @@ import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
@@ -18,7 +19,7 @@ public class PlatformImpl {
     }
 
     public static boolean isModLoaded(String id) {
-        return ModList.get().isLoaded(id);
+        return LoadingModList.get().getModFileById(id) != null;
     }
 
     public static Collection<String> getModIds() {

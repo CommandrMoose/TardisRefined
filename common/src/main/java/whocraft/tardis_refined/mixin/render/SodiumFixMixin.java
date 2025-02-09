@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import whocraft.tardis_refined.client.model.pallidium.ExtendedCubeListBuilder;
 
-@Mixin(EntityRenderer.class)
+
+
+@Mixin(value = EntityRenderer.class, remap = false)
 public class SodiumFixMixin {
 
     @SuppressWarnings("ConstantValue")
