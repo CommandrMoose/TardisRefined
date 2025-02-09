@@ -2,7 +2,6 @@ package whocraft.tardis_refined.common.util.forge;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
