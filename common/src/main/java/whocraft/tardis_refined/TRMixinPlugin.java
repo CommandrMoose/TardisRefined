@@ -3,30 +3,12 @@ package whocraft.tardis_refined;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
-import org.spongepowered.asm.service.MixinService;
+import whocraft.tardis_refined.common.util.Platform;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
 public class TRMixinPlugin implements IMixinConfigPlugin {
-
-    public static final boolean HAS_SODIUM;
-
-    static {
-        HAS_SODIUM = hasClass("net.caffeinemc.mods.sodium.client.render.immediate.model.EntityRenderer")
-                || hasClass("me.jellysquid.mods.sodium.client.render.immediate.model.EntityRenderer");
-    }
-
-    private static boolean hasClass(String name) {
-        try {
-            // This does *not* load the class!
-            MixinService.getService().getBytecodeProvider().getClassNode(name);
-            return true;
-        } catch (ClassNotFoundException | IOException e) {
-            return false;
-        }
-    }
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -42,13 +24,14 @@ public class TRMixinPlugin implements IMixinConfigPlugin {
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
 
         if (mixinClassName.contains("whocraft.tardis_refined.mixin.render.SodiumFixMixin")) {
-            TardisRefined.LOGGER.info("Checking for Sodium, found: {}", HAS_SODIUM);
+            boolean isSodiumInstalled = Platform.isModLoaded("sodium");
+            TardisRefined.LOGGER.info("Checking for Sodium, found: {}", isSodiumInstalled);
 
-            if(HAS_SODIUM){
+            if(isSodiumInstalled){
                 TardisRefined.LOGGER.info("Sodium Detected, enabling {}", mixinClassName);
             }
 
-            return HAS_SODIUM;
+            return isSodiumInstalled;
         }
 
         return true;
