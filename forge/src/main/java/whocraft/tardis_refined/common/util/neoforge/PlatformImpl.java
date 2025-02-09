@@ -5,6 +5,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import net.neoforged.neoforgespi.language.IModInfo;
 
@@ -17,7 +18,7 @@ public class PlatformImpl {
     }
 
     public static boolean isModLoaded(String id) {
-        return ModList.get().isLoaded(id);
+        return LoadingModList.get().getModFileById(id) != null;
     }
 
     public static Collection<String> getModIds() {
